@@ -66,11 +66,6 @@ ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 IF(CMAKE_COMPILER_IS_CLANGXX)
 	MESSAGE(STATUS "Clang compiler detected, checking version.")
-	TRY_COMPILE(CLANG_VERSION_CHECK ${CMAKE_BINARY_DIR} "${CMAKE_SOURCE_DIR}/cmake_modules/clang_check_version.cpp")
-	IF(NOT CLANG_VERSION_CHECK)
-		MESSAGE(FATAL_ERROR "Unsupported Clang version, please upgrade your compiler.")
-	ENDIF(NOT CLANG_VERSION_CHECK)
-	MESSAGE(STATUS "Clang version is ok.")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 	# This used to be necessary with earlier versions of Clang which
 	# were not completely compatible with GCC's stdlib. Nowadays it seems

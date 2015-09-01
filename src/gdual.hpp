@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <piranha/polynomial.hpp>
+#include <algorithm> 
+
 #include "functions.hpp"
 
 namespace audi
@@ -18,14 +20,46 @@ class gdual
 
 	// We disable the overloads of the +,-,*,/ operators if none of the operands is a gdual
 	template <typename T, typename U>
-	using magic_type = typename std::enable_if<std::is_same<T,gdual>::value || std::is_same<U,gdual>::value,gdual>::type;
+	using gdual_if_enabled = typename std::enable_if<std::is_same<T,gdual>::value || std::is_same<U,gdual>::value,gdual>::type;
 
 public:
-	explicit gdual(const std::string &str, int order):m_p(str),m_order(order) {}
-	explicit gdual(double x, int order):m_p(x),m_order(order) {}
+	explicit gdual(const std::string &str, int order):m_p(str),m_order(order) {
+		if (order < 1) {
+			throw std::invalid_argument("polynomial truncation order must be > 1");
+		}
+	}
+
+	explicit gdual(double x, int order):m_p(x),m_order(order) {
+		if (order < 1) {
+			throw std::invalid_argument("polynomial truncation order must be > 1");
+		}
+	}
+
 	int get_order() const
 	{
 		return m_order;
+	}
+
+	template <typename T>
+	cf_type find_cf(const T &c) const
+	{
+		if (!std::all_of(c.begin(), c.end(), [&](int i){return i<=get_order();}) ||
+		   !std::all_of(c.begin(), c.end(), [](int i){return i>=0;}))
+		{
+			throw std::invalid_argument("invalid order(s) requested for derivative ");
+		}
+		return m_p.find_cf(c);
+	}
+
+	template <typename T>
+	cf_type find_cf(std::initializer_list<T> l) const
+	{
+		if (!std::all_of(l.begin(), l.end(), [&](T i){return i<=get_order();}) || 
+		    !std::all_of(l.begin(), l.end(), [](T i){return i>=0;}))
+		{
+			throw std::invalid_argument("invalid order(s) requested for derivative ");
+		}
+		return m_p.find_cf(l);
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const gdual& d)
@@ -36,17 +70,17 @@ public:
 
 	friend bool operator==(const gdual  &d1, const gdual &d2) 
 	{
-		return d1.m_p == d2.m_p;
+		return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
 	}
 
 	template <typename T, typename U>
-	friend magic_type<T, U> operator+(const T &d1, const U &d2)
+	friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
 	{
 		return add(d1,d2);
 	}
 
 	template <typename T, typename U>
-	friend magic_type<T, U> operator-(const T &d1, const U &d2)
+	friend gdual_if_enabled<T, U> operator-(const T &d1, const U &d2)
 	{
 		return sub(d1,d2);
 	}
