@@ -4,8 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <iostream>
-#include <piranha.hpp>
-
+#include <piranha/polynomial.hpp>
 #include "functions.hpp"
 
 namespace audi
@@ -33,6 +32,11 @@ public:
 	{
 	    os << d.m_p;
 	    return os;
+	}
+
+	friend bool operator==(const gdual  &d1, const gdual &d2) 
+	{
+		return d1.m_p == d2.m_p;
 	}
 
 	template <typename T, typename U>
