@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <iostream>
 #include <piranha.hpp>
 
 #include "functions.hpp"
@@ -16,20 +17,26 @@ class gdual
 	using cf_type = double;
 	using p_type = piranha::polynomial<cf_type,piranha::k_monomial>;
 
-	// We disable the overloads of the operators if none of the operands is a gdual
+	// We disable the overloads of the +,-,*,/ operators if none of the operands is a gdual
 	template <typename T, typename U>
 	using magic_type = typename std::enable_if<std::is_same<T,gdual>::value || std::is_same<U,gdual>::value,gdual>::type;
 
 public:
-	explicit gdual(const std::string &str, int limit):m_p(str),m_limit(limit) {}
-	explicit gdual(double x, int limit):m_p(x),m_limit(limit) {}
+	explicit gdual(const std::string &str, int order):m_p(str),m_order(order) {}
+	explicit gdual(double x, int order):m_p(x),m_order(order) {}
 	int get_order() const
 	{
 		return m_order;
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, const gdual& d)
+	{
+	    os << d.m_p;
+	    return os;
+	}
+
 	template <typename T, typename U>
-	friend magic_type operator+(const T &d1, const U &d2)
+	friend magic_type<T, U> operator+(const T &d1, const U &d2)
 	{
 		return binary_add(d1,d2);
 	}
@@ -43,12 +50,16 @@ private:
 		retval.m_p += d2.m_p;
 		return retval;
 	}
-	static gdual binary_add(const double &d1, const gdual  &d2) {
+
+	template <typename T>
+	static gdual binary_add(const T &d1, const gdual  &d2) {
 		gdual retval(d2);
 		retval.m_p += d1;
 		return retval;
 	}
-	static gdual binary_add(const gdual  &d1, const double &d2) {
+
+	template <typename T>
+	static gdual binary_add(const gdual  &d1, const T &d2) {
 		return binary_add(d2, d1);
 	}
 
