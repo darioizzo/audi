@@ -1,4 +1,4 @@
-# Audi, there is a new kid in town!
+# AuDi (Automated Differentiation)
 
 Implementation of an automated differentiation system using generalized dual numbers (i.e. truncated Taylor expansions). The underlying truncated polynomial algebra (differential algebra) is dealt with using [Piranha](https://github.com/bluescarni/piranha) and can deal with high orders and many variables. 
 
