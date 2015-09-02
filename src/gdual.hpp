@@ -34,8 +34,8 @@ class gdual
 	gdual>::type;
 
 private:
-	p_type		m_p;
-	const int	m_order;
+	p_type	m_p;
+	int	m_order;
 
 public:
 
@@ -54,6 +54,10 @@ public:
 		}
 	}
 
+	// Defaulted assignment operators.
+	gdual &operator=(const gdual &) = default;
+	gdual &operator=(gdual &&) = default;
+
 	std::vector<std::string> get_symbols() const 
 	{
 		std::vector<std::string> retval;
@@ -64,24 +68,8 @@ public:
 		return retval;
 	}
 
-	auto get_n_variables() const -> decltype(this->m_p.get_symbol_set().size()) {
+	auto get_n_variables() const -> decltype(m_p.get_symbol_set().size()) {
 		return m_p.get_symbol_set().size();
-	}
-
-	gdual &operator=(const gdual &other)
-	{
-		if (m_order != other.m_order) {
-			throw std::invalid_argument("cannot assign, the truncation order is different");
-		}
-		m_p = other.m_p;
-	}
-
-	gdual &operator=(gdual &&other) noexcept
-	{
-		if (m_order != other.m_order) {
-			throw std::invalid_argument("cannot assign, the truncation order is different");
-		}
-		m_p = std::move(other.m_p);
 	}
 
 	int get_order() const
@@ -90,13 +78,13 @@ public:
 	}
 
 	template <typename T>
-	cf_type find_cf(const T &c) const
+	auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
 	{
 		return m_p.find_cf(c);
 	}
 
 	template <typename T>
-	cf_type find_cf(std::initializer_list<T> l) const
+	auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
 	{
 		return m_p.find_cf(l);
 	}
