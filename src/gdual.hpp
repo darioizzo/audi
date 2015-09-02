@@ -34,6 +34,10 @@ class gdual
 	gdual>::type;
 
 public:
+
+	gdual(const gdual &) = default;
+	gdual(gdual &&) = default;
+
 	explicit gdual(const std::string &str, int order):m_p(str),m_order(order) {
 		if (order < 1) {
 			throw std::invalid_argument("polynomial truncation order must be >= 1");
@@ -44,6 +48,22 @@ public:
 		if (order < 1) {
 			throw std::invalid_argument("polynomial truncation order must be >= 1");
 		}
+	}
+
+	gdual &operator=(const gdual &other)
+	{
+		if (m_order != other.m_order) {
+			throw std::invalid_argument("cannot assign, the truncation order is different");
+		}
+		m_p = other.m_p;
+	}
+
+	gdual &operator=(gdual &&other) noexcept
+	{
+		if (m_order != other.m_order) {
+			throw std::invalid_argument("cannot assign, the truncation order is different");
+		}
+		m_p = std::move(other.m_p);
 	}
 
 	int get_order() const
