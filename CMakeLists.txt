@@ -29,8 +29,6 @@ FIND_PACKAGE(Threads REQUIRED)
 MESSAGE(STATUS "Thread library: ${CMAKE_THREAD_LIBS_INIT}")
 SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
-
-
 # Include these macros here as they reference variables defined above.
 INCLUDE(AudiCompilerLinkerSettings)
 INCLUDE(AudiPlatformSettings)
@@ -56,7 +54,7 @@ MESSAGE(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
 MESSAGE(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-FIND_PACKAGE(PIRANHA REQUIRED)
+FIND_PACKAGE(Piranha REQUIRED)
 
 # GMP setup.
 FIND_PACKAGE(GMP REQUIRED)

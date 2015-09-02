@@ -1,5 +1,4 @@
 INCLUDE(CheckCXXCompilerFlag)
-INCLUDE(CheckTypeSize)
 
 message(STATUS "The C++ compiler ID is: ${CMAKE_CXX_COMPILER_ID}")
 
@@ -34,21 +33,6 @@ macro(AUDI_CHECK_ENABLE_DEBUG_CXX_FLAG flag)
 	unset(AUDI_CHECK_DEBUG_CXX_FLAG CACHE)
 endmacro()
 
-# Macro to detect the 128-bit unsigned integer type available on some compilers.
-macro(AUDI_CHECK_UINT128_T)
-	MESSAGE(STATUS "Looking for a 128-bit unsigned integer type.")
-	# NOTE: for now we support only the GCC integer.
-	# NOTE: use this instead of the unsigned __int128. See:
-	# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=50454
-	CHECK_TYPE_SIZE("__uint128_t" AUDI_UINT128_T)
-	IF(AUDI_UINT128_T)
-		MESSAGE(STATUS "128-bit unsigned integer type detected.")
-		SET(AUDI_HAVE_UINT128_T "#define AUDI_UINT128_T __uint128_t")
-	ELSE()
-		MESSAGE(STATUS "No 128-bit unsigned integer type detected.")
-	ENDIF()
-endmacro(AUDI_CHECK_UINT128_T)
-
 # Configuration for GCC.
 IF(CMAKE_COMPILER_IS_GNUCXX)
 	MESSAGE(STATUS "GNU compiler detected, checking version.")
@@ -58,8 +42,6 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g1")
 	# Set the standard flag.
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
-	AUDI_CHECK_UINT128_T()
 	# Color diagnostic available since GCC 4.9.
 	AUDI_CHECK_ENABLE_CXX_FLAG(-fdiagnostics-color=auto)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX)
@@ -71,7 +53,6 @@ IF(CMAKE_COMPILER_IS_CLANGXX)
 	# were not completely compatible with GCC's stdlib. Nowadays it seems
 	# unnecessary on most platforms.
 	# AUDI_CHECK_ENABLE_CXX_FLAG(-stdlib=libc++)
-	AUDI_CHECK_UINT128_T()
 	# For now it seems like -Wshadow from clang behaves better than GCC's, just enable it here
 	# for the time being.
 	AUDI_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wshadow)
