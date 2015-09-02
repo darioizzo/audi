@@ -55,6 +55,9 @@ MESSAGE(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 FIND_PACKAGE(Piranha REQUIRED)
+MESSAGE(STATUS "Piranha library found.")
+MESSAGE(STATUS "Piranha include dir is: ${Piranha_INCLUDE_DIR}")
+INCLUDE_DIRECTORIES(${Piranha_INCLUDE_DIR})
 
 # GMP setup.
 FIND_PACKAGE(GMP REQUIRED)
@@ -79,6 +82,9 @@ INCLUDE_DIRECTORIES(${MPFR_INCLUDE_DIR})
 
 # NOTE: MPFR should be linked in before GMP, that's why we link GMP here.
 SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
+
+# Add the subdirectory for the library.
+ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/src")
 
 # Link main to piranha library.
 IF(BUILD_MAIN)
