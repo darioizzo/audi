@@ -65,16 +65,16 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const gdual& d)
 	{
-	    os << d.m_p;
-	    return os;
+		os << d.m_p;
+		return os;
 	}
 
-	friend bool operator==(const gdual  &d1, const gdual &d2) 
+	friend bool operator==(const gdual &d1, const gdual &d2)
 	{
 		return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
 	}
 
-	friend bool operator!=(const gdual  &d1, const gdual &d2)
+	friend bool operator!=(const gdual &d1, const gdual &d2)
 	{
 		return !(d1 == d2);
 	}
@@ -93,7 +93,7 @@ public:
 
 private:
 	// Basic overloads for the addition
-	static gdual add(const gdual  &d1, const gdual  &d2)
+	static gdual add(const gdual &d1, const gdual &d2)
 	{
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
@@ -104,7 +104,7 @@ private:
 	}
 
 	template <typename T>
-	static gdual add(const T &d1, const gdual  &d2)
+	static gdual add(const T &d1, const gdual &d2)
 	{
 		gdual retval(d2);
 		retval.m_p += d1;
@@ -112,13 +112,13 @@ private:
 	}
 
 	template <typename T>
-	static gdual add(const gdual  &d1, const T &d2)
+	static gdual add(const gdual &d1, const T &d2)
 	{
 		return add(d2, d1);
 	}
 
 	// Basic overloads for the subtraction
-	static gdual sub(const gdual  &d1, const gdual  &d2)
+	static gdual sub(const gdual &d1, const gdual &d2)
 	{
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
@@ -129,7 +129,7 @@ private:
 	}
 
 	template <typename T>
-	static gdual sub(const T &d1, const gdual  &d2)
+	static gdual sub(const T &d1, const gdual &d2)
 	{
 		gdual retval(d2);
 		retval.m_p -= d1;
@@ -138,7 +138,7 @@ private:
 	}
 
 	template <typename T>
-	static gdual sub(const gdual  &d1, const T &d2)
+	static gdual sub(const gdual &d1, const T &d2)
 	{
 		gdual retval(d1);
 		retval.m_p -= d2;
