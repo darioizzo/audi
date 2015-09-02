@@ -33,6 +33,10 @@ class gdual
 		(std::is_same<U,gdual>::value && std::is_same<T,int>::value),
 	gdual>::type;
 
+private:
+	p_type		m_p;
+	const int	m_order;
+
 public:
 
 	gdual(const gdual &) = default;
@@ -48,6 +52,20 @@ public:
 		if (order < 1) {
 			throw std::invalid_argument("polynomial truncation order must be >= 1");
 		}
+	}
+
+	std::vector<std::string> get_symbols() const 
+	{
+		std::vector<std::string> retval;
+		for (const auto &symbol : m_p.get_symbol_set())
+		{
+			retval.push_back(symbol.get_name());
+		}
+		return retval;
+	}
+
+	auto get_n_variables() const -> decltype(this->m_p.get_symbol_set().size()) {
+		return m_p.get_symbol_set().size();
 	}
 
 	gdual &operator=(const gdual &other)
@@ -164,9 +182,6 @@ private:
 		retval.m_p -= d2;
 		return retval;
 	}
-
-	p_type		m_p;
-	const int	m_order;
 };
 
 } // end of namespace audi 
