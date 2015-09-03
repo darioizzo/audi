@@ -30,6 +30,21 @@ BOOST_AUTO_TEST_CASE(sub)
 	BOOST_CHECK((1 - p1) + (p1 + p2) == 1 + p2);
 }
 
+BOOST_AUTO_TEST_CASE(mul)
+{
+	gdual x("dx",2);
+	gdual y("dy",2);
+	x = x + 3;
+	y = y + 7;
+	auto result = x + 3*x*y + y*y;
+	BOOST_CHECK_EQUAL(result.find_cf({0,0}), 115);
+	BOOST_CHECK_EQUAL(result.find_cf({1,0}), 22);
+	BOOST_CHECK_EQUAL(result.find_cf({0,1}), 23);
+	BOOST_CHECK_EQUAL(result.find_cf({1,1}), 3);
+	BOOST_CHECK_EQUAL(result.find_cf({2,0}), 0);
+	BOOST_CHECK_EQUAL(result.find_cf({0,2}), 1);
+}
+
 BOOST_AUTO_TEST_CASE(find_cf)
 {
 	BOOST_CHECK_EQUAL(gdual("x",4).find_cf({5}),0.);

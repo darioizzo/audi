@@ -4,22 +4,70 @@
 #include <algorithm>
 #include <initializer_list>
 #include <iostream>
+#include <iterator>
+#include <piranha/mp_integer.hpp>
 #include <piranha/polynomial.hpp>
+#include <piranha/series_multiplier.hpp>
 #include <stdexcept>
 #include <string>
 #include <type_traits> // For std::enable_if, std::is_same, etc.
 #include <utility>
+#include <vector>
 
 #include "functions.hpp"
 
 namespace audi
 {
 
+namespace detail
+{
+
+using p_type = piranha::polynomial<double,piranha::k_monomial>;
+
+class gdual_multiplier: piranha::series_multiplier<p_type>
+{
+		using base = piranha::series_multiplier<p_type>;
+	public:
+		explicit gdual_multiplier(const p_type &p1, const p_type &p2, int max_degree):base(p1,p2),m_max_degree(max_degree) {}
+		p_type operator()() const
+		{
+			using term_type = p_type::term_type;
+			using degree_type = piranha::integer;
+			using size_type = base::size_type;
+			// First let's order the terms in the second series according to the degree.
+			std::stable_sort(this->m_v2.begin(),this->m_v2.end(),[this](term_type const *p1, term_type const *p2) {
+				return p1->m_key.degree(this->m_ss) < p2->m_key.degree(this->m_ss);
+			});
+			// Next we create two vectors with the degrees of the terms in the two series. In the second series,
+			// we negate and add the max degree in order to avoid adding in the skipping functor.
+			std::vector<degree_type> v_d1, v_d2;
+			std::transform(this->m_v1.begin(),this->m_v1.end(),std::back_inserter(v_d1),[this](term_type const *p) {
+				return p->m_key.degree(this->m_ss);
+			});
+			std::transform(this->m_v2.begin(),this->m_v2.end(),std::back_inserter(v_d2),[this](term_type const *p) {
+				return this->m_max_degree - p->m_key.degree(this->m_ss);
+			});
+			// The skipping functor.
+			auto sf = [&v_d1,&v_d2](const size_type &i, const size_type &j) -> bool {
+				using d_size_type = decltype(v_d1.size());
+				return v_d1[static_cast<d_size_type>(i)] > v_d2[static_cast<d_size_type>(j)];
+			};
+			// The filter functor: will return 1 if the degree of the term resulting from the multiplication of i and j
+			// is greater than the max degree, zero otherwise.
+			auto ff = [&sf](const size_type &i, const size_type &j) {
+				return static_cast<unsigned>(sf(i,j));
+			};
+			return this->plain_multiplication(sf,ff);
+		}
+	private:
+		const int m_max_degree;
+};
+
+}
+
 class gdual
 {
-	// The type for the truncated Taylor polynomial
-	using cf_type = double;
-	using p_type = piranha::polynomial<cf_type,piranha::k_monomial>;
+	using p_type = detail::p_type;
 
 	// We enable the overloads of the +,-,*,/ operators only in the following cases:
 	// - at least one operand is a dual,
@@ -117,7 +165,15 @@ public:
 		return sub(d1,d2);
 	}
 
+	template <typename T, typename U>
+	friend gdual_if_enabled<T, U> operator*(const T &d1, const U &d2)
+	{
+		return mul(d1,d2);
+	}
+
 private:
+	explicit gdual(p_type &&p, int order):m_p(std::move(p)),m_order(order) {}
+
 	// Basic overloads for the addition
 	static gdual add(const gdual &d1, const gdual &d2)
 	{
@@ -169,6 +225,55 @@ private:
 		gdual retval(d1);
 		retval.m_p -= d2;
 		return retval;
+	}
+
+	// Basic overloads for the multiplication
+	// This is the low-level multiplication between two duals when they have
+	// identical symbol set.
+	static gdual mul_impl(const p_type &p1, const p_type &p2, int order)
+	{
+		detail::gdual_multiplier gdm(p1,p2,order);
+		return gdual(gdm(),order);
+	}
+
+	// Dual * dual.
+	static gdual mul(const gdual &d1, const gdual &d2)
+	{
+		const int order = d1.get_order();
+		if (order != d2.get_order()) {
+			throw std::invalid_argument("different truncation limit");
+		}
+		const auto &ss1 = d1.m_p.get_symbol_set(), &ss2 = d2.m_p.get_symbol_set();
+		if (ss1 == ss2) {
+			return mul_impl(d1.m_p,d2.m_p,order);
+		}
+		// If the symbol sets are not the same, we need to merge them and make
+		// copies of the original operands as needed.
+		auto merge = ss1.merge(ss2);
+		const bool need_copy_1 = (merge != ss1), need_copy_2 = (merge != ss2);
+		if (need_copy_1) {
+			p_type copy_1(d1.m_p.extend_symbol_set(merge));
+			if (need_copy_2) {
+				p_type copy_2(d2.m_p.extend_symbol_set(merge));
+				return mul_impl(copy_1,copy_2,order);
+			}
+			return mul_impl(copy_1,d2.m_p,order);
+		} else {
+			p_type copy_2(d2.m_p.extend_symbol_set(merge));
+			return mul_impl(d1.m_p,copy_2,order);
+		}
+	}
+
+	template <typename T>
+	static gdual mul(const T &d1, const gdual &d2)
+	{
+		return gdual(d1,d2.get_order()) * d2;
+	}
+
+	template <typename T>
+	static gdual mul(const gdual &d1, const T &d2)
+	{
+		return d1 * gdual(d2,d1.get_order());
 	}
 };
 
