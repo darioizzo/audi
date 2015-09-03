@@ -32,6 +32,7 @@ BOOST_AUTO_TEST_CASE(sub)
 
 BOOST_AUTO_TEST_CASE(mul)
 {
+	// we test normalized derivatives computations of f = x + 3*x*y + y*y 
 	gdual x("dx",2);
 	gdual y("dy",2);
 	x = x + 3;

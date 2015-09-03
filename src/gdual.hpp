@@ -63,7 +63,7 @@ class gdual_multiplier: piranha::series_multiplier<p_type>
 		const int m_max_degree;
 };
 
-}
+} // end of namespace detail
 
 class gdual
 {
@@ -171,6 +171,12 @@ public:
 		return mul(d1,d2);
 	}
 
+	template <typename T, typename U>
+	friend gdual_if_enabled<T, U> operator/(const T &d1, const U &d2)
+	{
+		return div(d1,d2);
+	}
+
 private:
 	explicit gdual(p_type &&p, int order):m_p(std::move(p)),m_order(order) {}
 
@@ -275,7 +281,68 @@ private:
 	{
 		return d1 * gdual(d2,d1.get_order());
 	}
+
+	// Basic overloads for the division
+	static gdual div(const gdual &d1, const gdual &d2)
+	{
+		if (d1.get_order() != d2.get_order()) {
+			throw std::invalid_argument("different truncation limit");
+		}
+
+		gdual retval(1, d2.get_order());
+	    double fatt = 1;
+	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
+	    if (p0 == 0) {
+	        throw 20;
+	    }
+	    auto phat = (d2 - p0);
+	    phat = phat/p0;
+
+	    for (auto i = 1u; i <= d1.m_order; ++i) {
+	        fatt*=-1;     
+	        retval= retval + fatt * pow(phat,i);
+	    }
+	    return (d1*retval)/p0;   
+	}
+
+	template <typename T>
+	static gdual div(const T &d1, const gdual &d2)
+	{
+		gdual retval(1, d2.get_order());
+	    double fatt = 1;
+	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
+	    if (p0 == 0) {
+	        throw 20;
+	    }
+	    auto phat = (d2 - p0);
+	    phat = phat/p0;
+
+	    for (auto i = 1u; i <= d1.m_order; ++i) {
+	        fatt*=-1;     
+	        retval= retval + fatt * pow(phat,i);
+	    }
+	    return retval/(d1*p0);   
+	}
+
+	template <typename T>
+	static gdual div(const gdual &d1, const T &d2)
+	{
+		return 1. / d2 * gdual(d2,d1.get_order());
+	}
+
+
+	static gdual pow(const gdual &d, unsigned int n)
+	{
+		gdual retval(d);
+		for (auto i = 1u; i < n; ++i)
+		{
+			retval = retval * retval;
+		}
+		return retval;
+	};
 };
+
+
 
 } // end of namespace audi 
 
