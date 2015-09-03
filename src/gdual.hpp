@@ -61,14 +61,14 @@ public:
 	std::vector<std::string> get_symbols() const 
 	{
 		std::vector<std::string> retval;
-		for (const auto &symbol : m_p.get_symbol_set())
-		{
+		for (const auto &symbol : m_p.get_symbol_set()) {
 			retval.push_back(symbol.get_name());
 		}
 		return retval;
 	}
 
-	auto get_n_variables() const -> decltype(m_p.get_symbol_set().size()) {
+	auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
+	{
 		return m_p.get_symbol_set().size();
 	}
 
