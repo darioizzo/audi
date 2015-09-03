@@ -8,7 +8,7 @@
 
 using namespace audi;
 
-BOOST_AUTO_TEST_CASE(add)
+BOOST_AUTO_TEST_CASE(addition)
 {
 	gdual p1(1, 4);
 	gdual p2("x", 4);
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(add)
 	BOOST_CHECK(1. + p2 == p2 + 1.);
 }
 
-BOOST_AUTO_TEST_CASE(sub)
+BOOST_AUTO_TEST_CASE(subtraction)
 {
 	gdual p1(1, 4);
 	gdual p2("x", 4);
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(sub)
 	BOOST_CHECK((1 - p1) + (p1 + p2) == 1 + p2);
 }
 
-BOOST_AUTO_TEST_CASE(mul)
+BOOST_AUTO_TEST_CASE(multiplication)
 {
 	// we test normalized derivatives computations of f = x + 3*x*y + y*y 
 	gdual x("dx",2);
@@ -44,6 +44,22 @@ BOOST_AUTO_TEST_CASE(mul)
 	BOOST_CHECK_EQUAL(result.find_cf({1,1}), 3);
 	BOOST_CHECK_EQUAL(result.find_cf({2,0}), 0);
 	BOOST_CHECK_EQUAL(result.find_cf({0,2}), 1);
+}
+
+BOOST_AUTO_TEST_CASE(division)
+{
+	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
+	gdual x("dx",2);
+	gdual y("dy",2);
+	x = x + 0;
+	y = y + 1;
+	auto result = 1 / (x + 2*x*y + y*y);
+	BOOST_CHECK_EQUAL(result.find_cf({0,0}), 1);
+	BOOST_CHECK_EQUAL(result.find_cf({1,0}), -3);
+	BOOST_CHECK_EQUAL(result.find_cf({0,1}), -2);
+	BOOST_CHECK_EQUAL(result.find_cf({1,1}), 10);
+	BOOST_CHECK_EQUAL(result.find_cf({2,0}), 9);
+	BOOST_CHECK_EQUAL(result.find_cf({0,2}), 3);
 }
 
 BOOST_AUTO_TEST_CASE(find_cf)

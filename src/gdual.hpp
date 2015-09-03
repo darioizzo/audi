@@ -153,6 +153,30 @@ public:
 		return !(d1 == d2);
 	}
 
+	gdual& operator+=(const gdual &d1)
+	{
+		*this = *this + d1;
+		return *this;
+	}
+
+	gdual& operator-=(const gdual &d1)
+	{
+		*this = *this - d1;
+		return *this;
+	}
+
+	gdual& operator*=(const gdual &d1)
+	{
+		*this = *this * d1;
+		return *this;
+	}
+
+	gdual& operator/=(const gdual &d1)
+	{
+		*this = *this / d1;
+		return *this;
+	}
+
 	template <typename T, typename U>
 	friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
 	{
@@ -293,16 +317,16 @@ private:
 	    double fatt = 1;
 	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
 	    if (p0 == 0) {
-	        throw 20;
+	        throw std::domain_error("divide by zero");;
 	    }
 	    auto phat = (d2 - p0);
 	    phat = phat/p0;
 
 	    for (auto i = 1u; i <= d1.m_order; ++i) {
-	        fatt*=-1;     
-	        retval= retval + fatt * pow(phat,i);
+	        fatt *= -1;     
+	        retval =  retval + fatt * pow(phat,i);
 	    }
-	    return (d1*retval)/p0;   
+	    return (d1 * retval) / p0;   
 	}
 
 	template <typename T>
@@ -312,14 +336,14 @@ private:
 	    double fatt = 1;
 	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
 	    if (p0 == 0) {
-	        throw 20;
+	        throw std::domain_error("divide by zero");;
 	    }
 	    auto phat = (d2 - p0);
 	    phat = phat/p0;
 
-	    for (auto i = 1u; i <= d1.m_order; ++i) {
+	    for (auto i = 1u; i <= d2.m_order; ++i) {
 	        fatt*=-1;     
-	        retval= retval + fatt * pow(phat,i);
+	        retval = retval + fatt * pow(phat,i);
 	    }
 	    return retval/(d1*p0);   
 	}
@@ -327,10 +351,11 @@ private:
 	template <typename T>
 	static gdual div(const gdual &d1, const T &d2)
 	{
-		return 1. / d2 * gdual(d2,d1.get_order());
+		return d1 * (1. / d2);
 	}
 
-
+	// Computes p^n. Its here as a static private member rather than in function as div uses it and 
+	// thus circular dependencies would appear if this was in functions.hpp
 	static gdual pow(const gdual &d, unsigned int n)
 	{
 		gdual retval(d);
