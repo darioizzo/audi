@@ -177,17 +177,17 @@ public:
 		return *this;
 	}
 
-	gdual operator-()
+	friend gdual operator-(const gdual& d1)
 	{
-		gdual retval(*this);
-		retval.m_p = -m_p;
+		gdual retval(d1);
+		retval.m_p = -d1.m_p;
 		return retval;
 	}
 
-	gdual operator+()
+	friend gdual operator+(const gdual& d1)
 	{
-		gdual retval(*this);
-		retval.m_p = m_p;
+		gdual retval(d1);
+		retval.m_p = d1.m_p;
 		return retval;
 	}
 
