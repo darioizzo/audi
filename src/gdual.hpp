@@ -177,6 +177,20 @@ public:
 		return *this;
 	}
 
+	gdual operator-()
+	{
+		gdual retval(*this);
+		retval.m_p = -m_p;
+		return retval;
+	}
+
+	gdual operator+()
+	{
+		gdual retval(*this);
+		retval.m_p = m_p;
+		return retval;
+	}
+
 	template <typename T, typename U>
 	friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
 	{
