@@ -36,8 +36,8 @@ BOOST_AUTO_TEST_CASE(multiplication)
 	// we test normalized derivatives computations of f = x + 3*x*y + y*y 
 	gdual x("dx",2);
 	gdual y("dy",2);
-	x = x + 3;
-	y = y + 7;
+	x += 3;
+	y += 7;
 	auto p1 = x + 3*x*y + y*y;
 	BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 115);
 	BOOST_CHECK_EQUAL(p1.find_cf({1,0}), 22);
@@ -66,16 +66,29 @@ BOOST_AUTO_TEST_CASE(division)
 	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
 	gdual x("dx",2);
 	gdual y("dy",2);
-	x = x + 0;
-	y = y + 1;
-	auto result = 1 / (x + 2*x*y + y*y);
-	BOOST_CHECK_EQUAL(result.find_cf({0,0}), 1);
-	BOOST_CHECK_EQUAL(result.find_cf({1,0}), -3);
-	BOOST_CHECK_EQUAL(result.find_cf({0,1}), -2);
-	BOOST_CHECK_EQUAL(result.find_cf({1,1}), 10);
-	BOOST_CHECK_EQUAL(result.find_cf({2,0}), 9);
-	BOOST_CHECK_EQUAL(result.find_cf({0,2}), 3);
+	x += 0;
+	y += 1;
+	auto p1 = 1 / (x + 2*x*y + y*y);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 1);
+	BOOST_CHECK_EQUAL(p1.find_cf({1,0}), -3);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,1}), -2);
+	BOOST_CHECK_EQUAL(p1.find_cf({1,1}), 10);
+	BOOST_CHECK_EQUAL(p1.find_cf({2,0}), 9);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
 }
+
+
+/* BOOST_AUTO_TEST_CASE(identities)
+{
+	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
+	gdual x("dx",4);
+	gdual y("dy",4);
+	x = x + 2;
+	y = y + 3;
+	auto p1 = x*x*x*x*x+x*x*x-x*y*y+y*y*y*y;
+	auto p2 = 3*x*x*x*x*x+2*y*x*x-x*x*y+y*y*y;
+	BOOST_CHECK_EQUAL(p1 / p2, 1 / (p2 / p1));
+}*/
 
 BOOST_AUTO_TEST_CASE(find_cf)
 {

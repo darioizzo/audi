@@ -153,25 +153,29 @@ public:
 		return !(d1 == d2);
 	}
 
-	gdual& operator+=(const gdual &d1)
+	template <typename T>
+	gdual& operator+=(const T &d1)
 	{
 		*this = *this + d1;
 		return *this;
 	}
 
-	gdual& operator-=(const gdual &d1)
+	template <typename T>
+	gdual& operator-=(const T &d1)
 	{
 		*this = *this - d1;
 		return *this;
 	}
 
-	gdual& operator*=(const gdual &d1)
+	template <typename T>
+	gdual& operator*=(const T &d1)
 	{
 		*this = *this * d1;
 		return *this;
 	}
 
-	gdual& operator/=(const gdual &d1)
+	template <typename T>
+	gdual& operator/=(const T &d1)
 	{
 		*this = *this / d1;
 		return *this;
