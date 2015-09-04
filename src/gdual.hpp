@@ -88,13 +88,15 @@ public:
 	gdual(const gdual &) = default;
 	gdual(gdual &&) = default;
 
-	explicit gdual(const std::string &str, int order):m_p(str),m_order(order) {
+	explicit gdual(const std::string &str, int order):m_p(str),m_order(order)
+	{
 		if (order < 1) {
 			throw std::invalid_argument("polynomial truncation order must be >= 1");
 		}
 	}
 
-	explicit gdual(double x, int order):m_p(x),m_order(order) {
+	explicit gdual(double x, int order):m_p(x),m_order(order)
+	{
 		if (order < 1) {
 			throw std::invalid_argument("polynomial truncation order must be >= 1");
 		}
@@ -152,45 +154,39 @@ public:
 	}
 
 	template <typename T>
-	gdual& operator+=(const T &d1)
+	auto operator+=(const T &d1) -> decltype(*this = *this + d1)
 	{
-		*this = *this + d1;
-		return *this;
+		return *this = *this + d1;
 	}
 
 	template <typename T>
-	gdual& operator-=(const T &d1)
+	auto operator-=(const T &d1) -> decltype(*this = *this - d1)
 	{
-		*this = *this - d1;
-		return *this;
+		return *this = *this - d1;
 	}
 
 	template <typename T>
-	gdual& operator*=(const T &d1)
+	auto operator*=(const T &d1) -> decltype(*this = *this * d1)
 	{
-		*this = *this * d1;
-		return *this;
+		return *this = *this * d1;
 	}
 
 	template <typename T>
-	gdual& operator/=(const T &d1)
+	auto operator/=(const T &d1) -> decltype(*this = *this / d1)
 	{
-		*this = *this / d1;
-		return *this;
+		return *this = *this / d1;
 	}
 
-	friend gdual operator-(const gdual& d1)
+	gdual operator-() const
 	{
-		gdual retval(d1);
-		retval.m_p = -d1.m_p;
+		gdual retval(*this);
+		retval.m_p.negate();
 		return retval;
 	}
 
-	friend gdual operator+(const gdual& d1)
+	gdual operator+() const
 	{
-		gdual retval(d1);
-		retval.m_p = d1.m_p;
-		return retval;
+		return *this;
 	}
 
 	template <typename T, typename U>
@@ -328,40 +324,41 @@ private:
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
 		}
+
 		gdual retval(1, d2.get_order());
-	    double fatt = 1;
-	    auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
-	    if (p0 == 0) {
-	        throw std::domain_error("divide by zero");;
-	    }
-	    auto phat = (d2 - p0);
-	    phat = phat/p0;
+		double fatt = 1;
+		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
+		if (p0 == 0) {
+			throw std::domain_error("divide by zero");
+		}
+		auto phat = (d2 - p0);
+		phat = phat/p0;
 
-	    for (auto i = 1u; i <= d1.m_order; ++i) {
-	        fatt *= -1;     
-	        retval =  retval + fatt * pow(phat,i);
-	    }
+		for (auto i = 1; i <= d1.m_order; ++i) {
+			fatt *= -1;
+			retval =  retval + fatt * pow(phat,i);
+		}
 
-	    return (d1 * retval) / p0;   
+		return (d1 * retval) / p0;
 	}
 
 	template <typename T>
 	static gdual div(const T &d1, const gdual &d2)
 	{
 		gdual retval(1, d2.get_order());
-	    double fatt = 1;
-	    auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
-	    if (p0 == 0) {
-	        throw std::domain_error("divide by zero");;
-	    }
-	    auto phat = (d2 - p0);
-	    phat = phat/p0;
+		double fatt = 1;
+		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
+		if (p0 == 0) {
+			throw std::domain_error("divide by zero");
+		}
+		auto phat = (d2 - p0);
+		phat = phat/p0;
 
-	    for (auto i = 1u; i <= d2.m_order; ++i) {
-	        fatt*=-1;     
-	        retval = retval + fatt * pow(phat,i);
-	    }
-	    return retval / (d1 * p0);   
+		for (auto i = 1; i <= d2.m_order; ++i) {
+			fatt*=-1;
+			retval = retval + fatt * pow(phat,i);
+		}
+		return retval / (d1 * p0);
 	}
 
 	template <typename T>
@@ -370,17 +367,16 @@ private:
 		return d1 * (1. / d2);
 	}
 
-	// Computes p^n. Its here as a static private member rather than in function as div uses it and 
+	// Computes p**n. It's here as a static private member rather than in function as div uses it and
 	// thus circular dependencies would appear if this was in functions.hpp
 	static gdual pow(const gdual &d, unsigned int n)
 	{
 		gdual retval(d);
-		for (auto i = 1u; i < n; ++i)
-		{
+		for (auto i = 1u; i < n; ++i) {
 			retval = d * retval;
 		}
 		return retval;
-	};
+	}
 };
 
 
