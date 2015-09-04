@@ -78,9 +78,24 @@ BOOST_AUTO_TEST_CASE(division)
 	BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
 	}
 
-	// we test that the division between polynomials
-	gdual x("dx",4);
-	gdual y("dy",4);
+	// the same but calling the gdouble / gdouble overload
+	{
+	gdual x("dx",2);
+	gdual y("dy",2);
+	x += 0;
+	y += 1;
+	auto p1 = gdual(1, 2) / (x + 2*x*y + y*y);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 1);
+	BOOST_CHECK_EQUAL(p1.find_cf({1,0}), -3);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,1}), -2);
+	BOOST_CHECK_EQUAL(p1.find_cf({1,1}), 10);
+	BOOST_CHECK_EQUAL(p1.find_cf({2,0}), 9);
+	BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
+	}
+
+	// we test that the division between polynomials does not throw errors due to incosistencies
+	gdual x("dx",2);
+	gdual y("dy",2);
 	x += 2;
 	y += 3;
 	auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x;
@@ -103,6 +118,7 @@ BOOST_AUTO_TEST_CASE(identities)
 	BOOST_CHECK_EQUAL(p1*p1*p1*p1-p2*p2*p2*p2, (p1-p2)*(p1+p2)*(p1*p1+p2*p2));
 
 }
+
 
 BOOST_AUTO_TEST_CASE(find_cf)
 {

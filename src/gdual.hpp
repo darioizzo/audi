@@ -326,7 +326,7 @@ private:
 		}
 
 		gdual retval(1, d2.get_order());
-		double fatt = 1;
+		double fatt = -1;
 		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
 		if (p0 == 0) {
 			throw std::domain_error("divide by zero");
@@ -334,9 +334,11 @@ private:
 		auto phat = (d2 - p0);
 		phat = phat/p0;
 
-		for (auto i = 1; i <= d1.m_order; ++i) {
+		retval = retval - phat;
+		for (auto i = 2; i <= d1.m_order; ++i) {
 			fatt *= -1;
-			retval =  retval + fatt * pow(phat,i);
+			phat*=phat;
+			retval =  retval + fatt * phat;
 		}
 
 		return (d1 * retval) / p0;
@@ -346,7 +348,7 @@ private:
 	static gdual div(const T &d1, const gdual &d2)
 	{
 		gdual retval(1, d2.get_order());
-		double fatt = 1;
+		double fatt = -1;
 		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
 		if (p0 == 0) {
 			throw std::domain_error("divide by zero");
@@ -354,9 +356,11 @@ private:
 		auto phat = (d2 - p0);
 		phat = phat/p0;
 
-		for (auto i = 1; i <= d2.m_order; ++i) {
-			fatt*=-1;
-			retval = retval + fatt * pow(phat,i);
+		retval = retval - phat;
+		for (auto i = 2; i <= d2.m_order; ++i) {
+			fatt *= -1;
+			phat*=phat;
+			retval =  retval + fatt * phat;
 		}
 		return retval / (d1 * p0);
 	}
