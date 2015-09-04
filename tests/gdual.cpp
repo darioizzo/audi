@@ -64,6 +64,7 @@ BOOST_AUTO_TEST_CASE(multiplication)
 BOOST_AUTO_TEST_CASE(division)
 {
 	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
+	{
 	gdual x("dx",2);
 	gdual y("dy",2);
 	x += 0;
@@ -75,20 +76,30 @@ BOOST_AUTO_TEST_CASE(division)
 	BOOST_CHECK_EQUAL(p1.find_cf({1,1}), 10);
 	BOOST_CHECK_EQUAL(p1.find_cf({2,0}), 9);
 	BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
+	}
+
+	// we test that the division between polynomials
+	gdual x("dx",4);
+	gdual y("dy",4);
+	x += 2;
+	y += 3;
+	auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x;
+	auto p2 = x*x*y+y*y*y+x-y;
+	BOOST_CHECK_NO_THROW(p1/p2);
 }
 
 
-/* BOOST_AUTO_TEST_CASE(identities)
+BOOST_AUTO_TEST_CASE(identities)
 {
 	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
-	gdual x("dx",4);
-	gdual y("dy",4);
-	x = x + 2;
-	y = y + 3;
-	auto p1 = x*x*x*x*x+x*x*x-x*y*y+y*y*y*y;
-	auto p2 = 3*x*x*x*x*x+2*y*x*x-x*x*y+y*y*y;
+	gdual x("dx",2);
+	gdual y("dy",2);
+	x += 2;
+	y += 3;
+	auto p1 = x*x+y;
+	auto p2 = y*y-x;
 	BOOST_CHECK_EQUAL(p1 / p2, 1 / (p2 / p1));
-}*/
+}
 
 BOOST_AUTO_TEST_CASE(find_cf)
 {

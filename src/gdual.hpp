@@ -330,10 +330,9 @@ private:
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
 		}
-
 		gdual retval(1, d2.get_order());
 	    double fatt = 1;
-	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
+	    auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
 	    if (p0 == 0) {
 	        throw std::domain_error("divide by zero");;
 	    }
@@ -344,6 +343,7 @@ private:
 	        fatt *= -1;     
 	        retval =  retval + fatt * pow(phat,i);
 	    }
+
 	    return (d1 * retval) / p0;   
 	}
 
@@ -352,7 +352,7 @@ private:
 	{
 		gdual retval(1, d2.get_order());
 	    double fatt = 1;
-	    auto p0 = d2.find_cf(std::vector<int>(d2.m_order,0));
+	    auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
 	    if (p0 == 0) {
 	        throw std::domain_error("divide by zero");;
 	    }
