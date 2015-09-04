@@ -88,17 +88,20 @@ BOOST_AUTO_TEST_CASE(division)
 	BOOST_CHECK_NO_THROW(p1/p2);
 }
 
-
 BOOST_AUTO_TEST_CASE(identities)
 {
-	// we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
-	gdual x("dx",2);
-	gdual y("dy",2);
+	// we test some trivial identities
+	gdual x("dx",3);
+	gdual y("dy",3);
 	x += 2;
 	y += 3;
-	auto p1 = x*x+y;
-	auto p2 = y*y-x;
-	BOOST_CHECK_EQUAL(p1 / p2, 1 / (p2 / p1));
+	auto p1 = x*x+y-x*x*x*x*y-y*x*x;
+	auto p2 = y*y-x+y*y*y*y*x-2*x;
+	BOOST_CHECK_EQUAL((x + y)*(x + y), x*x + y*y + 2*x*y);
+	BOOST_CHECK_EQUAL((p1 + p2)*(p1 + p2), p1*p1 + p2*p2 + 2*p1*p2);
+	BOOST_CHECK_EQUAL(x*x*x*x-y*y*y*y, (x-y)*(x+y)*(x*x+y*y));
+	BOOST_CHECK_EQUAL(p1*p1*p1*p1-p2*p2*p2*p2, (p1-p2)*(p1+p2)*(p1*p1+p2*p2));
+
 }
 
 BOOST_AUTO_TEST_CASE(find_cf)

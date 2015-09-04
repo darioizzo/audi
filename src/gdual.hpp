@@ -14,8 +14,6 @@
 #include <utility>
 #include <vector>
 
-#include "functions.hpp"
-
 namespace audi
 {
 
@@ -308,20 +306,20 @@ private:
 			return mul_impl(copy_1,d2.m_p,order);
 		} else {
 			p_type copy_2(d2.m_p.extend_symbol_set(merge));
-			return mul_impl(d1.m_p,copy_2,order);
+			return mul_impl(d1.m_p, copy_2,order);
 		}
 	}
 
 	template <typename T>
 	static gdual mul(const T &d1, const gdual &d2)
 	{
-		return gdual(d1,d2.get_order()) * d2;
+		return gdual(d1, d2.get_order()) * d2;
 	}
 
 	template <typename T>
 	static gdual mul(const gdual &d1, const T &d2)
 	{
-		return d1 * gdual(d2,d1.get_order());
+		return d1 * gdual(d2, d1.get_order());
 	}
 
 	// Basic overloads for the division
@@ -363,7 +361,7 @@ private:
 	        fatt*=-1;     
 	        retval = retval + fatt * pow(phat,i);
 	    }
-	    return retval/(d1*p0);   
+	    return retval / (d1 * p0);   
 	}
 
 	template <typename T>
@@ -379,7 +377,7 @@ private:
 		gdual retval(d);
 		for (auto i = 1u; i < n; ++i)
 		{
-			retval = retval * retval;
+			retval = d * retval;
 		}
 		return retval;
 	};
