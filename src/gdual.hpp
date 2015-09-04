@@ -20,8 +20,11 @@ namespace audi
 namespace detail
 {
 
+// Main definition of the Piranha polynomial type.
 using p_type = piranha::polynomial<double,piranha::k_monomial>;
 
+// Multiplier functor for the the gdual class, based on
+// Piranha's polynomial multiplier.
 class gdual_multiplier: piranha::series_multiplier<p_type>
 {
 		using base = piranha::series_multiplier<p_type>;
@@ -65,6 +68,7 @@ class gdual_multiplier: piranha::series_multiplier<p_type>
 
 class gdual
 {
+	// Lift the polynomial type from the detail namespace.
 	using p_type = detail::p_type;
 
 	// We enable the overloads of the +,-,*,/ operators only in the following cases:
@@ -179,9 +183,7 @@ public:
 
 	gdual operator-() const
 	{
-		gdual retval(*this);
-		retval.m_p.negate();
-		return retval;
+		return gdual(-m_p,m_order);
 	}
 
 	gdual operator+() const
@@ -214,6 +216,8 @@ public:
 	}
 
 private:
+	// A private constructor to move-initialise a gdual from a polynomial. Used
+	// in the implementation of the operators.
 	explicit gdual(p_type &&p, int order):m_p(std::move(p)),m_order(order) {}
 
 	// Basic overloads for the addition
@@ -222,17 +226,13 @@ private:
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
 		}
-		gdual retval(d1);
-		retval.m_p += d2.m_p;
-		return retval;
+		return gdual(d1.m_p + d2.m_p,d1.get_order());
 	}
 
 	template <typename T>
 	static gdual add(const T &d1, const gdual &d2)
 	{
-		gdual retval(d2);
-		retval.m_p += d1;
-		return retval;
+		return gdual(d1 + d2.m_p,d2.get_order());
 	}
 
 	template <typename T>
@@ -247,26 +247,19 @@ private:
 		if (d1.get_order() != d2.get_order()) {
 			throw std::invalid_argument("different truncation limit");
 		}
-		gdual retval(d1);
-		retval.m_p -= d2.m_p;
-		return retval;
+		return gdual(d1.m_p - d2.m_p,d1.get_order());
 	}
 
 	template <typename T>
 	static gdual sub(const T &d1, const gdual &d2)
 	{
-		gdual retval(d2);
-		retval.m_p -= d1;
-		retval.m_p.negate();
-		return retval;
+		return gdual(d1 - d2.m_p,d2.get_order());
 	}
 
 	template <typename T>
 	static gdual sub(const gdual &d1, const T &d2)
 	{
-		gdual retval(d1);
-		retval.m_p -= d2;
-		return retval;
+		return gdual(d1.m_p - d2,d1.get_order());
 	}
 
 	// Basic overloads for the multiplication
