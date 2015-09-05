@@ -1,4 +1,5 @@
 #include "../src/gdual.hpp"
+#include "helpers.hpp"
 
 #define BOOST_TEST_MODULE audi_gdual_test
 #include <boost/test/unit_test.hpp>
@@ -94,13 +95,14 @@ BOOST_AUTO_TEST_CASE(division)
 	}
 
 	// we test that the division between polynomials does not throw errors due to incosistencies
-	gdual x("dx",2);
-	gdual y("dy",2);
+	gdual x("dx",3);
+	gdual y("dy",3);
 	x += 2;
 	y += 3;
 	auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x;
 	auto p2 = x*x*y+y*y*y+x-y;
 	BOOST_CHECK_NO_THROW(p1/p2);
+	BOOST_CHECK(EPSILON_COMPARE((p1/p2)*(p2/p1), gdual(1,2)) == true);
 }
 
 BOOST_AUTO_TEST_CASE(identities)

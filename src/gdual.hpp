@@ -119,6 +119,11 @@ public:
 		return retval;
 	}
 
+	auto _container() -> decltype(m_p._container())
+	{
+		return m_p._container();
+	}
+
 	auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
 	{
 		return m_p.get_symbol_set().size();
@@ -326,11 +331,12 @@ private:
 		}
 		auto phat = (d2 - p0);
 		phat = phat/p0;
+		gdual tmp(phat);
 
 		retval = retval - phat;
-		for (auto i = 2; i <= d1.m_order; ++i) {
+		for (auto i = 2; i <= d2.m_order; ++i) {
 			fatt *= -1;
-			phat*=phat;
+			phat*=tmp;
 			retval =  retval + fatt * phat;
 		}
 
@@ -348,11 +354,12 @@ private:
 		}
 		auto phat = (d2 - p0);
 		phat = phat/p0;
+		gdual tmp(phat);
 
 		retval = retval - phat;
 		for (auto i = 2; i <= d2.m_order; ++i) {
 			fatt *= -1;
-			phat*=phat;
+			phat*=tmp;
 			retval =  retval + fatt * phat;
 		}
 		return retval / (d1 * p0);
@@ -362,17 +369,6 @@ private:
 	static gdual div(const gdual &d1, const T &d2)
 	{
 		return d1 * (1. / d2);
-	}
-
-	// Computes p**n. It's here as a static private member rather than in function as div uses it and
-	// thus circular dependencies would appear if this was in functions.hpp
-	static gdual pow(const gdual &d, unsigned int n)
-	{
-		gdual retval(d);
-		for (auto i = 1u; i < n; ++i) {
-			retval = d * retval;
-		}
-		return retval;
 	}
 };
 
