@@ -102,7 +102,6 @@ BOOST_AUTO_TEST_CASE(division)
 	auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x;
 	auto p2 = x*x*y+y*y*y+x-y;
 	BOOST_CHECK_NO_THROW(p1/p2);
-	BOOST_CHECK(EPSILON_COMPARE((p1/p2)*(p2/p1), gdual(1,2)) == true);
 }
 
 BOOST_AUTO_TEST_CASE(identities)
@@ -119,6 +118,8 @@ BOOST_AUTO_TEST_CASE(identities)
 	BOOST_CHECK_EQUAL(x*x*x*x-y*y*y*y, (x-y)*(x+y)*(x*x+y*y));
 	BOOST_CHECK_EQUAL(p1*p1*p1*p1-p2*p2*p2*p2, (p1-p2)*(p1+p2)*(p1*p1+p2*p2));
 
+	BOOST_CHECK(EPSILON_COMPARE((p1/p2) * (p2/p1), gdual(1,3)) == true);
+	BOOST_CHECK(EPSILON_COMPARE((p1/p2) * p2, p1) == true);
 }
 
 
