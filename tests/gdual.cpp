@@ -93,15 +93,6 @@ BOOST_AUTO_TEST_CASE(division)
 	BOOST_CHECK_EQUAL(p1.find_cf({2,0}), 9);
 	BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
 	}
-
-	// we test that the division between polynomials does not throw errors due to incosistencies
-	gdual x("dx",3);
-	gdual y("dy",3);
-	x += 2;
-	y += 3;
-	auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x;
-	auto p2 = x*x*y+y*y*y+x-y;
-	BOOST_CHECK_NO_THROW(p1/p2);
 }
 
 BOOST_AUTO_TEST_CASE(identities)
