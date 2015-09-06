@@ -111,6 +111,10 @@ BOOST_AUTO_TEST_CASE(identities)
 
 	BOOST_CHECK(EPSILON_COMPARE((p1/p2) * (p2/p1), gdual(1,3)) == true);
 	BOOST_CHECK(EPSILON_COMPARE((p1/p2) * p2, p1) == true);
+
+	//Uncomment if boost 1.59 macro defined in helpers.hpp is active
+	//BOOST_EQUAL_GDUALS_TOL((p1/p2) * (p2/p1), gdual(1,3));
+	//BOOST_EQUAL_GDUALS_TOL((p1/p2) * p2, p1);
 }
 
 

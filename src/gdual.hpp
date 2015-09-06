@@ -124,6 +124,11 @@ public:
 		return m_p._container();
 	}
 
+	auto degree() const -> decltype(m_p.degree())
+	{
+		return m_p.degree();
+	}
+
 	auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
 	{
 		return m_p.get_symbol_set().size();
