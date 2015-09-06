@@ -2,9 +2,11 @@
 #define AUDI_GDUAL_HPP
 
 #include <algorithm>
+#include <boost/numeric/conversion/cast.hpp>
 #include <initializer_list>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <piranha/mp_integer.hpp>
 #include <piranha/polynomial.hpp>
 #include <piranha/series_multiplier.hpp>
@@ -83,6 +85,16 @@ class gdual
 		(std::is_same<U,gdual>::value && std::is_same<T,int>::value),
 	gdual>::type;
 
+	void check_order() const
+	{
+		if (m_order < 1) {
+			throw std::invalid_argument("polynomial truncation order must be >= 1");
+		}
+		if (m_order == std::numeric_limits<int>::max()) {
+			throw std::invalid_argument("polynomial truncation order is too large");
+		}
+	}
+
 private:
 	p_type	m_p;
 	int	m_order;
@@ -94,16 +106,12 @@ public:
 
 	explicit gdual(const std::string &str, int order):m_p(str),m_order(order)
 	{
-		if (order < 1) {
-			throw std::invalid_argument("polynomial truncation order must be >= 1");
-		}
+		check_order();
 	}
 
 	explicit gdual(double x, int order):m_p(x),m_order(order)
 	{
-		if (order < 1) {
-			throw std::invalid_argument("polynomial truncation order must be >= 1");
-		}
+		check_order();
 	}
 
 	// Defaulted assignment operators.
@@ -144,6 +152,12 @@ public:
 	auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
 	{
 		return m_p.find_cf(l);
+	}
+
+	double constant_cf() const
+	{
+		using v_size_type = std::vector<int>::size_type;
+		return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const gdual& d)
@@ -325,7 +339,7 @@ private:
 
 		gdual retval(1, d2.get_order());
 		double fatt = -1;
-		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
+		auto p0 = d2.constant_cf();
 		if (p0 == 0) {
 			throw std::domain_error("divide by zero");
 		}
@@ -348,7 +362,7 @@ private:
 	{
 		gdual retval(1, d2.get_order());
 		double fatt = -1;
-		auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
+		auto p0 = d2.constant_cf();
 		if (p0 == 0) {
 			throw std::domain_error("divide by zero");
 		}
