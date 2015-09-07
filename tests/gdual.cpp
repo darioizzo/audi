@@ -49,13 +49,11 @@ BOOST_AUTO_TEST_CASE(multiplication)
 
     // we test the truncation order (5) on a 3 variables polynomial p2 = (1 + x0 + x1 + x2)^10
     std::vector<gdual> vars;
-    for (auto i = 0u; i<3; ++i)
-    {
+    for (auto i = 0u; i<3; ++i) {
         vars.emplace_back("x" + std::to_string(i), 5);
     }
     gdual p2(1, 5);
-    for (auto var : vars)
-    {
+    for (auto var : vars) {
         p2+=var;
     }
     p2 = p2*p2*p2*p2*p2*p2;
@@ -109,8 +107,8 @@ BOOST_AUTO_TEST_CASE(identities)
     BOOST_CHECK_EQUAL(x*x*x*x-y*y*y*y, (x-y)*(x+y)*(x*x+y*y));
     BOOST_CHECK_EQUAL(p1*p1*p1*p1-p2*p2*p2*p2, (p1-p2)*(p1+p2)*(p1*p1+p2*p2));
 
-    BOOST_CHECK(EPSILON_COMPARE((p1/p2) * (p2/p1), gdual(1,3)) == true);
-    BOOST_CHECK(EPSILON_COMPARE((p1/p2) * p2, p1) == true);
+    BOOST_CHECK(EPSILON_COMPARE((p1/p2) * (p2/p1), gdual(1,3), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE((p1/p2) * p2, p1, 1e-12) == true);
 
     //Uncomment if boost 1.59 macro defined in helpers.hpp is active
     //BOOST_EQUAL_GDUALS_TOL((p1/p2) * (p2/p1), gdual(1,3));

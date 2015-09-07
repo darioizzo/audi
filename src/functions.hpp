@@ -150,15 +150,14 @@ inline gdual sin(const gdual& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    auto sin_p0 = std::sin(p0);
-    auto cos_p0 = std::cos(p0);
+    double sin_p0 = std::sin(p0);
+    double cos_p0 = std::cos(p0);
 
     double factorial=1.;
     double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<=d.get_order(); i+=2)
-    {
+    for (auto i=2; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
@@ -169,8 +168,7 @@ inline gdual sin(const gdual& d)
     coeff=1.;
     gdual sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3; i<=d.get_order(); i+=2)
-    {
+    for (auto i=3; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
@@ -185,15 +183,14 @@ inline gdual cos(const gdual& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    auto sin_p0 = std::sin(p0);
-    auto cos_p0 = std::cos(p0);
+    double sin_p0 = std::sin(p0);
+    double cos_p0 = std::cos(p0);
 
     double factorial=1.;
     double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<=d.get_order(); i+=2)
-    {
+    for (auto i=2; i<=d.get_order(); i+=2) {
         coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                              // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                    // 2!, 4!, 6!, ...
@@ -204,8 +201,7 @@ inline gdual cos(const gdual& d)
     coeff=1.;
     gdual sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3; i<=d.get_order(); i+=2)
-    {
+    for (auto i=3; i<=d.get_order(); i+=2) {
         coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                              // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                    // 3!, 5!, 7!, ...
