@@ -106,11 +106,16 @@ BOOST_AUTO_TEST_CASE(sin_and_cos)
 {
     gdual x("dx",8);
     gdual y("dy",8);
+    auto p1 = 4.56 + x*x*y - x*y*x*x*x + 3.*y*y*y*y*x*y*x;  
     x += 2.3;
     y += 1.5;
-    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
+    auto p2 = x*x*y - x*y*x*x*x + 3.*y*y*y*y*x*y*x;  
 
-    BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1),2. * sin(p1) * cos(p1)) == true);
-    BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1),1. - 2. * sin(p1) * sin(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1), 2. * sin(p1) * cos(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 1. - 2. * sin(p1) * sin(p1)) == true);
     BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1., 8)) == true);
+
+    BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1), 2. * sin(p1) * cos(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 1. - 2. * sin(p1) * sin(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(p2) * sin(p2) + cos(p2) * cos(p2), gdual(1., 8)) == true);
 }
