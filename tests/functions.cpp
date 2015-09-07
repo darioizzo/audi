@@ -101,13 +101,16 @@ BOOST_AUTO_TEST_CASE(logarithm)
     BOOST_CHECK_THROW(log(p2), std::domain_error); // negative p0
 }
 
-/*
+
 BOOST_AUTO_TEST_CASE(sin_and_cos)
 {
-    gdual x("dx",3);
-    gdual y("dy",3);
+    gdual x("dx",8);
+    gdual y("dy",8);
     x += 2.3;
     y += 1.5;
     auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
-    BOOST_CHECK(EPSILON_COMPARE(sin(2 * p1),2 * sin(p1) * cos(p1)) == true);
-}*/
+
+    BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1),2. * sin(p1) * cos(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1),1. - 2. * sin(p1) * sin(p1)) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1., 8)) == true);
+}

@@ -153,33 +153,27 @@ inline gdual sin(const gdual& d)
     auto sin_p0 = std::sin(p0);
     auto cos_p0 = std::cos(p0);
 
-    double factorial=1;
-    double coeff=1;
+    double factorial=1.;
+    double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
     for (auto i=2; i<=d.get_order(); i+=2)
     {
-        coeff*=-1;                              // -1, 1, -1, 1, ...
+        coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
-std::cout << "i: " << i << std::endl; 
-std::cout << "coeff: " << coeff << std::endl; 
-std::cout << "factorial: " << factorial << std::endl; 
         cos_taylor += coeff * tmp / factorial;
     }
 
-    factorial=1;
-    coeff=1;
+    factorial=1.;
+    coeff=1.;
     gdual sin_taylor(phat);
-    tmp = gdual(1, d.get_order());
+    tmp = sin_taylor;
     for (auto i=3; i<=d.get_order(); i+=2)
     {
-        coeff*=-1;                              // -1, 1, -1, 1, ...
+        coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
-std::cout << "i: " << i << std::endl; 
-std::cout << "coeff: " << coeff << std::endl; 
-std::cout << "factorial: " << factorial << std::endl; 
         sin_taylor += coeff * tmp / factorial;
     }
     return (sin_p0 * cos_taylor + cos_p0 * sin_taylor);
@@ -194,27 +188,27 @@ inline gdual cos(const gdual& d)
     auto sin_p0 = std::sin(p0);
     auto cos_p0 = std::cos(p0);
 
-    double factorial=1;
-    double coeff=1;
+    double factorial=1.;
+    double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<d.get_order(); i+=2)
+    for (auto i=2; i<=d.get_order(); i+=2)
     {
-        coeff*=-1;                              // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
+        coeff*=-1.;                              // -1, 1, -1, 1, ...
+        tmp*=phat2;                              // phat^2, phat^4, phat^6 ...
+        factorial*=i * (i-1);                    // 2!, 4!, 6!, ...
         cos_taylor += coeff * tmp / factorial;
     }
 
-    factorial=2;
-    coeff=1;
+    factorial=1.;
+    coeff=1.;
     gdual sin_taylor(phat);
-    tmp = gdual(1, d.get_order());
-    for (auto i=3; i<d.get_order(); i+=2)
+    tmp = sin_taylor;
+    for (auto i=3; i<=d.get_order(); i+=2)
     {
-        coeff*=-1;                              // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
+        coeff*=-1.;                              // -1, 1, -1, 1, ...
+        tmp*=phat2;                              // phat^3, phat^5, phat^7 ...
+        factorial*=i * (i-1);                    // 3!, 5!, 7!, ...
         sin_taylor += coeff * tmp / factorial;
     }
     return (cos_p0 * cos_taylor - sin_p0 * sin_taylor);
