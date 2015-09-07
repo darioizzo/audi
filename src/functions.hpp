@@ -66,16 +66,6 @@ inline gdual pow(double base, const gdual &d)
     return exp(std::log(base) * d);
 }
 
-inline gdual pow(const gdual& d, int n)
-{
-    gdual retval(d);
-    for (auto i = 1; i < n; ++i) {
-        retval*=d;
-    }
-    return retval;
-}
-
-
 inline gdual pow(const gdual &d, double alpha)
 {
     gdual retval(1., d.get_order());
@@ -100,6 +90,19 @@ inline gdual pow(const gdual &d, double alpha)
     return retval;
 }
 
+// Its important this comes after the pow(gdual, double) overload
+inline gdual pow(const gdual& d, int n)
+{
+    if (n <= 0) { 
+        return pow(d, (double)n);
+    }
+    gdual retval(d);
+    for (auto i = 1; i < n; ++i) {
+        retval*=d;
+    }
+    return retval;
+}
+
 inline gdual pow(const gdual &d1, const gdual &d2)
 {
     double int_part;
@@ -119,11 +122,11 @@ inline gdual sqrt(const gdual &d)
     return pow(d, 0.5);
 }
 
-inline  gdual cbrt(const gdual& d)
+inline gdual cbrt(const gdual& d)
 {
-    double alpha = 0.33333333333333333333333; // bello eh!!!
+    double alpha = 1/3.;
     gdual retval(1., d.get_order());
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     double cbrt_p0 = std::cbrt(p0);
     if (!std::isfinite(cbrt_p0)) {
         throw std::domain_error("std::cbrt_p0(" + boost::lexical_cast<std::string>(p0)+ ", " + boost::lexical_cast<std::string>(alpha) + ") returned a non finite number: " + boost::lexical_cast<std::string>(cbrt_p0));
@@ -143,7 +146,7 @@ inline  gdual cbrt(const gdual& d)
 
 inline gdual sin(const gdual& d)
 {
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
@@ -184,7 +187,7 @@ std::cout << "factorial: " << factorial << std::endl;
 
 inline gdual cos(const gdual& d)
 {
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 

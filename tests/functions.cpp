@@ -17,10 +17,10 @@ BOOST_AUTO_TEST_CASE(exponentiation)
         gdual y("dy",3);
 
         auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x + 3.2;
-        BOOST_CHECK_EQUAL(pow(p1, 3), p1*p1*p1);									// calls pow(gdual, int)
-        BOOST_CHECK(EPSILON_COMPARE(pow(p1, 3.), p1*p1*p1) == true); 				// calls pow(gdual, double)
-        BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3,3)), p1*p1*p1) == true); 		// calls pow(gdual, gdual) with an integer exponent
-        BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3.1,3)), pow(p1,3.1)) == true);	// calls pow(gdual, gdual) with an real exponent
+        BOOST_CHECK_EQUAL(pow(p1, 3), p1*p1*p1);                                    // calls pow(gdual, int)
+        BOOST_CHECK(EPSILON_COMPARE(pow(p1, 3.), p1*p1*p1) == true);                // calls pow(gdual, double)
+        BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3,3)), p1*p1*p1) == true);        // calls pow(gdual, gdual) with an integer exponent
+        BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3.1,3)), pow(p1,3.1)) == true);   // calls pow(gdual, gdual) with an real exponent
     }
 
     gdual x("dx",3);
@@ -31,10 +31,14 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     BOOST_CHECK(EPSILON_COMPARE(pow(3, gdual(3.2, 3)), std::pow(3, 3.2) * gdual(1, 3)) == true);
     BOOST_CHECK(EPSILON_COMPARE(pow(p2, 3), pow(p2, 3.)) == true);
 
-    BOOST_CHECK_THROW(pow(p1, 3.1), std::domain_error); 			// zero p0
-    BOOST_CHECK_THROW(pow(p2, 3.1), std::domain_error); 			// negative p0
-    BOOST_CHECK_THROW(pow(p1, gdual(3.1,3)), std::domain_error); 	// zero p0
-    BOOST_CHECK_THROW(pow(p2, gdual(3.1,3)), std::domain_error); 	// negative p0
+    BOOST_CHECK_THROW(pow(p1, 3.1), std::domain_error);             // zero p0
+    BOOST_CHECK_THROW(pow(p2, 3.1), std::domain_error);             // negative p0
+    BOOST_CHECK_THROW(pow(p1, gdual(3.1,3)), std::domain_error);    // zero p0
+    BOOST_CHECK_THROW(pow(p2, gdual(3.1,3)), std::domain_error);    // negative p0
+
+    BOOST_CHECK(EPSILON_COMPARE(pow(p2, -1), 1 / p2) == true);                                      // negative exponent (gdual, int)
+    BOOST_CHECK(EPSILON_COMPARE(pow(p2, -1.), 1 / p2) == true);                                     // negative exponent (gdual, double)
+    BOOST_CHECK(EPSILON_COMPARE(pow(p1 + 3.5, gdual(-1.1, 3)), pow(p1 + 3.5, -1.1)) == true);       // negative exponent (gdual, gdual)
 }
 
 BOOST_AUTO_TEST_CASE(square_root)
@@ -43,8 +47,8 @@ BOOST_AUTO_TEST_CASE(square_root)
     gdual y("dy",3);
     x += 2.3;
     y += 1.5;
-    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;	// positive p0
-    auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;	// negative coefficient
+    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
+    auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1) == true);
     BOOST_CHECK_THROW(sqrt(p2), std::domain_error); // negative p0
 }
@@ -55,8 +59,8 @@ BOOST_AUTO_TEST_CASE(cubic_root)
     gdual y("dy",3);
     x += 2.3;
     y += 1.5;
-    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;	// positive p0
-    auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;	// negative coefficient
+    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
+    auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(cbrt(p1) * cbrt(p1) * cbrt(p1), p1) == true);
     BOOST_CHECK(EPSILON_COMPARE(cbrt(p2) * cbrt(p2) * cbrt(p2), p2) == true);
 }
@@ -97,12 +101,13 @@ BOOST_AUTO_TEST_CASE(logarithm)
     BOOST_CHECK_THROW(log(p2), std::domain_error); // negative p0
 }
 
+/*
 BOOST_AUTO_TEST_CASE(sin_and_cos)
 {
     gdual x("dx",3);
     gdual y("dy",3);
     x += 2.3;
     y += 1.5;
-    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;	// positive p0
-	BOOST_CHECK(EPSILON_COMPARE(sin(2 * p1),2 * sin(p1) * cos(p1)) == true);
-}
+    auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
+    BOOST_CHECK(EPSILON_COMPARE(sin(2 * p1),2 * sin(p1) * cos(p1)) == true);
+}*/
