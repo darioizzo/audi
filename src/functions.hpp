@@ -11,7 +11,7 @@
 namespace audi
 {
 
-inline	gdual exp(const gdual& d)
+inline gdual exp(const gdual &d)
 {
     gdual retval(1., d.get_order());
     double fact=1;
@@ -28,7 +28,7 @@ inline	gdual exp(const gdual& d)
     return retval * std::exp(p0);
 }
 
-inline	gdual log(const gdual& d)
+inline gdual log(const gdual &d)
 {
     gdual retval(0., d.get_order());
     double fatt = 1;
@@ -50,12 +50,12 @@ inline	gdual log(const gdual& d)
     return retval;
 }
 
-inline	gdual pow(double base, const gdual& d)
+inline gdual pow(double base, const gdual &d)
 {
     double int_part;
-    if (d.degree() == 0) // checks wether the exponent is an integer, in which case
-        // it calls a different overload
-    {
+    // checks wether the exponent is an integer, in which case
+    // it calls a different overload
+    if (d.degree() == 0) {
         auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
         double float_part = std::modf(p0, &int_part);
         if (float_part == 0.) {
@@ -65,18 +65,17 @@ inline	gdual pow(double base, const gdual& d)
     return exp(std::log(base) * d);
 }
 
-inline	gdual pow(const gdual& d, int n)
+inline gdual pow(const gdual& d, int n)
 {
     gdual retval(d);
-    for (auto i = 1; i < n; ++i)
-    {
+    for (auto i = 1; i < n; ++i) {
         retval*=d;
     }
     return retval;
 }
 
 
-inline	gdual pow(const gdual& d, double alpha)
+inline gdual pow(const gdual &d, double alpha)
 {
     gdual retval(1., d.get_order());
     auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
@@ -100,19 +99,21 @@ inline	gdual pow(const gdual& d, double alpha)
     return retval;
 }
 
-inline	gdual pow(const gdual& d1, const gdual& d2)
+inline gdual pow(const gdual &d1, const gdual &d2)
 {
     double int_part;
-    if (d2.degree() == 0) // checks wether the exponent is an integer, in which case it calls a differen overload
-    {
+    // checks wether the exponent is an integer, in which case it calls a different overload
+    if (d2.degree() == 0) {
         auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
         double float_part = std::modf(p0, &int_part);
-        if (float_part == 0.) return pow(d1, p0);
+        if (float_part == 0.) {
+            return pow(d1, p0);
+        }
     }
     return exp(d2 * log(d1));
 }
 
-inline	gdual sqrt(const gdual& d) 
+inline gdual sqrt(const gdual &d)
 {
     return pow(d, 0.5);
 }

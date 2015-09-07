@@ -3,13 +3,15 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <limits>
 
 #include "../src/gdual.hpp"
 
 // Boost 1.59 introduces a new floating point comparison method. In which case the below macro can substitute EPSILON_COMPARE
 //#define BOOST_EQUAL_GDUALS_TOL(d1, d2) \
-//{gdual zero = d2 - d1;                 \
+//{using p_type = detail::p_type;        \
+//gdual zero = d2 - d1;                  \
 //gdual copy(d1);                        \
 //double max_cf = (std::max_element(copy._container().begin(), copy._container().end(), [](const detail::p_type::term_type& a, const detail::p_type::term_type& b){return (std::abs(a.m_cf) < std::abs(b.m_cf));}))->m_cf; \
 //max_cf = std::abs(max_cf);	           \
