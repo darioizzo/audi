@@ -15,7 +15,7 @@ inline gdual exp(const gdual &d)
 {
     gdual retval(1., d.get_order());
     double fact=1;
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     auto phat = d - p0;
     gdual tmp(phat);
 
@@ -32,7 +32,7 @@ inline gdual log(const gdual &d)
 {
     gdual retval(0., d.get_order());
     double fatt = 1;
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     auto log_p0 = std::log(p0);
     if (!std::isfinite(log_p0)) {
         throw std::domain_error("std::log(" + boost::lexical_cast<std::string>(p0) + ") returns " + boost::lexical_cast<std::string>(log_p0) + " in log(const gdual& d)");
@@ -56,7 +56,7 @@ inline gdual pow(double base, const gdual &d)
     // checks wether the exponent is an integer, in which case
     // it calls a different overload
     if (d.degree() == 0) {
-        auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+        auto p0 = d.constant_cf();
         double float_part = std::modf(p0, &int_part);
         if (float_part == 0.) {
             return gdual(std::pow(base, p0), d.get_order()); //nan is possible here
@@ -78,7 +78,7 @@ inline gdual pow(const gdual& d, int n)
 inline gdual pow(const gdual &d, double alpha)
 {
     gdual retval(1., d.get_order());
-    auto p0 = d.find_cf(std::vector<int>(d.get_n_variables(),0));
+    auto p0 = d.constant_cf();
     double pow_p0 = std::pow(p0,alpha);
     if (!std::isfinite(pow_p0)) {
         throw std::domain_error("std::pow(" + boost::lexical_cast<std::string>(p0)+ ", " + boost::lexical_cast<std::string>(alpha) + ") returned a non finite number: " + boost::lexical_cast<std::string>(pow_p0));
@@ -104,7 +104,7 @@ inline gdual pow(const gdual &d1, const gdual &d2)
     double int_part;
     // checks wether the exponent is an integer, in which case it calls a different overload
     if (d2.degree() == 0) {
-        auto p0 = d2.find_cf(std::vector<int>(d2.get_n_variables(),0));
+        auto p0 = d2.constant_cf();
         double float_part = std::modf(p0, &int_part);
         if (float_part == 0.) {
             return pow(d1, p0);

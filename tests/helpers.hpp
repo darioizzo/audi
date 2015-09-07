@@ -34,10 +34,8 @@ inline bool EPSILON_COMPARE(const gdual& d1, const gdual& d2)
     double max_cf = (std::max_element(copy._container().begin(), copy._container().end(), [](const p_type::term_type& a, const p_type::term_type& b){return (std::abs(a.m_cf) < std::abs(b.m_cf));}))->m_cf;
     max_cf = std::abs(max_cf);
     // checks that the coefficients of d2 - d1 are all within a reltol <= eps
-    for (auto it = zero._container().begin(); it != zero._container().end(); ++it)
-    {
-        if (std::abs(it->m_cf) / max_cf > 10 * std::numeric_limits<double>::epsilon())
-        {
+    for (auto it = zero._container().begin(); it != zero._container().end(); ++it) {
+        if (std::abs(it->m_cf) / max_cf > 10 * std::numeric_limits<double>::epsilon()) {
             std::cout << "Failing to be within epsilon from zero: " << zero << std::endl;
             std::cout << "Coefficient: " << std::abs(it->m_cf) << std::endl;
             std::cout << "Normalized coefficient: " << std::abs(it->m_cf) / max_cf << std::endl;
