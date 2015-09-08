@@ -3,6 +3,7 @@
 #define BOOST_TEST_MODULE audi_gdual_test
 #include <boost/test/unit_test.hpp>
 #include <boost/timer/timer.hpp>
+#include <piranha/settings.hpp>
 
 #include <vector>
 
@@ -25,6 +26,9 @@ void scalable_div(int m, int n)
 
 BOOST_AUTO_TEST_CASE(division_performance)
 {
+	if (boost::unit_test::framework::master_test_suite().argc > 1) {
+        piranha::settings::set_n_threads(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
+    }
 	std::cout << "Testing division of (x1^2 + ... + xn^2) / (x1 * (x1 + x2 + .. + xn) ): " << std::endl;
 	for (auto m = 5; m < 10; ++m) {
 		for (auto n = 5; n < 12; ++n) {
