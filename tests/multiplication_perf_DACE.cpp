@@ -30,6 +30,8 @@ void scalable_mul(int m, int n)
         boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
         result*=result;
     }
+    int cicco;
+    std::cin >> cicco;
 }
 
 int main()

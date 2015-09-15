@@ -26,3 +26,8 @@
 *.exe
 *.out
 *.app
+
+# Directories
+/build
+/doc/doxygen/html
+/doc/doxygen/latex
