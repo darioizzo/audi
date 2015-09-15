@@ -248,7 +248,7 @@ assuming to have access to the truncated Taylor expansion of \f$f\f$,
 \f]
 We can now apply the **composition rule** to get:
 \f[
-T_{f(\mathbf x)^\alpha} &= f_0^\alpha \left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) = 
+T_{f(\mathbf x)^\alpha} = f_0^\alpha \left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) = 
 \f]
 \f[
 = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha - 1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right)
