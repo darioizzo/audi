@@ -14,7 +14,7 @@ void scalable_mul(int m, int n)
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
     std::vector<gdual> variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("dx"+std::to_string(i), m);
+        variables.emplace_back("x"+std::to_string(i), m);
     } 
     gdual p1(1, m);
     gdual p2(1, m);

@@ -117,149 +117,13 @@ class gdual
             }
         }
 
-    private:
-        p_type	m_p;
-        int	m_order;
-
-    public:
-
-        gdual(const gdual &) = default;
-        gdual(gdual &&) = default;
-
-        explicit gdual(const std::string &str, int order):m_p(str),m_order(order)
+        void check_var_name(const std::string &name) const
         {
-            check_order();
-        }
-
-        explicit gdual(double x, int order):m_p(x),m_order(order)
-        {
-            check_order();
-        }
-
-        // Defaulted assignment operators.
-        gdual &operator=(const gdual &) = default;
-        gdual &operator=(gdual &&) = default;
-
-        std::vector<std::string> get_symbols() const
-        {
-            std::vector<std::string> retval;
-            for (const auto &symbol : m_p.get_symbol_set()) {
-                retval.push_back(symbol.get_name());
+            if (name.at(0) == 'd') {
+                throw std::invalid_argument("variable names cannot start with the letter d");
             }
-            return retval;
         }
 
-        auto _container() -> decltype(m_p._container())
-        {
-            return m_p._container();
-        }
-
-        auto degree() const -> decltype(m_p.degree())
-        {
-            return m_p.degree();
-        }
-
-        auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
-        {
-            return m_p.get_symbol_set().size();
-        }
-
-        int get_order() const
-        {
-            return m_order;
-        }
-
-        template <typename T>
-        auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
-        {
-            return m_p.find_cf(c);
-        }
-
-        template <typename T>
-        auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
-        {
-            return m_p.find_cf(l);
-        }
-
-        double constant_cf() const
-        {
-            using v_size_type = std::vector<int>::size_type;
-            return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
-        }
-
-        friend std::ostream& operator<<(std::ostream& os, const gdual& d)
-        {
-            os << d.m_p;
-            return os;
-        }
-
-        friend bool operator==(const gdual &d1, const gdual &d2)
-        {
-            return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
-        }
-
-        friend bool operator!=(const gdual &d1, const gdual &d2)
-        {
-            return !(d1 == d2);
-        }
-
-        template <typename T>
-        auto operator+=(const T &d1) -> decltype(*this = *this + d1)
-        {
-            return *this = *this + d1;
-        }
-
-        template <typename T>
-        auto operator-=(const T &d1) -> decltype(*this = *this - d1)
-        {
-            return *this = *this - d1;
-        }
-
-        template <typename T>
-        auto operator*=(const T &d1) -> decltype(*this = *this * d1)
-        {
-            return *this = *this * d1;
-        }
-
-        template <typename T>
-        auto operator/=(const T &d1) -> decltype(*this = *this / d1)
-        {
-            return *this = *this / d1;
-        }
-
-        gdual operator-() const
-        {
-            return gdual(-m_p,m_order);
-        }
-
-        gdual operator+() const
-        {
-            return *this;
-        }
-
-        template <typename T, typename U>
-        friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
-        {
-            return add(d1,d2);
-        }
-
-        template <typename T, typename U>
-        friend gdual_if_enabled<T, U> operator-(const T &d1, const U &d2)
-        {
-            return sub(d1,d2);
-        }
-
-        template <typename T, typename U>
-        friend gdual_if_enabled<T, U> operator*(const T &d1, const U &d2)
-        {
-            return mul(d1,d2);
-        }
-
-        template <typename T, typename U>
-        friend gdual_if_enabled<T, U> operator/(const T &d1, const U &d2)
-        {
-            return div(d1,d2);
-        }
 
     private:
         // A private constructor to move-initialise a gdual from a polynomial. Used
@@ -411,6 +275,174 @@ class gdual
         {
             return d1 * (1. / d2);
         }
+        p_type	m_p;
+        int	m_order;
+
+    public:
+        /// Defaulted copy constructor.
+        gdual(const gdual &) = default;
+        /// Defaulted move constructor.
+        gdual(gdual &&) = default;
+
+        /// Constructor from symbol name and truncation order
+        /**
+         *
+         * Will construct a generalized dual number made of a single term with unitary coefficient and exponent,
+         * representing the expansion around zero of the symbolic variable \p name. The truncation order
+         * is also set to \p order. 
+         * The type of \p name must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
+         * so that "x" -> "dx". 
+         * 
+         * @param[in] name name of the symbolic variable
+         * 
+         * @throws std::invalid_argument:
+         * - if \p order is not in [1, std::numeric_limits<int>::max()]
+         * - if \p name already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         */
+        explicit gdual(const std::string &name, int order):m_p(std::string("d") + name),m_order(order)
+        {
+            check_order();
+            check_var_name(name);
+        }
+
+        explicit gdual(double x, int order):m_p(x),m_order(order)
+        {
+            check_order();
+        }
+
+        explicit gdual(double value, const std::string &name, int order):m_p(std::string("d") + name),m_order(order)
+        {
+            check_order();
+            check_var_name(name);
+            m_p+=value;
+        }
+
+        // Defaulted assignment operators.
+        gdual &operator=(const gdual &) = default;
+        gdual &operator=(gdual &&) = default;
+
+        std::vector<std::string> get_symbols() const
+        {
+            std::vector<std::string> retval;
+            for (const auto &symbol : m_p.get_symbol_set()) {
+                retval.push_back(symbol.get_name());
+            }
+            return retval;
+        }
+
+        auto _container() -> decltype(m_p._container())
+        {
+            return m_p._container();
+        }
+
+        auto degree() const -> decltype(m_p.degree())
+        {
+            return m_p.degree();
+        }
+
+        auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
+        {
+            return m_p.get_symbol_set().size();
+        }
+
+        int get_order() const
+        {
+            return m_order;
+        }
+
+        template <typename T>
+        auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
+        {
+            return m_p.find_cf(c);
+        }
+
+        template <typename T>
+        auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
+        {
+            return m_p.find_cf(l);
+        }
+
+        double constant_cf() const
+        {
+            using v_size_type = std::vector<int>::size_type;
+            return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, const gdual& d)
+        {
+            os << d.m_p;
+            return os;
+        }
+
+        friend bool operator==(const gdual &d1, const gdual &d2)
+        {
+            return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
+        }
+
+        friend bool operator!=(const gdual &d1, const gdual &d2)
+        {
+            return !(d1 == d2);
+        }
+
+        template <typename T>
+        auto operator+=(const T &d1) -> decltype(*this = *this + d1)
+        {
+            return *this = *this + d1;
+        }
+
+        template <typename T>
+        auto operator-=(const T &d1) -> decltype(*this = *this - d1)
+        {
+            return *this = *this - d1;
+        }
+
+        template <typename T>
+        auto operator*=(const T &d1) -> decltype(*this = *this * d1)
+        {
+            return *this = *this * d1;
+        }
+
+        template <typename T>
+        auto operator/=(const T &d1) -> decltype(*this = *this / d1)
+        {
+            return *this = *this / d1;
+        }
+
+        gdual operator-() const
+        {
+            return gdual(-m_p,m_order);
+        }
+
+        gdual operator+() const
+        {
+            return *this;
+        }
+
+        template <typename T, typename U>
+        friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
+        {
+            return add(d1,d2);
+        }
+
+        template <typename T, typename U>
+        friend gdual_if_enabled<T, U> operator-(const T &d1, const U &d2)
+        {
+            return sub(d1,d2);
+        }
+
+        template <typename T, typename U>
+        friend gdual_if_enabled<T, U> operator*(const T &d1, const U &d2)
+        {
+            return mul(d1,d2);
+        }
+
+        template <typename T, typename U>
+        friend gdual_if_enabled<T, U> operator/(const T &d1, const U &d2)
+        {
+            return div(d1,d2);
+        }
+
+    
 };
 
 
