@@ -5,9 +5,9 @@ using namespace audi;
 
 int main() {
 	// We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3
-	// 1 - Define the generalized dal numbers (4 is the truncation order, i.e. the maximum order of derivation we will need)
-	gdual x(2, "dx", 7);
-	gdual y(3, "dy", 7);
+	// 1 - Define the generalized dal numbers (7 is the truncation order, i.e. the maximum order of derivation we will need)
+	gdual x(2, "x", 7);
+	gdual y(3, "y", 7);
 
 	// 2 - Compute your function as usual
 	gdual f = exp((x*x+cbrt(y)/log(x*y)));

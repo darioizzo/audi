@@ -310,6 +310,22 @@ class gdual
             check_order();
         }
 
+        /// Constructor from value, symbol name and truncation order
+        /**
+         *
+         * Will construct a generalized dual number representing the expansion around \p value 
+         * of the symbolic variable \p name. The truncation order is also set to \p order. 
+         * 
+         * The type of \p name must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
+         * so that "x" -> "dx". 
+         * 
+         * @param[in] value value of the variable at the expansion point
+         * @param[in] name name of the symbolic variable
+         * 
+         * @throws std::invalid_argument:
+         * - if \p order is not in [1, std::numeric_limits<int>::max()]
+         * - if \p name already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         */
         explicit gdual(double value, const std::string &name, int order):m_p(std::string("d") + name),m_order(order)
         {
             check_order();

@@ -13,8 +13,8 @@ using namespace audi;
 BOOST_AUTO_TEST_CASE(exponentiation)
 {
     {
-        gdual x("dx",3);
-        gdual y("dy",3);
+        gdual x("x",3);
+        gdual y("y",3);
 
         auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x + 3.2;
         BOOST_CHECK_EQUAL(pow(p1, 3), p1*p1*p1);                                    // calls pow(gdual, int)
@@ -23,8 +23,8 @@ BOOST_AUTO_TEST_CASE(exponentiation)
         BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3.1,3)), pow(p1,3.1), 1e-12) == true);   // calls pow(gdual, gdual) with an real exponent
     }
 
-    gdual x("dx",3);
-    gdual y("dy",3);
+    gdual x("x",3);
+    gdual y("y",3);
     gdual p1 = x+y-3*x*y+y*y;
     gdual p2 = p1 - 3.5;
 
@@ -43,10 +43,9 @@ BOOST_AUTO_TEST_CASE(exponentiation)
 
 BOOST_AUTO_TEST_CASE(square_root)
 {
-    gdual x("dx",3);
-    gdual y("dy",3);
-    x += 2.3;
-    y += 1.5;
+    gdual x(2.3, "x",3);
+    gdual y(1.5, "y",3);
+
     auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
     auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1, 1e-12) == true);
@@ -55,10 +54,9 @@ BOOST_AUTO_TEST_CASE(square_root)
 
 BOOST_AUTO_TEST_CASE(cubic_root)
 {
-    gdual x("dx",3);
-    gdual y("dy",3);
-    x += 2.3;
-    y += 1.5;
+    gdual x(2.3, "x",3);
+    gdual y(1.5, "y",3);
+
     auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  // positive p0
     auto p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(cbrt(p1) * cbrt(p1) * cbrt(p1), p1, 1e-12) == true);
@@ -68,10 +66,9 @@ BOOST_AUTO_TEST_CASE(cubic_root)
 BOOST_AUTO_TEST_CASE(exponential)
 {
     // we test the result of f = exp((1+dx)*dy)
-    gdual x("dx",2);
-    gdual y("dy",2);
-    x += 1;
-    y += 0;
+    gdual x(1, "x",2);
+    gdual y(0, "y",2);
+
     auto p1 = exp(x*y);
     BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 1);
     BOOST_CHECK_EQUAL(p1.find_cf({1,0}), 0);
@@ -84,16 +81,15 @@ BOOST_AUTO_TEST_CASE(exponential)
 BOOST_AUTO_TEST_CASE(logarithm)
 {
     {
-        gdual x("dx",4);
-        gdual y("dy",4);
-        x += 0.1;
-        y += 0.13;
+        gdual x(0.1, "x",4);
+        gdual y(0.13, "y",4);
+
         auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;
         BOOST_CHECK(EPSILON_COMPARE(exp(log(p1)), p1, 1e-12) == true);
     }
 
-    gdual x("dx",3);
-    gdual y("dy",3);
+    gdual x("x",3);
+    gdual y("y",3);
     gdual p1 = x+y-3*x*y+y*y;
     gdual p2 = p1 - 3.5;
 
@@ -105,10 +101,9 @@ BOOST_AUTO_TEST_CASE(logarithm)
 BOOST_AUTO_TEST_CASE(sin_and_cos)
 {
     int order = 8;
-    gdual x("dx",order);
-    gdual y("dy",order);
-    x += 2.3;
-    y += 1.5;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
     auto p1 = x + y;  
 
     BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1), 2. * sin(p1) * cos(p1), 1e-12) == true);

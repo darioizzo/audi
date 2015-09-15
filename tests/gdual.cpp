@@ -35,10 +35,9 @@ BOOST_AUTO_TEST_CASE(subtraction)
 BOOST_AUTO_TEST_CASE(multiplication)
 {
     // we test normalized derivatives computations of f = x + 3*x*y + y*y
-    gdual x("dx",2);
-    gdual y("dy",2);
-    x += 3;
-    y += 7;
+    gdual x(3, "x",2);
+    gdual y(7, "y",2);
+
     auto p1 = x + 3*x*y + y*y;
     BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 115);
     BOOST_CHECK_EQUAL(p1.find_cf({1,0}), 22);
@@ -64,10 +63,8 @@ BOOST_AUTO_TEST_CASE(division)
 {
     // we test normalized derivatives computations of f = 1 / (x + 2*x*y + y*y)
     {
-        gdual x("dx",2);
-        gdual y("dy",2);
-        x += 0;
-        y += 1;
+        gdual x(0, "x",2);
+        gdual y(1, "y",2);
         auto p1 = 1 / (x + 2*x*y + y*y);
         BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 1);
         BOOST_CHECK_EQUAL(p1.find_cf({1,0}), -3);
@@ -79,10 +76,9 @@ BOOST_AUTO_TEST_CASE(division)
 
     // the same but calling the gdouble / gdouble overload
     {
-        gdual x("dx",2);
-        gdual y("dy",2);
-        x += 0;
-        y += 1;
+        gdual x(0, "x",2);
+        gdual y(1, "y",2);
+
         auto p1 = gdual(1, 2) / (x + 2*x*y + y*y);
         BOOST_CHECK_EQUAL(p1.find_cf({0,0}), 1);
         BOOST_CHECK_EQUAL(p1.find_cf({1,0}), -3);
@@ -96,10 +92,9 @@ BOOST_AUTO_TEST_CASE(division)
 BOOST_AUTO_TEST_CASE(identities)
 {
     // we test some trivial identities
-    gdual x("dx",3);
-    gdual y("dy",3);
-    x += 2;
-    y += 3;
+    gdual x(2, "x",3);
+    gdual y(3, "y",3);
+
     auto p1 = x*x+y-x*x*x*x*y-y*x*x;
     auto p2 = y*y-x+y*y*y*y*x-2*x;
     BOOST_CHECK_EQUAL((x + y)*(x + y), x*x + y*y + 2*x*y);
