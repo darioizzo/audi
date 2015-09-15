@@ -24,7 +24,7 @@ namespace detail
 {
 
 // Main definition of the Piranha polynomial type.
-using p_type = piranha::polynomial<double,piranha::k_monomial>;
+using p_type = piranha::polynomial<double,piranha::monomial<char> >;
 
 // Multiplier functor for the the gdual class, based on
 // Piranha's polynomial multiplier.
@@ -69,6 +69,27 @@ class gdual_multiplier: piranha::series_multiplier<p_type>
 
 } // end of namespace detail
 
+
+/// Generalized dual number class.
+/**
+ * This class represents a generalized dual number, or more formally, an element
+ * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$. 
+ *
+ * The basic operations defined in the algebra \f$\mathcal P_{n,m}\f$ are
+ * implemented as operators overloads, thus the new audi::gdual type can be used 
+ * in substitution to the simple double type to also compute derivatives.
+ *
+ * The order of truncation \f$m\f$ is determined upon construction and cannot be later
+ * modified. The number of variables \f$n\f$ will instead by determined dynamically
+ * when operations are performed on the audi::gdual type.
+ *
+ * The actual truncated polynomial is contained in audi::gdual as a data member 
+ * of type piranha::polynomial<double,piranha::monomial<char> >, 
+ * allowing to support a high number of monomials.
+ * 
+ * @author Dario Izzo (dario.izzo@gmail.com)
+ * @author Francesco Biscani (bluescarni@gmail.com)
+ */
 class gdual
 {
         // Lift the polynomial type from the detail namespace.

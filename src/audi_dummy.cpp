@@ -16,16 +16,18 @@ AuDi is internally powered by the truncated polynomial multiplication algorithm
 of the open source project,  <a href="https://github.com/bluescarni/piranha">Piranha</a>
 details of which are described in:
 
-Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">Multiplication of sparse Laurent polynomials and Poisson
-series on modern hardware architectures.</a> arXiv preprint arXiv:1004.4548 (2010).
+Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845"> "Parallel sparse polynomial multiplication on modern hardware architectures."</a> Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
+
+Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and Poisson
+series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).
 
 \verbatim
 Piranha headers must be installed and accessible to the compiler for AuDi to function.
 \endverbatim
 
-
-In the following sections we present briefly the theory behind forward
-automated differentiation using truncated Taylor polynomials.
+In the following sections we present, briefly, the theory and some concrete examples 
+to help understanding the forward automated differentiation using
+truncated Taylor polynomials implemented in AuDi.
 
 \section a The algebra of truncated polynomials 
 Here we introduce formally a basic algebraic structure over the set of truncated polynomials and
