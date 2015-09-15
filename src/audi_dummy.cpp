@@ -19,6 +19,11 @@ details of which are described in:
 Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">Multiplication of sparse Laurent polynomials and Poisson
 series on modern hardware architectures.</a> arXiv preprint arXiv:1004.4548 (2010).
 
+\verbatim
+Piranha headers must be installed and accessible to the compiler for AuDi to function.
+\endverbatim
+
+
 In the following sections we present briefly the theory behind forward
 automated differentiation using truncated Taylor polynomials.
 
@@ -115,7 +120,7 @@ T_{(fg)} = T_f \cdot T_g.
 
 \subsection e Reciprocal
 We here prove that the reciprocal of a truncated Taylor expansion,
-as defined in the algebra $\mathcal P_{n,m}$ is the Taylor expansion of
+as defined in the algebra \f$\mathcal P_{n,m}\f$ is the Taylor expansion of
 the reciprocal. Consider the generic
 function \f$f\f$ and its truncated Taylor expansion \f$T_f\f$.
 We denote with \f$T_{(1/f)}\f$ the truncated Taylor expansion of the
@@ -157,7 +162,7 @@ does not have a constant term and, is thus nil-potent of order
 Taylor expansion of a composition function directly composing the truncated 
 Taylor expansions. For most elementary functions, though, we can consider 
 \f$T_f = f_0 + \hat f\f$ and use some addition formula to be able to 
-\lq\lq extract\rq\rq \f$\hat f\f$ and thus exploit its nil-potency. The details 
+''extract`` \f$\hat f\f$ and thus exploit its nil-potency. The details 
 on how this is done differ for each particular \f$g\f$ considered and are thus 
 reported in the following subsections.
 
@@ -241,7 +246,7 @@ assuming to have access to the truncated Taylor expansion of \f$f\f$,
 \f[
 (g \circ f) (\mathbf x) = f(\mathbf x) ^ \alpha =  (f_0 + (f(\mathbf x) - f_0))^\alpha = f_0^\alpha \left( 1+ \frac{f(x) - f_0}{f_0}\right)^\alpha
 \f]
-We can now apply Eq.(\ref{eq:compos}) to get:
+We can now apply the **composition rule** to get:
 \f[
 T_{f(\mathbf x)^\alpha} &= f_0^\alpha \left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) = 
 \f]
@@ -331,7 +336,7 @@ T_y = 1 + 0 dx + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2
 \f[
 T_p =  1 + 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2 
 \f]
-and, applying Eq.{\ref{eq:recipr}}, we conclude
+and, applying the reciprocal rule, we conclude
 \f[
 T_f = ( 1 - \hat p + \hat p ^ 2 )
 \f]
@@ -365,7 +370,7 @@ T_y = 0 + 0 d x + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2
 \f[
 T_x \cdot T_y = 0 + 0 dx + 1 dy  + 1 dxdy + 0 dx^2 + 0dy^2 
 \f]
-and, applying Eq.{\ref{eq:exp}}, we conclude:
+and, applying the rule for the exponential of Taylor series, we conclude:
 \f[
 T_f = 1 + dy  + dxdy + \frac 12 dy^2
 \f]

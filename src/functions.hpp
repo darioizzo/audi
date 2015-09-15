@@ -8,9 +8,10 @@
 
 #include "gdual.hpp"
 
+
+
 namespace audi
 {
-
 
 inline gdual exp(const gdual &d)
 {

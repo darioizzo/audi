@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+/// Root namespace for AuDi symbols
 namespace audi
 {
 
