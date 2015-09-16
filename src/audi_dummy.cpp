@@ -21,9 +21,8 @@ Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845"> "Parall
 Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and Poisson
 series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).
 
-\verbatim
-Piranha headers must be installed and accessible to the compiler for AuDi to function.
-\endverbatim
+<b>Piranha headers must be installed and accessible to the compiler for AuDi to function.</b>
+
 
 In the following sections we present, briefly, the theory and some concrete examples 
 to help understanding the forward automated differentiation using
