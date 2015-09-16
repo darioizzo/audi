@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>AuDi: AuDi (Automated Differentiation)</title>
+<title>AuDi: Main Page</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -78,35 +78,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="header">
   <div class="headertitle">
-<div class="title">AuDi (Automated Differentiation) </div>  </div>
+<div class="title">AuDi Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="z"></a>
 Listen (Introduction)</h1>
-<p>Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library that allows for automated differentiation implementing the Taylor truncated polynomial algebra (forward mode automated differentiation). It was created with the aim to offer a generic solution to the user in need of an automated differentiation system. While other automated differentiation codes may be more efficient on some targeted application, AuDi was built to be fast and efficient across all application ranges (low orders, high orders, one variable, many variables). Its use should be rather straight forward and is illustarted in the getting started example below.</p>
+<p>Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library that allows for AUtomated DIfferentiation implementing the Taylor truncated polynomial algebra (forward mode automated differentiation). It was created with the aim to offer a generic solution to the user in need of an automated differentiation system. While other automated differentiation codes may be more efficient on some targeted application, AuDi was built to be fast and efficient across all application ranges (low orders, high orders, one variable, many variables). Its use should be rather straight forward and is illustarted in the getting started example below.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;audi/audi.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"></div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceaudi.html">audi</a>;</div>
 <div class="line"></div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <span class="comment">// Define the generalized dal numbers (4 is the truncation order, i.e. the maximum order of derivation we will need)</span></div>
-<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> x(<span class="stringliteral">&quot;dx&quot;</span>, 7);</div>
-<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> y(<span class="stringliteral">&quot;dy&quot;</span>, 7);</div>
-<div class="line">    x+=2;</div>
-<div class="line">    y+=5;</div>
+<div class="line">    <span class="comment">// We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3</span></div>
+<div class="line">    <span class="comment">// 1 - Define the generalized dual numbers (7 is the truncation order, i.e. the maximum order of derivation we will need)</span></div>
+<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> x(2, <span class="stringliteral">&quot;x&quot;</span>, 7);</div>
+<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> y(3, <span class="stringliteral">&quot;y&quot;</span>, 7);</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// Compute your function as usual</span></div>
-<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> f = exp((x*x+cbtr(y)/log(x*y)));</div>
+<div class="line">    <span class="comment">// 2 - Compute your function as usual</span></div>
+<div class="line">    <a class="code" href="classaudi_1_1gdual.html">gdual</a> f = <a class="code" href="namespaceaudi.html#abc6fc320e20791ef2dfb7821da0eec69">exp</a>((x*x+<a class="code" href="namespaceaudi.html#adda903acffda0d9351499fcef9a7b22a">cbrt</a>(y)/<a class="code" href="namespaceaudi.html#a8af379f801041edcedcaadf2f999f358">log</a>(x*y)));</div>
 <div class="line"></div>
-<div class="line">    <span class="comment">// Inspect the results</span></div>
-<div class="line">    std::cout &lt;&lt; f &lt;&lt; std::endl;                    <span class="comment">// This is the entire Taykor expansion of f (truncated at the 7th order)</span></div>
-<div class="line">    std::cout &lt;&lt; f.derivative({4,3}) &lt;&lt; std::endl;  <span class="comment">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span></div>
+<div class="line">    <span class="comment">// 3 - Inspect the results</span></div>
+<div class="line">    std::cout &lt;&lt; f &lt;&lt; std::endl;                        <span class="comment">// This is the entire Taylor expansion of f (truncated at the 7th order)</span></div>
+<div class="line">    std::cout &lt;&lt; f.<a class="code" href="classaudi_1_1gdual.html#a4240d101b39e51e67fea6ca0308d5f74">get_derivative</a>({4,3}) &lt;&lt; std::endl;  <span class="comment">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span></div>
 <div class="line">}</div>
 </div><!-- fragment --><p>AuDi is internally powered by the truncated polynomial multiplication algorithm of the open source project, <a href="https://github.com/bluescarni/piranha">Piranha</a> details of which are described in:</p>
-<p>Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures.</a> arXiv preprint arXiv:1004.4548 (2010).</p>
+<p>Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845">"Parallel sparse polynomial multiplication on modern hardware architectures."</a> Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.</p>
+<p>Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and Poisson
+series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).</p>
 <pre class="fragment">Piranha headers must be installed and accessible to the compiler for AuDi to function.
-</pre><p>In the following sections we present briefly the theory behind forward automated differentiation using truncated Taylor polynomials.</p>
+</pre><p>In the following sections we present, briefly, the theory and some concrete examples to help understanding the forward automated differentiation using truncated Taylor polynomials implemented in AuDi.</p>
 <h1><a class="anchor" id="a"></a>
 The algebra of truncated polynomials</h1>
 <p>Here we introduce formally a basic algebraic structure over the set of truncated polynomials and we show how such a structure allows to compute the partial derivatives of multivariate functions up to arbitrary order.</p>
@@ -114,7 +115,7 @@ The algebra of truncated polynomials</h1>
 Formal definition</h2>
 <p>Consider the set <img class="formulaInl" alt="$ \mathcal P_{n,m}$" src="form_0.png"/> of all polynomials of order <img class="formulaInl" alt="$\le m$" src="form_1.png"/> in <img class="formulaInl" alt="$n$" src="form_2.png"/> variables and having coefficients in <img class="formulaInl" alt="$\mathbf K$" src="form_3.png"/>. We indicate with the symbols <img class="formulaInl" alt="$T_f, T_g, T_h$" src="form_4.png"/>, etc. the generic members of such a set. Such a set is an algebra over the field <img class="formulaInl" alt="$\mathbf K$" src="form_3.png"/> if we introduce the truncated multiplication as the standard polynomial multiplication truncated at order <img class="formulaInl" alt="$m$" src="form_5.png"/>. When needed, we will indicate such a multiplication with the symbol <img class="formulaInl" alt="$T_f \cdot T_g$" src="form_6.png"/>.</p>
 <p>This algebra is commonly referred to as the algebra of truncated polynomials. A first important property of this algebra is that, under the multiplication, all polynomials having a zero constant coefficient are nil-potent of order <img class="formulaInl" alt="$m+1$" src="form_7.png"/>, as easily verified. We will indicate the generic truncated polynomial <img class="formulaInl" alt="$\in \mathcal P_{n,m}$" src="form_8.png"/> as <img class="formulaInl" alt="$T_f$" src="form_9.png"/> and often we will consider its constant part separated from the rest, writing <img class="formulaInl" alt="$T_f = f_0 + \hat f$" src="form_10.png"/>. It is worth noting at this point how such an algebra is unitary and associative. The first property, in particular, deserves a few more words as it is a property that the algebra of (non-truncated) polynomials does not possess. Formally <img class="formulaInl" alt="$\forall T_f \in \mathcal P_{n,m}, \: \exists !\: T_g\in \mathcal P_{n,m} \Rightarrow T_g\cdot T_f = 1$" src="form_11.png"/>. In practice: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \label{eq:div} T_g = \frac 1{T_f} = \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right) \]" src="form_12.png"/>
+<img class="formulaDsp" alt="\[ T_g = \frac 1{T_f} = \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right) \]" src="form_116.png"/>
 </p>
 <p> as its easily verified by performing the truncated multiplication <img class="formulaInl" alt="$T_g \cdot T_f$" src="form_13.png"/> and accounting for the nilpotency of <img class="formulaInl" alt="$\hat f$" src="form_14.png"/>.</p>
 <h2><a class="anchor" id="c"></a>

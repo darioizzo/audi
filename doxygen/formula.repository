@@ -111,3 +111,32 @@
 \form#110:\[ T_x \cdot T_y = 0 + 0 dx + 1 dy + 1 dxdy + 0 dx^2 + 0dy^2 \]
 \form#111:\[ T_f = 1 + dy + dxdy + \frac 12 dy^2 \]
 \form#112:\[ f = 1, \partial_x f = 0, \partial_y f = 1, \partial_{xy} f = 1, \partial_{xx} f = 0, \partial_{yy} f = 1, \]
+\form#113:$\mathcal_{n,m}$
+\form#114:$T_{f} = f_0 + \hat f$
+\form#115:$f_0$
+\form#116:\[ T_g = \frac 1{T_f} = \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right) \]
+\form#117:$ \frac{d^6}{dxdy^3dz^2}$
+\form#118:$std::log(p_0)$
+\form#119:\[ T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \]
+\form#120:\[ T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \]
+\form#121:\[ T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k \]
+\form#122:\[ T_{\sqrt{f}} = \sqrt(f_0) \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k \]
+\form#123:\[ T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k \]
+\form#124:$f_0, \alpha $
+\form#125:$f_0, 0.5$
+\form#126:\[ T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k \]
+\form#127:$f_0, 1/3 $
+\form#128:\[ T_{^3\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k \]
+\form#129:\[ T_{^3\sqrt{f}} = ^3\sqrt{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k \]
+\form#130:\[ T_{\sqrt[3]{f}} = \sqrt[3]{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k \]
+\form#131:$pow(T_f, T_g)$
+\form#132:$exp(T_g*log(T_f))$
+\form#133:$f_0) is not finite (uses std::isfinite) */ inline gdual pow(const gdual &d1, const gdual &d2) { double int_part; // checks wether the exponent is an integer, in which case it calls a different overload if (d2.degree() == 0) { auto p0 = d2.constant_cf(); double float_part = std::modf(p0, &int_part); if (float_part == 0.) { return pow(d1, p0); } } return exp(d2 * log(d1)); } Overload for the square root /** Implements the square root of a audi::gdual. Essentially it performs the following computations in the $
+\form#134:$ algebra: \f[ T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k \f] where $
+\form#135:$. @param[in] d audi::gdual argument @return an audi:gdual containing the Taylor expansion of the square root of \p d @throw std::domain_error if std::pow($
+\form#136:$\pow(T_f, T_g)$
+\form#137:$\exp(T_g*log(T_f))$
+\form#138:$T_f^{T_g}$
+\form#139:$\exp(T_g*\log(T_f))$
+\form#140:$a^{T_f}$
+\form#141:$\exp(T_g*\log(a))$
