@@ -446,14 +446,57 @@ class gdual
         template <typename T>
         auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            
+
             return m_p.find_cf(l);
         }
 
+        /// Gets the derivative value
+        /**
+         * Returns the (mixed) derivative value of order specified 
+         * by the container \p c
+         *
+         * \note The container contains the order requested. In a three
+         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote 
+         * the sixth order derivative \f$ \frac{d^6}{dxdy^3dz^2}\f$.
+         *
+         * \note No computations are made at this points as all derivatives are already
+         * contained in the Taylor expansion
+         * 
+        * @return the value of the derivative
+         */
+        template <typename T>
+        auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
+        {
+            int cumfact = 0;
+            for (auto i = c.begin(); i < c.end(); ++i)
+            {
+                cumfact+=piranha::math::factorial(*c);
+            }
+            return m_p.find_cf(c) * cumfact;
+        }
+
+        /// Gets the derivative value
+        /**
+         * Returns the (mixed) derivative value of order specified 
+         * by the initializer list \p l
+         *
+         * \note This method is identical to the other overload with the same name,
+         * and it is provided for convenience.
+         *
+         * \note No computations are made at this points as all derivatives are already
+         * contained in the Taylor expansion
+         * 
+         * @return the value of the derivative
+         */
         template <typename T>
         auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            return m_p.find_cf(l);
+            int cumfact = 0;
+            for (auto i = l.begin(); i < l.end(); ++i)
+            {
+                cumfact+=piranha::math::factorial(*l);
+            }
+            return m_p.find_cf(l) * cumfact;
         }
 
         /// Finds the constant coefficient

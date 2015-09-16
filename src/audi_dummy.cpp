@@ -1,7 +1,7 @@
-/*! \mainpage AuDi (Automated Differentiation)
+/*! \mainpage
 \section z Listen (Introduction)
 Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library that allows
-for automated differentiation implementing the Taylor truncated polynomial
+for AUtomated DIfferentiation implementing the Taylor truncated polynomial
 algebra (forward mode automated differentiation). It was created with the aim
 to offer a generic solution to the user in need of an automated
 differentiation system. While other automated differentiation codes may be more
@@ -51,7 +51,6 @@ algebra of (non-truncated) polynomials does not possess. Formally
 \f$\forall T_f \in \mathcal P_{n,m}, \: \exists !\: T_g\in \mathcal P_{n,m}  \Rightarrow T_g\cdot T_f = 1\f$.
 In practice:
 \f[
-\label{eq:div}
 T_g = \frac 1{T_f} =  \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)
 \f]
 as its easily verified by performing the truncated multiplication \f$T_g \cdot T_f\f$ and
