@@ -369,12 +369,6 @@ class gdual
             return retval;
         }
 
-        /// 
-        auto _container() -> decltype(m_p._container())
-        {
-            return m_p._container();
-        }
-
         /// Current degree
         /**
          * Returns the current degree of the polynomial represented as an audi::gdual.
@@ -568,6 +562,12 @@ class gdual
             return !(d1 == d2);
         }
 
+
+        /** @name Algebraic operators
+         * 
+         */
+        //@{
+
         /// Add and assignment operator
         template <typename T>
         auto operator+=(const T &d1) -> decltype(*this = *this + d1)
@@ -695,6 +695,19 @@ class gdual
         {
             return div(d1,d2);
         }
+        //@}
+
+        /** @name Low-level interface
+         * 
+         */
+        //@{
+
+        /// Returns I DO NOT KNOW
+        auto _container() -> decltype(m_p._container())
+        {
+            return m_p._container();
+        }
+        //@}
 };
 
 
