@@ -86,6 +86,18 @@ inline gdual log(const gdual &d)
     return retval;
 }
 
+/// Overload for the exponentiation to a gdual power
+/**
+ * Computes the exponentiation to the power of an audi::gdual. 
+ * If the exponent is an integer constant, it calls the std::pow overload. Otherwise
+ * it converts \f$a^{T_f}\f$ to \f$\exp(T_g*\log(a))\f$ and computes this
+ * last expression instead.
+ *
+ * @param[in] base the base for the exponent
+ * @param[in] d audi::gdual argument
+ *
+ * @throw std::domain_error if std::log(\p base) is not finite (uses std::isfinite)
+*/
 inline gdual pow(double base, const gdual &d)
 {
     double int_part;
@@ -101,6 +113,26 @@ inline gdual pow(double base, const gdual &d)
     return exp(std::log(base) * d);
 }
 
+/// Overload for the exponentiation
+/**
+ * Implements the exponentiation of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ * @param[in] alpha exponent
+ *
+ * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
+ *
+ * @throw std::domain_error if std::pow(\f$f_0, \alpha \f$) is not finite (uses std::isfinite)
+ * or if f_0 is 0.
+ */
 inline gdual pow(const gdual &d, double alpha)
 {
     gdual retval(1., d.get_order());
@@ -126,6 +158,14 @@ inline gdual pow(const gdual &d, double alpha)
 }
 
 // Its important this comes after the pow(gdual, double) overload
+/// Overload for the integer exponentiation
+/**
+ * Implements the integer exponentiation of a audi::gdual. Essentially,
+ * it uses the \f$\mathcal P_{n,m}\f$ multiplication on \p d \p n times
+ *
+ * @param[in] d audi::gdual argument
+ * @param[in] n integer exponent
+*/
 inline gdual pow(const gdual& d, int n)
 {
     if (n <= 0) { 
@@ -138,10 +178,23 @@ inline gdual pow(const gdual& d, int n)
     return retval;
 }
 
+/// Overload for the exponentiation of a gdual to a gdual power
+/**
+ * Computes the exponentiation of an audi::gdual to the power of an audi::gdual. 
+ * If the exponent is an integer constant, it calls a different overload. Otherwise
+ * it converts \f$T_f^{T_g}\f$ to \f$\exp(T_g*\log(T_f))\f$ and computes this
+ * last expression instead.
+ *
+ * @param[in] d1 audi::gdual argument
+ * @param[in] d2 audi::gdual argument
+ *
+ * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
+*/
 inline gdual pow(const gdual &d1, const gdual &d2)
 {
     double int_part;
-    // checks wether the exponent is an integer, in which case it calls a different overload
+    // checks wether the exponent is an integer, in which case it calls 
+    // a different overload
     if (d2.degree() == 0) {
         auto p0 = d2.constant_cf();
         double float_part = std::modf(p0, &int_part);
@@ -152,11 +205,48 @@ inline gdual pow(const gdual &d1, const gdual &d2)
     return exp(d2 * log(d1));
 }
 
+/// Overload for the square root
+/**
+ * Implements the square root of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the square root of \p d
+ *
+ * @throw std::domain_error if std::pow(\f$f_0, 0.5\f$) is not finite (uses std::isfinite)
+ * or if f_0 is 0.
+ */
 inline gdual sqrt(const gdual &d)
 {
-    return pow(d, 0.5);
+    return pow(d, 0.5); // TODO: subsitute this by similar code to cbrt?
 }
 
+/// Overload for the cubic root
+/**
+ * Implements the cubic root of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{\sqrt[3]{f}} = \sqrt[3]{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the square root of \p d
+ *
+ * @throw std::domain_error if std::cbrt(\f$f_0\f$) is not finite (uses std::isfinite)
+ */
 inline gdual cbrt(const gdual& d)
 {
     double alpha = 1/3.;
@@ -179,6 +269,22 @@ inline gdual cbrt(const gdual& d)
     return retval;
 }
 
+/// Overload for the sine
+/**
+ * Implements the sine of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the sine of \p d
+*/
 inline gdual sin(const gdual& d)
 {
     auto p0 = d.constant_cf();
@@ -212,6 +318,22 @@ inline gdual sin(const gdual& d)
     return (sin_p0 * cos_taylor + cos_p0 * sin_taylor);
 }
 
+/// Overload for the cosine
+/**
+ * Implements the cosine of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the cosine of \p d
+*/
 inline gdual cos(const gdual& d)
 {
     auto p0 = d.constant_cf();
