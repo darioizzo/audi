@@ -13,6 +13,22 @@
 namespace audi
 {
 
+/// Overload for the exponential
+/**
+ * Implements the exponential of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
+*/
 inline gdual exp(const gdual &d)
 {
     gdual retval(1., d.get_order());
@@ -30,6 +46,24 @@ inline gdual exp(const gdual &d)
     return retval * std::exp(p0);
 }
 
+/// Overload for the logarithm
+/**
+ * Implements the logarithm of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
+ *
+ * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
+ */
 inline gdual log(const gdual &d)
 {
     gdual retval(0., d.get_order());

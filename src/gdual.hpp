@@ -701,9 +701,20 @@ class gdual
          * 
          */
         //@{
-
-        /// Returns I DO NOT KNOW
+        /// Get a mutable reference to the container of terms.
+        /**
+         * @return a reference to the internal container of terms.
+         */
         auto _container() -> decltype(m_p._container())
+        {
+            return m_p._container();
+        }
+
+        /// Get a const reference to the container of terms.
+        /**
+         * @return a const reference to the internal container of terms.
+         */
+        auto _container() const -> decltype(m_p._container())
         {
             return m_p._container();
         }
