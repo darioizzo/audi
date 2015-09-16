@@ -284,59 +284,82 @@ class gdual
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
 
-        /// Constructor from symbol name and truncation order
+        /// Constructor from symbol and truncation order
         /**
          *
          * Will construct a generalized dual number made of a single term with unitary coefficient and exponent,
-         * representing the expansion around zero of the symbolic variable \p name. The truncation order
+         * representing the expansion around zero of the symbolic variable \p symbol. The truncation order
          * is also set to \p order. 
-         * The type of \p name must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
+         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
          * so that "x" -> "dx". 
          * 
-         * @param[in] name name of the symbolic variable
+         * @param[in] symbol symbolic name
+         * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
          * - if \p order is not in [1, std::numeric_limits<int>::max()]
-         * - if \p name already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(const std::string &name, int order):m_p(std::string("d") + name),m_order(order)
+        explicit gdual(const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
         {
             check_order();
-            check_var_name(name);
+            check_var_name(symbol);
         }
 
-        explicit gdual(double x, int order):m_p(x),m_order(order)
+        /// Constructor from value and truncation order
+        /**
+         *
+         * Will construct a generalized dual number representing a constant 
+         * 
+         * @param[in] value value of the constant
+         * @param[in] order truncation order of the underlying algebra
+         * 
+         * @throws std::invalid_argument:
+         * - if \p order is not in [1, std::numeric_limits<int>::max()]
+         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         */
+        explicit gdual(double value, int order):m_p(value),m_order(order)
         {
             check_order();
         }
 
-        /// Constructor from value, symbol name and truncation order
+        /// Constructor from value, symbol and truncation order
         /**
          *
          * Will construct a generalized dual number representing the expansion around \p value 
-         * of the symbolic variable \p name. The truncation order is also set to \p order. 
+         * of the symbolic variable \p symbol. The truncation order is also set to \p order. 
          * 
-         * The type of \p name must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
+         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
          * so that "x" -> "dx". 
          * 
-         * @param[in] value value of the variable at the expansion point
-         * @param[in] name name of the symbolic variable
+         * @param[in] value value of the variable
+         * @param[in] symbol symbolic name
+         * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
          * - if \p order is not in [1, std::numeric_limits<int>::max()]
-         * - if \p name already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(double value, const std::string &name, int order):m_p(std::string("d") + name),m_order(order)
+        explicit gdual(double value, const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
         {
             check_order();
-            check_var_name(name);
+            check_var_name(symbol);
             m_p+=value;
         }
 
-        // Defaulted assignment operators.
+        /// Defaulted assignment operator
         gdual &operator=(const gdual &) = default;
+        /// Defaulted assignment operator
         gdual &operator=(gdual &&) = default;
 
+        /// Getter for all symbolic variables in the Taylor polynomial
+        /**
+         * Constructs and returns a std::vector<std::string> containing, 
+         * all the symbolic variables in the polynomial 
+         *
+         * @return std::vector<std::string> containing all the symbolic
+         *  variables in the polynomial 
+         */
         std::vector<std::string> get_symbols() const
         {
             std::vector<std::string> retval;
@@ -346,119 +369,289 @@ class gdual
             return retval;
         }
 
+        /// 
         auto _container() -> decltype(m_p._container())
         {
             return m_p._container();
         }
 
+        /// Current degree
+        /**
+         * Returns the current degree of the polynomial represented as an audi::gdual.
+         * This may be different from the truncation order \f$m\f$ and,
+         * in particular will be smaller or equal.
+         *
+         * @return the current degree of the polynomial
+         */
         auto degree() const -> decltype(m_p.degree())
         {
             return m_p.degree();
         }
 
+        /// Number of symbolic variables
+        /**
+         * Returns the number of symbolic variables in the polynomial represented as an audi::gdual.
+         *
+         * @return the number of symbolic variables
+         */
         auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
         {
             return m_p.get_symbol_set().size();
         }
 
+        /// Getter for the truncation order
+        /**
+         * Returns the truncation order of the underlying \f$\mathcal P_{n,m}\f$ algebra.
+         *
+         * @return the truncation order
+         */
         int get_order() const
         {
             return m_order;
         }
 
+        /// Finds the coefficient of a particular monomial
+        /**
+         * Returns the coefficient of the monomial specified in the container \p c
+         *
+         * \note The container contains the exponents of the requested monomial. In a three
+         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote 
+         * the term x y^3 z^2.
+         *
+         * \note Alphabetical order is used to order the symbol set and thus specify
+         * the coefficients.
+         *
+         * This method will first construct a term with zero coefficient
+         * and key initialised from the begin/end iterators of c and the
+         * symbol set of this, and it will then try to locate the term inside
+         * this. If the term is found, its coefficient will be returned. 
+         * Otherwise, a coefficient initialised from 0 will be returned.
+         *
+         * @return the coefficient
+         */
         template <typename T>
         auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
         {
             return m_p.find_cf(c);
         }
 
+        /// Finds the coefficient of a particular monomial
+        /**
+         * Returns the coefficient of the monomial specified in the
+         * initializer list \p l
+         * 
+         * \note This method is identical to the other overload with the same name, and it is provided for convenience.
+         * @return the coefficient
+         */
         template <typename T>
         auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
+        {
+            
+            return m_p.find_cf(l);
+        }
+
+        template <typename T>
+        auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
             return m_p.find_cf(l);
         }
 
+        /// Finds the constant coefficient
+        /**
+         * Returns the coefficient of the of the constant part of the polynomial
+         * so that if \f$T_{f} = f_0 + \hat f\f$,m \f$f_0\f$ is returned
+         * 
+         * \note This method is identical to the other overload with the same name, and it is provided for convenience.
+         * @return the coefficient
+         */
         double constant_cf() const
         {
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
         }
 
+        /// Overloaded stream operator
+        /**
+         * Will direct to stream a human-readable representation of the generalized dual number.
+         * It uses the piranha overload for the type piranha::series. Refer to that
+         * documentation for further details
+         * 
+         * \note The print order of the terms will be undefined.
+         * \note At most piranha::settings::get_max_term_output() terms 
+         * are printed, and terms in excess are represented with ellipsis "..." 
+         * at the end of the output; if piranha::settings::get_max_term_output() 
+         * is zero, all the terms will be printed. piranha::settings::set_max_term_output()
+         * is used to set this parameter.
+         * 
+         * @param[in,out] os target stream.
+         * @param[in] d audi::gdual argument.
+         * 
+         * @return reference to \p os.
+         * 
+        */
         friend std::ostream& operator<<(std::ostream& os, const gdual& d)
         {
             os << d.m_p;
             return os;
         }
 
+        /// Overloaded Equality operator.
+        /**
+         * Compares the truncation order and the single polynomial coefficients of
+         * two audi::gdual objects and returns true if equal.
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         * 
+         * @return The result of the cmparison
+        */
         friend bool operator==(const gdual &d1, const gdual &d2)
         {
             return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
         }
 
+        /// Overloaded Non equality operator.
+        /**
+         * Compares the truncation order and the single polynomial coefficients of
+         * two audi::gdual objects and returns false if equal.
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         * 
+         * @return The result of the cmparison
+        */
         friend bool operator!=(const gdual &d1, const gdual &d2)
         {
             return !(d1 == d2);
         }
 
+        /// Add and assignment operator
         template <typename T>
         auto operator+=(const T &d1) -> decltype(*this = *this + d1)
         {
             return *this = *this + d1;
         }
 
+        /// Subtract and assignment operator
         template <typename T>
         auto operator-=(const T &d1) -> decltype(*this = *this - d1)
         {
             return *this = *this - d1;
         }
 
+        /// Multiply and assignment operator
         template <typename T>
         auto operator*=(const T &d1) -> decltype(*this = *this * d1)
         {
             return *this = *this * d1;
         }
 
+        /// Divide and assignment operator
         template <typename T>
         auto operator/=(const T &d1) -> decltype(*this = *this / d1)
         {
             return *this = *this / d1;
         }
 
+        /// Negate operator
         gdual operator-() const
         {
             return gdual(-m_p,m_order);
         }
 
+        /// Identity operator
         gdual operator+() const
         {
             return *this;
         }
 
+        /// Overloaded addition operator
+        /**
+         * Implements the sum operation in the algebra \f$\mathcal P_{n,m}\f$
+         * of truncated polynomials.
+         * \note In order for this overload to be active (SFINAE rules), at least one
+         * of the arguments must be an audi::gdual, while the second argument
+         * may only be a double or int. 
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         *
+         * @return the sum between d1 and d2
+        */
         template <typename T, typename U>
         friend gdual_if_enabled<T, U> operator+(const T &d1, const U &d2)
         {
             return add(d1,d2);
         }
 
+        /// Overloaded difference operator
+        /**
+         * Implements the difference operation in the algebra \f$\mathcal P_{n,m}\f$
+         * of truncated polynomials.
+         * \note In order for this overload to be active (SFINAE rules), at least one
+         * of the arguments must be an audi::gdual, while the second argument
+         * may only be a double or int. 
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         *
+         * @return the difference between d1 and d2
+        */
         template <typename T, typename U>
         friend gdual_if_enabled<T, U> operator-(const T &d1, const U &d2)
         {
             return sub(d1,d2);
         }
 
+        /// Overloaded multiplication operator
+        /**
+         * Implements the multiplication operation in the algebra \f$\mathcal P_{n,m}\f$
+         * of truncated polynomials.
+         * \note In order for this overload to be active (SFINAE rules), at least one
+         * of the arguments must be an audi::gdual, while the second argument
+         * may only be a double or int. 
+         *
+         * \note The truncated polynomial multiplication operator is at the very heart of AuDi
+         * and its details / performances are those of the piranha multiplication
+         * algorithm which is, essentially, used. 
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         *
+         * @return the (truncated) multiplication between d1 and d2
+        */
         template <typename T, typename U>
         friend gdual_if_enabled<T, U> operator*(const T &d1, const U &d2)
         {
             return mul(d1,d2);
         }
 
+        /// Overloaded division operator
+        /**
+         * Implements the division operation in the algebra \f$\mathcal P_{n,m}\f$
+         * of truncated polynomials. Essentially defined (in case of two audi:gdual) by a multiplication and
+         * the reciprocal rule:
+         *
+         * \f[
+         * T_g = \frac 1{T_f} =  \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)
+         * \f]
+         *
+         * where \f$T_f = f_0 + \hat f\f$.
+         *
+         * \note In order for this overload to be active (SFINAE rules), at least one
+         * of the arguments must be an audi::gdual, while the second argument
+         * may only be a double or int. 
+         *
+         * @param[in] d1 first audi::gdual argument
+         * @param[in] d2 second audi::gdual argument
+         *
+         * @return an audi:gdual containing the (truncated) multiplication between d1 and d2
+        */
         template <typename T, typename U>
         friend gdual_if_enabled<T, U> operator/(const T &d1, const U &d2)
         {
             return div(d1,d2);
         }
-
-    
 };
 
 
