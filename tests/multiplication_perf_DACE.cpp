@@ -20,16 +20,14 @@ void scalable_mul(int m, int n)
 
     DA p1(1.);
     DA p2(1.);
+    DA res;
     for (int i = 0; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
     for (int i = 0; i < n; ++i) {p2 -= variables[i];} // 1 - x1 - x2 + ...
-    auto result = p1 * p2;
-    auto factor = result;
-    for (auto i = 1; i < m; ++i) {
-        result*=factor;
-    }
+    p1 = pow(p1,10);
+    p2 = pow(p2,10);
     {
         boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
-        result*=factor;
+        res = p1*p2;
     }
     int cicco;
     std::cin >> cicco;
