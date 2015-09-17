@@ -13,6 +13,6 @@ int main() {
 	gdual f = exp((x*x+cbrt(y)/log(x*y)));
 
 	// 3 - Inspect the results
-	std::cout << f << std::endl;						// This is the entire Taylor expansion of f (truncated at the 7th order)
-	std::cout << f.get_derivative({4,3}) << std::endl;  // This is the value of the mixed derivative (d^7 / dx^4dy^3)
+	std::cout << f << std::endl;                       // This is the entire Taylor expansion of f (truncated at the 7th order)
+	std::cout << f.get_derivative({4,3}) << std::endl; // This is the value of the mixed derivative (d^7 / dx^4dy^3)
 }
