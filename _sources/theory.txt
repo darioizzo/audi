@@ -119,6 +119,8 @@ which allows us to conclude:
 .. math::
    T_{(1/f)} = \frac 1f_0 \left(1 +\sum_{j=1}^m (-1)^j (\hat f / f_0)^j\right)
 
+------------------------------------------------------------------------------
+
 Elementary functions
 ====================
 
@@ -139,8 +141,10 @@ Taylor expansion of a composition function directly composing the truncated
 Taylor expansions. For most elementary functions, though, we can consider 
 :math:`T_f = f_0 + \hat f` and use some addition formula to be able to 
 ''extract`` :math:`\hat f` and thus exploit its nil-potency. The details 
-on how this is done differ for each particular :math:`f` considered and are thus 
-reported in the following subsections.
+on how this is done differ for each particular :math:`f` considered and are 
+reported in the following subsections for some commonly used functions.
+
+ Other functions suc as tan, cosh etc. can also be treated similarly and are not reported for convenience.
 
 Exponential
 -----------
@@ -149,15 +153,15 @@ Let us consider the case of the exponential:
 .. math::
    g(x) = \exp(x) = \sum_{i=0} \frac{x^i}{i!} = 1 + x + \frac {x^2}{2} + ...
 
-We want to compute the truncated Taylor expansion of \f$\exp(f(\mathbf x))\f$ 
-starting from the truncated Taylor expansion \f$T_f = f_0 + \hat f\f$. 
+We want to compute the truncated Taylor expansion of :math:`\exp(f(\mathbf x))` 
+starting from the truncated Taylor expansion :math:`T_f = f_0 + \hat f`. 
 We thus write:
 
 .. math::
    (g \circ f) (\mathbf x) = \exp(f(\mathbf x)) =  \exp f_0 \exp (f(\mathbf x) - f_0)
 
-note that, now, we can apply the **composition rule** to \f$\exp (f(\mathbf x) - f_0)\f$ 
-since the MacLaurin Taylor expansion of \f$f(\mathbf x) - f_0\f$ does not have 
+note that, now, we can apply the **composition rule** to :math:`\exp (f(\mathbf x) - f_0)` 
+since the MacLaurin Taylor expansion of :math:`f(\mathbf x) - f_0` does not have 
 a constant term. Hence:
 
 .. math::
@@ -177,8 +181,8 @@ Let us consider the case of the natural logarithm:
    g(x) = \log(x)
 
 We want to compute the truncated Taylor expansion of 
-\f$\log(f(\mathbf x))\f$ starting from the truncated Taylor expansion 
-\f$T_f = f_0 + \hat f\f$. We thus write:
+:math:`\log(f(\mathbf x))` starting from the truncated Taylor expansion 
+:math:`T_f = f_0 + \hat f`. We thus write:
 
 .. math::
    (g \circ f) (\mathbf x) = \log(f(\mathbf x)) =  \log (f_0 + (f(\mathbf x) - f_0)) = \log f_0 + \log(1 + \frac{f(\mathbf x) - f_0}{f_0})
@@ -188,13 +192,13 @@ We can now apply the **composition rule** to get:
 .. math::
    T_{g \circ f} = \log f_0 + T_{\log(1+x)} \circ \frac{\hat f}{f_0}
 
-and, using the known expression for MacLaurin expansion of \f$\log(1+x)\f$, we get:
+and, using the known expression for MacLaurin expansion of :math:`\log(1+x)`, we get:
 
 .. math::
    T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...
    :label: log
 
-Note that the above expression is only defined if \f$f_0 \ge 0\f$.
+Note that the above expression is only defined if :math:`f_0 \ge 0`.
 
 Sine and cosine
 ---------------
@@ -207,9 +211,9 @@ Let us consider the case of the sine and cosine functions:
    g_2(x) = \cos(x) = \sum_{i=0} (-1)^{i} \frac{x^{2i}}{(2i)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - ... 
 
 
-We want to compute the truncated Taylor expansion of \f$\sin(f(\mathbf x))\f$, 
-\f$\cos(f(\mathbf x))\f$ starting from the truncated Taylor expansion 
-\f$T_f = f_0 + \hat f\f$. We thus write:
+We want to compute the truncated Taylor expansion of :math:`\sin(f(\mathbf x))`, 
+:math:`\cos(f(\mathbf x))` starting from the truncated Taylor expansion 
+:math:`T_f = f_0 + \hat f`. We thus write:
 
 .. math::
    (g_1 \circ f) (\mathbf x) = \sin(f(\mathbf x)) =  \sin f_0 \cos(f(\mathbf x) - f_0) + \cos f_0 \sin(f(\mathbf x) - f_0) 
@@ -217,8 +221,8 @@ We want to compute the truncated Taylor expansion of \f$\sin(f(\mathbf x))\f$,
 .. math::
    (g_2 \circ f) (\mathbf x) = \cos(f(\mathbf x)) =  \cos f_0 \cos(f(\mathbf x) - f_0) - \sin f_0 \sin(f(\mathbf x) - f_0) 
 
-and, applying the **composition rule** to \f$\cos(f(\mathbf x) - f_0)\f$ and
-\f$\sin(f(\mathbf x) - f_0)\f$, we get:
+and, applying the **composition rule** to :math:`\cos(f(\mathbf x) - f_0)` and
+:math:`\sin(f(\mathbf x) - f_0)`, we get:
 
 .. math::
    T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
@@ -233,9 +237,9 @@ Let us consider the case of the power function.
 .. math::
    g(x) = x^\alpha
 
-We want to compute the truncated Taylor expansion of \f$f(\mathbf x)^\alpha\f$ 
-assuming to have access to the truncated Taylor expansion of \f$f\f$, 
-\f$T_f = f_0 + \hat f\f$. We thus write:
+We want to compute the truncated Taylor expansion of :math:`f(\mathbf x)^\alpha` 
+assuming to have access to the truncated Taylor expansion of :math:`f`, 
+:math:`T_f = f_0 + \hat f`. We thus write:
 
 .. math::
    (g \circ f) (\mathbf x) = f(\mathbf x) ^ \alpha =  (f_0 + (f(\mathbf x) - f_0))^\alpha = f_0^\alpha \left( 1+ \frac{f(x) - f_0}{f_0}\right)^\alpha
@@ -248,3 +252,155 @@ We can now apply the **composition rule** to get:
 .. math::
    = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha - 1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right)
    :label: pow
+
+-----------------------------------------------------------------------
+
+Practical Examples (to be done by hand)
+=======================================
+In the above sections we derived a number of results that allow operating 
+on simple Taylor expansions to compute Taylor expansions of increasingly 
+complex expressions. We summarize here those results (keep in mind that 
+:math:`T_f = f_0 + \hat f`) :
+
+.. math::
+   T_{f\pm g} = T_f \pm T_g\\
+   T_{fg} = T_f \cdot T_g\\
+   T_{(1/f)} = \frac 1f_0 \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)\\
+   T_{(\exp f)} = \exp f_0 \sum_{k=0}^m \frac{\hat f^k}{k!} \\
+   T_{(\log f)} = \log f_0 - \sum_{k=1}^m \frac{(-1)^k}k \left(\hat f / f_0\right)^k \\
+   T_{(\sin f)} = \sin f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) + \cos f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
+   T_{(\cos f)} = \cos f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) - \sin f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
+   T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k
+   :label: all
+
+It is worth mentioning here that other functions such as the inverse functions, 
+the hyperbolic functions etc. can also be treated in this way. 
+The above equations can be used to find Taylor expansions of increasingly 
+complex functions by simply operating on the algebra \f$\mathcal P_{n,m}\f$. 
+Once a Taylor expansion is computed, its coefficients can be extracted to 
+obtain the value of any desired derivative. We have thus built an automated 
+differentiation system. While the formalism presented can, at first, appear 
+complex, the system is rather simple as we hope will appear from the following 
+examples. 
+
+Example 1 - A multiplication
+----------------------------
+
+Consider the simple function of two variables:
+
+.. math::
+   f(x,y) = x + 3xy + y^2
+ 
+Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ can be computed as:
+
+.. math::
+   T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y
+ 
+Let us explicitly compute such an expression at the point \f$x=3\f$, \f$y=7\f$. The exact sequence of computations to be performed is:
+
+.. math::
+   T_x = 3 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+   T_y = 7 + 0 dx + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+   T_x \cdot T_y = 21 + 7 d x + 3 d y  + 1 dxdy + 0 dx^2 + 0 dy^2 
+ 
+and
+
+.. math::
+   T_y \cdot T_y = 49 + 0 dx + 14 dy  + 0 dxdy + 0 dx^2 + 1 dy^2 
+ 
+We can then derive the final expression:
+
+.. math::
+   T_f = 115 + 22 dx + 23 dy +3 dxdy + 0 dx^2 + 1 dy^2 
+ 
+and we may easily extract the derivatives comparing this expression to the generic form of a Taylor expansion:
+
+.. math::
+   f = 115, 
+   \partial_x f = 22,
+   \partial_y f = 23,
+   \partial_{xy} f = 3,
+   \partial_{xx} f = 0,
+   \partial_{yy} f = 2,
+ 
+
+Example 2 - A division
+----------------------
+
+Consider the simple function of two variables:
+
+.. math::
+   f = 1 / (x + 2xy + y^2) = 1 / p
+ 
+Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ in (say) \f$x=0\f$, \f$y=1\f$ 
+can be computed as follows:
+
+.. math::
+   T_x = 0 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+   T_y = 1 + 0 dx + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+   T_p =  1 + 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2 
+ 
+and, applying the reciprocal rule, we conclude
+
+.. math::
+   T_f = ( 1 - \hat p + \hat p ^ 2 )
+ 
+where \f$\hat p = 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2\f$, hence:
+
+.. math::
+   T_f = 1 -3 dx -2 dy + 10dxdy + 9dx^2 + 3dy^2
+ 
+which allows, as in the previous example, to compute all derivatives up to order two:
+
+.. math::
+   f = 1, 
+   \partial_x f = -3,
+   \partial_y f = -2,
+   \partial_{xy} f = 10,
+   \partial_{xx} f = 18,
+   \partial_{yy} f = 6,
+ 
+Example 3 - An exponential 
+--------------------------
+
+Consider the elementary function of two variables:
+
+.. math::
+   f = \exp(xy)
+ 
+Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ in (say) \f$x=1\f$, \f$y=0\f$ 
+can be computed as follows:
+
+.. math::
+   T_x = 1 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+  T_y = 0 + 0 d x + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
+ 
+.. math::
+   T_x \cdot T_y = 0 + 0 dx + 1 dy  + 1 dxdy + 0 dx^2 + 0dy^2 
+ 
+and, applying the rule for the exponential of Taylor series, we conclude:
+
+.. math::
+   T_f = 1 + dy  + dxdy + \frac 12 dy^2
+ 
+and,
+
+.. math::
+   f = 1, 
+   \partial_x f = 0,
+   \partial_y f = 1,
+   \partial_{xy} f = 1,
+   \partial_{xx} f = 0,
+   \partial_{yy} f = 1,
+ 
+
