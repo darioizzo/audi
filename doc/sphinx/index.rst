@@ -16,9 +16,9 @@ across all application ranges (low orders, high orders, one variable,
 many variables).
 
 AuDi is internally powered by the truncated polynomial multiplication algorithm
-of the open source project,  <a href="https://github.com/bluescarni/piranha">Piranha</a> details of which are described in:
+of the open source project `Piranha <https://github.com/bluescarni/piranha>`_ details of which are described in:
 
-Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845"> "Parallel sparse polynomial multiplication on modern hardware architectures."</a> Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
+Biscani, Francesco. `Parallel sparse polynomial multiplication on modern hardware architectures. <http://dl.acm.org/citation.cfm?id=2442845>`_  Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
 
-Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).
+Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures. <http://arxiv.org/pdf/1004.4548v1.pdf>`_ arXiv preprint arXiv:1004.4548 (2010).
 

@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/math/special_functions/factorials.hpp>
 #include <initializer_list>
 #include <iostream>
 #include <iterator>
@@ -464,7 +465,7 @@ class gdual
             int cumfact = 0;
             for (auto i = c.begin(); i < c.end(); ++i)
             {
-                cumfact+=piranha::math::factorial(*c);
+                cumfact+=boost::math::factorial<double>(*i);
             }
             return m_p.find_cf(c) * cumfact;
         }
@@ -488,7 +489,7 @@ class gdual
             int cumfact = 0;
             for (auto i = l.begin(); i < l.end(); ++i)
             {
-                cumfact+=piranha::math::factorial(*l);
+                cumfact+=boost::math::factorial<double>(*i);
             }
             return m_p.find_cf(l) * cumfact;
         }
