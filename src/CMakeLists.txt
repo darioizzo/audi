@@ -9,3 +9,4 @@ SET(HEADERS_LIST
 add_library(audi_dummy STATIC audi_dummy.cpp ${HEADERS_LIST})
 
 # TODO header installation.
+install(FILES ${HEADERS_LIST} DESTINATION include/audi)
