@@ -36,8 +36,8 @@ void scalable_mul(int m, int n)
 int main()
 {
     std::cout << "Testing multiplication of (1 + x1 + .. + xn)^m * (1 - x1 - .. - xn)^m: " << std::endl;
-    for (auto m = 5; m < 11; ++m) {
-        for (auto n = 5; n < 11; ++n) {
+    for (auto m = 10; m < 11; ++m) {
+        for (auto n = 10; n < 11; ++n) {
             scalable_mul(m,n);
         }
     }
