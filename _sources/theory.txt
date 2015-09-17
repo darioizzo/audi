@@ -162,7 +162,7 @@ a constant term. Hence:
 
 .. math::
    T_{g \circ f} = \exp f_0 T_g \circ T_{\hat f}
-\f]
+
 and, finally:
 
 .. math::
