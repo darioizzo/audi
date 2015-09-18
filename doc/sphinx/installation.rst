@@ -1,4 +1,4 @@
-.. AuDi installation guide
+.. _installationguide:
 
 
 Installation guide

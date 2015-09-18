@@ -33,7 +33,13 @@ import sphinx_bootstrap_theme
 # ones.
 extensions = [
     'sphinx.ext.mathjax',
+    'breathe',
 ]
+
+# BREATHE configuration paths
+#sys.path.append( "/home/me/docproj/ext/breathe/" )
+breathe_projects = { "AuDi": "../doxygen/xml" }
+breathe_default_project = "AuDi"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -135,7 +141,7 @@ html_theme_options = {
     'navbar_links': [
         ("Install", "installation"),
         ("Quick Start", "quickstart"),
-        ("Docs", "documentation/index"),
+        ("Docs", "docs/index"),
         ("Theory", "theory"),
         ("Credits", "credits"),
     ],
