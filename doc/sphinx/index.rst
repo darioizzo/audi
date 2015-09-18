@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome
-================================
+AuDi
+====
 
-Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library that allows
+Not the car, rather from latin: "listen!") AuDI is an open source, header only, C++ library that allows
 for AUtomated DIfferentiation implementing the Taylor truncated polynomial
 algebra (forward mode automated differentiation). It was created with the aim
 to offer a generic solution to the user in need of an automated

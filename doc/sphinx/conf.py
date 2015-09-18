@@ -122,12 +122,16 @@ todo_include_todos = False
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
+# (Optional) Logo. Should be small enough to fit the navbar (ideally 24x24).
+# Path should be relative to the ``_static`` files directory.
+html_logo = "_static/audi_mini_logo.png"
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    'navbar_title': "AuDi",
+    'navbar_title': " ",
 
     # Tab name for entire site. (Default: "Site")
     'navbar_site_name': "Site",
