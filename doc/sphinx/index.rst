@@ -3,8 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-AuDi
-====
+.. image:: _static/audi_logo.png
 
 Not the car, rather from latin: "listen!") AuDI is an open source, header only, C++ library that allows
 for AUtomated DIfferentiation implementing the Taylor truncated polynomial
