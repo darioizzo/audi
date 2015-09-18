@@ -10,7 +10,7 @@ Quick start examples
 C++
 ---
 
-After following the installation instructions you will be able to compile and run your first C++ AuDi program:
+After following the :ref:`installationguide` you will be able to compile and run your first C++ AuDi program:
 
 .. _getting_started:
 

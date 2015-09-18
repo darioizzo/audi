@@ -57,7 +57,7 @@
             
                 <li><a href="installation.html">Install</a></li>
                 <li><a href="#">Quick Start</a></li>
-                <li><a href="documentation/index.html">Docs</a></li>
+                <li><a href="docs/index.html">Docs</a></li>
                 <li><a href="theory.html">Theory</a></li>
                 <li><a href="credits.html">Credits</a></li>
             
@@ -130,7 +130,7 @@
 </div>
 <div class="section" id="c">
 <h2><a class="toc-backref" href="#id2">C++</a><a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
-<p>After following the installation instructions you will be able to compile and run your first C++ AuDi program:</p>
+<p>After following the <a class="reference internal" href="installation.html#installationguide"><span>Installation guide</span></a> you will be able to compile and run your first C++ AuDi program:</p>
 <div class="highlight-c++" id="getting-started"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -163,8 +163,8 @@
 	<span class="n">gdual</span> <span class="n">f</span> <span class="o">=</span> <span class="n">exp</span><span class="p">((</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">cbrt</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)));</span>
 
 	<span class="c1">// 3 - Inspect the results</span>
-	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>                       <span class="c1">// This is the entire Taylor expansion of f (truncated at the 7th order)</span>
-	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">})</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Taylor polynomial: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>                       <span class="c1">// This is the entire Taylor expansion of f (truncated at the 7th order)</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derivative value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">})</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>

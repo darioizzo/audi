@@ -57,7 +57,7 @@
             
                 <li><a href="#">Install</a></li>
                 <li><a href="quickstart.html">Quick Start</a></li>
-                <li><a href="documentation/index.html">Docs</a></li>
+                <li><a href="docs/index.html">Docs</a></li>
                 <li><a href="theory.html">Theory</a></li>
                 <li><a href="credits.html">Credits</a></li>
             
@@ -117,7 +117,7 @@
     <div class="col-md-12">
       
   <div class="section" id="installation-guide">
-<h1><a class="toc-backref" href="#id1">Installation guide</a><a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
+<span id="installationguide"></span><h1><a class="toc-backref" href="#id1">Installation guide</a><a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
@@ -137,15 +137,15 @@
 <li><a class="reference external" href="http://www.mpfr.org/">GNU MPFR library</a>: needed by piranha</li>
 <li><a class="reference external" href="https://gmplib.org/">The GMP multiprecision library</a>: needed by piranha</li>
 </ul>
-<p>After making sure the dependencies above are installed in your system (most common package managers can find them), you can download the latest AuDi version via git:</p>
+<p>After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest AuDi version via git:</p>
 <div class="highlight-bash"><div class="highlight"><pre>git clone https://github.com/darioizzo/audi.git
 </pre></div>
 </div>
-<p>and just copy the headers in the directory src into your favorite path location. You can also let CMake do the dirty work by typing (after configuring)</p>
+<p>cand onfigure your build using CMake. When done, type (in your build directory):</p>
 <div class="highlight-bash"><div class="highlight"><pre>make install
 </pre></div>
 </div>
-<p>The headers should now be found in your system. To check that all went well compile the quick-start example.</p>
+<p>The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory. To check that all went well compile the <a class="reference internal" href="quickstart.html#getting-started"><span>quick-start example</span></a>.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="python">

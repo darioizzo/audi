@@ -1,4 +1,4 @@
-.. AuDi installation guide
+.. _installationguide:
 
 
 Installation guide
@@ -17,19 +17,19 @@ AuDi is a header only library which has the following third party dependencies
 * `GNU MPFR library <http://www.mpfr.org/>`_: needed by piranha
 * `The GMP multiprecision library <https://gmplib.org/>`_: needed by piranha
 
-After making sure the dependencies above are installed in your system (most common package managers can find them), you can download the latest AuDi version via git:
+After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest AuDi version via git:
 
 .. code-block:: bash
 
    git clone https://github.com/darioizzo/audi.git
 
-and just copy the headers in the directory src into your favorite path location. You can also let CMake do the dirty work by typing (after configuring)
+cand onfigure your build using CMake. When done, type (in your build directory):
 
 .. code-block:: bash
 
    make install
 
-The headers should now be found in your system. To check that all went well compile the quick-start example.
+The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory. To check that all went well compile the :ref:`quick-start example <getting_started>`.
 
 -----------------------------------------------------------------------
 
