@@ -41,6 +41,16 @@ inline bool EPSILON_COMPARE(const gdual& d1, const gdual& d2, const double epsil
     return true;
 }
 
+inline bool EPSILON_COMPARE(double d1, double d2, const double epsilon)
+{
+    double zero = std::abs(d2 - d1);
+    if (zero > epsilon) {
+        std::cout << "Failing to be within epsilon from zero: " << zero << std::endl;
+        return false;
+    }
+    return true;
+}
+
 } // end of namespace audi 
 
 #endif

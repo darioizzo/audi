@@ -423,10 +423,16 @@ class gdual
          * Otherwise, a coefficient initialised from 0 will be returned.
          *
          * @return the coefficient
+         *
+         * @throws std::invalid_argument:
+         * - if the requested coefficient is beyond the truncation order
          */
         template <typename T>
         auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
         {
+            if (std::accumulate(c.begin(),c.end(),0) > m_order) {
+                throw std::invalid_argument("requested coefficient is beyond the truncation order.");
+            }
             return m_p.find_cf(c);
         }
 
@@ -436,12 +442,18 @@ class gdual
          * initializer list \p l
          * 
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
+         *
          * @return the coefficient
+         *
+         * @throws std::invalid_argument:
+         * - if the requested coefficient is beyond the truncation order
          */
         template <typename T>
         auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-
+            if (std::accumulate(l.begin(),l.end(),0) > m_order) {
+                throw std::invalid_argument("requested coefficient is beyond the truncation order.");
+            }
             return m_p.find_cf(l);
         }
 
@@ -457,17 +469,20 @@ class gdual
          * \note No computations are made at this points as all derivatives are already
          * contained in the Taylor expansion
          * 
-        * @return the value of the derivative
+         * @return the value of the derivative
+         *
+         * @throws std::invalid_argument:
+         * - if the requested coefficient is beyond the truncation order
          */
         template <typename T>
         auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
         {
-            int cumfact = 0;
+            double cumfact = 1;
             for (auto i = c.begin(); i < c.end(); ++i)
             {
-                cumfact+=boost::math::factorial<double>(*i);
+                cumfact*=boost::math::factorial<double>(*i);
             }
-            return m_p.find_cf(c) * cumfact;
+            return this->find_cf(c) * cumfact;
         }
 
         /// Gets the derivative value
@@ -482,16 +497,19 @@ class gdual
          * contained in the Taylor expansion
          * 
          * @return the value of the derivative
+         *
+         * @throws std::invalid_argument:
+         * - if the requested coefficient is beyond the truncation order
          */
         template <typename T>
         auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            int cumfact = 0;
+            double cumfact = 1;
             for (auto i = l.begin(); i < l.end(); ++i)
             {
-                cumfact+=boost::math::factorial<double>(*i);
+                cumfact*=boost::math::factorial<double>(*i);
             }
-            return m_p.find_cf(l) * cumfact;
+            return this->find_cf(l) * cumfact;
         }
 
         /// Finds the constant coefficient

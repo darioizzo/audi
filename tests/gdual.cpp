@@ -113,9 +113,11 @@ BOOST_AUTO_TEST_CASE(identities)
 
 BOOST_AUTO_TEST_CASE(find_cf)
 {
-    BOOST_CHECK_EQUAL(gdual("x",4).find_cf({5}),0.);
+    // Exceeding truncation order
+    BOOST_CHECK_THROW(gdual("x",4).find_cf({5}),std::invalid_argument);
+    BOOST_CHECK_THROW(gdual("x",4).find_cf(std::vector<int>{5}),std::invalid_argument);
+    // Mismtach between monomial requested and number of variables
     BOOST_CHECK_THROW(gdual(1,4).find_cf({5}),std::invalid_argument);
-    BOOST_CHECK_EQUAL(gdual("x",4).find_cf(std::vector<int>{5}),0.);
     BOOST_CHECK_THROW(gdual(1,4).find_cf(std::vector<int>{5}),std::invalid_argument);
 
     BOOST_CHECK_EQUAL((gdual(3,4) + gdual("x",4)).find_cf({0}),3);
@@ -123,4 +125,33 @@ BOOST_AUTO_TEST_CASE(find_cf)
 
     BOOST_CHECK_EQUAL((gdual("x",4) + gdual("y",4)).find_cf({0,1}),1);
     BOOST_CHECK_EQUAL((gdual("x",4) + gdual("y",4)).find_cf({1,0}),1);
+}
+
+BOOST_AUTO_TEST_CASE(get_derivative)
+{
+    // we test some trivial derivatives
+    {
+    gdual x(1, "x",4);
+    gdual y(1, "y",4);
+    gdual z(1, "z",4);
+    gdual f = x*x*x*x*x + x*y*z*x*x + z*x*y*y*y;
+    BOOST_CHECK_EQUAL(f.get_derivative({1,1,1}), 6.);
+    BOOST_CHECK_EQUAL(f.get_derivative({2,1,1}), 6.);
+    BOOST_CHECK_EQUAL(f.get_derivative({1,2,1}), 6.);
+    BOOST_CHECK_EQUAL(f.get_derivative({1,1,2}), 0.);
+
+    BOOST_CHECK_EQUAL(f.get_derivative({4,0,0}),120.);
+    BOOST_CHECK_THROW(f.get_derivative({4,1,1}),std::invalid_argument);
+    }
+    // and a less trivial case
+    {
+    gdual x(1, "x",8);
+    gdual y(1, "y",8);
+    gdual f = (x * y + 2 * x * x * y) / (1 + x + y);
+    BOOST_CHECK_EQUAL(f.get_derivative({1,1}), 1.);
+    BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({2,2}), 0, 1e-14) == true);
+    BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({3,3}), 0, 1e-14) == true);
+    BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({4,4}), 0, 1e-14) == true);
+    }
+
 }
