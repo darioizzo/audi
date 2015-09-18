@@ -333,7 +333,7 @@ T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\r
 <p>It is worth mentioning here that other functions such as the inverse functions,
 the hyperbolic functions etc. can also be treated in this way.
 The above equations can be used to find Taylor expansions of increasingly
-complex functions by simply operating on the algebra f$mathcal P_{n,m}f$.
+complex functions by simply operating on the algebra <span class="math">\(\mathcal P_{n,m}\)</span>.
 Once a Taylor expansion is computed, its coefficients can be extracted to
 obtain the value of any desired derivative. We have thus built an automated
 differentiation system. While the formalism presented can, at first, appear
@@ -344,10 +344,10 @@ examples.</p>
 <p>Consider the simple function of two variables:</p>
 <div class="math">
 \[f(x,y) = x + 3xy + y^2\]</div>
-<p>Its Taylor expansion f$T_f in mathcal P_{2,2}f$ can be computed as:</p>
+<p>Its Taylor expansion <span class="math">\(T_f \in \mathcal P_{2,2}\)</span> can be computed as:</p>
 <div class="math">
 \[T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y\]</div>
-<p>Let us explicitly compute such an expression at the point f$x=3f$, f$y=7f$. The exact sequence of computations to be performed is:</p>
+<p>Let us explicitly compute such an expression at the point <span class="math">\(x=3\)</span>, <span class="math">\(y=7\)</span>. The exact sequence of computations to be performed is:</p>
 <div class="math">
 \[T_x = 3 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2\]</div>
 <div class="math">
@@ -374,7 +374,7 @@ examples.</p>
 <p>Consider the simple function of two variables:</p>
 <div class="math">
 \[f = 1 / (x + 2xy + y^2) = 1 / p\]</div>
-<p>Its Taylor expansion f$T_f in mathcal P_{2,2}f$ in (say) f$x=0f$, f$y=1f$
+<p>Its Taylor expansion <span class="math">\(T_f \in \mathcal P_{2,2}\)</span> in (say) <span class="math">\(x=0\)</span>, <span class="math">\(y=1\)</span>
 can be computed as follows:</p>
 <div class="math">
 \[T_x = 0 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2\]</div>
@@ -385,7 +385,7 @@ can be computed as follows:</p>
 <p>and, applying the reciprocal rule, we conclude</p>
 <div class="math">
 \[T_f = ( 1 - \hat p + \hat p ^ 2 )\]</div>
-<p>where f$hat p = 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2f$, hence:</p>
+<p>where <span class="math">\(\hat p = 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2\)</span>, hence:</p>
 <div class="math">
 \[T_f = 1 -3 dx -2 dy + 10dxdy + 9dx^2 + 3dy^2\]</div>
 <p>which allows, as in the previous example, to compute all derivatives up to order two:</p>
@@ -402,7 +402,7 @@ can be computed as follows:</p>
 <p>Consider the elementary function of two variables:</p>
 <div class="math">
 \[f = \exp(xy)\]</div>
-<p>Its Taylor expansion f$T_f in mathcal P_{2,2}f$ in (say) f$x=1f$, f$y=0f$
+<p>Its Taylor expansion <span class="math">\(T_f \in \mathcal P_{2,2}\)</span> in (say) <span class="math">\(x=1\)</span>, <span class="math">\(y=0\)</span>
 can be computed as follows:</p>
 <div class="math">
 \[T_x = 1 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2\]</div>

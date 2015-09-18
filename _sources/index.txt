@@ -11,9 +11,9 @@ for AUtomated DIfferentiation implementing the Taylor truncated polynomial
 algebra (forward mode automated differentiation). It was created with the aim
 to offer a generic solution to the user in need of an automated
 differentiation system. While other automated differentiation codes may be more
-efficient on some targeted application, AuDi was built to be fast and efficient
+efficient on some targeted application requesting a specific order and sparsity, AuDi was built to be fast and efficient
 across all application ranges (low orders, high orders, one variable, 
-many variables).
+many variables, sparse and dense).
 
 AuDi is internally powered by the truncated polynomial multiplication algorithm
 of the open source project `Piranha <https://github.com/bluescarni/piranha>`_ details of which are described in:

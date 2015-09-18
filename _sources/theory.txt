@@ -276,7 +276,7 @@ complex expressions. We summarize here those results (keep in mind that
 It is worth mentioning here that other functions such as the inverse functions, 
 the hyperbolic functions etc. can also be treated in this way. 
 The above equations can be used to find Taylor expansions of increasingly 
-complex functions by simply operating on the algebra \f$\mathcal P_{n,m}\f$. 
+complex functions by simply operating on the algebra :math:`\mathcal P_{n,m}`. 
 Once a Taylor expansion is computed, its coefficients can be extracted to 
 obtain the value of any desired derivative. We have thus built an automated 
 differentiation system. While the formalism presented can, at first, appear 
@@ -291,12 +291,12 @@ Consider the simple function of two variables:
 .. math::
    f(x,y) = x + 3xy + y^2
  
-Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ can be computed as:
+Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` can be computed as:
 
 .. math::
    T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y
  
-Let us explicitly compute such an expression at the point \f$x=3\f$, \f$y=7\f$. The exact sequence of computations to be performed is:
+Let us explicitly compute such an expression at the point :math:`x=3`, :math:`y=7`. The exact sequence of computations to be performed is:
 
 .. math::
    T_x = 3 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 
@@ -336,7 +336,7 @@ Consider the simple function of two variables:
 .. math::
    f = 1 / (x + 2xy + y^2) = 1 / p
  
-Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ in (say) \f$x=0\f$, \f$y=1\f$ 
+Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` in (say) :math:`x=0`, :math:`y=1` 
 can be computed as follows:
 
 .. math::
@@ -353,7 +353,7 @@ and, applying the reciprocal rule, we conclude
 .. math::
    T_f = ( 1 - \hat p + \hat p ^ 2 )
  
-where \f$\hat p = 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2\f$, hence:
+where :math:`\hat p = 3 dx + 2 dy +2 dxdy + 0 dx^2 + 1 dy^2`, hence:
 
 .. math::
    T_f = 1 -3 dx -2 dy + 10dxdy + 9dx^2 + 3dy^2
@@ -376,7 +376,7 @@ Consider the elementary function of two variables:
 .. math::
    f = \exp(xy)
  
-Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ in (say) \f$x=1\f$, \f$y=0\f$ 
+Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` in (say) :math:`x=1`, :math:`y=0` 
 can be computed as follows:
 
 .. math::
