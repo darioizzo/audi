@@ -40,6 +40,7 @@ extensions = [
 #sys.path.append( "/home/me/docproj/ext/breathe/" )
 breathe_projects = { "AuDi": "../doxygen/xml" }
 breathe_default_project = "AuDi"
+breathe_default_members = ('members')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -143,17 +144,16 @@ html_theme_options = {
         ("Quick Start", "quickstart"),
         ("Docs", "docs/index"),
         ("Theory", "theory"),
-        ("Credits", "credits"),
     ],
 
     # Render the next and previous page links in navbar. (Default: true)
     'navbar_sidebarrel': False,
 
     # Render the current pages TOC in the navbar. (Default: true)
-    'navbar_pagenav': True,
+    'navbar_pagenav': False,
 
     # Tab name for the current pages TOC. (Default: "Page")
-    'navbar_pagenav_name': "Page",
+    #'navbar_pagenav_name': "Page",
 
     # Global TOC depth for "site" navbar tab. (Default: 1)
     # Switching to -1 shows all levels.
