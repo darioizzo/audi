@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(logarithm)
 }
 
 
-BOOST_AUTO_TEST_CASE(sin_and_cos)
+BOOST_AUTO_TEST_CASE(sine_and_cosine)
 {
     int order = 8;
     gdual x(2.3, "x",order);
@@ -111,4 +111,49 @@ BOOST_AUTO_TEST_CASE(sin_and_cos)
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 2. * cos(p1) * cos(p1) - 1., 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), cos(p1) * cos(p1) - sin(p1) * sin(p1), 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1., order), 1e-12) == true);
+
+    gdual sine(p1);
+    gdual cosine(p1);
+    sin_and_cos(p1, sine, cosine);
+    BOOST_CHECK_EQUAL(sine, sin(p1));
+    BOOST_CHECK_EQUAL(cosine, cos(p1));
+}
+
+BOOST_AUTO_TEST_CASE(tangent)
+{
+    {
+    int order = 5;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
+    }
+
+    {
+    int order = 6;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
+    }
+
+    {
+    int order = 10;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
+    }
+    
+    {
+    int order = 11;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
+    }
 }

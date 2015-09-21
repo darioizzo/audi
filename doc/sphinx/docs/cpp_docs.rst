@@ -82,6 +82,22 @@ cos: Overload for the cosine.
 
 ----------------------------------------------------------
 
+sin_and_cos: Computes both at once
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::sin_and_cos(const gdual&, gdual sine&, gdual& cosine)
+   :project: AuDi
+
+----------------------------------------------------------
+
+tan: Overload for the tangent.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::tan(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
 sqrt: Overload for the square root.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

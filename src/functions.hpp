@@ -2,6 +2,7 @@
 #define AUDI_FUNCTIONS_HPP
 
 #include <boost/lexical_cast.hpp>
+#include <boost/math/special_functions/bernoulli.hpp>
 #include <cmath>
 #include <piranha/binomial.hpp>
 #include <stdexcept>
@@ -367,6 +368,101 @@ inline gdual cos(const gdual& d)
     return (cos_p0 * cos_taylor - sin_p0 * sin_taylor);
 }
 
+/// Computes both sine and cosine
+/**
+ * As most of the computations for the sine and cosine is the same, it is twice as fast
+ * to get both sine and cosine at once rather than computing them in sequence.
+ * Use this function when both sine and cosine are needed.
+ *
+ * @param[in] d audi::gdual argument
+ * @param[out] sine the sine of d
+ * @param[out] cosine the cosine of d
+ *
+*/
+void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+
+    double sin_p0 = std::sin(p0);
+    double cos_p0 = std::cos(p0);
+
+    double factorial=1.;
+    double coeff=1.;
+    gdual cos_taylor(1., d.get_order());
+    gdual tmp(cos_taylor);
+    for (auto i=2; i<=d.get_order(); i+=2) {
+        coeff*=-1.;                             // -1, 1, -1, 1, ...
+        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
+        factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
+        cos_taylor += (coeff/factorial) * tmp;
+    }
+
+    factorial=1.;
+    coeff=1.;
+    gdual sin_taylor(phat);
+    tmp = sin_taylor;
+    for (auto i=3; i<=d.get_order(); i+=2) {
+        coeff*=-1.;                             // -1, 1, -1, 1, ...
+        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
+        factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
+        sin_taylor += (coeff/factorial) * tmp;
+    }
+    sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
+    cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
+}
+
+/// Overload for the tangent
+/**
+ * Implements the tangent of a audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} }
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
+ *
+ * @throw std::domain_error if std::tan(\f$f_0\f$) is not finite (uses std::isfinite)
+ *
+*/
+inline gdual tan(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+    double tan_p0 = std::tan(p0);
+
+    if (!std::isfinite(tan_p0)) {
+        throw std::domain_error("std::tan(" + boost::lexical_cast<std::string>(p0)+ ") returned a non finite number: " + boost::lexical_cast<std::string>(tan_p0));
+    }
+
+    // Pre-compute Bernoulli numbers.
+    std::vector<double> bn;
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1, std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
+
+    gdual tan_taylor = phat;
+    // Factors
+    double factorial=24.;
+    double four_k = 16;
+    for (auto k=2; 2 * k - 1 <= d.get_order(); ++k)
+    {
+        phat*=phat2;
+        tan_taylor += bn[k] * four_k * (1 - std::abs(four_k)) / factorial * phat;
+        four_k*=-4;
+        factorial*=(2 * k + 1) * (2 * k + 2);
+    }
+    return (tan_p0 + tan_taylor) / (1 - tan_p0 * tan_taylor);
+}
+
 } // end of namespace audi 
 
 #endif
+
+
