@@ -284,6 +284,8 @@ class gdual
         gdual(const gdual &) = default;
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
+        /// Default constuctor
+        explicit gdual() {};
 
         /// Constructor from symbol and truncation order
         /**
