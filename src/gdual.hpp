@@ -276,6 +276,7 @@ class gdual
         {
             return d1 * (1. / d2);
         }
+
         p_type	m_p;
         int	m_order;
 
@@ -512,6 +513,15 @@ class gdual
                 cumfact*=boost::math::factorial<double>(*i);
             }
             return this->find_cf(l) * cumfact;
+        }
+
+        void extend_symbol_set(const std::vector<std::string>& sym_vars)
+        {
+            piranha::symbol_set ss;
+            for (auto sym_var : sym_vars) {
+                ss.add(sym_var);
+            }
+            m_p.extend_symbol_set(ss);
         }
 
         /// Finds the constant coefficient
