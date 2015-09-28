@@ -63,7 +63,6 @@ inline gdual exp(const gdual &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
  *
- * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
  */
 inline gdual log(const gdual &d)
 {
@@ -71,9 +70,7 @@ inline gdual log(const gdual &d)
     double fatt = 1;
     auto p0 = d.constant_cf();
     auto log_p0 = std::log(p0);
-    if (!std::isfinite(log_p0)) {
-        throw std::domain_error("std::log(" + boost::lexical_cast<std::string>(p0) + ") returns " + boost::lexical_cast<std::string>(log_p0) + " in log(const gdual& d)");
-    }
+
     auto phat = (d - p0);
     phat = phat/p0;
     gdual tmp(phat);
@@ -97,8 +94,7 @@ inline gdual log(const gdual &d)
  * @param[in] base the base for the exponent
  * @param[in] d audi::gdual argument
  *
- * @throw std::domain_error if std::log(\p base) is not finite (uses std::isfinite)
-*/
+ */
 inline gdual pow(double base, const gdual &d)
 {
     double int_part;
@@ -131,20 +127,13 @@ inline gdual pow(double base, const gdual &d)
  *
  * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
  *
- * @throw std::domain_error if std::pow(\f$f_0, \alpha \f$) is not finite (uses std::isfinite)
- * or if f_0 is 0.
  */
 inline gdual pow(const gdual &d, double alpha)
 {
     gdual retval(1., d.get_order());
     auto p0 = d.constant_cf();
     double pow_p0 = std::pow(p0,alpha);
-    if (!std::isfinite(pow_p0)) {
-        throw std::domain_error("std::pow(" + boost::lexical_cast<std::string>(p0)+ ", " + boost::lexical_cast<std::string>(alpha) + ") returned a non finite number: " + boost::lexical_cast<std::string>(pow_p0));
-    }
-    if (p0 == 0) {
-        throw std::domain_error("exponentiation not defined for polynomial having zero constant term");
-    }
+
     auto phat = d - p0;
     phat = phat/p0;
     gdual tmp(phat);
@@ -222,8 +211,6 @@ inline gdual pow(const gdual &d1, const gdual &d2)
  *
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
- * @throw std::domain_error if std::pow(\f$f_0, 0.5\f$) is not finite (uses std::isfinite)
- * or if f_0 is 0.
  */
 inline gdual sqrt(const gdual &d)
 {
@@ -246,7 +233,6 @@ inline gdual sqrt(const gdual &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
- * @throw std::domain_error if std::cbrt(\f$f_0\f$) is not finite (uses std::isfinite)
  */
 inline gdual cbrt(const gdual& d)
 {
@@ -254,9 +240,7 @@ inline gdual cbrt(const gdual& d)
     gdual retval(1., d.get_order());
     auto p0 = d.constant_cf();
     double cbrt_p0 = std::cbrt(p0);
-    if (!std::isfinite(cbrt_p0)) {
-        throw std::domain_error("std::cbrt_p0(" + boost::lexical_cast<std::string>(p0)+ ", " + boost::lexical_cast<std::string>(alpha) + ") returned a non finite number: " + boost::lexical_cast<std::string>(cbrt_p0));
-    }
+
     auto phat = d - p0;
     phat = phat/p0;
     gdual tmp(phat);
@@ -429,8 +413,6 @@ void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
  *
  * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
  *
- * @throw std::domain_error if std::tan(\f$f_0\f$) is not finite (uses std::isfinite)
- *
 */
 inline gdual tan(const gdual& d)
 {
@@ -438,10 +420,6 @@ inline gdual tan(const gdual& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
     double tan_p0 = std::tan(p0);
-
-    if (!std::isfinite(tan_p0)) {
-        throw std::domain_error("std::tan(" + boost::lexical_cast<std::string>(p0)+ ") returned a non finite number: " + boost::lexical_cast<std::string>(tan_p0));
-    }
 
     // Pre-compute Bernoulli numbers.
     std::vector<double> bn;

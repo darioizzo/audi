@@ -232,9 +232,6 @@ class gdual
             gdual retval(1, d2.get_order());
             double fatt = -1;
             auto p0 = d2.constant_cf();
-            if (p0 == 0) {
-                throw std::domain_error("gdual: divide by zero");
-            }
             auto phat = (d2 - p0);
             phat = phat/p0;
             gdual tmp(phat);
