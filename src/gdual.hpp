@@ -233,7 +233,7 @@ class gdual
             double fatt = -1;
             auto p0 = d2.constant_cf();
             if (p0 == 0) {
-                throw std::domain_error("divide by zero");
+                throw std::domain_error("gdual: divide by zero");
             }
             auto phat = (d2 - p0);
             phat = phat/p0;
@@ -256,7 +256,7 @@ class gdual
             double fatt = -1;
             auto p0 = d2.constant_cf();
             if (p0 == 0) {
-                throw std::domain_error("divide by zero");
+                throw std::domain_error("gdual: divide by zero");
             }
             auto phat = (d2 - p0);
             phat = phat/p0;
@@ -364,7 +364,7 @@ class gdual
          * @return std::vector<std::string> containing all the symbolic
          *  variables in the polynomial 
          *
-         */
+         
         std::vector<std::string> get_symbols() const
         {
             std::vector<std::string> retval;
@@ -372,6 +372,19 @@ class gdual
                 retval.push_back(symbol.get_name());
             }
             return retval;
+        }
+        */
+
+        /// Gets the symbol set size
+        /**
+         * Returns the size of the symbol set.
+         *
+         * @return the size of the symbol set.
+         *
+         */
+        auto get_symbol_set_size() const -> decltype(m_p.get_symbol_set().size())
+        {
+            return m_p.get_symbol_set().size();
         }
 
         /// Extends the symbol set
