@@ -286,7 +286,7 @@ class gdual
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
         /// Default constuctor
-        explicit gdual() {};
+        explicit gdual() : m_order(0) {};
 
         /// Constructor from symbol and truncation order
         /**
