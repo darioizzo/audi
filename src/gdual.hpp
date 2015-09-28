@@ -353,25 +353,6 @@ class gdual
         /// Defaulted assignment operator
         gdual &operator=(gdual &&) = default;
 
-        /// Getter for all symbolic variables in the Taylor polynomial
-        /**
-         * Constructs and returns a std::vector<std::string> containing, 
-         * all the symbolic variables in the polynomial 
-         *
-         * @return std::vector<std::string> containing all the symbolic
-         *  variables in the polynomial 
-         *
-         
-        std::vector<std::string> get_symbols() const
-        {
-            std::vector<std::string> retval;
-            for (const auto &symbol : m_p.get_symbol_set()) {
-                retval.push_back(symbol.get_name());
-            }
-            return retval;
-        }
-        */
-
         /// Gets the symbol set size
         /**
          * Returns the size of the symbol set.
@@ -562,6 +543,7 @@ class gdual
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
         }
+
 
         /// Overloaded stream operator
         /**
