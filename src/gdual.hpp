@@ -363,6 +363,7 @@ class gdual
          *
          * @return std::vector<std::string> containing all the symbolic
          *  variables in the polynomial 
+         *
          */
         std::vector<std::string> get_symbols() const
         {
@@ -371,6 +372,29 @@ class gdual
                 retval.push_back(symbol.get_name());
             }
             return retval;
+        }
+
+        /// Extends the symbol set
+        /**
+         * Adds some symbolic variables to the current polynomial
+         * This is useful in situations where some variable \f$ dx\f$ does not
+         * appear in the final polynomial but we still want to
+         * treat the Taylor expansion as a function of \f$ dx\f$ too (for example
+         * when extracting the relative coefficient)
+         *
+         * @param[in] sym_vars list of symbolic names. It must contain all symbolic names of
+         * the current polynomial. It may contain more.
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::series::extend_symbol_set,
+         */
+        void extend_symbol_set(const std::vector<std::string>& sym_vars)
+        {
+            piranha::symbol_set ss;
+            for (auto sym_var : sym_vars) {
+                ss.add(sym_var);
+            }
+            m_p = m_p.extend_symbol_set(ss);
         }
 
         /// Current degree
@@ -513,15 +537,6 @@ class gdual
                 cumfact*=boost::math::factorial<double>(*i);
             }
             return this->find_cf(l) * cumfact;
-        }
-
-        void extend_symbol_set(const std::vector<std::string>& sym_vars)
-        {
-            piranha::symbol_set ss;
-            for (auto sym_var : sym_vars) {
-                ss.add(sym_var);
-            }
-            m_p.extend_symbol_set(ss);
         }
 
         /// Finds the constant coefficient
