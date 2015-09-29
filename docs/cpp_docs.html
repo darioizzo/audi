@@ -1012,6 +1012,7 @@ This method will first construct a term with zero coefficient and key initialise
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="abs-overload-for-the-absolute-value">
 <h3><a class="toc-backref" href="#id17">abs: Overload for the absolute value.</a><a class="headerlink" href="#abs-overload-for-the-absolute-value" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
@@ -1020,7 +1021,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd><p>Overload for the absolute value. </p>
 <p>Implements the absolute value of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it inverts the sign of <span class="math">\(T_f\)</span> as follows:</p>
 <p><div class="math">
-\[\begin{split} T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 &gt; 0\\ -T_f &amp; f_0 &lt;0 \end{array} \end{split}\]</div>
+\[\begin{split} T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 \ge 0 \\ -T_f &amp; f_0 &lt; 0 \end{array} \right. \end{split}\]</div>
 </p>
 <p>where <span class="math">\(T_f = f_0 + \hat f\)</span>.</p>
 <p><dl class="docutils">
