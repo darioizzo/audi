@@ -112,3 +112,9 @@ cbrt: Overload for the cubic root.
 .. doxygenfunction:: audi::cbrt(const gdual&)
    :project: AuDi
 
+abs: Overload for the absolute value.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::abs(const gdual&)
+   :project: AuDi
+

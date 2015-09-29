@@ -439,6 +439,34 @@ inline gdual tan(const gdual& d)
     return (tan_p0 + tan_taylor) / (1 - tan_p0 * tan_taylor);
 }
 
+/// Overload for the absolute value
+/**
+ * Implements the absolute value of a audi::gdual. 
+ * Essentially, it inverts the sign of \f$T_f\f$ as follows:
+ *
+ * \f[
+ * T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f & f_0 > 0\\ -T_f & f_0 <0 \end{array}
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$. 
+ *
+ * \note If \f$f_0\f$ is zero, the right Taylor expansion will be returned rather than nans.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
+ *
+*/
+inline gdual abs(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    if (p0 >= 0) {
+        return d;
+    } 
+    return -d;
+}
+
+
 } // end of namespace audi 
 
 #endif

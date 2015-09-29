@@ -149,3 +149,31 @@ BOOST_AUTO_TEST_CASE(tangent)
     BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
     }
 }
+
+BOOST_AUTO_TEST_CASE(absolute_value)
+{
+    int order = 5;
+    // Case f_0 > 0
+    {
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK_EQUAL(p1, abs(p1));
+    }
+
+    // Case f_0 < 0
+    {
+    gdual x(-2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK_EQUAL(-p1, abs(p1));
+    }
+
+    // Case f_0 == 0
+    {
+    gdual x(-2.3, "x",order);
+    gdual y(2.3, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK_EQUAL(p1, abs(p1));
+    }
+}
