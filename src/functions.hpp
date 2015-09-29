@@ -445,7 +445,7 @@ inline gdual tan(const gdual& d)
  * Essentially, it inverts the sign of \f$T_f\f$ as follows:
  *
  * \f[
- * T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f & f_0 > 0\\ -T_f & f_0 <0 \end{array}
+ * T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f & f_0 \ge 0 \\ -T_f & f_0 < 0 \end{array} \right.
  * \f]
  *
  * where \f$T_f = f_0 + \hat f\f$. 
