@@ -116,8 +116,11 @@
 <li><a class="reference internal" href="#pow-overload-for-pow-const-gdual-const-gdual" id="id10">pow: Overload for pow(const gdual&amp;, const gdual&amp;)</a></li>
 <li><a class="reference internal" href="#sin-overload-for-the-sine" id="id11">sin: Overload for the sine.</a></li>
 <li><a class="reference internal" href="#cos-overload-for-the-cosine" id="id12">cos: Overload for the cosine.</a></li>
-<li><a class="reference internal" href="#sqrt-overload-for-the-square-root" id="id13">sqrt: Overload for the square root.</a></li>
-<li><a class="reference internal" href="#cbrt-overload-for-the-cubic-root" id="id14">cbrt: Overload for the cubic root.</a></li>
+<li><a class="reference internal" href="#sin-and-cos-computes-both-at-once" id="id13">sin_and_cos: Computes both at once</a></li>
+<li><a class="reference internal" href="#tan-overload-for-the-tangent" id="id14">tan: Overload for the tangent.</a></li>
+<li><a class="reference internal" href="#sqrt-overload-for-the-square-root" id="id15">sqrt: Overload for the square root.</a></li>
+<li><a class="reference internal" href="#cbrt-overload-for-the-cubic-root" id="id16">cbrt: Overload for the cubic root.</a></li>
+<li><a class="reference internal" href="#abs-overload-for-the-absolute-value" id="id17">abs: Overload for the absolute value.</a></li>
 </ul>
 </li>
 </ul>
@@ -329,6 +332,12 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N4audi5gdual5gdualEv">
+<span id="audi::gdual::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a5414ec22471ad29540cea2b96d9812a6"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default constuctor. </p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualERKNSt6stringEi">
 <span id="audi::gdual::gdual__ssCR.i"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a4488d8b90c75352265711ffe41d1d0e0"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>symbol</em>, int <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERKNSt6stringEi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructor from symbol and truncation order. </p>
@@ -428,13 +437,38 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N4audi5gdual11get_symbolsEv">
-<span id="audi::gdual::get_symbols"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1a29dba05936f7b47333973934985f1f"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbols</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual11get_symbolsEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for all symbolic variables in the Taylor polynomial. </p>
-<p>Constructs and returns a std::vector&lt;std::string&gt; containing, all the symbolic variables in the polynomial</p>
+<dt id="_CPPv2N4audi5gdual19get_symbol_set_sizeEv">
+<span id="audi::gdual::get_symbol_set_size"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a04f09a2203c9cdaff27c52f76b0b5ae8"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the symbol set size. </p>
+<p>Returns the size of the symbol set.</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>std::vector&lt;std::string&gt; containing all the symbolic variables in the polynomial </dd>
+<dd>the size of the symbol set. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE">
+<span id="audi::gdual::extend_symbol_set__std::vector:ss:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a2b2690be248ce9887946d893df6a8a7b"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends the symbol set. </p>
+<p>Adds some symbolic variables to the current polynomial This is useful in situations where some variable <span class="math">\( dx\)</span> does not appear in the final polynomial but we still want to treat the Taylor expansion as a function of <span class="math">\( dx\)</span> too (for example when extracting the relative coefficient)</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">sym_vars</span></code> - <p>list of symbolic names. It must contain all symbolic names of the current polynomial. It may contain more.</p>
+</li>
+</ul>
+</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">unspecified</span></code> - <p>any exception thrown by:<ul class="simple">
+<li>piranha::series::extend_symbol_set, </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -492,7 +526,16 @@ This method will first construct a term with zero coefficient and key initialise
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>the coefficient </dd>
+<dd>the coefficient</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
+<li>if the requested coefficient is beyond the truncation order </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -506,9 +549,18 @@ This method will first construct a term with zero coefficient and key initialise
 <p>Returns the coefficient of the monomial specified in the initializer list <code class="docutils literal"><span class="pre">l</span></code> </p>
 <p><dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>This method is identical to the other overload with the same name, and it is provided for convenience. </dd>
+<dd>This method is identical to the other overload with the same name, and it is provided for convenience.</dd>
 <dt><strong>Return</strong></dt>
-<dd>the coefficient </dd>
+<dd>the coefficient</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
+<li>if the requested coefficient is beyond the truncation order </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -526,7 +578,16 @@ This method will first construct a term with zero coefficient and key initialise
 <dt><strong>Note</strong></dt>
 <dd>No computations are made at this points as all derivatives are already contained in the Taylor expansion</dd>
 <dt><strong>Return</strong></dt>
-<dd>the value of the derivative </dd>
+<dd>the value of the derivative</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
+<li>if the requested coefficient is beyond the truncation order </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -544,7 +605,16 @@ This method will first construct a term with zero coefficient and key initialise
 <dt><strong>Note</strong></dt>
 <dd>No computations are made at this points as all derivatives are already contained in the Taylor expansion</dd>
 <dt><strong>Return</strong></dt>
-<dd>the value of the derivative </dd>
+<dd>the value of the derivative</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
+<li>if the requested coefficient is beyond the truncation order </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
 </dl>
 </p>
 </dd></dl>
@@ -683,12 +753,6 @@ This method will first construct a term with zero coefficient and key initialise
 </li>
 </ul>
 </dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::domain_error</span></code> - <p>if std::log( <span class="math">\(f_0\)</span>) is not finite (uses std::isfinite) </p>
-</li>
-</ul>
-</dd>
 </dl>
 </p>
 </dd></dl>
@@ -714,12 +778,6 @@ This method will first construct a term with zero coefficient and key initialise
 <li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
 </li>
 <li><code class="first docutils literal"><span class="pre">alpha</span></code> - <p>exponent</p>
-</li>
-</ul>
-</dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::domain_error</span></code> - <p>if std::pow( <span class="math">\(f_0, \alpha \)</span>) is not finite (uses std::isfinite) or if f_0 is 0. </p>
 </li>
 </ul>
 </dd>
@@ -763,13 +821,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">base</span></code> - <p>the base for the exponent </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
-</li>
-</ul>
-</dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::domain_error</span></code> - <p>if std::log(<code class="docutils literal"><span class="pre">base</span></code>) is not finite (uses std::isfinite) </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
 </li>
 </ul>
 </dd>
@@ -859,8 +911,58 @@ This method will first construct a term with zero coefficient and key initialise
 
 </div>
 <hr class="docutils" />
+<div class="section" id="sin-and-cos-computes-both-at-once">
+<h3><a class="toc-backref" href="#id13">sin_and_cos: Computes both at once</a><a class="headerlink" href="#sin-and-cos-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv2N4audi11sin_and_cosERK5gdualR5gdualR5gdual">
+<span id="audi::sin_and_cos__gdualCR.gdualR.gdualR"></span><span class="target" id="AuDinamespaceaudi_1a8bb538bec9714c284daac63f6ac18dc0"></span>void <code class="descclassname">audi::</code><code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>sine</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>cosine</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi11sin_and_cosERK5gdualR5gdualR5gdual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes both sine and cosine. </p>
+<p>As most of the computations for the sine and cosine is the same, it is twice as fast to get both sine and cosine at once rather than computing them in sequence. Use this function when both sine and cosine are needed.</p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+</li>
+<li><code class="first docutils literal"><span class="pre">sine</span></code> - <p>the sine of d </p>
+</li>
+<li><code class="first docutils literal"><span class="pre">cosine</span></code> - <p>the cosine of d </p>
+</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="tan-overload-for-the-tangent">
+<h3><a class="toc-backref" href="#id14">tan: Overload for the tangent.</a><a class="headerlink" href="#tan-overload-for-the-tangent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv2N4audi3tanERK5gdual">
+<span id="audi::tan__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a4fcfc1a2ba79ee703bac47fe11b329bf"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3tanERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload for the tangent. </p>
+<p>Implements the tangent of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math">
+\[ T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} } \]</div>
+</p>
+<p>where <span class="math">\(T_f = f_0 + \hat f\)</span> and <span class="math">\( B_{2k}\)</span> are the Bernoulli numbers.</p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an audi:gdual containing the Taylor expansion of the tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
 <div class="section" id="sqrt-overload-for-the-square-root">
-<h3><a class="toc-backref" href="#id13">sqrt: Overload for the square root.</a><a class="headerlink" href="#sqrt-overload-for-the-square-root" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">sqrt: Overload for the square root.</a><a class="headerlink" href="#sqrt-overload-for-the-square-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4sqrtERK5gdual">
 <span id="audi::sqrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a8deb453baec52501f1806c02156432b4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sqrtERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -879,12 +981,6 @@ This method will first construct a term with zero coefficient and key initialise
 </li>
 </ul>
 </dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::domain_error</span></code> - <p>if std::pow( <span class="math">\(f_0, 0.5\)</span>) is not finite (uses std::isfinite) or if f_0 is 0. </p>
-</li>
-</ul>
-</dd>
 </dl>
 </p>
 </dd></dl>
@@ -892,7 +988,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="cbrt-overload-for-the-cubic-root">
-<h3><a class="toc-backref" href="#id14">cbrt: Overload for the cubic root.</a><a class="headerlink" href="#cbrt-overload-for-the-cubic-root" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">cbrt: Overload for the cubic root.</a><a class="headerlink" href="#cbrt-overload-for-the-cubic-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4cbrtERK5gdual">
 <span id="audi::cbrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1adda903acffda0d9351499fcef9a7b22a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4cbrtERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -911,9 +1007,30 @@ This method will first construct a term with zero coefficient and key initialise
 </li>
 </ul>
 </dd>
-<dt><strong>Exceptions</strong></dt>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="abs-overload-for-the-absolute-value">
+<h3><a class="toc-backref" href="#id17">abs: Overload for the absolute value.</a><a class="headerlink" href="#abs-overload-for-the-absolute-value" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv2N4audi3absERK5gdual">
+<span id="audi::abs__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a082f942a7ae65051ac6ed83cdb53c185"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3absERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload for the absolute value. </p>
+<p>Implements the absolute value of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it inverts the sign of <span class="math">\(T_f\)</span> as follows:</p>
+<p><div class="math">
+\[\begin{split} T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 &gt; 0\\ -T_f &amp; f_0 &lt;0 \end{array} \end{split}\]</div>
+</p>
+<p>where <span class="math">\(T_f = f_0 + \hat f\)</span>.</p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>If <span class="math">\(f_0\)</span> is zero, the right Taylor expansion will be returned rather than nans.</dd>
+<dt><strong>Return</strong></dt>
+<dd>an audi:gdual containing the Taylor expansion of the absoute value of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::domain_error</span></code> - <p>if std::cbrt( <span class="math">\(f_0\)</span>) is not finite (uses std::isfinite) </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
