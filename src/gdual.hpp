@@ -16,6 +16,7 @@
 #include <type_traits> // For std::enable_if, std::is_same, etc.
 #include <utility>
 #include <vector>
+#include <cassert>
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -110,7 +111,7 @@ class gdual
 
         void check_order() const
         {
-            if (m_order < 1) {
+            if (m_order < 0) {
                 throw std::invalid_argument("polynomial truncation order must be >= 1");
             }
             if (m_order == std::numeric_limits<int>::max()) {
@@ -134,43 +135,37 @@ class gdual
         // Basic overloads for the addition
         static gdual add(const gdual &d1, const gdual &d2)
         {
-            if (d1.get_order() != d2.get_order()) {
-                throw std::invalid_argument("different truncation limit");
-            }
-            return gdual(d1.m_p + d2.m_p,d1.get_order());
+            return gdual(d1.m_p + d2.m_p, std::max(d1.get_order(), d2.get_order()));
         }
 
         template <typename T>
         static gdual add(const T &d1, const gdual &d2)
         {
-            return gdual(d1 + d2.m_p,d2.get_order());
+            return gdual(d1 + d2.m_p, d2.get_order());
         }
 
         template <typename T>
         static gdual add(const gdual &d1, const T &d2)
         {
-            return add(d2, d1);
+            return gdual(d2 + d1.m_p, d1.get_order());
         }
 
         // Basic overloads for the subtraction
         static gdual sub(const gdual &d1, const gdual &d2)
         {
-            if (d1.get_order() != d2.get_order()) {
-                throw std::invalid_argument("different truncation limit");
-            }
-            return gdual(d1.m_p - d2.m_p,d1.get_order());
+            return gdual(d1.m_p - d2.m_p, std::max(d1.get_order(), d2.get_order()));
         }
 
         template <typename T>
         static gdual sub(const T &d1, const gdual &d2)
         {
-            return gdual(d1 - d2.m_p,d2.get_order());
+            return gdual(d1 - d2.m_p, d2.get_order());
         }
 
         template <typename T>
         static gdual sub(const gdual &d1, const T &d2)
         {
-            return gdual(d1.m_p - d2,d1.get_order());
+            return gdual(d1.m_p - d2, d1.get_order());
         }
 
         // Basic overloads for the multiplication
@@ -185,10 +180,7 @@ class gdual
         // Dual * dual.
         static gdual mul(const gdual &d1, const gdual &d2)
         {
-            const int order = d1.get_order();
-            if (order != d2.get_order()) {
-                throw std::invalid_argument("different truncation limit");
-            }
+            const int order = std::max(d1.get_order(), d2.get_order());
             const auto &ss1 = d1.m_p.get_symbol_set(), &ss2 = d2.m_p.get_symbol_set();
             if (ss1 == ss2) {
                 return mul_impl(d1.m_p,d2.m_p,order);
@@ -225,11 +217,7 @@ class gdual
         // Basic overloads for the division
         static gdual div(const gdual &d1, const gdual &d2)
         {
-            if (d1.get_order() != d2.get_order()) {
-                throw std::invalid_argument("different truncation limit");
-            }
-
-            gdual retval(1, d2.get_order());
+            gdual retval(1, std::max(d1.get_order(), d2.get_order()));
             double fatt = -1;
             auto p0 = d2.constant_cf();
             auto phat = (d2 - p0);
@@ -283,7 +271,9 @@ class gdual
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
         /// Default constuctor
-        explicit gdual() : m_order(0) {};
+        explicit gdual() : m_order(0) {}
+        /// Destructor (contains a sanity check)
+        ~gdual() {assert(m_p.degree() <= m_order);}
 
         /// Constructor from symbol and truncation order
         /**
@@ -298,7 +288,7 @@ class gdual
          * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [1, std::numeric_limits<int>::max()]
+         * - if \p order is not in [0, std::numeric_limits<int>::max()]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
         explicit gdual(const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
@@ -310,19 +300,29 @@ class gdual
         /// Constructor from value and truncation order
         /**
          *
-         * Will construct a generalized dual number representing a constant 
+         * Will construct a generalized dual number representing a constant number
          * 
          * @param[in] value value of the constant
          * @param[in] order truncation order of the underlying algebra
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [1, std::numeric_limits<int>::max()]
-         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
+         * - if \p order is not in [0, std::numeric_limits<int>::max()]
          */
         explicit gdual(double value, int order):m_p(value),m_order(order)
         {
             check_order();
         }
+
+        /// Constructor from value 
+        /**
+         *
+         * Will construct a generalized dual number of order 0 representing
+         * a constant number
+         * 
+         * @param[in] value value of the constant
+         * 
+         */
+        explicit gdual(double value):m_p(value), m_order(0) {}
 
         /// Constructor from value, symbol and truncation order
         /**
@@ -338,7 +338,7 @@ class gdual
          * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [1, std::numeric_limits<int>::max()]
+         * - if \p order is not in [0, std::numeric_limits<int>::max()]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
         explicit gdual(double value, const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
