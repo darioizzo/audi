@@ -572,8 +572,10 @@ class gdual
 
         /// Overloaded Equality operator.
         /**
-         * Compares the truncation order and the single polynomial coefficients of
-         * two audi::gdual objects and returns true if equal.
+         * Compares the single polynomial coefficients of
+         * two audi::gdual objects and returns true if equal. 
+         *
+         * /note The truncatin order of \p d1 and \p d2 may be different
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
@@ -582,7 +584,7 @@ class gdual
         */
         friend bool operator==(const gdual &d1, const gdual &d2)
         {
-            return (d1.m_p == d2.m_p) && (d1.m_order == d2.m_order);
+            return (d1.m_p == d2.m_p);
         }
 
         /// Overloaded Non equality operator.
