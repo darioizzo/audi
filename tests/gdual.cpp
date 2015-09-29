@@ -9,7 +9,7 @@
 
 using namespace audi;
 
-BOOST_AUTO_TEST_CASE(order_consistency)
+BOOST_AUTO_TEST_CASE(order_promotion)
 {
     gdual c(1);
     gdual x("x", 4);
@@ -23,6 +23,14 @@ BOOST_AUTO_TEST_CASE(order_consistency)
     BOOST_CHECK_EQUAL((x - c).get_order(), 4);
     BOOST_CHECK_EQUAL((x * c).get_order(), 4);
     BOOST_CHECK_EQUAL((x / c).get_order(), 4);
+    BOOST_CHECK_EQUAL((y + x).get_order(), 4);
+    BOOST_CHECK_EQUAL((y - x).get_order(), 4);
+    BOOST_CHECK_EQUAL((y * x).get_order(), 4);
+    BOOST_CHECK_EQUAL((y / x).get_order(), 4);
+    BOOST_CHECK_EQUAL((c + x).get_order(), 4);
+    BOOST_CHECK_EQUAL((c - x).get_order(), 4);
+    BOOST_CHECK_EQUAL((c * x).get_order(), 4);
+    BOOST_CHECK_EQUAL((c / x).get_order(), 4);
 }
 BOOST_AUTO_TEST_CASE(addition)
 {
