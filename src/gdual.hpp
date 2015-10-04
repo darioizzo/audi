@@ -8,8 +8,9 @@
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <piranha/mp_integer.hpp>
+#include <piranha/monomial.hpp>
 #include <piranha/polynomial.hpp>
+#include <piranha/safe_cast.hpp>
 #include <piranha/series_multiplier.hpp>
 #include <stdexcept>
 #include <string>
@@ -21,56 +22,6 @@
 /// Root namespace for AuDi symbols
 namespace audi
 {
-
-namespace detail
-{
-
-// Main definition of the Piranha polynomial type.
-using p_type = piranha::polynomial<double,piranha::monomial<char> >;
-
-// Multiplier functor for the the gdual class, based on
-// Piranha's polynomial multiplier.
-class gdual_multiplier: piranha::series_multiplier<p_type>
-{
-        using base = piranha::series_multiplier<p_type>;
-    public:
-        explicit gdual_multiplier(const p_type &p1, const p_type &p2, int max_degree):base(p1,p2),m_max_degree(max_degree) {}
-        p_type operator()() const
-        {
-            using term_type = p_type::term_type;
-            using degree_type = piranha::integer;
-            using size_type = base::size_type;
-            // First let's order the terms in the second series according to the degree.
-            std::stable_sort(this->m_v2.begin(),this->m_v2.end(),[this](term_type const *p1, term_type const *p2) {
-                return p1->m_key.degree(this->m_ss) < p2->m_key.degree(this->m_ss);
-            });
-            // Next we create two vectors with the degrees of the terms in the two series. In the second series,
-            // we negate and add the max degree in order to avoid adding in the skipping functor.
-            std::vector<degree_type> v_d1, v_d2;
-            std::transform(this->m_v1.begin(),this->m_v1.end(),std::back_inserter(v_d1),[this](term_type const *p) {
-                return p->m_key.degree(this->m_ss);
-            });
-            std::transform(this->m_v2.begin(),this->m_v2.end(),std::back_inserter(v_d2),[this](term_type const *p) {
-                return this->m_max_degree - p->m_key.degree(this->m_ss);
-            });
-            // The skipping functor.
-            auto sf = [&v_d1,&v_d2](const size_type &i, const size_type &j) -> bool {
-                using d_size_type = decltype(v_d1.size());
-                return v_d1[static_cast<d_size_type>(i)] > v_d2[static_cast<d_size_type>(j)];
-            };
-            // The filter functor: will return 1 if the degree of the term resulting from the multiplication of i and j
-            // is greater than the max degree, zero otherwise.
-            auto ff = [&sf](const size_type &i, const size_type &j) {
-                return static_cast<unsigned>(sf(i,j));
-            };
-            return this->plain_multiplication(sf,ff);
-        }
-    private:
-        const int m_max_degree;
-};
-
-} // end of namespace detail
-
 
 /// Generalized dual number class.
 /**
@@ -94,8 +45,7 @@ class gdual_multiplier: piranha::series_multiplier<p_type>
  */
 class gdual
 {
-        // Lift the polynomial type from the detail namespace.
-        using p_type = detail::p_type;
+        using p_type = piranha::polynomial<double,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a dual,
@@ -173,8 +123,9 @@ class gdual
         // identical symbol set.
         static gdual mul_impl(const p_type &p1, const p_type &p2, int order)
         {
-            detail::gdual_multiplier gdm(p1,p2,order);
-            return gdual(gdm(),order);
+            using degree_type = decltype(p1.degree());
+            piranha::series_multiplier<p_type> m(p1,p2);
+            return gdual(m.truncated_multiplication(piranha::safe_cast<degree_type>(order)),order);
         }
 
         // Dual * dual.
