@@ -73,8 +73,8 @@ void scalable_test_sin_over_cos(int m, int n)
     gdual cosine(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
-    boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
     sin_and_cos(p1, sine, cosine);
+    boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
     tangent = sine / cosine;
 }
 
@@ -84,10 +84,10 @@ BOOST_AUTO_TEST_CASE(trigonometry_perf)
         piranha::settings::set_n_threads(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
     }
 
-    unsigned int low=10, high=11;
+    unsigned int low=10, high=12;
 
     // sin and cos
-    std::cout << "Computing sin(1 + x1 + x2 + ...) and sin(1 + x1 + x2 + ...) separately: " << std::endl;
+    std::cout << "Computing sin(1 + x1 + x2 + ...) and cos(1 + x1 + x2 + ...) separately: " << std::endl;
     for (auto m = low; m < high; ++m) {
         for (auto n = low; n < high; ++n) {
             scalable_test_sin_and_cos(m,n);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(trigonometry_perf)
     }
 
     // sin and cos together
-    std::cout << "\nComputing sin(1 + x1 + x2 + ...) and sin(1 + x1 + x2 + ...) at once: " << std::endl;
+    std::cout << "\nComputing sin(1 + x1 + x2 + ...) and cos(1 + x1 + x2 + ...) at once: " << std::endl;
     for (auto m = low; m < high; ++m) {
         for (auto n = low; n < high; ++n) {
             scalable_test_sin_cos(m,n);
