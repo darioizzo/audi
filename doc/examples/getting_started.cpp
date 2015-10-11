@@ -10,10 +10,10 @@ int main() {
 	gdual y(3, "y", 7);
 
 	// 2 - Compute your function as usual
-	gdual f = exp((x*x+cbrt(y)/log(x*y)));
+	gdual f = exp(x*x + cbrt(y) / log(x*y));
 
 	// 3 - Inspect the results (this does not require any more computations)
 	std::cout << "Taylor polynomial: " << f << std::endl;                      // This is the Taylor expansion of f (truncated at the 7th order)
-	std::cout << "Derivative value: " << f.get_derivative({1,0}) << std::endl; // This is the value of the mixed derivative (d / dx)
+	std::cout << "Derivative value: " << f.get_derivative({1,0}) << std::endl; // This is the value of the derivative (d / dx)
 	std::cout << "Derivative value: " << f.get_derivative({4,3}) << std::endl; // This is the value of the mixed derivative (d^7 / dx^4dy^3)
 }
