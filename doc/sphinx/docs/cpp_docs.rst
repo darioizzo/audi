@@ -98,6 +98,38 @@ tan: Overload for the tangent.
 
 ----------------------------------------------------------
 
+sinh: Overload for the hyperbolic sine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::sinh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+cosh: Overload for the hyperbolic cosine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::cosh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+sinh_and_cosh: Computes both at once
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::sinh_and_cosh(const gdual&, gdual sine&, gdual& cosine)
+   :project: AuDi
+
+----------------------------------------------------------
+
+tanh: Overload for the hyperbolic tangent.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::tanh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
 sqrt: Overload for the square root.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

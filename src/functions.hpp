@@ -439,6 +439,179 @@ inline gdual tan(const gdual& d)
     return (tan_p0 + tan_taylor) / (1 - tan_p0 * tan_taylor);
 }
 
+/// Overload for the hyperbolic sine
+/**
+ * Implements the hyperbolic sine of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the hyperbolic sine of \p d
+*/
+inline gdual sinh(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+
+    double sinh_p0 = std::sinh(p0);
+    double cosh_p0 = std::cosh(p0);
+
+    double factorial=1.;
+    gdual cosh_taylor(1., d.get_order());
+    gdual tmp(cosh_taylor);
+    for (auto i=2u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
+        factorial*= i * (i-1);                  // 2!, 4!, 6!, ...
+        cosh_taylor +=  tmp / factorial;
+    }
+
+    factorial=1.;
+    gdual sinh_taylor(phat);
+    tmp = sinh_taylor;
+    for (auto i=3u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
+        factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
+        sinh_taylor += tmp / factorial;
+    }
+    return (sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor);
+}
+
+/// Overload for the hyperbolic cosine
+/**
+ * Implements the hyperbolic cosine of a audi::gdual. 
+ * Essentially it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the hyperbolic cosine of \p d
+*/
+inline gdual cosh(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+
+    double sinh_p0 = std::sinh(p0);
+    double cosh_p0 = std::cosh(p0);
+
+    double factorial=1.;
+    gdual cosh_taylor(1., d.get_order());
+    gdual tmp(cosh_taylor);
+    for (auto i=2u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
+        factorial*= i * (i-1);                  // 2!, 4!, 6!, ...
+        cosh_taylor +=  tmp / factorial;
+    }
+
+    factorial=1.;
+    gdual sinh_taylor(phat);
+    tmp = sinh_taylor;
+    for (auto i=3u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
+        factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
+        sinh_taylor += tmp / factorial;
+    }
+    return (cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor);
+}
+
+/// Computes both the hyperbolic sine and the hyperbolic cosine
+/**
+ * As most of the computations for the hyperbolic sine and hyperbolic cosine is the same, it is twice as fast
+ * to get them both at once rather than computing them in sequence.
+ * Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.
+ *
+ * @param[in] d audi::gdual argument
+ * @param[out] sineh the hyperbolic sine of d
+ * @param[out] cosineh the hyperbolic cosine of d
+ *
+*/
+void sinh_and_cosh(const gdual& d, gdual& sineh, gdual& cosineh)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+
+    double sinh_p0 = std::sinh(p0);
+    double cosh_p0 = std::cosh(p0);
+
+    double factorial=1.;
+    gdual cosh_taylor(1.);
+    gdual tmp(cosh_taylor);
+    for (auto i=2u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
+        factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
+        cosh_taylor += tmp / factorial;
+    }
+
+    factorial=1.;
+    gdual sinh_taylor(phat);
+    tmp = sinh_taylor;
+    for (auto i=3u; i<=d.get_order(); i+=2) {
+        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
+        factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
+        sinh_taylor += tmp / factorial;
+    }
+    sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
+    cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
+}
+
+/// Overload for the hyperbolic tangent
+/**
+ * Implements the hyperbolic tangent of a audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{4^k(4^k-1)}{2k!}x^{2k - 1}}{1 + \tan f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} }
+ * \f]
+ *
+ * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the hyperbolic tangent of \p d
+ *
+*/
+inline gdual tanh(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto phat2 = phat * phat;
+    double tanh_p0 = std::tanh(p0);
+
+    // Pre-compute Bernoulli numbers.
+    std::vector<double> bn;
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1, std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
+
+    gdual tanh_taylor = phat;
+    // Factors
+    double factorial=24.;
+    double four_k = 16;
+    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k)
+    {
+        phat*=phat2;
+        tanh_taylor += bn[k] * four_k * (four_k - 1) / factorial * phat;
+        four_k*=4;
+        factorial*=(2 * k + 1) * (2 * k + 2);
+    }
+    return (tanh_p0 + tanh_taylor) / (1 + tanh_p0 * tanh_taylor);
+}
+
 /// Overload for the absolute value
 /**
  * Implements the absolute value of a audi::gdual. 

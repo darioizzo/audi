@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(sine_and_cosine)
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 1. - 2. * sin(p1) * sin(p1), 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 2. * cos(p1) * cos(p1) - 1., 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), cos(p1) * cos(p1) - sin(p1) * sin(p1), 1e-12) == true);
-    BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1., order), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1.), 1e-12) == true);
 
     gdual sine(p1);
     gdual cosine(p1);
@@ -141,12 +141,83 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
     
     {
-    unsigned int order = 11;
+    unsigned int order = 11; // tolerance decreases here to 1e-11 as high order derivatives can loose precision
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
     auto p1 = x + y;  
-    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-11) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(hyperbolic_sine_and_cosine)
+{
+    unsigned int order = 8;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+
+    auto p1 = x + y;  
+
+    // Checking some trivial identities
+    BOOST_CHECK(EPSILON_COMPARE(sinh(2. * p1), 2. * sinh(p1) * cosh(p1), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(2. * p1), 1. + 2. * sinh(p1) * sinh(p1), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(2. * p1), 2. * cosh(p1) * cosh(p1) - 1., 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(2. * p1), cosh(p1) * cosh(p1) + sinh(p1) * sinh(p1), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(p1) * cosh(p1) - sinh(p1) * sinh(p1), gdual(1), 1e-12) == true);
+
+    // Checking the validity of the definitions of hyperbolic finctions in terms of exponentials
+    BOOST_CHECK(EPSILON_COMPARE(sinh(p1), (exp(p1) - exp(-p1)) / 2, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(p1), (exp(p1) + exp(-p1)) / 2, 1e-12) == true);
+
+    gdual sineh(p1);
+    gdual cosineh(p1);
+    sinh_and_cosh(p1, sineh, cosineh);
+    BOOST_CHECK_EQUAL(sineh, sinh(p1));
+    BOOST_CHECK_EQUAL(cosineh, cosh(p1));
+}
+
+BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
+{
+    // Checking the validity of the definitions of hyperbolic finctions in terms of exponentials
+    {
+    unsigned int order = 5;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), (exp(p1) - exp(-p1)) / (exp(p1) + exp(-p1)), 1e-12) == true);
+    }
+
+    // Checking the validity and precision of the identity tanh = sinh/cosh
+    {
+    unsigned int order = 5;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
+    }
+
+    {
+    unsigned int order = 6;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
+    }
+
+    {
+    unsigned int order = 10;
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
+    }
+    
+    {
+    unsigned int order = 11; // tolerance decreases here to 1e-11 as high order derivatives can loose precision
+    gdual x(2.3, "x",order);
+    gdual y(1.5, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-11) == true);
     }
 }
 
