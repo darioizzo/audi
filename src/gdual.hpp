@@ -49,22 +49,21 @@ class gdual
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a dual,
-        // - the other operand, if not dual, must be double or int.
+        // - the other operand, if not dual, must be double, int or unsigned int
         template <typename T, typename U>
         using gdual_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual>::value && std::is_same<U,gdual>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,double>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,int>::value) ||
+        (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,double>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,int>::value),
+        (std::is_same<U,gdual>::value && std::is_same<T,int>::value) ||
+        (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value),
         gdual>::type;
 
         void check_order() const
         {
-            if (m_order < 0) {
-                throw std::invalid_argument("polynomial truncation order must be >= 1");
-            }
-            if (m_order == std::numeric_limits<int>::max()) {
+            if (m_order == std::numeric_limits<unsigned int>::max()) {
                 throw std::invalid_argument("polynomial truncation order is too large");
             }
         }
@@ -80,7 +79,7 @@ class gdual
     private:
         // A private constructor to move-initialise a gdual from a polynomial. Used
         // in the implementation of the operators.
-        explicit gdual(p_type &&p, int order):m_p(std::move(p)),m_order(order) {}
+        explicit gdual(p_type &&p, unsigned int order):m_p(std::move(p)),m_order(order) {}
 
         // Basic overloads for the addition
         static gdual add(const gdual &d1, const gdual &d2)
@@ -121,7 +120,7 @@ class gdual
         // Basic overloads for the multiplication
         // This is the low-level multiplication between two duals when they have
         // identical symbol set.
-        static gdual mul_impl(const p_type &p1, const p_type &p2, int order)
+        static gdual mul_impl(const p_type &p1, const p_type &p2, unsigned int order)
         {
             using degree_type = decltype(p1.degree());
             piranha::series_multiplier<p_type> m(p1,p2);
@@ -131,7 +130,7 @@ class gdual
         // Dual * dual.
         static gdual mul(const gdual &d1, const gdual &d2)
         {
-            const int order = std::max(d1.get_order(), d2.get_order());
+            const unsigned int order = std::max(d1.get_order(), d2.get_order());
             const auto &ss1 = d1.m_p.get_symbol_set(), &ss2 = d2.m_p.get_symbol_set();
             if (ss1 == ss2) {
                 return mul_impl(d1.m_p,d2.m_p,order);
@@ -176,7 +175,7 @@ class gdual
             gdual tmp(phat);
 
             retval = retval - phat;
-            for (auto i = 2; i <= d2.m_order; ++i) {
+            for (auto i = 2u; i <= d2.m_order; ++i) {
                 fatt *= -1;
                 phat*=tmp;
                 retval =  retval + fatt * phat;
@@ -199,7 +198,7 @@ class gdual
             gdual tmp(phat);
 
             retval = retval - phat;
-            for (auto i = 2; i <= d2.m_order; ++i) {
+            for (auto i = 2u; i <= d2.m_order; ++i) {
                 fatt *= -1;
                 phat*=tmp;
                 retval =  retval + fatt * phat;
@@ -214,7 +213,7 @@ class gdual
         }
 
         p_type	m_p;
-        int	m_order;
+        unsigned int m_order;
 
     public:
         /// Defaulted copy constructor.
@@ -222,9 +221,9 @@ class gdual
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
         /// Default constuctor
-        explicit gdual() : m_order(0) {}
+        explicit gdual() : m_order(0u) {}
         /// Destructor (contains a sanity check)
-        ~gdual() {assert(m_p.degree() <= m_order);}
+        ~gdual() {assert(m_p.degree() <= (int)m_order);}
 
         /// Constructor from symbol and truncation order
         /**
@@ -242,7 +241,7 @@ class gdual
          * - if \p order is not in [0, std::numeric_limits<int>::max()]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
+        explicit gdual(const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
         {
             check_order();
             check_var_name(symbol);
@@ -259,7 +258,7 @@ class gdual
          * @throws std::invalid_argument:
          * - if \p order is not in [0, std::numeric_limits<int>::max()]
          */
-        explicit gdual(double value, int order):m_p(value),m_order(order)
+        explicit gdual(double value, unsigned int order):m_p(value),m_order(order)
         {
             check_order();
         }
@@ -273,7 +272,7 @@ class gdual
          * @param[in] value value of the constant
          * 
          */
-        explicit gdual(double value):m_p(value), m_order(0) {}
+        explicit gdual(double value):m_p(value), m_order(0u) {}
 
         /// Constructor from value, symbol and truncation order
         /**
@@ -292,7 +291,7 @@ class gdual
          * - if \p order is not in [0, std::numeric_limits<int>::max()]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(double value, const std::string &symbol, int order):m_p(std::string("d") + symbol),m_order(order)
+        explicit gdual(double value, const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
         {
             check_order();
             check_var_name(symbol);
@@ -369,7 +368,7 @@ class gdual
          *
          * @return the truncation order
          */
-        int get_order() const
+        unsigned int get_order() const
         {
             return m_order;
         }
@@ -399,7 +398,7 @@ class gdual
         template <typename T>
         auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
         {
-            if (std::accumulate(c.begin(),c.end(),0) > m_order) {
+            if (std::accumulate(c.begin(),c.end(),0u) > m_order) {
                 throw std::invalid_argument("requested coefficient is beyond the truncation order.");
             }
             return m_p.find_cf(c);
@@ -420,7 +419,7 @@ class gdual
         template <typename T>
         auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            if (std::accumulate(l.begin(),l.end(),0) > m_order) {
+            if (std::accumulate(l.begin(),l.end(),0u) > m_order) {
                 throw std::invalid_argument("requested coefficient is beyond the truncation order.");
             }
             return m_p.find_cf(l);
@@ -476,7 +475,7 @@ class gdual
             double cumfact = 1;
             for (auto i = l.begin(); i < l.end(); ++i)
             {
-                cumfact*=boost::math::factorial<double>(*i);
+                cumfact*=boost::math::factorial<double>((unsigned int)(*i));
             }
             return this->find_cf(l) * cumfact;
         }
@@ -590,7 +589,7 @@ class gdual
         /// Negate operator
         gdual operator-() const
         {
-            return gdual(-m_p,m_order);
+            return gdual(-m_p, m_order);
         }
 
         /// Identity operator

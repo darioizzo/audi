@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(trigonometry_perf)
     std::cout << "Computing sin(1 + x1 + x2 + ...) and cos(1 + x1 + x2 + ...) separately: " << std::endl;
     for (auto m = low; m < high; ++m) {
         for (auto n = low; n < high; ++n) {
-            scalable_test_sin_and_cos(m,n);
+            scalable_test_sin_cos(m,n);
         }
     }
 
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(trigonometry_perf)
     std::cout << "\nComputing sin(1 + x1 + x2 + ...) and cos(1 + x1 + x2 + ...) at once: " << std::endl;
     for (auto m = low; m < high; ++m) {
         for (auto n = low; n < high; ++n) {
-            scalable_test_sin_cos(m,n);
+            scalable_test_sin_and_cos(m,n);
         }
     }
 

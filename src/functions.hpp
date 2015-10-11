@@ -39,7 +39,7 @@ inline gdual exp(const gdual &d)
     gdual tmp(phat);
 
     retval+=phat;
-    for (int i = 2; i <= d.get_order(); ++i) {
+    for (auto i = 2u; i <= d.get_order(); ++i) {
         phat*=tmp;
         fact*=i;
         retval+=phat / fact;
@@ -76,7 +76,7 @@ inline gdual log(const gdual &d)
     gdual tmp(phat);
 
     retval = log_p0 + phat;
-    for (auto i = 2; i <= d.get_order(); ++i) {
+    for (auto i = 2u; i <= d.get_order(); ++i) {
         fatt *= -1;
         phat*=tmp;
         retval =  retval + fatt * phat / i;
@@ -139,7 +139,7 @@ inline gdual pow(const gdual &d, double alpha)
     gdual tmp(phat);
 
     retval+=alpha * phat;
-    for (auto i = 2; i <= d.get_order(); ++i) {
+    for (auto i = 2u; i <= d.get_order(); ++i) {
         phat*=tmp;
         retval+=piranha::math::binomial(alpha,i) * phat;
     }
@@ -246,7 +246,7 @@ inline gdual cbrt(const gdual& d)
     gdual tmp(phat);
 
     retval+=alpha * phat;
-    for (auto i = 2; i <= d.get_order(); ++i) {
+    for (auto i = 2u; i <= d.get_order(); ++i) {
         phat*=tmp;
         retval+=piranha::math::binomial(alpha,i) * phat;
     }
@@ -283,7 +283,7 @@ inline gdual sin(const gdual& d)
     double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<=d.get_order(); i+=2) {
+    for (auto i=2u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
@@ -294,7 +294,7 @@ inline gdual sin(const gdual& d)
     coeff=1.;
     gdual sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3; i<=d.get_order(); i+=2) {
+    for (auto i=3u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
@@ -332,7 +332,7 @@ inline gdual cos(const gdual& d)
     double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<=d.get_order(); i+=2) {
+    for (auto i=2u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                              // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                    // 2!, 4!, 6!, ...
@@ -343,7 +343,7 @@ inline gdual cos(const gdual& d)
     coeff=1.;
     gdual sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3; i<=d.get_order(); i+=2) {
+    for (auto i=3u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                              // -1, 1, -1, 1, ...
         tmp*=phat2;                              // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                    // 3!, 5!, 7!, ...
@@ -376,7 +376,7 @@ void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
     double coeff=1.;
     gdual cos_taylor(1., d.get_order());
     gdual tmp(cos_taylor);
-    for (auto i=2; i<=d.get_order(); i+=2) {
+    for (auto i=2u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
         factorial*=i * (i-1);                   // 2!, 4!, 6!, ...
@@ -387,7 +387,7 @@ void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
     coeff=1.;
     gdual sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3; i<=d.get_order(); i+=2) {
+    for (auto i=3u; i<=d.get_order(); i+=2) {
         coeff*=-1.;                             // -1, 1, -1, 1, ...
         tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
         factorial*=i * (i-1);                   // 3!, 5!, 7!, ...
@@ -429,7 +429,7 @@ inline gdual tan(const gdual& d)
     // Factors
     double factorial=24.;
     double four_k = 16;
-    for (auto k=2; 2 * k - 1 <= d.get_order(); ++k)
+    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k)
     {
         phat*=phat2;
         tan_taylor += bn[k] * four_k * (1 - std::abs(four_k)) / factorial * phat;

@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(logarithm)
 
 BOOST_AUTO_TEST_CASE(sine_and_cosine)
 {
-    int order = 8;
+    unsigned int order = 8;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(sine_and_cosine)
 BOOST_AUTO_TEST_CASE(tangent)
 {
     {
-    int order = 5;
+    unsigned int order = 5;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
 
     {
-    int order = 6;
+    unsigned int order = 6;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
 
     {
-    int order = 10;
+    unsigned int order = 10;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
     
     {
-    int order = 11;
+    unsigned int order = 11;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(tangent)
 
 BOOST_AUTO_TEST_CASE(absolute_value)
 {
-    int order = 5;
+    unsigned int order = 5;
     // Case f_0 > 0
     {
     gdual x(2.3, "x",order);
