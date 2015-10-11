@@ -58,7 +58,7 @@ class gdual
         (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,double>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,int>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value),
+        (std::is_same<U,gdual>::value && std::is_same<T,unsigned int>::value),
         gdual>::type;
 
         void check_order() const
