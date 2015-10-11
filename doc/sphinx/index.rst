@@ -15,10 +15,10 @@ across all application ranges (low orders, high orders, one variable,
 many variables, sparse and dense).
 
 AuDi is internally powered by the truncated polynomial multiplication algorithm
-of the open source project `Piranha <https://github.com/bluescarni/piranha>`_ details of which are described in:
+of the open source project `Piranha <https://github.com/bluescarni/piranha>`_ some details of which are described in:
 
 Biscani, Francesco. `Parallel sparse polynomial multiplication on modern hardware architectures. <http://dl.acm.org/citation.cfm?id=2442845>`_  Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
 
 Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures. <http://arxiv.org/pdf/1004.4548v1.pdf>`_ arXiv preprint arXiv:1004.4548 (2010).
 
-AuDi is thread-safe and makes use of Piranha fine-grained parallelization of the truncated polynomial multiplication. A feature that starts to make a difference at high orders and many variables.
+AuDi is thread-safe and, when possible, use of Piranha fine-grained parallelization of the truncated polynomial multiplication. The benefits of this fine grained parallelization are only visible for many variables or high orders.

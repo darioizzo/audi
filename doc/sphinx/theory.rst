@@ -6,7 +6,7 @@ Here we introduce, formally, a basic algebraic structure over the set of truncat
 
 Formal definition 
 -----------------
-Consider the set :math:`\mathcal P_{n,m}` of all polynomials of order :math:`\le m` in \:math:`n` variables and having
+Consider the set :math:`\mathcal P_{n,m}` of all polynomials of order :math:`\le m` in :math:`n` variables and having
 coefficients in :math:`\mathbf K`. We indicate with the symbols :math:`T_f, T_g, T_h`, etc. the generic members of such a set. Such a set is an algebra over the field :math:`\mathbf K` if we introduce
 the truncated multiplication as the standard polynomial multiplication truncated at order :math:`m`.
 When needed, we will indicate such a multiplication with the symbol :math:`T_f \cdot T_g`.
