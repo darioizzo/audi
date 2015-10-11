@@ -63,7 +63,7 @@ class gdual
 
         void check_order() const
         {
-            if (m_order == std::numeric_limits<unsigned int>::max()) {
+            if (m_order >= std::numeric_limits<unsigned int>::max() - 10u) {
                 throw std::invalid_argument("polynomial truncation order is too large");
             }
         }
@@ -238,7 +238,7 @@ class gdual
          * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max()]
+         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
         explicit gdual(const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
@@ -256,7 +256,7 @@ class gdual
          * @param[in] order truncation order of the underlying algebra
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max()]
+         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          */
         explicit gdual(double value, unsigned int order):m_p(value),m_order(order)
         {
@@ -288,7 +288,7 @@ class gdual
          * @param[in] order truncation order
          * 
          * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max()]
+         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
         explicit gdual(double value, const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
