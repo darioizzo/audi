@@ -130,6 +130,14 @@ tanh: Overload for the hyperbolic tangent.
 
 ----------------------------------------------------------
 
+atanh: Overload for the inverse hyperbolic tangent.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::atanh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
 sqrt: Overload for the square root.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

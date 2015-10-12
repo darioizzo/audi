@@ -221,6 +221,27 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
 }
 
+BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
+{
+    // Checking the atanh is the inverse of tanh
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(atanh(tanh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tanh(atanh(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(atanh(tanh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tanh(atanh(p1)), p1, 1e-12) == true);
+    }
+}
+
 BOOST_AUTO_TEST_CASE(absolute_value)
 {
     unsigned int order = 5;

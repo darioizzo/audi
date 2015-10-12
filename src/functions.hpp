@@ -602,14 +602,49 @@ inline gdual tanh(const gdual& d)
     // Factors
     double factorial=24.;
     double four_k = 16.;
-    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k)
-    {
+    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k) {
         phat*=phat2;
         tanh_taylor += bn[k] * four_k * (four_k - 1.) / factorial * phat;
         four_k*=4.;
         factorial*=(2 * k + 1.) * (2 * k + 2.);
     }
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
+}
+
+
+/// Overload for the inverse hyperbolic tangent
+/**
+ * Implements the inverse hyperbolic tangent of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{k=1}^m \left(\frac{1}{(1-f_0)^k} + \frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k}
+ * \f]
+ *
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
+ *
+*/
+inline gdual atanh(const gdual& d)
+{
+    auto p0 = d.constant_cf();
+    auto phat = (d - p0);
+    auto powphat(phat);
+    double atanh_p0 = std::atanh(p0);
+
+    gdual retval(0.);
+    double coeff = 1;
+
+    for (auto k=1u; k <= d.get_order(); ++k) {
+        double add = (1. / std::pow(1 - p0, k) + coeff / std::pow(1 + p0, k)) / k;
+        retval += add * powphat;
+        coeff*=-1;
+        powphat*=phat;
+    }
+    return atanh_p0 + 0.5 * retval;
 }
 
 /// Overload for the absolute value
