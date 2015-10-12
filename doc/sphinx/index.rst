@@ -21,4 +21,4 @@ Biscani, Francesco. `Parallel sparse polynomial multiplication on modern hardwar
 
 Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures. <http://arxiv.org/pdf/1004.4548v1.pdf>`_ arXiv preprint arXiv:1004.4548 (2010).
 
-AuDi is thread-safe and, when possible, use of Piranha fine-grained parallelization of the truncated polynomial multiplication. The benefits of this fine grained parallelization are only visible for many variables or high orders.
+AuDi is thread-safe and, when possible, use of Piranha fine-grained parallelization of the truncated polynomial multiplication. The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.
