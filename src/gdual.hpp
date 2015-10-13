@@ -364,7 +364,7 @@ class gdual
         /**
          * Performs the integration of the gdual with respect to the symbol.
          *
-         * \note If the symbol is not in the symbol set, then it is added. 
+         * \note If \p symbol is not in the symbol set, then it is added. 
          *
          * \note Information may be lost as the truncation order is preserved.
          *
@@ -389,7 +389,7 @@ class gdual
         /**
          * Performs the partial derivative of the gdual with respect to the symbol
          *
-         * \note If the symbol is not in the symbol set it returns zero
+         * \note If \p symbol is not in the symbol set it returns zero
          *
          * @param[in] symbol Symbolic variable (must start with "d").
          *
@@ -408,14 +408,14 @@ class gdual
 
         /// Substitute symbol with value
         /**
-         * Substitute \p symbol with \p value
+         * Substitute the symbol \p sym with the value \p val
          *
          * @throws unspecified any exception thrown by:
          * - piranha::series::subs,
          */
-        gdual subs( const std::string sym, double value)
+        gdual subs( const std::string sym, double val)
         {
-            auto new_p = m_p.subs(sym, value);
+            auto new_p = m_p.subs(sym, val);
             return gdual(std::move(new_p), m_order);
         }
 
