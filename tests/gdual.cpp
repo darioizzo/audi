@@ -176,5 +176,23 @@ BOOST_AUTO_TEST_CASE(get_derivative)
     BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({3,3}), 0, 1e-14) == true);
     BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({4,4}), 0, 1e-14) == true);
     }
+}
+
+BOOST_AUTO_TEST_CASE(integrate_partial)
+{
+    // We test some trivial cases where truncation order does not influence the results
+    {
+    gdual x(1, "x", 4);
+    gdual y(1, "y", 4);
+    gdual z(1, "z", 4);
+    gdual f = x*x*x + x*y*z + z*x*y;
+    gdual fx = 3*x*x + y*z + z*y;
+    gdual fy = x*z + z*x;
+    gdual fz = y*x + x*y;
+
+    BOOST_CHECK_EQUAL(f.partial("x"), fx);
+    BOOST_CHECK_EQUAL(f.partial("y"), fy);
+    BOOST_CHECK_EQUAL(f.partial("z"), fz);
+    }
 
 }

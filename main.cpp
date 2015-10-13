@@ -3,9 +3,12 @@
 using namespace audi;
 
 int main() {
-	gdual p1(1, 4);
-	gdual p2("x", 4);
-	std::cout << p1+p2 << std::endl;
-	std::cout << 1+p2 << std::endl;
-	std::cout << p2+1 << std::endl;
+	gdual x(0.3, "y", 3);
+	gdual y(0.2, "x", 3);
+	gdual z(0.2, "z", 3);
+
+	auto f = 0.1+x+y-z;
+	auto g = atanh(f);
+	std::cout << atanh(f) << std::endl;
+	std::cout << atanh_d(f) << std::endl;
 }

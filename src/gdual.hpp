@@ -71,7 +71,14 @@ class gdual
         void check_var_name(const std::string &name) const
         {
             if (name.at(0) == 'd') {
-                throw std::invalid_argument("variable names cannot start with the letter d");
+                throw std::invalid_argument("symbol names cannot start with the letter d");
+            }
+        }
+
+        void check_var_name_has_d(const std::string &name) const
+        {
+            if (name.at(0) != 'd') {
+                throw std::invalid_argument("symbol variations must start with the letter d");
             }
         }
 
@@ -315,6 +322,21 @@ class gdual
             return m_p.get_symbol_set().size();
         }
 
+        /// Returns the symbol set size
+        /**
+         * Returns the symbol set
+         *
+         * @return the symbol set
+         */
+        std::vector<std::string> get_symbol_set() const
+        {
+            std::vector<std::string> retval;
+            for (auto s : m_p.get_symbol_set()) {
+                retval.push_back(s.get_name());
+            }
+            return retval;
+        }
+
         /// Extends the symbol set
         /**
          * Adds some symbolic variables to the current polynomial
@@ -336,6 +358,65 @@ class gdual
                 ss.add(sym_var);
             }
             m_p = m_p.extend_symbol_set(ss);
+        }
+
+        /// Integration
+        /**
+         * Performs the integration of the gdual with respect to the symbol.
+         *
+         * \note If the symbol is not in the symbol set, then it is added. 
+         *
+         * \note Information may be lost as the truncation order is preserved.
+         *
+         * @param[in] symbol Symbolic variable (must start with "d").
+         *
+         * @throws std::invalid_argument:
+         * - if \p symbol does not start with the letter "d".
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::series::truncate_degree,
+         * - piranha::series::integrate
+         */
+        gdual integrate(const std::string& symbol)
+        {
+            check_var_name_has_d(symbol);
+            auto new_p = m_p.integrate(symbol);
+            new_p = new_p.truncate_degree(m_order);
+            return gdual(std::move(new_p), m_order);
+        }
+
+        /// Partial derivative
+        /**
+         * Performs the partial derivative of the gdual with respect to the symbol
+         *
+         * \note If the symbol is not in the symbol set it returns zero
+         *
+         * @param[in] symbol Symbolic variable (must start with "d").
+         *
+         * @throws std::invalid_argument:
+         * - if \p symbol does not start with the letter "d" 
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::series::partial,
+         */
+        gdual partial(const std::string& symbol)
+        {
+            check_var_name_has_d(symbol);
+            auto new_p = m_p.partial(symbol);
+            return gdual(std::move(new_p), m_order);
+        }
+
+        /// Substitute symbol with value
+        /**
+         * Substitute \p symbol with \p value
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::series::subs,
+         */
+        gdual subs( const std::string sym, double value)
+        {
+            auto new_p = m_p.subs(sym, value);
+            return gdual(std::move(new_p), m_order);
         }
 
         /// Current degree
@@ -525,7 +606,7 @@ class gdual
          * Compares the single polynomial coefficients of
          * two audi::gdual objects and returns true if equal. 
          *
-         * /note The truncatin order of \p d1 and \p d2 may be different
+         * /note The truncation order of \p d1 and \p d2 may be different
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
