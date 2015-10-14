@@ -190,9 +190,9 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     gdual fy = x*z + z*x;
     gdual fz = y*x + x*y;
 
-    BOOST_CHECK_EQUAL(f.partial("x"), fx);
-    BOOST_CHECK_EQUAL(f.partial("y"), fy);
-    BOOST_CHECK_EQUAL(f.partial("z"), fz);
+    BOOST_CHECK_EQUAL(f.partial("dx"), fx);
+    BOOST_CHECK_EQUAL(f.partial("dy"), fy);
+    BOOST_CHECK_EQUAL(f.partial("dz"), fz);
     }
 
 }

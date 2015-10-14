@@ -104,11 +104,9 @@ BOOST_AUTO_TEST_CASE(sine_and_cosine)
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), cos(p1) * cos(p1) - sin(p1) * sin(p1), 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sin(p1) * sin(p1) + cos(p1) * cos(p1), gdual(1.), 1e-12) == true);
 
-    gdual sine(p1);
-    gdual cosine(p1);
-    sin_and_cos(p1, sine, cosine);
-    BOOST_CHECK_EQUAL(sine, sin(p1));
-    BOOST_CHECK_EQUAL(cosine, cos(p1));
+    auto res = sin_and_cos(p1);
+    BOOST_CHECK_EQUAL(res[0], sin(p1));
+    BOOST_CHECK_EQUAL(res[1], cos(p1));
 }
 
 BOOST_AUTO_TEST_CASE(tangent)
@@ -171,9 +169,9 @@ BOOST_AUTO_TEST_CASE(hyperbolic_sine_and_cosine)
 
     gdual sineh(p1);
     gdual cosineh(p1);
-    sinh_and_cosh(p1, sineh, cosineh);
-    BOOST_CHECK_EQUAL(sineh, sinh(p1));
-    BOOST_CHECK_EQUAL(cosineh, cosh(p1));
+    auto res = sinh_and_cosh(p1);
+    BOOST_CHECK_EQUAL(res[0], sinh(p1));
+    BOOST_CHECK_EQUAL(res[1], cosh(p1));
 }
 
 BOOST_AUTO_TEST_CASE(hyperbolic_tangent)

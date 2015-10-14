@@ -359,11 +359,11 @@ inline gdual cos(const gdual& d)
  * Use this function when both sine and cosine are needed.
  *
  * @param[in] d audi::gdual argument
- * @param[out] sine the sine of d
- * @param[out] cosine the cosine of d
+ *
+ * @param[out] an std::array containing the sine and the cosine (first element, second element)
  *
 */
-void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
+std::array<gdual,2> sin_and_cos(const gdual& d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -393,8 +393,9 @@ void sin_and_cos(const gdual& d, gdual& sine, gdual& cosine)
         factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
         sin_taylor += (coeff/factorial) * tmp;
     }
-    sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
-    cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
+    auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
+    auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
+    return std::array<gdual,2>({{std::move(sine), std::move(cosine)}});
 }
 
 /// Overload for the tangent
@@ -540,7 +541,7 @@ inline gdual cosh(const gdual& d)
  * @param[out] cosineh the hyperbolic cosine of d
  *
 */
-void sinh_and_cosh(const gdual& d, gdual& sineh, gdual& cosineh)
+std::array<gdual,2> sinh_and_cosh(const gdual& d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -566,8 +567,9 @@ void sinh_and_cosh(const gdual& d, gdual& sineh, gdual& cosineh)
         factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
         sinh_taylor += tmp / factorial;
     }
-    sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
-    cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
+    auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
+    auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
+    return std::array<gdual,2>({{std::move(sineh), std::move(cosineh)}});
 }
 
 /// Overload for the hyperbolic tangent

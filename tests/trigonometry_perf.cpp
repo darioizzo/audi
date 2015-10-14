@@ -18,13 +18,10 @@ void scalable_test_sin_cos(int m, int n)
         variables.emplace_back("x"+std::to_string(i), m);
     } 
     gdual p1(1, m);
-    gdual sine(p1);
-    gdual cosine(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
-    sine=sin(p1);
-    cosine=cos(p1);
+    auto res = sin_and_cos(p1);
 }
 
 void scalable_test_sin_and_cos(int m, int n)
@@ -35,12 +32,10 @@ void scalable_test_sin_and_cos(int m, int n)
         variables.emplace_back("x"+std::to_string(i), m);
     } 
     gdual p1(1, m);
-    gdual sine(p1);
-    gdual cosine(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
-    sin_and_cos(p1, sine, cosine);
+    auto res = sin_and_cos(p1);
 }
 
 void scalable_test_tan(int m, int n)
@@ -69,13 +64,11 @@ void scalable_test_sin_over_cos(int m, int n)
     } 
     gdual p1(1, m);
     gdual tangent(p1);
-    gdual sine(p1);
-    gdual cosine(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
-    sin_and_cos(p1, sine, cosine);
+    auto res = sin_and_cos(p1);
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
-    tangent = sine / cosine;
+    tangent = res[0] / res[1];
 }
 
 BOOST_AUTO_TEST_CASE(trigonometry_perf)
