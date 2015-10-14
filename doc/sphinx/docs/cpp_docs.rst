@@ -98,6 +98,14 @@ tan: Overload for the tangent.
 
 ----------------------------------------------------------
 
+atan: Overload for the inverse  tangent.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::atan(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
 sinh: Overload for the hyperbolic sine.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
