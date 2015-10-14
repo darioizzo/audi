@@ -18,6 +18,9 @@ gdual: Generalized dual number class.
 Functions
 ---------
 
+Mah Dici!!
+##########
+
 exp: Overload for the exponential.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -94,6 +97,14 @@ tan: Overload for the tangent.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. doxygenfunction:: audi::tan(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+atan: Overload for the inverse  tangent.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::atan(const gdual&)
    :project: AuDi
 
 ----------------------------------------------------------

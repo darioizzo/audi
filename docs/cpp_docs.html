@@ -118,14 +118,15 @@
 <li><a class="reference internal" href="#cos-overload-for-the-cosine" id="id12">cos: Overload for the cosine.</a></li>
 <li><a class="reference internal" href="#sin-and-cos-computes-both-at-once" id="id13">sin_and_cos: Computes both at once</a></li>
 <li><a class="reference internal" href="#tan-overload-for-the-tangent" id="id14">tan: Overload for the tangent.</a></li>
-<li><a class="reference internal" href="#sinh-overload-for-the-hyperbolic-sine" id="id15">sinh: Overload for the hyperbolic sine.</a></li>
-<li><a class="reference internal" href="#cosh-overload-for-the-hyperbolic-cosine" id="id16">cosh: Overload for the hyperbolic cosine.</a></li>
-<li><a class="reference internal" href="#sinh-and-cosh-computes-both-at-once" id="id17">sinh_and_cosh: Computes both at once</a></li>
-<li><a class="reference internal" href="#tanh-overload-for-the-hyperbolic-tangent" id="id18">tanh: Overload for the hyperbolic tangent.</a></li>
-<li><a class="reference internal" href="#atanh-overload-for-the-inverse-hyperbolic-tangent" id="id19">atanh: Overload for the inverse hyperbolic tangent.</a></li>
-<li><a class="reference internal" href="#sqrt-overload-for-the-square-root" id="id20">sqrt: Overload for the square root.</a></li>
-<li><a class="reference internal" href="#cbrt-overload-for-the-cubic-root" id="id21">cbrt: Overload for the cubic root.</a></li>
-<li><a class="reference internal" href="#abs-overload-for-the-absolute-value" id="id22">abs: Overload for the absolute value.</a></li>
+<li><a class="reference internal" href="#atan-overload-for-the-inverse-tangent" id="id15">atan: Overload for the inverse  tangent.</a></li>
+<li><a class="reference internal" href="#sinh-overload-for-the-hyperbolic-sine" id="id16">sinh: Overload for the hyperbolic sine.</a></li>
+<li><a class="reference internal" href="#cosh-overload-for-the-hyperbolic-cosine" id="id17">cosh: Overload for the hyperbolic cosine.</a></li>
+<li><a class="reference internal" href="#sinh-and-cosh-computes-both-at-once" id="id18">sinh_and_cosh: Computes both at once</a></li>
+<li><a class="reference internal" href="#tanh-overload-for-the-hyperbolic-tangent" id="id19">tanh: Overload for the hyperbolic tangent.</a></li>
+<li><a class="reference internal" href="#atanh-overload-for-the-inverse-hyperbolic-tangent" id="id20">atanh: Overload for the inverse hyperbolic tangent.</a></li>
+<li><a class="reference internal" href="#sqrt-overload-for-the-square-root" id="id21">sqrt: Overload for the square root.</a></li>
+<li><a class="reference internal" href="#cbrt-overload-for-the-cubic-root" id="id22">cbrt: Overload for the cubic root.</a></li>
+<li><a class="reference internal" href="#abs-overload-for-the-absolute-value" id="id23">abs: Overload for the absolute value.</a></li>
 </ul>
 </li>
 </ul>
@@ -1039,18 +1040,16 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sin-and-cos-computes-both-at-once">
 <h3><a class="toc-backref" href="#id13">sin_and_cos: Computes both at once</a><a class="headerlink" href="#sin-and-cos-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi11sin_and_cosERK5gdualR5gdualR5gdual">
-<span id="audi::sin_and_cos__gdualCR.gdualR.gdualR"></span><span class="target" id="AuDinamespaceaudi_1a8bb538bec9714c284daac63f6ac18dc0"></span>void <code class="descclassname">audi::</code><code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>sine</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>cosine</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi11sin_and_cosERK5gdualR5gdualR5gdual" title="Permalink to this definition">¶</a></dt>
+<dt id="_CPPv2N4audi11sin_and_cosERK5gdual">
+<span id="audi::sin_and_cos__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a9ff75d2f5dd73cd8ce3b31681d0797e3"></span>std::array&lt;<a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>, 2&gt; <code class="descclassname">audi::</code><code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi11sin_and_cosERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes both sine and cosine. </p>
 <p>As most of the computations for the sine and cosine is the same, it is twice as fast to get both sine and cosine at once rather than computing them in sequence. Use this function when both sine and cosine are needed.</p>
 <p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an std::array containing the Taylor expansions of sine and the cosine (first element, second element) </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">sine</span></code> - <p>the sine of d </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">cosine</span></code> - <p>the cosine of d </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1086,8 +1085,34 @@ This method will first construct a term with zero coefficient and key initialise
 
 </div>
 <hr class="docutils" />
+<div class="section" id="atan-overload-for-the-inverse-tangent">
+<h3><a class="toc-backref" href="#id15">atan: Overload for the inverse  tangent.</a><a class="headerlink" href="#atan-overload-for-the-inverse-tangent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv2N4audi4atanERK5gdual">
+<span id="audi::atan__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a3f12e97d3f1e36f497a05be7cfcc7591"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4atanERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload for the inverse tangent. </p>
+<p>Implements the inverse tangent of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math">
+\[ T_{(\mbox{atan} f)} = \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k \]</div>
+</p>
+<p>This formula derives directly from the formula for <a class="reference internal" href="#AuDinamespaceaudi_1abf0a4e38e7fdcd9cab862b22038fed20"><span>audi::atanh</span></a> noting that: <span class="math">\( \mbox{atan}(z) = i \mbox{atanh}(-iz)\)</span></p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
 <div class="section" id="sinh-overload-for-the-hyperbolic-sine">
-<h3><a class="toc-backref" href="#id15">sinh: Overload for the hyperbolic sine.</a><a class="headerlink" href="#sinh-overload-for-the-hyperbolic-sine" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id16">sinh: Overload for the hyperbolic sine.</a><a class="headerlink" href="#sinh-overload-for-the-hyperbolic-sine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4sinhERK5gdual">
 <span id="audi::sinh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a033eaf4e9086b793cb49a13cc9647c7f"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sinhERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1113,7 +1138,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="cosh-overload-for-the-hyperbolic-cosine">
-<h3><a class="toc-backref" href="#id16">cosh: Overload for the hyperbolic cosine.</a><a class="headerlink" href="#cosh-overload-for-the-hyperbolic-cosine" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">cosh: Overload for the hyperbolic cosine.</a><a class="headerlink" href="#cosh-overload-for-the-hyperbolic-cosine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4coshERK5gdual">
 <span id="audi::cosh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a5e10cb66ad2251c146e3e33095803115"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4coshERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1139,20 +1164,18 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="sinh-and-cosh-computes-both-at-once">
-<h3><a class="toc-backref" href="#id17">sinh_and_cosh: Computes both at once</a><a class="headerlink" href="#sinh-and-cosh-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id18">sinh_and_cosh: Computes both at once</a><a class="headerlink" href="#sinh-and-cosh-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi13sinh_and_coshERK5gdualR5gdualR5gdual">
-<span id="audi::sinh_and_cosh__gdualCR.gdualR.gdualR"></span><span class="target" id="AuDinamespaceaudi_1ae445ab51c11c1d669c117852c06c9492"></span>void <code class="descclassname">audi::</code><code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>sineh</em>, <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>cosineh</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi13sinh_and_coshERK5gdualR5gdualR5gdual" title="Permalink to this definition">¶</a></dt>
+<dt id="_CPPv2N4audi13sinh_and_coshERK5gdual">
+<span id="audi::sinh_and_cosh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a35f5046e918775150794ba594f1430ac"></span>std::array&lt;<a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>, 2&gt; <code class="descclassname">audi::</code><code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi13sinh_and_coshERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes both the hyperbolic sine and the hyperbolic cosine. </p>
 <p>As most of the computations for the hyperbolic sine and hyperbolic cosine is the same, it is twice as fast to get them both at once rather than computing them in sequence. Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.</p>
 <p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element) </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">sineh</span></code> - <p>the hyperbolic sine of d </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">cosineh</span></code> - <p>the hyperbolic cosine of d </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1163,7 +1186,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="tanh-overload-for-the-hyperbolic-tangent">
-<h3><a class="toc-backref" href="#id18">tanh: Overload for the hyperbolic tangent.</a><a class="headerlink" href="#tanh-overload-for-the-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id19">tanh: Overload for the hyperbolic tangent.</a><a class="headerlink" href="#tanh-overload-for-the-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4tanhERK5gdual">
 <span id="audi::tanh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1acb1ffba2d7549ab070305ac4c9e6642c"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4tanhERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1175,7 +1198,7 @@ This method will first construct a term with zero coefficient and key initialise
 <p>where <span class="math">\(T_f = f_0 + \hat f\)</span> and <span class="math">\( B_{2k}\)</span> are the Bernoulli numbers.</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an audi:gdual containing the Taylor expansion of the hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
@@ -1189,7 +1212,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="atanh-overload-for-the-inverse-hyperbolic-tangent">
-<h3><a class="toc-backref" href="#id19">atanh: Overload for the inverse hyperbolic tangent.</a><a class="headerlink" href="#atanh-overload-for-the-inverse-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id20">atanh: Overload for the inverse hyperbolic tangent.</a><a class="headerlink" href="#atanh-overload-for-the-inverse-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi5atanhERK5gdual">
 <span id="audi::atanh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1abf0a4e38e7fdcd9cab862b22038fed20"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5atanhERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1200,7 +1223,7 @@ This method will first construct a term with zero coefficient and key initialise
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
@@ -1214,7 +1237,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="sqrt-overload-for-the-square-root">
-<h3><a class="toc-backref" href="#id20">sqrt: Overload for the square root.</a><a class="headerlink" href="#sqrt-overload-for-the-square-root" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id21">sqrt: Overload for the square root.</a><a class="headerlink" href="#sqrt-overload-for-the-square-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4sqrtERK5gdual">
 <span id="audi::sqrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a8deb453baec52501f1806c02156432b4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sqrtERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1240,7 +1263,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="cbrt-overload-for-the-cubic-root">
-<h3><a class="toc-backref" href="#id21">cbrt: Overload for the cubic root.</a><a class="headerlink" href="#cbrt-overload-for-the-cubic-root" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">cbrt: Overload for the cubic root.</a><a class="headerlink" href="#cbrt-overload-for-the-cubic-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi4cbrtERK5gdual">
 <span id="audi::cbrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1adda903acffda0d9351499fcef9a7b22a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4cbrtERK5gdual" title="Permalink to this definition">¶</a></dt>
@@ -1266,7 +1289,7 @@ This method will first construct a term with zero coefficient and key initialise
 </div>
 <hr class="docutils" />
 <div class="section" id="abs-overload-for-the-absolute-value">
-<h3><a class="toc-backref" href="#id22">abs: Overload for the absolute value.</a><a class="headerlink" href="#abs-overload-for-the-absolute-value" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">abs: Overload for the absolute value.</a><a class="headerlink" href="#abs-overload-for-the-absolute-value" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv2N4audi3absERK5gdual">
 <span id="audi::abs__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a082f942a7ae65051ac6ed83cdb53c185"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3absERK5gdual" title="Permalink to this definition">¶</a></dt>
