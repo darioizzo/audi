@@ -63,6 +63,46 @@ inline gdual atanh_d(const gdual& f)
     return _compose_from_derivative(f, dg, g0);
 }
 
+inline gdual atan_d(const gdual& f)
+{
+    auto f0 = f.constant_cf();
+    double g0 = std::atan(f0);
+    auto dg = 1. / (1 + f*f);
+    return _compose_from_derivative(f, dg, g0);
+}
+
+inline gdual asin_d(const gdual& f)
+{
+    auto f0 = f.constant_cf();
+    double g0 = std::asin(f0);
+    auto dg = 1. / sqrt(1 - f*f);
+    return _compose_from_derivative(f, dg, g0);
+}
+
+inline gdual asinh_d(const gdual& f)
+{
+    auto f0 = f.constant_cf();
+    double g0 = std::asin(f0);
+    auto dg = 1. / sqrt(1 + f*f);
+    return _compose_from_derivative(f, dg, g0);
+}
+
+inline gdual acos_d(const gdual& f)
+{
+    auto f0 = f.constant_cf();
+    double g0 = std::asin(f0);
+    auto dg = - 1. / sqrt(1 - f*f);
+    return _compose_from_derivative(f, dg, g0);
+}
+
+inline gdual acosh_d(const gdual& f)
+{
+    auto f0 = f.constant_cf();
+    double g0 = std::asin(f0);
+    auto dg = 1. / sqrt(f*f-1);
+    return _compose_from_derivative(f, dg, g0);
+}
+
 
 } // end of namespace audi 
 

@@ -1,8 +1,8 @@
 #ifndef AUDI_FUNCTIONS_HPP
 #define AUDI_FUNCTIONS_HPP
 
-#include <boost/lexical_cast.hpp>
 #include <boost/math/special_functions/bernoulli.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <cmath>
 #include <piranha/binomial.hpp>
 #include <stdexcept>
@@ -360,7 +360,7 @@ inline gdual cos(const gdual& d)
  *
  * @param[in] d audi::gdual argument
  *
- * @param[out] an std::array containing the sine and the cosine (first element, second element)
+ * @return an std::array containing the Taylor expansions of sine and the cosine (first element, second element)
  *
 */
 std::array<gdual,2> sin_and_cos(const gdual& d)
@@ -395,7 +395,7 @@ std::array<gdual,2> sin_and_cos(const gdual& d)
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
-    return std::array<gdual,2>({{std::move(sine), std::move(cosine)}});
+    return std::array<gdual,2>{std::move(sine), std::move(cosine)};
 }
 
 /// Overload for the tangent
@@ -537,8 +537,8 @@ inline gdual cosh(const gdual& d)
  * Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.
  *
  * @param[in] d audi::gdual argument
- * @param[out] sineh the hyperbolic sine of d
- * @param[out] cosineh the hyperbolic cosine of d
+ *
+ * @return an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element)
  *
 */
 std::array<gdual,2> sinh_and_cosh(const gdual& d)
@@ -569,7 +569,7 @@ std::array<gdual,2> sinh_and_cosh(const gdual& d)
     }
     auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
     auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
-    return std::array<gdual,2>({{std::move(sineh), std::move(cosineh)}});
+    return std::array<gdual,2>{std::move(sineh), std::move(cosineh)};
 }
 
 /// Overload for the hyperbolic tangent
@@ -586,7 +586,7 @@ std::array<gdual,2> sinh_and_cosh(const gdual& d)
  *
  * @param[in] d audi::gdual argument
  *
- * @return an audi:gdual containing the Taylor expansion of the hyperbolic tangent of \p d
+ * @return an audi::gdual containing the Taylor expansion of the hyperbolic tangent of \p d
  *
 */
 inline gdual tanh(const gdual& d)
@@ -627,7 +627,7 @@ inline gdual tanh(const gdual& d)
  *
  * @param[in] d audi::gdual argument
  *
- * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
+ * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
 */
 inline gdual atanh(const gdual& d)
@@ -647,6 +647,146 @@ inline gdual atanh(const gdual& d)
         powphat*=phat;
     }
     return atanh_p0 + 0.5 * retval;
+}
+
+/// Overload for the inverse tangent
+/**
+ * Implements the inverse tangent of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+ * \f]
+ *
+ * This formula derives directly from the formula for audi::atanh noting that: \f$ \mbox{atan}(z) = i \mbox{atanh}(-iz)\f$
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi::gdual containing the Taylor expansion of the inverse tangent of \p d
+ *
+*/
+inline gdual atan(const gdual& d)
+{
+    double p0 = d.constant_cf();
+    auto phat = (d - p0) / (1. + p0*p0);
+    auto powphat(phat);
+
+    gdual retval(std::atan(p0));
+    double coeff1 = 1.;
+    double coeff2 = -1.;
+
+    for (auto k=1u; k <= d.get_order(); ++k) {
+        if (k % 2) {        // This is for odd powers 1..3..5
+            double binom = 1.;
+            double f0 = p0 * p0;
+            double cf_i = -1.;
+            for (auto j = 1u; 2*j <= k; ++j) {
+                binom += piranha::math::binomial(k, 2*j) * f0 * cf_i;
+                f0 *= p0 * p0;
+                cf_i *= -1.;
+            }
+            retval += binom * powphat * coeff1 / k;
+            coeff1 *= -1.;
+        } else {            //This is for even powers 2..4..6
+            double binom = 0.;
+            double f0 = p0;
+            double cf_i = 1.;
+            for (auto j = 1u; 2*j - 1 <= k; ++j) {
+                binom += piranha::math::binomial(k, 2*j - 1) * f0 * cf_i;
+                f0 *= p0 * p0;
+                cf_i *= -1;
+            }
+            retval += binom * powphat * coeff2 / k;
+            coeff2 *= -1;
+        }
+        powphat*=phat;
+    }
+    return retval;
+}
+
+/// Overload for the inverse hyperbolic sine
+/**
+ * Implements the inverse inverse hyperbolic sine of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{asinh} f)} = T_{\left(\log\left(f + \sqrt{1 + f^2}\right)\right)}
+ * \f]
+ *
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
+ *
+*/
+inline gdual asinh(const gdual& d)
+{
+    return log(d + sqrt(1. + d*d));
+}
+
+/// Overload for the inverse hyperbolic cosine
+/**
+ * Implements the inverse inverse hyperbolic cosine of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{acosh} f)} = T_{\left(\log\left(f + \sqrt{f^2 - 1}\right)\right)}
+ * \f]
+ *
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
+ *
+*/
+inline gdual acosh(const gdual& d)
+{
+    return log(d + sqrt(d - 1.) * sqrt(d + 1));
+}
+
+/// Overload for the inverse sine
+/**
+ * Implements the inverse inverse sine of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{asin} f)} = T_{\left(\mbox{atan} \left(f / \sqrt{1 - f^2}\right)\right)}
+ * \f]
+ *
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi::gdual containing the Taylor expansion of the inverse sine of \p d
+ *
+*/
+inline gdual asin(const gdual& d)
+{
+    return atan(d / sqrt(1. - d*d));
+}
+
+/// Overload for the inverse cosine
+/**
+ * Implements the inverse inverse cosine of an audi::gdual. 
+ * Essentially, it performs the following computations in the \f$\mathcal P_{n,m}\f$
+ * algebra:
+ *
+ * \f[
+ * T_{(\mbox{acos} f)} = T_{\left(\mbox{atan} \left(\sqrt{1 - f^2} / f\right)\right)}
+ * \f]
+ *
+ *
+ * @param[in] d audi::gdual argument
+ *
+ * @return an audi::gdual containing the Taylor expansion of the inverse cosine of \p d
+ *
+*/
+inline gdual acos(const gdual& d)
+{
+    return 0.5 * boost::math::constants::pi<double>() - atan(d / sqrt(1. - d*d));
 }
 
 /// Overload for the absolute value

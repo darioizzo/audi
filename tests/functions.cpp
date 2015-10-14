@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
 
     {
-    unsigned int order = 10;
+    unsigned int order = 8;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
     auto p1 = x + y;  
@@ -211,11 +211,11 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
     
     {
-    unsigned int order = 11; // tolerance decreases here to 1e-11 as high order derivatives can loose precision
+    unsigned int order = 9; 
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
     auto p1 = x + y;  
-    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-11) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
     }
 }
 
@@ -237,6 +237,111 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
     auto p1 = x + y + x * y;  
     BOOST_CHECK(EPSILON_COMPARE(atanh(tanh(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(tanh(atanh(p1)), p1, 1e-12) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(inverse_tangent)
+{
+    // Checking that atan is the inverse of tan
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(atan(tan(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tan(atan(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(atan(tan(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(tan(atan(p1)), p1, 1e-12) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
+{
+    // Checking that asinh is the inverse of sinh
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(asinh(sinh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sinh(asinh(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(asinh(sinh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sinh(asinh(p1)), p1, 1e-12) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(inverse_sine)
+{
+    // Checking that asin is the inverse of sin
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(asin(sin(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(asin(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(asin(sin(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(sin(asin(p1)), p1, 1e-12) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(inverse_hyperbolic_cosine)
+{
+    // Checking that acosh is the inverse of acos
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(acosh(cosh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(acosh(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(acosh(cosh(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cosh(acosh(p1)), p1, 1e-12) == true);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(inverse_cosine)
+{
+    // Checking that acos is the inverse of cos
+    {
+    unsigned int order = 5;
+    gdual x(0.1, "x",order);
+    gdual y(0.12, "y",order);
+    auto p1 = x + y;  
+    BOOST_CHECK(EPSILON_COMPARE(acos(cos(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cos(acos(p1)), p1, 1e-12) == true);
+    }
+    {
+    unsigned int order = 6;
+    gdual x(0.1, "x",order);
+    gdual y(-0.12, "y",order);
+    auto p1 = x + y + x * y;  
+    BOOST_CHECK(EPSILON_COMPARE(acos(cos(p1)), p1, 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(cos(acos(p1)), p1, 1e-12) == true);
     }
 }
 
