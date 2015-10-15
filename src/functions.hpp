@@ -395,7 +395,7 @@ std::array<gdual,2> sin_and_cos(const gdual& d)
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
-    return std::array<gdual,2>{std::move(sine), std::move(cosine)};
+    return std::array<gdual,2>{{std::move(sine), std::move(cosine)}};
 }
 
 /// Overload for the tangent
@@ -569,7 +569,7 @@ std::array<gdual,2> sinh_and_cosh(const gdual& d)
     }
     auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
     auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
-    return std::array<gdual,2>{std::move(sineh), std::move(cosineh)};
+    return std::array<gdual,2>{{std::move(sineh), std::move(cosineh)}};
 }
 
 /// Overload for the hyperbolic tangent

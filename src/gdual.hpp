@@ -174,16 +174,16 @@ class gdual
         // Basic overloads for the division
         static gdual div(const gdual &d1, const gdual &d2)
         {
-            gdual retval(1, std::max(d1.get_order(), d2.get_order()));
-            double fatt = -1;
+            gdual retval(1.);
+            double fatt = -1.;
             auto p0 = d2.constant_cf();
             auto phat = (d2 - p0);
-            phat = phat/p0;
+            phat = phat / p0;
             gdual tmp(phat);
 
             retval = retval - phat;
             for (auto i = 2u; i <= d2.m_order; ++i) {
-                fatt *= -1;
+                fatt *= -1.;
                 phat*=tmp;
                 retval =  retval + fatt * phat;
             }
@@ -194,19 +194,19 @@ class gdual
         template <typename T>
         static gdual div(const T &d1, const gdual &d2)
         {
-            gdual retval(1, d2.get_order());
-            double fatt = -1;
+            gdual retval(1.);
+            double fatt = -1.;
             auto p0 = d2.constant_cf();
             if (p0 == 0) {
                 throw std::domain_error("gdual: divide by zero");
             }
             auto phat = (d2 - p0);
-            phat = phat/p0;
+            phat = phat / p0;
             gdual tmp(phat);
 
             retval = retval - phat;
             for (auto i = 2u; i <= d2.m_order; ++i) {
-                fatt *= -1;
+                fatt *= -1.;
                 phat*=tmp;
                 retval =  retval + fatt * phat;
             }

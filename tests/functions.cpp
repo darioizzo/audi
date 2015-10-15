@@ -83,16 +83,6 @@ BOOST_AUTO_TEST_CASE(logarithm)
         auto p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;
         BOOST_CHECK(EPSILON_COMPARE(exp(log(p1)), p1, 1e-12) == true);
     }
-    // This test is deactivated as it would fail for the precision. (TO BE INVESTIGATED)
-    /*
-    {
-        gdual x(0.1, "x",4);
-        gdual y(0.13, "y",4);
-
-        auto p1 = 1 / (x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x);
-        BOOST_CHECK(EPSILON_COMPARE(exp(log(p1)), p1, 1e-12) == true);
-    }
-    */
 }
 
 
