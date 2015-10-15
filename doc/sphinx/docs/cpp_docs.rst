@@ -106,6 +106,22 @@ atan: Overload for the inverse  tangent.
 
 ----------------------------------------------------------
 
+acos: Overload for the inverse cosine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::acos(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+asin: Overload for the inverse sine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::asin(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
 sinh: Overload for the hyperbolic sine.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -142,6 +158,30 @@ atanh: Overload for the inverse hyperbolic tangent.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. doxygenfunction:: audi::atanh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+acosh: Overload for the inverse hyperbolic cosine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::acosh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+asinh: Overload for the inverse hyperbolic sine.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::asinh(const gdual&)
+   :project: AuDi
+
+----------------------------------------------------------
+
+erf: Overload for the error function
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::erf(const gdual&)
    :project: AuDi
 
 ----------------------------------------------------------

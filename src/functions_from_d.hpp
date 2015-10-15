@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "gdual.hpp"
+#include <boost/math/constants/constants.hpp>
 
 namespace audi
 {
@@ -63,6 +64,17 @@ inline gdual atanh_d(const gdual& f)
     return _compose_from_derivative(f, dg, g0);
 }
 
+/// Possible overload for the inverse tangent
+/**
+ * Implements the inverse tangent of an audi::gdual. The audi:atan
+ * overload is actually faster and this is only provided as to benchmark the
+ * performances of audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse tangent of \p d
+ *
+*/
 inline gdual atan_d(const gdual& f)
 {
     auto f0 = f.constant_cf();
@@ -71,6 +83,17 @@ inline gdual atan_d(const gdual& f)
     return _compose_from_derivative(f, dg, g0);
 }
 
+/// Possible overload for the inverse sine
+/**
+ * Implements the inverse sine of an audi::gdual. The audi:asin
+ * overload may be slower, but this is currently only provided as to benchmark the
+ * performances of audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse sine of \p d
+ *
+*/
 inline gdual asin_d(const gdual& f)
 {
     auto f0 = f.constant_cf();
@@ -79,28 +102,80 @@ inline gdual asin_d(const gdual& f)
     return _compose_from_derivative(f, dg, g0);
 }
 
+/// Possible overload for the inverse hyperbolic sine
+/**
+ * Implements the inverse hyperbolic sine of an audi::gdual. The audi:asinh
+ * overload may be slower, but this is currently only provided as to benchmark the
+ * performances of audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
+ *
+*/
 inline gdual asinh_d(const gdual& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::asin(f0);
+    double g0 = std::asinh(f0);
     auto dg = 1. / sqrt(1 + f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
+/// Possible overload for the inverse cosine
+/**
+ * Implements the inverse cosine of an audi::gdual. The audi:acos
+ * overload may be slower, but this is currently only provided as to benchmark the
+ * performances of audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse cosine of \p d
+ *
+*/
 inline gdual acos_d(const gdual& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::asin(f0);
+    double g0 = std::acos(f0);
     auto dg = - 1. / sqrt(1 - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
+/// Possible overload for the inverse hyperbolic cosine
+/**
+ * Implements the inverse hyperbolic cosine of an audi::gdual. The audi:cosh
+ * is faster, and this is currently only provided as to benchmark the
+ * performances of audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
+ *
+*/
 inline gdual acosh_d(const gdual& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::asin(f0);
-    auto dg = 1. / sqrt(f*f-1);
+    double g0 = std::acosh(f0);
+    auto dg = 1. / sqrt((f - 1)*(f + 1));
     return _compose_from_derivative(f, dg, g0);
+}
+
+/// Overload for the error function
+/**
+ * Implements the error function of an audi::gdual. Essentially it 
+ * makes use of the fact that \f$ \frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\f$
+ * to then use audi::_compose_from_derivative
+ *
+ * @param[in] f audi::gdual argument
+ *
+ * @return an audi:gdual containing the Taylor expansion of the error function of \p d
+ *
+*/
+inline gdual erf(const gdual& d)
+{
+    auto f0 = d.constant_cf();
+    double g0 = std::erf(f0);
+    auto dg = (2. / std::sqrt(boost::math::constants::pi<double>())) * exp(- d * d);
+    return _compose_from_derivative(d, dg, g0);
 }
 
 

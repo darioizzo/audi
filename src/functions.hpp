@@ -744,7 +744,7 @@ inline gdual asinh(const gdual& d)
 */
 inline gdual acosh(const gdual& d)
 {
-    return log(d + sqrt(d - 1.) * sqrt(d + 1));
+    return log(d + sqrt(d*d - 1.));
 }
 
 /// Overload for the inverse sine
