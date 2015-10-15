@@ -255,6 +255,119 @@ We can now apply the **composition rule** to get:
 
 -----------------------------------------------------------------------
 
+Inverse functions
+=================
+
+The case for the inverse trigonometric functions and hyperbolic functions is more complex and deserves some extended discussion. 
+
+Inverse hyperbolic tangent
+--------------------------
+
+We consider the inverse hyperbolic tangent function:
+
+.. math::
+   g(x) = \mbox{atanh} (x)
+
+As before, we want to compute the truncated Taylor expansion of :math:`\mbox{atanh} (f(\mathbf x))` assuming to have access to the truncated Taylor expansion of :math:`f`, :math:`T_f = f_0 + \hat f`. Since there is not a convenient addition formula we must seek a different expression. We start from the identity:
+
+.. math::
+   \mbox{atanh} (x) = \frac 12 \left(\log (1 + x) - \log (1 - x)\right)
+
+which allows us to write:
+
+.. math::
+   (g \circ f) (\mathbf x) =  \mbox{atanh} (f(\mathbf x)) = \frac 12 \left(\log (1 + f(\mathbf x)) - \log (1 - f(\mathbf x))\right)
+
+and, using the addition formula for the logarithms, we get:
+
+.. math::
+   \mbox{atanh} (f(\mathbf x)) = \mbox{atanh} f_0 + \frac 12\left(\log\left(1+\frac{f-f_0}{1+f_0} \right) - \log\left(1-\frac{f-f_0}{1-f_0} \right)  \right)
+
+we may now apply the composition theorem and find:
+
+.. math::
+   T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 + \frac 12 \left(T_{\log (1+x)} \circ \frac{\hat f}{1+f_0} - T_{\log (1-x)} \circ \frac{\hat f}{1-f_0}\right)
+
+Using the Taylor expansions for the logaritmic functions we get the final expression used in AuDi:
+
+.. math::
+   T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{n=1}^m \left(\frac{1}{(1-f_0)^n} + \frac{(-1)^{n+1}}{(1+f_0)^n}\right) \frac {\hat f^n}{n}
+
+
+Inverse tangent
+---------------
+
+We consider the inverse tangent function:
+
+.. math::
+   g(x) = \mbox{atan} (x)
+
+As before, we want to compute the truncated Taylor expansion of :math:`\mbox{atanh} (f(\mathbf x))` assuming to have access to the truncated Taylor expansion of :math:`f`, :math:`T_f = f_0 + \hat f`. We can apply the following identity involving the imaginary unit :math:`i`:
+
+.. math::
+   \mbox{atan}(z) = i \mbox{atanh}(-iz)
+
+and therefore write:
+
+.. math::
+   T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac i2 \sum_{k=1}^m \left(\frac{1}{(1+if_0)^k} + \frac{(-1)^{k+1}}{(1-if_0)^k}\right) \frac {\hat f^k}{k}(-i)^k
+
+We may avoid to compute the above expression using complex arithmetic by expanding explicitly its terms. Separating the even from the odd powers of $\hat f$ we get:
+
+.. math::
+   \begin{multline*}
+   T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac 12 \sum_{k=1}^{2k-1\le m} \left(\frac{1}{(1+if_0)^{2k-1}} + \frac{1}{(1-if_0)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \frac i2 \sum_{k=1}^{2k\le m} \left(\frac{1}{(1+if_0)^{2k}} - \frac{1}{(1-if_0)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+   \end{multline*}
+
+and, expanding further:
+
+.. math::
+   \begin{multline*}
+   T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac 12 \sum_{k=1}^{2k-1\le m} \left(\frac{(1-if_0)^{2k-1} + (1+if_0)^{2k-1}}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \frac i2 \sum_{k=1}^{2k\le m} \left(\frac{(1-if_0)^{2k} - (1+if_0)^{2k}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+   \end{multline*}
+
+Using the binomial theorem it is possible to show:
+
+.. math::
+   (1+if_0)^n + (1-if_0)^n = 2 + 2\sum_{j=1}^{2j\le n} {n \choose 2j} f_0^{2j}(-1)^j
+
+and 
+
+.. math::
+   (1-if_0)^n - (1+if_0)^n = - 2i\sum_{j=1}^{2j-1\le n} {n \choose 2j-1} f_0^{2j-1}(-1)^{j+1}
+
+which, substituted in the expression above, return a formula not involving any more imaginary units:
+
+.. math::
+   \begin{multline*}
+   T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+   \end{multline*}
+
+This formula is rather friendly to a computer implementation and is used in AuDi.
+
+The other inverse functions
+---------------------------
+To compute the other inverse functions we may now use the identities:
+
+.. math::
+   \mbox{arccosh} x = \log(d + \sqrt{d^2 - 1})
+
+
+.. math::
+   \mbox{arcsinh} x = \log(d + \sqrt{1 + d^2})
+
+
+.. math::
+   \arcsin x = \arctan(d / \sqrt{1 - d^2})
+
+
+.. math::
+   \arccos x = \arctan(d / \sqrt{1 - d^2})
+
+which apply also for the Taylor expansions.
+
+-----------------------------------------------------------------------
+
 Practical Examples (to be done by hand)
 =======================================
 In the above sections we derived a number of results that allow operating 
@@ -270,7 +383,9 @@ complex expressions. We summarize here those results (keep in mind that
    T_{(\log f)} = \log f_0 - \sum_{k=1}^m \frac{(-1)^k}k \left(\hat f / f_0\right)^k \\
    T_{(\sin f)} = \sin f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) + \cos f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
    T_{(\cos f)} = \cos f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) - \sin f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
-   T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k
+   T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k\\
+   T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{n=1}^m \left(\frac{1}{(1-f_0)^n} + \frac{(-1)^{n+1}}{(1+f_0)^n}\right) \frac {\hat f^n}{n}\\
+   T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
    :label: all
 
 It is worth mentioning here that other functions such as the inverse functions, 

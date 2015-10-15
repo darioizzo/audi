@@ -116,10 +116,16 @@
 <li><a class="reference internal" href="#exponentiation" id="id10">Exponentiation</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#practical-examples-to-be-done-by-hand" id="id11">Practical Examples (to be done by hand)</a><ul>
-<li><a class="reference internal" href="#example-1-a-multiplication" id="id12">Example 1 - A multiplication</a></li>
-<li><a class="reference internal" href="#example-2-a-division" id="id13">Example 2 - A division</a></li>
-<li><a class="reference internal" href="#example-3-an-exponential" id="id14">Example 3 - An exponential</a></li>
+<li><a class="reference internal" href="#inverse-functions" id="id11">Inverse functions</a><ul>
+<li><a class="reference internal" href="#inverse-hyperbolic-tangent" id="id12">Inverse hyperbolic tangent</a></li>
+<li><a class="reference internal" href="#inverse-tangent" id="id13">Inverse tangent</a></li>
+<li><a class="reference internal" href="#the-other-inverse-functions" id="id14">The other inverse functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#practical-examples-to-be-done-by-hand" id="id15">Practical Examples (to be done by hand)</a><ul>
+<li><a class="reference internal" href="#example-1-a-multiplication" id="id16">Example 1 - A multiplication</a></li>
+<li><a class="reference internal" href="#example-2-a-division" id="id17">Example 2 - A division</a></li>
+<li><a class="reference internal" href="#example-3-an-exponential" id="id18">Example 3 - An exponential</a></li>
 </ul>
 </li>
 </ul>
@@ -315,8 +321,81 @@ assuming to have access to the truncated Taylor expansion of <span class="math">
 </div>
 </div>
 <hr class="docutils" />
+<div class="section" id="inverse-functions">
+<h1><a class="toc-backref" href="#id11">Inverse functions</a><a class="headerlink" href="#inverse-functions" title="Permalink to this headline">¶</a></h1>
+<p>The case for the inverse trigonometric functions and hyperbolic functions is more complex and deserves some extended discussion.</p>
+<div class="section" id="inverse-hyperbolic-tangent">
+<h2><a class="toc-backref" href="#id12">Inverse hyperbolic tangent</a><a class="headerlink" href="#inverse-hyperbolic-tangent" title="Permalink to this headline">¶</a></h2>
+<p>We consider the inverse hyperbolic tangent function:</p>
+<div class="math">
+\[g(x) = \mbox{atanh} (x)\]</div>
+<p>As before, we want to compute the truncated Taylor expansion of <span class="math">\(\mbox{atanh} (f(\mathbf x))\)</span> assuming to have access to the truncated Taylor expansion of <span class="math">\(f\)</span>, <span class="math">\(T_f = f_0 + \hat f\)</span>. Since there is not a convenient addition formula we must seek a different expression. We start from the identity:</p>
+<div class="math">
+\[\mbox{atanh} (x) = \frac 12 \left(\log (1 + x) - \log (1 - x)\right)\]</div>
+<p>which allows us to write:</p>
+<div class="math">
+\[(g \circ f) (\mathbf x) =  \mbox{atanh} (f(\mathbf x)) = \frac 12 \left(\log (1 + f(\mathbf x)) - \log (1 - f(\mathbf x))\right)\]</div>
+<p>and, using the addition formula for the logarithms, we get:</p>
+<div class="math">
+\[\mbox{atanh} (f(\mathbf x)) = \mbox{atanh} f_0 + \frac 12\left(\log\left(1+\frac{f-f_0}{1+f_0} \right) - \log\left(1-\frac{f-f_0}{1-f_0} \right)  \right)\]</div>
+<p>we may now apply the composition theorem and find:</p>
+<div class="math">
+\[T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 + \frac 12 \left(T_{\log (1+x)} \circ \frac{\hat f}{1+f_0} - T_{\log (1-x)} \circ \frac{\hat f}{1-f_0}\right)\]</div>
+<p>Using the Taylor expansions for the logaritmic functions we get the final expression used in AuDi:</p>
+<div class="math">
+\[T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{n=1}^m \left(\frac{1}{(1-f_0)^n} + \frac{(-1)^{n+1}}{(1+f_0)^n}\right) \frac {\hat f^n}{n}\]</div>
+</div>
+<div class="section" id="inverse-tangent">
+<h2><a class="toc-backref" href="#id13">Inverse tangent</a><a class="headerlink" href="#inverse-tangent" title="Permalink to this headline">¶</a></h2>
+<p>We consider the inverse tangent function:</p>
+<div class="math">
+\[g(x) = \mbox{atan} (x)\]</div>
+<p>As before, we want to compute the truncated Taylor expansion of <span class="math">\(\mbox{atanh} (f(\mathbf x))\)</span> assuming to have access to the truncated Taylor expansion of <span class="math">\(f\)</span>, <span class="math">\(T_f = f_0 + \hat f\)</span>. We can apply the following identity involving the imaginary unit <span class="math">\(i\)</span>:</p>
+<div class="math">
+\[\mbox{atan}(z) = i \mbox{atanh}(-iz)\]</div>
+<p>and therefore write:</p>
+<div class="math">
+\[T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac i2 \sum_{k=1}^m \left(\frac{1}{(1+if_0)^k} + \frac{(-1)^{k+1}}{(1-if_0)^k}\right) \frac {\hat f^k}{k}(-i)^k\]</div>
+<p>We may avoid to compute the above expression using complex arithmetic by expanding explicitly its terms. Separating the even from the odd powers of $hat f$ we get:</p>
+<div class="math">
+\[\begin{split}\begin{multline*}
+T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac 12 \sum_{k=1}^{2k-1\le m} \left(\frac{1}{(1+if_0)^{2k-1}} + \frac{1}{(1-if_0)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \frac i2 \sum_{k=1}^{2k\le m} \left(\frac{1}{(1+if_0)^{2k}} - \frac{1}{(1-if_0)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+\end{multline*}\end{split}\]</div>
+<p>and, expanding further:</p>
+<div class="math">
+\[\begin{split}\begin{multline*}
+T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac 12 \sum_{k=1}^{2k-1\le m} \left(\frac{(1-if_0)^{2k-1} + (1+if_0)^{2k-1}}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \frac i2 \sum_{k=1}^{2k\le m} \left(\frac{(1-if_0)^{2k} - (1+if_0)^{2k}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+\end{multline*}\end{split}\]</div>
+<p>Using the binomial theorem it is possible to show:</p>
+<div class="math">
+\[(1+if_0)^n + (1-if_0)^n = 2 + 2\sum_{j=1}^{2j\le n} {n \choose 2j} f_0^{2j}(-1)^j\]</div>
+<p>and</p>
+<div class="math">
+\[(1-if_0)^n - (1+if_0)^n = - 2i\sum_{j=1}^{2j-1\le n} {n \choose 2j-1} f_0^{2j-1}(-1)^{j+1}\]</div>
+<p>which, substituted in the expression above, return a formula not involving any more imaginary units:</p>
+<div class="math">
+\[\begin{split}\begin{multline*}
+T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
+\end{multline*}\end{split}\]</div>
+<p>This formula is rather friendly to a computer implementation and is used in AuDi.</p>
+</div>
+<div class="section" id="the-other-inverse-functions">
+<h2><a class="toc-backref" href="#id14">The other inverse functions</a><a class="headerlink" href="#the-other-inverse-functions" title="Permalink to this headline">¶</a></h2>
+<p>To compute the other inverse functions we may now use the identities:</p>
+<div class="math">
+\[\mbox{arccosh} x = \log(d + \sqrt{d^2 - 1})\]</div>
+<div class="math">
+\[\mbox{arcsinh} x = \log(d + \sqrt{1 + d^2})\]</div>
+<div class="math">
+\[\arcsin x = \arctan(d / \sqrt{1 - d^2})\]</div>
+<div class="math">
+\[\arccos x = \arctan(d / \sqrt{1 - d^2})\]</div>
+<p>which apply also for the Taylor expansions.</p>
+</div>
+</div>
+<hr class="docutils" />
 <div class="section" id="practical-examples-to-be-done-by-hand">
-<h1><a class="toc-backref" href="#id11">Practical Examples (to be done by hand)</a><a class="headerlink" href="#practical-examples-to-be-done-by-hand" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id15">Practical Examples (to be done by hand)</a><a class="headerlink" href="#practical-examples-to-be-done-by-hand" title="Permalink to this headline">¶</a></h1>
 <p>In the above sections we derived a number of results that allow operating
 on simple Taylor expansions to compute Taylor expansions of increasingly
 complex expressions. We summarize here those results (keep in mind that
@@ -329,7 +408,9 @@ T_{(\exp f)} = \exp f_0 \sum_{k=0}^m \frac{\hat f^k}{k!} \\
 T_{(\log f)} = \log f_0 - \sum_{k=1}^m \frac{(-1)^k}k \left(\hat f / f_0\right)^k \\
 T_{(\sin f)} = \sin f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) + \cos f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
 T_{(\cos f)} = \cos f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) - \sin f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
-T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k\end{split}\]</div>
+T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k\\
+T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{n=1}^m \left(\frac{1}{(1-f_0)^n} + \frac{(-1)^{n+1}}{(1+f_0)^n}\right) \frac {\hat f^n}{n}\\
+T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k\end{split}\]</div>
 <p>It is worth mentioning here that other functions such as the inverse functions,
 the hyperbolic functions etc. can also be treated in this way.
 The above equations can be used to find Taylor expansions of increasingly
@@ -340,7 +421,7 @@ differentiation system. While the formalism presented can, at first, appear
 complex, the system is rather simple as we hope will appear from the following
 examples.</p>
 <div class="section" id="example-1-a-multiplication">
-<h2><a class="toc-backref" href="#id12">Example 1 - A multiplication</a><a class="headerlink" href="#example-1-a-multiplication" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">Example 1 - A multiplication</a><a class="headerlink" href="#example-1-a-multiplication" title="Permalink to this headline">¶</a></h2>
 <p>Consider the simple function of two variables:</p>
 <div class="math">
 \[f(x,y) = x + 3xy + y^2\]</div>
@@ -370,7 +451,7 @@ examples.</p>
 \partial_{yy} f = 2,\]</div>
 </div>
 <div class="section" id="example-2-a-division">
-<h2><a class="toc-backref" href="#id13">Example 2 - A division</a><a class="headerlink" href="#example-2-a-division" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id17">Example 2 - A division</a><a class="headerlink" href="#example-2-a-division" title="Permalink to this headline">¶</a></h2>
 <p>Consider the simple function of two variables:</p>
 <div class="math">
 \[f = 1 / (x + 2xy + y^2) = 1 / p\]</div>
@@ -398,7 +479,7 @@ can be computed as follows:</p>
 \partial_{yy} f = 6,\]</div>
 </div>
 <div class="section" id="example-3-an-exponential">
-<h2><a class="toc-backref" href="#id14">Example 3 - An exponential</a><a class="headerlink" href="#example-3-an-exponential" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id18">Example 3 - An exponential</a><a class="headerlink" href="#example-3-an-exponential" title="Permalink to this headline">¶</a></h2>
 <p>Consider the elementary function of two variables:</p>
 <div class="math">
 \[f = \exp(xy)\]</div>
