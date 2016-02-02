@@ -21,6 +21,9 @@ OPTION(BUILD_MAIN "Build 'main.cpp'." OFF)
 # Build option: enable test set.
 OPTION(BUILD_TESTS "Build test set." ON)
 
+# Build option: enable test set.
+OPTION(BUILD_PYAUDI "Build the Python bindings." OFF)
+
 # Initialise (empty) list of libraries to link against.
 SET(MANDATORY_LIBRARIES "")
 
@@ -95,3 +98,7 @@ ENDIF(BUILD_MAIN)
 IF(BUILD_TESTS)
 	ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/tests")
 ENDIF(BUILD_TESTS)
+
+if(BUILD_PYAUDI)
+	ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/pyaudi")
+endif()
