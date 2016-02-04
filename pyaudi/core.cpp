@@ -6,7 +6,6 @@
 #include "pybind11/include/pybind11/operators.h"
 #include "pybind11/include/pybind11/pybind11.h"
 #include "pybind11/include/pybind11/stl.h"
-#include "pybind11/include/pybind11/numpy.h"
 
 using namespace audi;
 namespace py = pybind11;
@@ -52,7 +51,6 @@ PYBIND11_PLUGIN(_core) {
 
 	m.def("sin",[](const gdual &d) {return sin(d);},"Sine (gdual).");
 	m.def("sin",[](double x) {return std::sin(x);},"Sine (double).");
-	m.def("sin",py::vectorize([](double x) {return std::sin(x);}),"Sine (vectorized double).");
 
 	return m.ptr();
 }
