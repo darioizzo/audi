@@ -1,3 +1,4 @@
+#include <cmath>
 #include <sstream>
 #include <string>
 
@@ -47,6 +48,9 @@ PYBIND11_PLUGIN(_core) {
 		.def(int() * py::self)
 		.def(int() / py::self)
 	;
+
+	m.def("sin",[](const gdual &d) {return sin(d);},"Sine (gdual).");
+	m.def("sin",[](double x) {return std::sin(x);},"Sine (double).");
 
 	return m.ptr();
 }
