@@ -1,6 +1,9 @@
 #include <cmath>
 #include <sstream>
 #include <string>
+#include <algorithm>
+#include <iterator>
+#include <vector>
 
 #include "../src/audi.hpp"
 #include "pybind11/include/pybind11/operators.h"
@@ -55,11 +58,11 @@ PYBIND11_PLUGIN(_core) {
     m.def("log",[](const gdual &d) {return log(d);},"Natural logarithm (gdual).");
     m.def("log",[](double x) {return std::log(x);},"Natural logarithm (double).");
 
-    m.def("pow",[](double base, const gdual &d) {return pow(base, d);},"Exponentiation (double, gdual).");
-    m.def("pow",[](const gdual & base, double d) {return pow(base, d);},"Exponentiation (gdual, double).");
-    m.def("pow",[](const gdual & base, int d) {return pow(base, d);},"Exponentiation (gdual, int).");
-    m.def("pow",[](const gdual & base, const gdual &d) {return pow(base, d);},"Exponentiation (gdual, gdual).");
-    m.def("pow",[](double base, double x) {return std::pow(base, x);},"Natural logarithm (double, double).");
+    m.def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).");
+    m.def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).");
+    m.def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).");
+    m.def("__rpow__",[](double x, const gdual &g) {return pow(x,g);} ,"Exponentiation (double, gdual).");
+    m.def("__rpow__",[](int x, const gdual &g) {return pow(x,g);} ,"Exponentiation (int, gdual).");
 
     m.def("sqrt",[](const gdual &d) {return sqrt(d);},"Square root (gdual).");
     m.def("sqrt",[](double x) {return std::sqrt(x);},"Square root (double).");
