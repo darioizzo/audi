@@ -73,8 +73,14 @@ PYBIND11_PLUGIN(_core) {
     m.def("sin",[](double x) {return std::sin(x);},"Sine (double).");
     // m.def("sin",py::vectorize([](double x) {return std::sin(x);}),"Sine (vectorized double).");
 
+    m.def("asin",[](const gdual &d) {return asin(d);},"Arc sine (gdual).");
+    m.def("asin",[](double x) {return std::asin(x);},"Arc sine (double).");
+
     m.def("cos",[](const gdual &d) {return cos(d);},"Cosine (gdual).");
     m.def("cos",[](double x) {return std::cos(x);},"Cosine (double).");
+
+    m.def("acos",[](const gdual &d) {return acos(d);},"Arc cosine (gdual).");
+    m.def("acos",[](double x) {return std::acos(x);},"Arc cosine (double).");
 
     m.def("sin_and_cos",[](const gdual &d) -> std::vector<gdual> {
         auto arr = sin_and_cos(d);
@@ -82,6 +88,40 @@ PYBIND11_PLUGIN(_core) {
         std::move(arr.begin(),arr.end(),std::back_inserter(retval));
         return retval;
     },"Sine and Cosine at once (gdual).");
+
+    m.def("tan",[](const gdual &d) {return tan(d);},"Tangent (gdual).");
+    m.def("tan",[](double x) {return std::tan(x);},"Tangent (double).");
+
+    m.def("atan",[](const gdual &d) {return atan(d);},"Arc tangent (gdual).");
+    m.def("atan",[](double x) {return std::atan(x);},"Arc tangent (double).");
+
+    m.def("sinh",[](const gdual &d) {return sinh(d);},"Hyperbolic sine (gdual).");
+    m.def("sinh",[](double x) {return std::sinh(x);},"Hyperbolic sine (double).");
+
+    m.def("asinh",[](const gdual &d) {return asinh(d);},"Inverse hyperbolic sine (gdual).");
+    m.def("asinh",[](double x) {return std::asinh(x);},"Inverse hyperbolic sine (double).");
+
+    m.def("cosh",[](const gdual &d) {return cosh(d);},"Hyperbolic cosine (gdual).");
+    m.def("cosh",[](double x) {return std::cosh(x);},"Hyperbolic cosine (double).");
+
+    m.def("acosh",[](const gdual &d) {return acosh(d);},"Inverse hyperbolic cosine (gdual).");
+    m.def("acosh",[](double x) {return std::acosh(x);},"Inverse hyperbolic cosine (double).");
+
+    m.def("sinh_and_cosh",[](const gdual &d) -> std::vector<gdual> {
+        auto arr = sinh_and_cosh(d);
+        std::vector<gdual> retval;
+        std::move(arr.begin(),arr.end(),std::back_inserter(retval));
+        return retval;
+    },"Hyperbolic sine and hyperbolic cosine at once (gdual).");
+
+    m.def("tanh",[](const gdual &d) {return tanh(d);},"Hyperbolic tangent (gdual).");
+    m.def("tanh",[](double x) {return std::tanh(x);},"Hyperbolic tangent (double).");
+
+    m.def("atanh",[](const gdual &d) {return atanh(d);},"Inverse hyperbolic arc tangent (gdual).");
+    m.def("atanh",[](double x) {return std::atanh(x);},"Inverse hyperbolic arc tangent (double).");
+
+    m.def("abs",[](const gdual &d) {return abs(d);},"Absolute value (gdual).");
+    m.def("abs",[](double x) {return std::abs(x);},"Absolute value (double).");
 
 
     return m.ptr();
