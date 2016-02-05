@@ -50,6 +50,11 @@ PYBIND11_PLUGIN(_core) {
         .def(int() - py::self)
         .def(int() * py::self)
         .def(int() / py::self)
+        .def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).")
+        .def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).")
+        .def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).")
+        .def("__rpow__",[](double x, const gdual &g) {return pow(x,g);} ,"Exponentiation (double, gdual).")
+        .def("__rpow__",[](int x, const gdual &g) {return pow(x,g);} ,"Exponentiation (int, gdual).")
     ;
 
     m.def("exp",[](const gdual &d) {return exp(d);},"Exponential (gdual).");
@@ -57,12 +62,6 @@ PYBIND11_PLUGIN(_core) {
 
     m.def("log",[](const gdual &d) {return log(d);},"Natural logarithm (gdual).");
     m.def("log",[](double x) {return std::log(x);},"Natural logarithm (double).");
-
-    m.def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).");
-    m.def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).");
-    m.def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).");
-    m.def("__rpow__",[](double x, const gdual &g) {return pow(x,g);} ,"Exponentiation (double, gdual).");
-    m.def("__rpow__",[](int x, const gdual &g) {return pow(x,g);} ,"Exponentiation (int, gdual).");
 
     m.def("sqrt",[](const gdual &d) {return sqrt(d);},"Square root (gdual).");
     m.def("sqrt",[](double x) {return std::sqrt(x);},"Square root (double).");
