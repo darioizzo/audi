@@ -324,7 +324,7 @@ class gdual
 
         /// Returns the symbol set size
         /**
-         * Returns the symbol set
+         * Returns the symbol set (not the differentials)
          *
          * @return the symbol set
          */
@@ -332,7 +332,8 @@ class gdual
         {
             std::vector<std::string> retval;
             for (auto s : m_p.get_symbol_set()) {
-                retval.push_back(s.get_name());
+                std::string tmp(s.get_name());
+                retval.push_back(tmp.erase(0,1));
             }
             return retval;
         }
@@ -346,7 +347,10 @@ class gdual
          * when extracting the relative coefficient)
          *
          * @param[in] sym_vars list of symbolic names. It must contain all symbolic names of
-         * the current polynomial. It may contain more.
+         * the current polynomial. It may contain more. All symbols must start with the letter "d".
+         *
+         * @throws std::invalid_argument:
+         * - if any symbol in \p sym_vars does not start with the letter "d" 
          *
          * @throws unspecified any exception thrown by:
          * - piranha::series::extend_symbol_set,
@@ -355,6 +359,7 @@ class gdual
         {
             piranha::symbol_set ss;
             for (auto sym_var : sym_vars) {
+                check_var_name_has_d(sym_var);
                 ss.add(sym_var);
             }
             m_p = m_p.extend_symbol_set(ss);
@@ -364,23 +369,23 @@ class gdual
         /**
          * Performs the integration of the gdual with respect to the symbol.
          *
-         * \note If \p symbol is not in the symbol set, then it is added. 
+         * \note If the \p var_name differential is not in the symbol set, then it is added. 
          *
          * \note Information may be lost as the truncation order is preserved.
          *
-         * @param[in] symbol Symbolic variable (must start with "d").
+         * @param[in] var_name Symbol name (cannot start with "d").
          *
          * @throws std::invalid_argument:
-         * - if \p symbol does not start with the letter "d".
+         * - if \p var_name starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
          *
          * @throws unspecified any exception thrown by:
          * - piranha::series::truncate_degree,
          * - piranha::series::integrate
          */
-        gdual integrate(const std::string& symbol)
+        gdual integrate(const std::string& var_name)
         {
-            check_var_name_has_d(symbol);
-            auto new_p = m_p.integrate(symbol);
+            check_var_name(var_name);
+            auto new_p = m_p.integrate("d" + var_name);
             new_p = new_p.truncate_degree(m_order);
             return gdual(std::move(new_p), m_order);
         }
@@ -389,20 +394,20 @@ class gdual
         /**
          * Performs the partial derivative of the gdual with respect to the symbol
          *
-         * \note If \p symbol is not in the symbol set it returns zero
+         * \note If the \p var_name differential is not in the symbol set, then it is added. 
          *
-         * @param[in] symbol Symbolic variable (must start with "d").
+         * @param[in] var_name Symbol name (cannot start with "d").
          *
          * @throws std::invalid_argument:
-         * - if \p symbol does not start with the letter "d" 
+         * - if \p symbol starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
          *
          * @throws unspecified any exception thrown by:
          * - piranha::series::partial,
          */
-        gdual partial(const std::string& symbol)
+        gdual partial(const std::string& var_name)
         {
-            check_var_name_has_d(symbol);
-            auto new_p = m_p.partial(symbol);
+            check_var_name(var_name);
+            auto new_p = m_p.partial("d" + var_name);
             return gdual(std::move(new_p), m_order);
         }
 

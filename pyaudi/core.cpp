@@ -30,6 +30,10 @@ PYBIND11_PLUGIN(_core) {
             return oss.str();
         })
         .def_property_readonly("symbol_set",&gdual::get_symbol_set)
+        .def_property_readonly("symbol_set_size",&gdual::get_symbol_set_size)
+        .def("extend_symbol_set", &gdual::extend_symbol_set, "Extends the symbol set")
+        .def("integrate", &gdual::integrate, "Integrate with respect to argument")
+        .def("partial", &gdual::partial, "Partial derivative with respect to argument")
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self * py::self)
@@ -123,6 +127,8 @@ PYBIND11_PLUGIN(_core) {
     m.def("abs",[](const gdual &d) {return abs(d);},"Absolute value (gdual).");
     m.def("abs",[](double x) {return std::abs(x);},"Absolute value (double).");
 
+    m.def("erf",[](const gdual &d) {return erf(d);},"Error function (gdual).");
+    m.def("erf",[](double x) {return std::erf(x);},"Error function (double).");
 
     return m.ptr();
 }
