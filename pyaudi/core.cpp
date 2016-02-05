@@ -61,6 +61,12 @@ PYBIND11_PLUGIN(_core) {
 	m.def("pow",[](const gdual & base, const gdual &d) {return pow(base, d);},"Exponentiation (gdual, gdual).");
 	m.def("pow",[](double base, double x) {return std::pow(base, x);},"Natural logarithm (double, double).");
 
+	m.def("sqrt",[](const gdual &d) {return sqrt(d);},"Square root (gdual).");
+	m.def("sqrt",[](double x) {return std::sqrt(x);},"Square root (double).");
+
+	m.def("cbrt",[](const gdual &d) {return cbrt(d);},"Cubic root (gdual).");
+	m.def("cbrt",[](double x) {return std::cbrt(x);},"Cubic root (double).");
+
 	m.def("sin",[](const gdual &d) {return sin(d);},"Sine (gdual).");
 	m.def("sin",[](double x) {return std::sin(x);},"Sine (double).");
 	// m.def("sin",py::vectorize([](double x) {return std::sin(x);}),"Sine (vectorized double).");
@@ -68,5 +74,14 @@ PYBIND11_PLUGIN(_core) {
 	m.def("cos",[](const gdual &d) {return cos(d);},"Cosine (gdual).");
 	m.def("cos",[](double x) {return std::cos(x);},"Cosine (double).");
 
+	m.def("sin_and_cos",[](const gdual &d) -> std::vector<gdual> {
+		auto arr = sin_and_cos(d);
+		std::vector<gdual> retval;
+		std::move(arr.begin(),arr.end(),std::back_inserter(retval));
+		return retval;
+	},"Sine and Cosine at once (gdual).");
+
+
 	return m.ptr();
 }
+
