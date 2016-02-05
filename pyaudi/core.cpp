@@ -53,8 +53,8 @@ PYBIND11_PLUGIN(_core) {
         .def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).")
         .def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).")
         .def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).")
-        .def("__rpow__",[](double x, const gdual &g) {return pow(x,g);} ,"Exponentiation (double, gdual).")
-        .def("__rpow__",[](int x, const gdual &g) {return pow(x,g);} ,"Exponentiation (int, gdual).")
+        .def("__rpow__",[](const gdual &g, double x) {return pow(x,g);} ,"Exponentiation (double, gdual).")
+        .def("__rpow__",[](const gdual &g, int x) {return pow(x,g);} ,"Exponentiation (int, gdual).")
     ;
 
     m.def("exp",[](const gdual &d) {return exp(d);},"Exponential (gdual).");
