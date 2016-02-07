@@ -20,7 +20,6 @@ PYBIND11_PLUGIN(_core) {
     py::class_<gdual>(m,"gdual")
         .def(py::init<>())
         .def(py::init<const gdual &>())
-        .def(py::init<gdual &&>())
         .def(py::init<const std::string &, unsigned int>())
         .def(py::init<double, unsigned int>())
         .def(py::init<double>())

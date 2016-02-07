@@ -23,6 +23,7 @@ ENDIF(UNIX)
 
 # OS X setup.
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	SET(CMAKE_MACOSX_RPATH OFF)
 	IF(CMAKE_COMPILER_IS_CLANGXX)
 		# On OS X with clang we need to use libc++.
 		MESSAGE(STATUS "Clang compiler on OS X detected, using libc++ as standard library.")
