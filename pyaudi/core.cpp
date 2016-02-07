@@ -1,3 +1,4 @@
+#include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <sstream>
 #include <string>
@@ -29,11 +30,29 @@ PYBIND11_PLUGIN(_core) {
             oss << g;
             return oss.str();
         })
+        .def("_repr_latex_",[](const gdual &g) -> std::string {
+            std::ostringstream oss;
+            g._poly().print_tex(oss);
+            auto retval = oss.str();
+            retval += std::string("+\\mathcal{O}\\left(")
+                + boost::lexical_cast<std::string>(g.get_order() + 1) +  "\\right) \\]";
+            return std::string("\\[ ") + retval;
+        })
         .def_property_readonly("symbol_set",&gdual::get_symbol_set)
         .def_property_readonly("symbol_set_size",&gdual::get_symbol_set_size)
+        .def_property_readonly("degree",&gdual::degree)
+        .def_property_readonly("n_variables",&gdual::get_n_variables)
+        .def_property_readonly("order",&gdual::get_order)
+        .def_property_readonly("constant_cf",&gdual::constant_cf)
         .def("extend_symbol_set", &gdual::extend_symbol_set, "Extends the symbol set")
         .def("integrate", &gdual::integrate, "Integrate with respect to argument")
         .def("partial", &gdual::partial, "Partial derivative with respect to argument")
+        .def("find_cf", [](const gdual &g, const std::vector<int> &v) {
+            return g.find_cf(v);
+        },"Find the coefficient")
+        .def("get_derivative", [](const gdual &g, const std::vector<int> &v) {
+            return g.get_derivative(v);
+        },"Find the derivative")
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self * py::self)
@@ -54,6 +73,8 @@ PYBIND11_PLUGIN(_core) {
         .def(int() - py::self)
         .def(int() * py::self)
         .def(int() / py::self)
+        .def(py::self == py::self)
+        .def(py::self != py::self)
         .def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).")
         .def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).")
         .def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).")

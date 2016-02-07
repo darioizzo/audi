@@ -82,8 +82,6 @@ class gdual
             }
         }
 
-
-    private:
         // A private constructor to move-initialise a gdual from a polynomial. Used
         // in the implementation of the operators.
         explicit gdual(p_type &&p, unsigned int order):m_p(std::move(p)),m_order(order) {}
@@ -793,6 +791,24 @@ class gdual
         auto _container() const -> decltype(m_p._container())
         {
             return m_p._container();
+        }
+
+        /// Get a const reference to the polynomial.
+        /**
+         * @return a const reference to the internal polynomial.
+         */
+        const p_type &_poly() const
+        {
+            return m_p;
+        }
+
+        /// Get a mutable reference to the polynomial.
+        /**
+         * @return a reference to the internal polynomial.
+         */
+        p_type &_poly()
+        {
+            return m_p;
         }
         //@}
 };
