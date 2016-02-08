@@ -1,5 +1,6 @@
 SET(HEADERS_LIST
 	functions.hpp
+	functions_from_d.hpp
 	audi.hpp
 	gdual.hpp
 )

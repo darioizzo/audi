@@ -1,0 +1,3 @@
+[submodule "pyaudi/pybind11"]
+	path = pyaudi/pybind11
+	url = https://github.com/wjakob/pybind11
