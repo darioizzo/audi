@@ -23,7 +23,7 @@ After making sure the dependencies above are installed in your system (most linu
 
    git clone https://github.com/darioizzo/audi.git
 
-cand onfigure your build using CMake. When done, type (in your build directory):
+and onfigure your build using CMake. When done, type (in your build directory):
 
 .. code-block:: bash
 
@@ -35,3 +35,22 @@ The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory. To 
 
 Python
 ------
+
+The main functionalities of AuDi are exposed into a python module called pyaudi. To create the module you need to get the AuDi submodule pybind11. To get AuDi submodules via git, type
+
+.. code-block:: bash
+
+   git submodule init
+   git submodule update
+
+from within AuDi git folders. You may now activate the BUILD_PYAUDI option from within CMake. Check carefully what python version is detected and what libraries are linked to. The CMAKE_INSTALL_PREFIX will be used to construct the final loacation of headers and python module after install. 
+
+When done, type (in your build directory):
+
+.. code-block:: bash
+
+   make install
+
+To check that all went well fire-up your python console and try the example in :ref:`quick-start example <getting_started>`.
+
+
