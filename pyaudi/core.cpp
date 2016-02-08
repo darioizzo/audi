@@ -76,7 +76,7 @@ PYBIND11_PLUGIN(_core) {
         .def(py::self != py::self)
         .def("__pow__",[](const gdual &g, double x) {return pow(g,x);} ,"Exponentiation (gdual, double).")
         .def("__pow__",[](const gdual &g, int x) {return pow(g,x);} ,"Exponentiation (gdual, int).")
-        .def("__pow__",[](const gdual & base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).")
+        .def("__pow__",[](const gdual &base, const gdual &g) {return pow(base,g);} ,"Exponentiation (gdual, gdual).")
         .def("__rpow__",[](const gdual &g, double x) {return pow(x,g);} ,"Exponentiation (double, gdual).")
         .def("__rpow__",[](const gdual &g, int x) {return pow(x,g);} ,"Exponentiation (int, gdual).")
     ;
@@ -106,12 +106,7 @@ PYBIND11_PLUGIN(_core) {
     m.def("acos",[](const gdual &d) {return acos(d);},"Arc cosine (gdual).");
     m.def("acos",[](double x) {return std::acos(x);},"Arc cosine (double).");
 
-    m.def("sin_and_cos",[](const gdual &d) -> std::vector<gdual> {
-        auto arr = sin_and_cos(d);
-        std::vector<gdual> retval;
-        std::move(arr.begin(),arr.end(),std::back_inserter(retval));
-        return retval;
-    },"Sine and Cosine at once (gdual).");
+    m.def("sin_and_cos",[](const gdual &d) {return sin_and_cos(d);}, "Sine and Cosine at once (gdual).");
 
     m.def("tan",[](const gdual &d) {return tan(d);},"Tangent (gdual).");
     m.def("tan",[](double x) {return std::tan(x);},"Tangent (double).");
@@ -131,13 +126,8 @@ PYBIND11_PLUGIN(_core) {
     m.def("acosh",[](const gdual &d) {return acosh(d);},"Inverse hyperbolic cosine (gdual).");
     m.def("acosh",[](double x) {return std::acosh(x);},"Inverse hyperbolic cosine (double).");
 
-    m.def("sinh_and_cosh",[](const gdual &d) -> std::vector<gdual> {
-        auto arr = sinh_and_cosh(d);
-        std::vector<gdual> retval;
-        std::move(arr.begin(),arr.end(),std::back_inserter(retval));
-        return retval;
-    },"Hyperbolic sine and hyperbolic cosine at once (gdual).");
-
+    m.def("sinh_and_cosh",[](const gdual &d) {return sinh_and_cosh(d);} ,"Hyperbolic sine and hyperbolic cosine at once (gdual).");
+    
     m.def("tanh",[](const gdual &d) {return tanh(d);},"Hyperbolic tangent (gdual).");
     m.def("tanh",[](double x) {return std::tanh(x);},"Hyperbolic tangent (double).");
 
