@@ -19,12 +19,13 @@ BOOST_AUTO_TEST_CASE(exponentiation)
         gdual y("y",3);
 
         auto p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x + 3.2;
-        BOOST_CHECK_EQUAL(pow(p1, 3), p1*p1*p1);                                    // calls pow(gdual, int)
-        BOOST_CHECK(EPSILON_COMPARE(pow(p1, 3.), p1*p1*p1, 1e-12) == true);                // calls pow(gdual, double)
+        BOOST_CHECK_EQUAL(pow(p1, 3), p1*p1*p1);                                           // calls pow(gdual, int)
+        BOOST_CHECK_EQUAL(pow(p1, 3.), p1*p1*p1);                                          // calls pow(gdual, double) (with a positive integer exponent)
         BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3,3)), p1*p1*p1, 1e-12) == true);        // calls pow(gdual, gdual) with an integer exponent
         BOOST_CHECK(EPSILON_COMPARE(pow(p1, gdual(3.1,3)), pow(p1,3.1), 1e-12) == true);   // calls pow(gdual, gdual) with an real exponent
     }
 
+    {
     gdual x("x",3);
     gdual y("y",3);
     gdual p1 = x+y-3*x*y+y*y;
@@ -36,6 +37,22 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     BOOST_CHECK(EPSILON_COMPARE(pow(p2, -1), 1 / p2, 1e-12) == true);                                      // negative exponent (gdual, int)
     BOOST_CHECK(EPSILON_COMPARE(pow(p2, -1.), 1 / p2, 1e-12) == true);                                     // negative exponent (gdual, double)
     BOOST_CHECK(EPSILON_COMPARE(pow(p1 + 3.5, gdual(-1.1, 3)), pow(p1 + 3.5, -1.1), 1e-12) == true);       // negative exponent (gdual, gdual)
+    }
+
+    // We check the implementation of pow(gdual, double) with respect to the behaviour in 0.
+    // We compute the Taylor expansion of f = x^3.1 around 0. Which is T_f = 0. + 0.dx + 0.dx^2 + 0.dx^3 + inf dx^4-inf dx^5 ...
+
+    gdual x(0., "x", 7);
+    auto f = pow(x, 3.1);
+    BOOST_CHECK_EQUAL(f.find_cf({0}), 0.);
+    BOOST_CHECK_EQUAL(f.find_cf({1}), 0.);
+    BOOST_CHECK_EQUAL(f.find_cf({2}), 0.);
+    BOOST_CHECK_EQUAL(f.find_cf({3}), 0.);
+    BOOST_CHECK_EQUAL(f.find_cf({4}),   1./0.);
+    BOOST_CHECK_EQUAL(f.find_cf({5}), - 1./0.);
+    BOOST_CHECK_EQUAL(f.find_cf({6}),   1./0.);
+    BOOST_CHECK_EQUAL(f.find_cf({7}), - 1./0.);
+
 }
 
 BOOST_AUTO_TEST_CASE(square_root)

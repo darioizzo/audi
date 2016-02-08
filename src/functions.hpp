@@ -130,20 +130,30 @@ inline gdual pow(double base, const gdual &d)
  */
 inline gdual pow(const gdual &d, double alpha)
 {
-    gdual retval(1., d.get_order());
+    // We check if the exponent is representable as a positive integer, 
+    // in which case we just do d*d*d*d*... etc.
+    // This is also a workaround to the issue (https://github.com/darioizzo/audi/issues/6) 
+    // TODO: is there a better way to do this? Calling the pow (gdual, int) overload is not possible as it
+    // cannot be moved upfront.
+    double n;
+    if (modf(alpha, &n) == 0.0 && n > 0) {
+        gdual retval(d);
+        for (auto i = 1; i < (int)n; ++i) {
+            retval*=d;
+        }
+        return retval;
+    }
     auto p0 = d.constant_cf();
-    double pow_p0 = std::pow(p0,alpha);
-
     auto phat = d - p0;
-    phat = phat/p0;
+    gdual retval(std::pow(p0, alpha), d.get_order());
+    phat = phat;
     gdual tmp(phat);
 
-    retval+=alpha * phat;
+    retval+=alpha * phat * std::pow(p0, alpha-1);
     for (auto i = 2u; i <= d.get_order(); ++i) {
         phat*=tmp;
-        retval+=piranha::math::binomial(alpha,i) * phat;
+        retval+=piranha::math::binomial(alpha,i) * phat * std::pow(p0, alpha-i);
     }
-    retval*=pow_p0;
     return retval;
 }
 
