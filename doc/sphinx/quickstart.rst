@@ -48,13 +48,7 @@ Notebooks
 
 Follow the links below to visualize juypiter notebooks on the use of pyaudi.
 
-Basic
-"""""
+- `The very basics <https://github.com/darioizzo/audi/blob/python_bindings/examples/example00.ipynb>`_: (by Francesco Biscani and Dario Izzo)
 
-- `The very basics <http://localhost:8888/notebooks/audi/examples/example00.ipynb>`_: (by Francesco Biscani and Dario Izzo)
-
-Advanced
-""""""""
-
-- `Training an artificial neural network <http://localhost:8888/notebooks/audi/examples/example10.ipynb>`_: (by Carlos Sanchez)
+- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/python_bindings/examples/example10.ipynb>`_: (by Carlos Sanchez)
 
