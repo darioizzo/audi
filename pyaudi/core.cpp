@@ -40,7 +40,6 @@ PYBIND11_PLUGIN(_core) {
         .def_property_readonly("symbol_set",&gdual::get_symbol_set)
         .def_property_readonly("symbol_set_size",&gdual::get_symbol_set_size)
         .def_property_readonly("degree",&gdual::degree)
-        .def_property_readonly("n_variables",&gdual::get_n_variables)
         .def_property_readonly("order",&gdual::get_order)
         .def_property_readonly("constant_cf",&gdual::constant_cf)
         .def("extend_symbol_set", &gdual::extend_symbol_set, "Extends the symbol set")

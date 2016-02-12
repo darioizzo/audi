@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(division_precision)
 
     auto p1 = (x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x);
     auto p2 = gdual(1.) / p1;
-    BOOST_CHECK(EPSILON_COMPARE(p1 * p2, gdual(1), 1e-12) == true);
+    BOOST_CHECK(EPSILON_COMPARE(p1 * p2, gdual(1), 1e-10) == true);
 std::cout << p1 * p2 << std::endl;
     }
 

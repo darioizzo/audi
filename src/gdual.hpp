@@ -435,17 +435,6 @@ class gdual
             return m_p.degree();
         }
 
-        /// Number of symbolic variables
-        /**
-         * Returns the number of symbolic variables in the polynomial represented as an audi::gdual.
-         *
-         * @return the number of symbolic variables
-         */
-        auto get_n_variables() const -> decltype(m_p.get_symbol_set().size())
-        {
-            return m_p.get_symbol_set().size();
-        }
-
         /// Getter for the truncation order
         /**
          * Returns the truncation order of the underlying \f$\mathcal P_{n,m}\f$ algebra.
@@ -575,7 +564,7 @@ class gdual
         double constant_cf() const
         {
             using v_size_type = std::vector<int>::size_type;
-            return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_n_variables()),0));
+            return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_symbol_set_size()),0));
         }
 
 
