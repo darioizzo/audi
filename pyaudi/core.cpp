@@ -45,12 +45,13 @@ PYBIND11_PLUGIN(_core) {
         .def("extend_symbol_set", &gdual::extend_symbol_set, "Extends the symbol set")
         .def("integrate", &gdual::integrate, "Integrate with respect to argument")
         .def("partial", &gdual::partial, "Partial derivative with respect to argument")
+        .def("evaluate",[](const gdual &g, const std::map< std::string, double> &dict) {return g.evaluate(std::unordered_map< std::string, double>(dict.begin(), dict.end()));} , "Evaluates the Taylor polynomial")
         .def("find_cf", [](const gdual &g, const std::vector<int> &v) {
             return g.find_cf(v);
-        },"Find the coefficient")
+        },"Find the coefficient of the Taylor expansion")
         .def("get_derivative", [](const gdual &g, const std::vector<int> &v) {
             return g.get_derivative(v);
-        },"Find the derivative")
+        },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self * py::self)

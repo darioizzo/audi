@@ -9,6 +9,7 @@
 #include <iterator>
 #include <limits>
 #include <piranha/monomial.hpp>
+#include <piranha/math.hpp>
 #include <piranha/polynomial.hpp>
 #include <piranha/safe_cast.hpp>
 #include <piranha/series_multiplier.hpp>
@@ -422,6 +423,19 @@ class gdual
             return gdual(std::move(new_p), m_order);
         }
 
+        /// Evaluates the Taylor polynomial
+        /**
+         * Evaluates the Taylor polynomial using the values in \p dict for all the 
+         * differentials (variables variations) 
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::math::evaluate,
+         */
+        auto evaluate(const std::unordered_map< std::string, double> &dict) const -> decltype(piranha::math::evaluate(m_p, dict))
+        {
+            auto retval = piranha::math::evaluate(m_p, dict);
+            return retval;
+        }
         /// Current degree
         /**
          * Returns the current degree of the polynomial represented as an audi::gdual.
