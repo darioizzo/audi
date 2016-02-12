@@ -38,8 +38,8 @@ inline gdual _compose_from_derivative(gdual f, gdual dg, double g0)
     }
     auto retval = (dg * f.partial(ss[0])).integrate(ss[0]);
     for (auto i = 1u; i < ss.size(); ++i) {
-        f = f.subs(ss[i-1], 0);
-        dg = dg.subs(ss[i-1], 0);
+        f = f.subs("d" + ss[i-1], 0);
+        dg = dg.subs("d" + ss[i-1], 0);
         retval += (dg * f.partial(ss[i])).integrate(ss[i]);
     }
     return g0 + retval;
