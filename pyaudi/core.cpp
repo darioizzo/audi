@@ -60,6 +60,8 @@ PYBIND11_PLUGIN(_core) {
         .def(py::self - double())
         .def(py::self * double())
         .def(py::self / double())
+        .def(-py::self)
+        .def(+py::self)
         .def(double() + py::self)
         .def(double() - py::self)
         .def(double() * py::self)
