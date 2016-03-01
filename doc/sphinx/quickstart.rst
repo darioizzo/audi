@@ -48,11 +48,11 @@ Notebooks
 
 Follow the links below to visualize juypiter notebooks on the use of pyaudi.
 
-- `The very basics <https://github.com/darioizzo/audi/blob/python_bindings/examples/example00.ipynb>`_: (by Francesco Biscani and Dario Izzo)
+- `The very basics <https://github.com/darioizzo/audi/blob/master/examples/example00.ipynb>`_: (by Francesco Biscani and Dario Izzo)
 
-- `Understanding gduals and floats <https://github.com/darioizzo/audi/blob/python_bindings/examples/example01.ipynb>`_: (Dario Izzo)
+- `Understanding gduals and floats <https://github.com/darioizzo/audi/blob/master/examples/example01.ipynb>`_: (Dario Izzo)
 
-- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/python_bindings/examples/example11.ipynb>`_: (by Carlos Sanchez)
+- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/master/examples/example11.ipynb>`_: (by Carlos Sanchez)
 
-- `Differential Intelligence <https://github.com/darioizzo/audi/blob/python_bindings/examples/example10.ipynb>`_: (by Dario Izzo)
+- `Differential Intelligence <https://github.com/darioizzo/audi/blob/master/examples/example10.ipynb>`_: (by Dario Izzo)
 
