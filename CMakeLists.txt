@@ -55,7 +55,7 @@ MESSAGE(STATUS "Detected Boost version: ${Boost_VERSION}")
 # Include system Boost headers.
 MESSAGE(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
 MESSAGE(STATUS "Boost libraries: ${Boost_LIBRARIES}")
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(SYSTEM ${Boost_INCLUDE_DIRS})
 
 FIND_PACKAGE(Piranha REQUIRED)
 MESSAGE(STATUS "Piranha library found.")
