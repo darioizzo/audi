@@ -234,9 +234,14 @@ class gdual
         /// Constructor from symbol and truncation order
         /**
          *
-         * Will construct a generalized dual number made of a single term with unitary coefficient and exponent,
+         * Will construct a generalized dual number made of a constant and a single term with unitary coefficient and exponent,
          * representing the expansion around zero of the symbolic variable \p symbol. The truncation order
          * is also set to \p order. 
+         *
+         * @note If the \p order is requested to be zero, this will instead construct a constant, while
+         * keeping in the symbol set the requested symbol name. If, later on,
+         * any derivative will be requested with respect to that symbol, it will be zero.
+         * 
          * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
          * so that "x" -> "dx". 
          * 
@@ -247,10 +252,14 @@ class gdual
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
+        explicit gdual(const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
-            check_order();
             check_var_name(symbol);
+            if (order == 0) {
+                extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
+            } else {
+                m_p = p_type(std::string("d") + symbol);
+            }
         }
 
         /// Constructor from value and truncation order
@@ -285,6 +294,10 @@ class gdual
          *
          * Will construct a generalized dual number representing the expansion around \p value 
          * of the symbolic variable \p symbol. The truncation order is also set to \p order. 
+         *
+         * @note If the \p order is requested to be zero, this will instead construct a constant, while
+         * keeping in the symbol set the requested symbol name. If, later on,
+         * any derivative will be requested with respect to that symbol, it will be zero.
          * 
          * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
          * so that "x" -> "dx". 
@@ -297,10 +310,14 @@ class gdual
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual(double value, const std::string &symbol, unsigned int order):m_p(std::string("d") + symbol),m_order(order)
+        explicit gdual(double value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
-            check_order();
             check_var_name(symbol);
+            if (order == 0) {
+                extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
+            } else {
+                m_p = p_type(std::string("d") + symbol);
+            }
             m_p+=value;
         }
 

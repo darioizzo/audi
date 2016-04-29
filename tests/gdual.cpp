@@ -9,6 +9,24 @@
 
 using namespace audi;
 
+BOOST_AUTO_TEST_CASE(construction)
+{
+    // Constructing a constant with a symbol
+    gdual x("x", 0);
+    gdual y(3., "y", 0);
+    gdual z(2., "z", 3);
+    auto p = (x+y)*z*(x+y)*z*(x+y)*z*(x+y)*z*(x+y)*z;
+    BOOST_CHECK_EQUAL(x.get_order(), 0);
+    BOOST_CHECK_EQUAL(y.get_order(), 0);
+    BOOST_CHECK_EQUAL(p.get_derivative({1,0,0}), 0);
+    BOOST_CHECK_EQUAL(p.get_derivative({0,1,0}), 0);
+    BOOST_CHECK_EQUAL(p.get_derivative({0,1,1}), 0);
+    BOOST_CHECK_EQUAL(p.get_derivative({1,1,1}), 0);
+    BOOST_CHECK_EQUAL(p.get_derivative({1,0,2}), 0);
+
+    // TODO: other constructors
+}
+
 BOOST_AUTO_TEST_CASE(order_promotion)
 {
     gdual c(1);
@@ -194,5 +212,5 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     BOOST_CHECK_EQUAL(f.partial("y"), fy);
     BOOST_CHECK_EQUAL(f.partial("z"), fz);
     }
-
 }
+
