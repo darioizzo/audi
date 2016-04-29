@@ -231,7 +231,11 @@ class gdual
         /// Default constuctor
         explicit gdual() : m_order(0u) {}
         /// Destructor (contains a sanity check)
-        ~gdual() {assert(m_p.degree() <= (int)m_order);}
+        ~gdual()
+         {
+            assert(m_p.degree() >= 0);
+            assert(static_cast<unsigned>(m_p.degree()) <= m_order);
+         }
 
         /// Constructor from symbol and truncation order
         /**
