@@ -10,6 +10,7 @@
 #include "pybind11/include/pybind11/operators.h"
 #include "pybind11/include/pybind11/pybind11.h"
 #include "pybind11/include/pybind11/stl.h"
+#include "pybind11/include/pybind11/cast.h"
 
 using namespace audi;
 namespace py = pybind11;
@@ -36,6 +37,25 @@ PYBIND11_PLUGIN(_core) {
             retval += std::string("+\\mathcal{O}\\left(")
                 + boost::lexical_cast<std::string>(g.get_order() + 1) +  "\\right) \\]";
             return std::string("\\[ ") + retval;
+        })
+        .def("__getstate__", [](const gdual &p) {
+            // Returns a tuple that contains the string representation of
+            // a gdual as obtained from boost serialization
+            std::stringstream ss;
+            boost::archive::text_oarchive oa(ss);
+            oa << p;
+            return py::make_tuple(ss.str());
+        })
+        .def("__setstate__", [](gdual &p, py::tuple t) {
+            if (t.size() != 1)
+                throw std::runtime_error("Invalid state!");
+
+            // Invoke the default constructor. 
+            new (&p) gdual;
+            // Reconstruct the gdual
+            std::stringstream ss(t[0].cast<std::string>());
+            boost::archive::text_iarchive ia(ss);
+            ia >> p;
         })
         .def_property_readonly("symbol_set",&gdual::get_symbol_set)
         .def_property_readonly("symbol_set_size",&gdual::get_symbol_set_size)
