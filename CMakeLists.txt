@@ -41,7 +41,7 @@ MESSAGE(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
 
 IF(BUILD_TESTS)
 	MESSAGE(STATUS "Linking unit tests to Boost.Test.")
-	SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} unit_test_framework)
+	SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} unit_test_framework serialization)
 	IF(CMAKE_BUILD_TYPE STREQUAL "Release")
 		MESSAGE(STATUS "Linking performance tests to Boost Timer and Boost.Chrono.")
 		SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} timer chrono system)

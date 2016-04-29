@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/math/special_functions/factorials.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 #include <initializer_list>
 #include <iostream>
 #include <iterator>
@@ -831,6 +833,14 @@ class gdual
             return m_p;
         }
         //@}
+
+        /// Serialization
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int)
+        {
+            ar & m_p;
+            ar & m_order;
+        }
 };
 
 

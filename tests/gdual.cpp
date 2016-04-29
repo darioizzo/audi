@@ -3,6 +3,8 @@
 
 #define BOOST_TEST_MODULE audi_gdual_test
 #include <boost/test/unit_test.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 #include <stdexcept>
 #include <vector>
@@ -212,5 +214,38 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     BOOST_CHECK_EQUAL(f.partial("y"), fy);
     BOOST_CHECK_EQUAL(f.partial("z"), fz);
     }
+}
+
+BOOST_AUTO_TEST_CASE(serialization_test)
+{
+    gdual x(1, "x", 4);
+    gdual y(1, "y", 4);
+    gdual z(1, "z", 4);
+    gdual f = (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y);
+    
+    // create and open a character archive for output
+    std::ofstream ofs("test.dump");
+
+    // save data to archive
+    {
+        boost::archive::text_oarchive oa(ofs);
+        // write class instance to archive
+        oa << f;
+        // archive and stream closed when destructors are called
+    }
+
+    // ... some time later restore the class instance to its orginal state
+    gdual newf;
+    {
+        // create and open an archive for input
+        std::ifstream ifs("test.dump");
+        boost::archive::text_iarchive ia(ifs);
+        // read class state from archive
+        ia >> newf;
+        // archive and stream closed when destructors are called
+    }
+    BOOST_CHECK(newf == f);
+    BOOST_CHECK(newf.get_order() == f.get_order());
+
 }
 
