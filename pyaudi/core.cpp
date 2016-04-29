@@ -39,8 +39,9 @@ PYBIND11_PLUGIN(_core) {
             return std::string("\\[ ") + retval;
         })
         .def("__getstate__", [](const gdual &p) {
-            // Returns a tuple that contains the string representation of
-            // a gdual as obtained from boost serialization
+            // Returns a tuple that contains the string
+            // representation of a gdual as obtained
+            // from the boost serialization library
             std::stringstream ss;
             boost::archive::text_oarchive oa(ss);
             oa << p;
@@ -49,7 +50,6 @@ PYBIND11_PLUGIN(_core) {
         .def("__setstate__", [](gdual &p, py::tuple t) {
             if (t.size() != 1)
                 throw std::runtime_error("Invalid state!");
-
             // Invoke the default constructor. 
             new (&p) gdual;
             // Reconstruct the gdual
