@@ -558,7 +558,7 @@ class gdual
             double cumfact = 1;
             for (auto i = c.begin(); i < c.end(); ++i)
             {
-                cumfact*=boost::math::factorial<double>(*i);
+                cumfact*=boost::math::factorial<double>(static_cast<unsigned int>(*i));
             }
             return this->find_cf(c) * cumfact;
         }
