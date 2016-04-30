@@ -196,6 +196,17 @@ BOOST_AUTO_TEST_CASE(get_derivative)
     BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({3,3}), 0, 1e-14) == true);
     BOOST_CHECK(EPSILON_COMPARE(f.get_derivative({4,4}), 0, 1e-14) == true);
     }
+    /// we test the dictionary interface
+    gdual x(1, "x",4);
+    gdual y(1, "y",4);
+    gdual z(1, "z",4);
+    gdual f = x*x*x*x*x + x*y*z*x*x + z*x*y*y*y;
+    std::unordered_map< std::string, unsigned int> dict{{"x", 1u},{"y",1u},{"z",1u}};
+    BOOST_CHECK_EQUAL(f.get_derivative(dict), 6.);
+    dict = {{"x", 4u},{"y",1u},{"z",1u}};
+    BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
+    dict = {{"x", 1u},{"r",1u},{"z",1u}};
+    BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
 }
 
 BOOST_AUTO_TEST_CASE(integrate_partial)

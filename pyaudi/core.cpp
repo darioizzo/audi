@@ -72,6 +72,9 @@ PYBIND11_PLUGIN(_core) {
         .def("get_derivative", [](const gdual &g, const std::vector<int> &v) {
             return g.get_derivative(v);
         },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
+        .def("get_derivative", [](const gdual &g, const std::unordered_map<std::string, unsigned int> &dict) {
+            return g.get_derivative(dict);
+        },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
         .def(py::self + py::self)
         .def(py::self - py::self)
         .def(py::self * py::self)

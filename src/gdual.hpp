@@ -590,6 +590,37 @@ class gdual
             return this->find_cf(l) * cumfact;
         }
 
+        /// Gets the derivative value
+        /**
+         * Returns the (mixed) derivative value of order specified 
+         * by the container \p c
+         *
+         * \note To get the following derivative: \f$ \frac{d^6}{dxdy^3dz^2}\f$
+         * the input should be {{"x", 1u},{"y",3u},{"z",2u}}
+         *
+         * \note The current implementation call internally the other templated
+         * implementations. WHen piranha will implement the sparse monomial
+         * this will change and be more efficient.
+         * 
+         * @return the value of the derivative
+         *
+         * @throws unspecified all exceptions thrown by the templated version call.
+         * @throws std::invalid_argument: if one of the symbols is not found in the expression
+         */
+        auto get_derivative(const std::unordered_map< std::string, unsigned int> &dict) const -> decltype(get_derivative(std::vector<double>{}))
+        {
+            auto ss = get_symbol_set();
+            std::vector<double> coeff(ss.size(), 0);
+            for (const auto &entry : dict) {
+                auto it = std::find(ss.begin(), ss.end(), entry.first);
+                if (it == ss.end()) {
+                    throw std::invalid_argument("Symbol not found in the symbol set, cannot return a derivative");
+                }
+                coeff[std::distance(ss.begin(), it)] = entry.second;
+            }
+            return get_derivative(coeff);
+        }
+
         /// Finds the constant coefficient
         /**
          * Returns the coefficient of the of the constant part of the polynomial
