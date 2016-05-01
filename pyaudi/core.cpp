@@ -7,10 +7,23 @@
 #include <vector>
 
 #include "../src/audi.hpp"
+
+#if defined(__clang__) || defined(__GNUC__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wpedantic"
+    #pragma GCC diagnostic ignored "-Wshadow"
+    #pragma GCC diagnostic ignored "-Wsign-conversion"
+    #pragma GCC diagnostic ignored "-Wdeprecated"
+#endif
+
 #include "pybind11/include/pybind11/operators.h"
 #include "pybind11/include/pybind11/pybind11.h"
 #include "pybind11/include/pybind11/stl.h"
 #include "pybind11/include/pybind11/cast.h"
+
+#if defined(__clang__) || defined(__GNUC__)
+    #pragma GCC diagnostic pop
+#endif
 
 using namespace audi;
 namespace py = pybind11;
@@ -50,7 +63,7 @@ PYBIND11_PLUGIN(_core) {
         .def("__setstate__", [](gdual &p, py::tuple t) {
             if (t.size() != 1)
                 throw std::runtime_error("Invalid state!");
-            // Invoke the default constructor. 
+            // Invoke the default constructor.
             new (&p) gdual;
             // Reconstruct the gdual
             std::stringstream ss(t[0].cast<std::string>());
@@ -142,7 +155,7 @@ PYBIND11_PLUGIN(_core) {
     m.def("acosh",[](double x) {return std::acosh(x);},"Inverse hyperbolic cosine (double).");
 
     m.def("sinh_and_cosh",[](const gdual &d) {return sinh_and_cosh(d);} ,"Hyperbolic sine and hyperbolic cosine at once (gdual).");
-    
+
     m.def("tanh",[](const gdual &d) {return tanh(d);},"Hyperbolic tangent (gdual).");
     m.def("tanh",[](double x) {return std::tanh(x);},"Hyperbolic tangent (double).");
 

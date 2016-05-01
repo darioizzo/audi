@@ -15,6 +15,7 @@
 #include <piranha/polynomial.hpp>
 #include <piranha/safe_cast.hpp>
 #include <piranha/series_multiplier.hpp>
+#include <piranha/symbol.hpp>
 #include <stdexcept>
 #include <string>
 #include <type_traits> // For std::enable_if, std::is_same, etc.
@@ -29,20 +30,20 @@ namespace audi
 /// Generalized dual number class.
 /**
  * This class represents a generalized dual number, or more formally, an element
- * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$. 
+ * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$.
  *
  * The basic operations defined in the algebra \f$\mathcal P_{n,m}\f$ are
- * implemented as operators overloads, thus the new audi::gdual type can be used 
+ * implemented as operators overloads, thus the new audi::gdual type can be used
  * in substitution to the simple double type to also compute derivatives.
  *
  * The order of truncation \f$m\f$ is determined upon construction and cannot be later
  * modified. The number of variables \f$n\f$ will instead by determined dynamically
  * when operations are performed on the audi::gdual type.
  *
- * The actual truncated polynomial is contained in audi::gdual as a data member 
- * of type piranha::polynomial<double,piranha::monomial<char> >, 
+ * The actual truncated polynomial is contained in audi::gdual as a data member
+ * of type piranha::polynomial<double,piranha::monomial<char> >,
  * allowing to support a high number of monomials.
- * 
+ *
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
  */
@@ -242,18 +243,18 @@ class gdual
          *
          * Will construct a generalized dual number made of a constant and a single term with unitary coefficient and exponent,
          * representing the expansion around zero of the symbolic variable \p symbol. The truncation order
-         * is also set to \p order. 
+         * is also set to \p order.
          *
          * @note If the \p order is requested to be zero, this will instead construct a constant, while
          * keeping in the symbol set the requested symbol name. If, later on,
          * any derivative will be requested with respect to that symbol, it will be zero.
-         * 
+         *
          * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx". 
-         * 
+         * so that "x" -> "dx".
+         *
          * @param[in] symbol symbolic name
          * @param[in] order truncation order
-         * 
+         *
          * @throws std::invalid_argument:
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
@@ -272,10 +273,10 @@ class gdual
         /**
          *
          * Will construct a generalized dual number representing a constant number
-         * 
+         *
          * @param[in] value value of the constant
          * @param[in] order truncation order of the underlying algebra
-         * 
+         *
          * @throws std::invalid_argument:
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          */
@@ -284,34 +285,34 @@ class gdual
             check_order();
         }
 
-        /// Constructor from value 
+        /// Constructor from value
         /**
          *
          * Will construct a generalized dual number of order 0 representing
          * a constant number
-         * 
+         *
          * @param[in] value value of the constant
-         * 
+         *
          */
         explicit gdual(double value):m_p(value), m_order(0u) {}
 
         /// Constructor from value, symbol and truncation order
         /**
          *
-         * Will construct a generalized dual number representing the expansion around \p value 
-         * of the symbolic variable \p symbol. The truncation order is also set to \p order. 
+         * Will construct a generalized dual number representing the expansion around \p value
+         * of the symbolic variable \p symbol. The truncation order is also set to \p order.
          *
          * @note If the \p order is requested to be zero, this will instead construct a constant, while
          * keeping in the symbol set the requested symbol name. If, later on,
          * any derivative will be requested with respect to that symbol, it will be zero.
-         * 
+         *
          * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx". 
-         * 
+         * so that "x" -> "dx".
+         *
          * @param[in] value value of the variable
          * @param[in] symbol symbolic name
          * @param[in] order truncation order
-         * 
+         *
          * @throws std::invalid_argument:
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
@@ -372,7 +373,7 @@ class gdual
          * the current polynomial. It may contain more. All symbols must start with the letter "d".
          *
          * @throws std::invalid_argument:
-         * - if any symbol in \p sym_vars does not start with the letter "d" 
+         * - if any symbol in \p sym_vars does not start with the letter "d"
          *
          * @throws unspecified any exception thrown by:
          * - piranha::series::extend_symbol_set,
@@ -391,7 +392,7 @@ class gdual
         /**
          * Performs the integration of the gdual with respect to the symbol.
          *
-         * \note If the \p var_name differential is not in the symbol set, then it is added. 
+         * \note If the \p var_name differential is not in the symbol set, then it is added.
          *
          * \note Information may be lost as the truncation order is preserved.
          *
@@ -408,7 +409,7 @@ class gdual
         {
             check_var_name(var_name);
             auto new_p = m_p.integrate("d" + var_name);
-            new_p = new_p.truncate_degree(m_order);
+            new_p = new_p.truncate_degree(static_cast<int>(m_order));
             return gdual(std::move(new_p), m_order);
         }
 
@@ -416,7 +417,7 @@ class gdual
         /**
          * Performs the partial derivative of the gdual with respect to the symbol
          *
-         * \note If the \p var_name differential is not in the symbol set, then it is added. 
+         * \note If the \p var_name differential is not in the symbol set, then it is added.
          *
          * @param[in] var_name Symbol name (cannot start with "d").
          *
@@ -448,8 +449,8 @@ class gdual
 
         /// Evaluates the Taylor polynomial
         /**
-         * Evaluates the Taylor polynomial using the values in \p dict for all the 
-         * differentials (variables variations) 
+         * Evaluates the Taylor polynomial using the values in \p dict for all the
+         * differentials (variables variations)
          *
          * @throws unspecified any exception thrown by:
          * - piranha::math::evaluate,
@@ -488,7 +489,7 @@ class gdual
          * Returns the coefficient of the monomial specified in the container \p c
          *
          * \note The container contains the exponents of the requested monomial. In a three
-         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote 
+         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote
          * the term x y^3 z^2.
          *
          * \note Alphabetical order is used to order the symbol set and thus specify
@@ -497,7 +498,7 @@ class gdual
          * This method will first construct a term with zero coefficient
          * and key initialised from the begin/end iterators of c and the
          * symbol set of this, and it will then try to locate the term inside
-         * this. If the term is found, its coefficient will be returned. 
+         * this. If the term is found, its coefficient will be returned.
          * Otherwise, a coefficient initialised from 0 will be returned.
          *
          * @return the coefficient
@@ -518,7 +519,7 @@ class gdual
         /**
          * Returns the coefficient of the monomial specified in the
          * initializer list \p l
-         * 
+         *
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
          *
          * @return the coefficient
@@ -537,16 +538,16 @@ class gdual
 
         /// Gets the derivative value
         /**
-         * Returns the (mixed) derivative value of order specified 
+         * Returns the (mixed) derivative value of order specified
          * by the container \p c
          *
          * \note The container contains the order requested. In a three
-         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote 
+         * variable polynomial with "x", "y" and "z" as symbols, [1, 3, 2] would denote
          * the sixth order derivative \f$ \frac{d^6}{dxdy^3dz^2}\f$.
          *
          * \note No computations are made at this points as all derivatives are already
          * contained in the Taylor expansion
-         * 
+         *
          * @return the value of the derivative
          *
          * @throws std::invalid_argument:
@@ -565,7 +566,7 @@ class gdual
 
         /// Gets the derivative value
         /**
-         * Returns the (mixed) derivative value of order specified 
+         * Returns the (mixed) derivative value of order specified
          * by the initializer list \p l
          *
          * \note This method is identical to the other overload with the same name,
@@ -573,7 +574,7 @@ class gdual
          *
          * \note No computations are made at this points as all derivatives are already
          * contained in the Taylor expansion
-         * 
+         *
          * @return the value of the derivative
          *
          * @throws std::invalid_argument:
@@ -592,7 +593,7 @@ class gdual
 
         /// Gets the derivative value
         /**
-         * Returns the (mixed) derivative value of order specified 
+         * Returns the (mixed) derivative value of order specified
          * by the container \p c
          *
          * \note To get the following derivative: \f$ \frac{d^6}{dxdy^3dz^2}\f$
@@ -601,22 +602,22 @@ class gdual
          * \note The current implementation call internally the other templated
          * implementations. WHen piranha will implement the sparse monomial
          * this will change and be more efficient.
-         * 
+         *
          * @return the value of the derivative
          *
          * @throws unspecified all exceptions thrown by the templated version call.
          * @throws std::invalid_argument: if one of the symbols is not found in the expression
          */
-        auto get_derivative(const std::unordered_map< std::string, unsigned int> &dict) const -> decltype(get_derivative(std::vector<double>{}))
+        auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const -> decltype(get_derivative(std::vector<double>{}))
         {
-            auto ss = get_symbol_set();
+            const auto &ss = m_p.get_symbol_set();
             std::vector<double> coeff(ss.size(), 0);
             for (const auto &entry : dict) {
-                auto it = std::find(ss.begin(), ss.end(), entry.first);
-                if (it == ss.end()) {
+                auto idx = ss.index_of(piranha::symbol{entry.first});
+                if (idx == ss.size()) {
                     throw std::invalid_argument("Symbol not found in the symbol set, cannot return a derivative");
                 }
-                coeff[std::distance(ss.begin(), it)] = entry.second;
+                coeff[idx] = entry.second;
             }
             return get_derivative(coeff);
         }
@@ -625,7 +626,7 @@ class gdual
         /**
          * Returns the coefficient of the of the constant part of the polynomial
          * so that if \f$T_{f} = f_0 + \hat f\f$,m \f$f_0\f$ is returned
-         * 
+         *
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
          * @return the coefficient
          */
@@ -641,19 +642,19 @@ class gdual
          * Will direct to stream a human-readable representation of the generalized dual number.
          * It uses the piranha overload for the type piranha::series. Refer to that
          * documentation for further details
-         * 
+         *
          * \note The print order of the terms will be undefined.
-         * \note At most piranha::settings::get_max_term_output() terms 
-         * are printed, and terms in excess are represented with ellipsis "..." 
-         * at the end of the output; if piranha::settings::get_max_term_output() 
+         * \note At most piranha::settings::get_max_term_output() terms
+         * are printed, and terms in excess are represented with ellipsis "..."
+         * at the end of the output; if piranha::settings::get_max_term_output()
          * is zero, all the terms will be printed. piranha::settings::set_max_term_output()
          * is used to set this parameter.
-         * 
+         *
          * @param[in,out] os target stream.
          * @param[in] d audi::gdual argument.
-         * 
+         *
          * @return reference to \p os.
-         * 
+         *
         */
         friend std::ostream& operator<<(std::ostream& os, const gdual& d)
         {
@@ -664,13 +665,13 @@ class gdual
         /// Overloaded Equality operator.
         /**
          * Compares the single polynomial coefficients of
-         * two audi::gdual objects and returns true if equal. 
+         * two audi::gdual objects and returns true if equal.
          *
          * /note The truncation order of \p d1 and \p d2 may be different
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
-         * 
+         *
          * @return The result of the cmparison
         */
         friend bool operator==(const gdual &d1, const gdual &d2)
@@ -685,7 +686,7 @@ class gdual
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
-         * 
+         *
          * @return The result of the cmparison
         */
         friend bool operator!=(const gdual &d1, const gdual &d2)
@@ -695,7 +696,7 @@ class gdual
 
 
         /** @name Algebraic operators
-         * 
+         *
          */
         //@{
 
@@ -745,7 +746,7 @@ class gdual
          * of truncated polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
-         * may only be a double or int. 
+         * may only be a double or int.
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
@@ -764,7 +765,7 @@ class gdual
          * of truncated polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
-         * may only be a double or int. 
+         * may only be a double or int.
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
@@ -783,11 +784,11 @@ class gdual
          * of truncated polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
-         * may only be a double or int. 
+         * may only be a double or int.
          *
          * \note The truncated polynomial multiplication operator is at the very heart of AuDi
          * and its details / performances are those of the piranha multiplication
-         * algorithm which is, essentially, used. 
+         * algorithm which is, essentially, used.
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
@@ -814,7 +815,7 @@ class gdual
          *
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
-         * may only be a double or int. 
+         * may only be a double or int.
          *
          * @param[in] d1 first audi::gdual argument
          * @param[in] d2 second audi::gdual argument
@@ -829,7 +830,7 @@ class gdual
         //@}
 
         /** @name Low-level interface
-         * 
+         *
          */
         //@{
         /// Get a mutable reference to the container of terms.
@@ -880,6 +881,6 @@ class gdual
 
 
 
-} // end of namespace audi 
+} // end of namespace audi
 
 #endif

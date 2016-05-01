@@ -5,3 +5,6 @@ if(YACMA_COMPILER_IS_CLANGXX OR YACMA_COMPILER_IS_INTELXX OR YACMA_COMPILER_IS_G
 	message(STATUS "Enabling the '-std=c++11' flag.")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
+
+# Setup the CXX flags from YACMA.
+YACMA_SETUP_CXX_FLAGS()
