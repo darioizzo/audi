@@ -4,7 +4,7 @@ ENABLE_TESTING()
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
 
-SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules" "${CMAKE_SOURCE_DIR}/cmake_modules/yacma")
 
 MESSAGE(STATUS "System name: ${CMAKE_SYSTEM_NAME}")
 
@@ -27,17 +27,24 @@ OPTION(BUILD_PYAUDI "Build the Python bindings." OFF)
 # Initialise (empty) list of libraries to link against.
 SET(MANDATORY_LIBRARIES "")
 
-# Initial thread setup.
-FIND_PACKAGE(Threads REQUIRED)
-MESSAGE(STATUS "Thread library: ${CMAKE_THREAD_LIBS_INIT}")
-SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+# Initial setup of the compilation flags.
+include(AudiCompilerLinkerSettings)
 
-# Include these macros here as they reference variables defined above.
-INCLUDE(AudiCompilerLinkerSettings)
-INCLUDE(AudiPlatformSettings)
+# Additional platform-specific setup.
+include(AudiPlatformSettings)
 
-MESSAGE(STATUS "Current CXX flags: ${CMAKE_CXX_FLAGS}")
-MESSAGE(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+# Threading setup.
+include(YACMAThreadingSetup)
+set(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${YACMA_THREADING_CXX_FLAGS}")
+
+# Report the CXX flags.
+message(STATUS "Current CXX flags: ${CMAKE_CXX_FLAGS}")
+message(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
+
+if(BUILD_PYAUDI)
+	include(YACMAPythonSetup)
+endif()
 
 IF(BUILD_TESTS)
 	MESSAGE(STATUS "Linking unit tests to Boost.Test.")
