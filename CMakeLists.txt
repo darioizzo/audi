@@ -46,12 +46,19 @@ if(BUILD_PYAUDI)
 	include(YACMAPythonSetup)
 endif()
 
+set(REQUIRED_BOOST_LIBS "")
+
+if(BUILD_PYAUDI OR BUILD_TESTS)
+	message(STATUS "Linking boost serialization.")
+	list(APPEND REQUIRED_BOOST_LIBS serialization)
+endif()
+
 IF(BUILD_TESTS)
 	MESSAGE(STATUS "Linking unit tests to Boost.Test.")
-	SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} unit_test_framework serialization)
+	LIST(APPEND REQUIRED_BOOST_LIBS unit_test_framework)
 	IF(CMAKE_BUILD_TYPE STREQUAL "Release")
 		MESSAGE(STATUS "Linking performance tests to Boost Timer and Boost.Chrono.")
-		SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} timer chrono system)
+		LIST(APPEND REQUIRED_BOOST_LIBS timer chrono system)
 	ENDIF()
 ENDIF()
 
