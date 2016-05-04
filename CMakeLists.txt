@@ -42,12 +42,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${YACMA_THREADING_CXX_FLAGS}")
 message(STATUS "Current CXX flags: ${CMAKE_CXX_FLAGS}")
 message(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
 
-SET(REQUIRED_BOOST_LIBS "")
-
 if(BUILD_PYAUDI)
-	message(STATUS "Linking boost serialization.")
-        list(APPEND REQUIRED_BOOST_LIBS serialization)
 	include(YACMAPythonSetup)
+endif()
+
+set(REQUIRED_BOOST_LIBS "")
+
+if(BUILD_PYAUDI OR BUILD_TESTS)
+	message(STATUS "Linking boost serialization.")
+	list(APPEND REQUIRED_BOOST_LIBS serialization)
 endif()
 
 IF(BUILD_TESTS)
