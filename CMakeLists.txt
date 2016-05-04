@@ -42,16 +42,20 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${YACMA_THREADING_CXX_FLAGS}")
 message(STATUS "Current CXX flags: ${CMAKE_CXX_FLAGS}")
 message(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
 
+SET(REQUIRED_BOOST_LIBS "")
+
 if(BUILD_PYAUDI)
+	message(STATUS "Linking boost serialization.")
+        list(APPEND REQUIRED_BOOST_LIBS serialization)
 	include(YACMAPythonSetup)
 endif()
 
 IF(BUILD_TESTS)
 	MESSAGE(STATUS "Linking unit tests to Boost.Test.")
-	SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} unit_test_framework serialization)
+	LIST(APPEND REQUIRED_BOOST_LIBS unit_test_framework)
 	IF(CMAKE_BUILD_TYPE STREQUAL "Release")
 		MESSAGE(STATUS "Linking performance tests to Boost Timer and Boost.Chrono.")
-		SET(REQUIRED_BOOST_LIBS ${REQUIRED_BOOST_LIBS} timer chrono system)
+		LIST(APPEND REQUIRED_BOOST_LIBS timer chrono system)
 	ENDIF()
 ENDIF()
 
