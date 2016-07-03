@@ -201,11 +201,11 @@ BOOST_AUTO_TEST_CASE(get_derivative)
     gdual y(1, "y",4);
     gdual z(1, "z",4);
     gdual f = x*x*x*x*x + x*y*z*x*x + z*x*y*y*y;
-    std::unordered_map< std::string, unsigned int> dict{{"x", 1u},{"y",1u},{"z",1u}};
+    std::unordered_map< std::string, unsigned int> dict{{"dx", 1u},{"dy",1u},{"dz",1u}};
     BOOST_CHECK_EQUAL(f.get_derivative(dict), 6.);
-    dict = {{"x", 4u},{"y",1u},{"z",1u}};
+    dict = {{"dx", 4u},{"dy",1u},{"dz",1u}};
     BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
-    dict = {{"x", 1u},{"r",1u},{"z",1u}};
+    dict = {{"dx", 1u},{"dr",1u},{"dz",1u}};
     BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
 }
 
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     gdual y(1, "y", 4);
     gdual z(1, "z", 4);
     gdual f = (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y);
-    
+
     // create and open a character archive for output
     std::ofstream ofs("test.dump");
 
@@ -259,4 +259,3 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     BOOST_CHECK(newf.get_order() == f.get_order());
 
 }
-
