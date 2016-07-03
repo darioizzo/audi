@@ -126,39 +126,11 @@ class gdual
             return gdual(d1.m_p - d2, d1.get_order());
         }
 
-        // Basic overloads for the multiplication
-        // This is the low-level multiplication between two duals when they have
-        // identical symbol set.
-        static gdual mul_impl(const p_type &p1, const p_type &p2, unsigned int order)
-        {
-            using degree_type = decltype(p1.degree());
-            piranha::series_multiplier<p_type> m(p1,p2);
-            return gdual(m.truncated_multiplication(piranha::safe_cast<degree_type>(order)),order);
-        }
-
         // Dual * dual.
         static gdual mul(const gdual &d1, const gdual &d2)
         {
             const unsigned int order = std::max(d1.get_order(), d2.get_order());
-            const auto &ss1 = d1.m_p.get_symbol_set(), &ss2 = d2.m_p.get_symbol_set();
-            if (ss1 == ss2) {
-                return mul_impl(d1.m_p,d2.m_p,order);
-            }
-            // If the symbol sets are not the same, we need to merge them and make
-            // copies of the original operands as needed.
-            auto merge = ss1.merge(ss2);
-            const bool need_copy_1 = (merge != ss1), need_copy_2 = (merge != ss2);
-            if (need_copy_1) {
-                p_type copy_1(d1.m_p.extend_symbol_set(merge));
-                if (need_copy_2) {
-                    p_type copy_2(d2.m_p.extend_symbol_set(merge));
-                    return mul_impl(copy_1,copy_2,order);
-                }
-                return mul_impl(copy_1,d2.m_p,order);
-            } else {
-                p_type copy_2(d2.m_p.extend_symbol_set(merge));
-                return mul_impl(d1.m_p, copy_2,order);
-            }
+            return gdual(p_type::truncated_multiplication(d1.m_p,d2.m_p,order),order);
         }
 
         template <typename T>
