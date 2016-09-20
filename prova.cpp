@@ -6,6 +6,7 @@
 #include <random>
 #include <boost/timer/timer.hpp>
 #include "src/gdual_v.hpp"
+#include "src/gdual.hpp"
 
 
 
@@ -41,39 +42,29 @@ int main() {
     auto ycoeff = random_vector_double(N, lb, ub);
     auto zcoeff = random_vector_double(N, lb, ub);
     auto coeff = random_vector_double(N, lb, ub);
+    auto coeff_v = audi::gdual_v(coeff);
 
     {
-        p_type_vector x{"x"}, y{"y"}, z{"z"};
-        x *= xcoeff;
-        y *= ycoeff;
-        z *= zcoeff;
-
-        auto foo = coeff + x + y + z;
-        for (int i = 1; i < 15; ++i) {
-            foo *= coeff + x + y + z;
+        audi::gdual_v x{xcoeff, "x",11}, y{ycoeff, "y",11}, z{zcoeff, "z",11}, w{zcoeff, "w",11}, q{zcoeff, "q",11}, r{zcoeff, "r",11}, s{zcoeff, "s",11} ;
+        auto foo = coeff_v + x + y + z - w + q + r + s;
+        for (int i = 1; i < 25; ++i) {
+            foo *= coeff_v + x + y + z - w + q + r + s;
         }
 
         boost::timer::auto_cpu_timer t;
         foo *= foo;
-        // std::cout << foo << '\n';
     }
     {
         boost::timer::auto_cpu_timer t;
         for (auto i = 0u; i < N; ++i) {
-            p_type x{"x"}, y{"y"}, z{"z"};
-            x *= xcoeff[i];
-            y *= ycoeff[i];
-            z *= zcoeff[i];
+            audi::gdual x{xcoeff[i], "x",11}, y{ycoeff[i], "y",11}, z{zcoeff[i], "z",11}, w{zcoeff[i], "w",11}, q{zcoeff[i], "q",11}, r{zcoeff[i], "r",11}, s{zcoeff[i], "s",11} ;
 
-            auto foo = coeff[i] + x + y + z;
-            for (int i = 1; i < 15; ++i) {
-                foo *= coeff[i] + x + y + z;
+            auto foo = coeff[i] + x + y + z - w + q + r + s;
+            for (int j = 1; j < 25; ++j) {
+                foo *= coeff[i] + x + y + z - w + q + r + s;
             }
             foo *= foo;
         }
     }
-
-    audi::gdual_v dario({1.,2.}, "x", 3);
-    std::cout << dario << std::endl;
 
 }

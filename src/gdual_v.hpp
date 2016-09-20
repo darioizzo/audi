@@ -59,9 +59,11 @@ class gdual_v
         template <typename T, typename U>
         using gdual_v_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual_v>::value && std::is_same<U,gdual_v>::value) ||
+        (std::is_same<T,gdual_v>::value && std::is_same<U,coefficient_v>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,double>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,int>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,unsigned int>::value) ||
+        (std::is_same<U,gdual_v>::value && std::is_same<T,coefficient_v>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,double>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,int>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,unsigned int>::value),
@@ -153,8 +155,8 @@ class gdual_v
             gdual_v retval({1.});
             double fatt = -1.;
             auto p0 = d2.constant_cf();
-            auto phat = (d2 - gdual_v(p0));
-            phat = phat / gdual_v(p0);
+            auto phat = (d2 - p0);
+            phat = phat / p0;
             gdual_v tmp(phat);
 
             retval = retval - phat;
@@ -164,7 +166,7 @@ class gdual_v
                 retval =  retval + fatt * phat;
             }
 
-            return (d1 * retval) / gdual_v(p0);
+            return (d1 * retval) / p0;
         }
 
         template <typename T>
@@ -176,8 +178,8 @@ class gdual_v
             if (p0 == 0) {
                 throw std::domain_error("gdual_v: divide by zero");
             }
-            auto phat = (d2 - gdual_v(p0));
-            phat = phat / gdual_v(p0);
+            auto phat = (d2 - p0);
+            phat = phat / p0;
             gdual_v tmp(phat);
 
             retval = retval - phat;
@@ -270,6 +272,7 @@ class gdual_v
          */
         //explicit gdual_v(std::vector<double> value):m_p(value), m_order(0u) {}
         explicit gdual_v(coefficient_v value):m_p(value), m_order(0u) {}
+        explicit gdual_v(std::initializer_list<double> value):m_p(value), m_order(0u) {}
 
         /// Constructor from value, symbol and truncation order
         /**

@@ -234,7 +234,7 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::va
 };
 
 template <typename T, typename U>
-struct pow_impl<T,U,typename std::enable_if<std::is_same<T,coefficient_v>::value && is_exponentiable<typename T::value_type,U>::value>::type>
+struct pow_impl<T,U,typename std::enable_if<std::is_same<T,coefficient_v>::value>::type>
 {
   coefficient_v operator()(const coefficient_v &c, const U &exp) const
   {

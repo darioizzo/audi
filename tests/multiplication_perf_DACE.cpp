@@ -5,7 +5,7 @@
 
 #include <vector>
 
-// compile with g++ multiplication_perf_DACE.cpp -std=c++11 -I/usr/local/include -ldace -lboost_system 
+// compile with g++ multiplication_perf_DACE.cpp -std=c++11 -I/usr/local/include -ldace -lboost_system
 // -lboost_unit_test_framework -lboost_timer
 
 using namespace DACE;
@@ -29,8 +29,6 @@ void scalable_mul(int m, int n)
         boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
         res = p1*p2;
     }
-    int cicco;
-    std::cin >> cicco;
 }
 
 int main()
