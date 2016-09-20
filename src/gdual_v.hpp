@@ -1,5 +1,5 @@
-#ifndef AUDI_gdual_v_V_HPP
-#define AUDI_gdual_v_V_HPP
+#ifndef AUDI_GDUAL_V_HPP
+#define AUDI_GDUAL_V_HPP
 
 #include <algorithm>
 #include <boost/numeric/conversion/cast.hpp>
@@ -23,7 +23,7 @@
 #include <vector>
 #include <cassert>
 
-#include "coefficient_v.hpp"
+#include "detail/coefficient_v.hpp"
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -51,7 +51,7 @@ namespace audi
  */
 class gdual_v
 {
-        using p_type = piranha::polynomial<coefficient_v,piranha::monomial<char>>;
+        using p_type = piranha::polynomial<detail::coefficient_v,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a dual,
@@ -59,11 +59,11 @@ class gdual_v
         template <typename T, typename U>
         using gdual_v_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual_v>::value && std::is_same<U,gdual_v>::value) ||
-        (std::is_same<T,gdual_v>::value && std::is_same<U,coefficient_v>::value) ||
+        (std::is_same<T,gdual_v>::value && std::is_same<U,detail::coefficient_v>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,double>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,int>::value) ||
         (std::is_same<T,gdual_v>::value && std::is_same<U,unsigned int>::value) ||
-        (std::is_same<U,gdual_v>::value && std::is_same<T,coefficient_v>::value) ||
+        (std::is_same<U,gdual_v>::value && std::is_same<T,detail::coefficient_v>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,double>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,int>::value) ||
         (std::is_same<U,gdual_v>::value && std::is_same<T,unsigned int>::value),
@@ -256,7 +256,7 @@ class gdual_v
          * @throws std::invalid_argument:
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          */
-        explicit gdual_v(coefficient_v value, unsigned int order):m_p(value),m_order(order)
+        explicit gdual_v(detail::coefficient_v value, unsigned int order):m_p(value),m_order(order)
         {
             check_order();
         }
@@ -271,7 +271,7 @@ class gdual_v
          *
          */
         //explicit gdual_v(std::vector<double> value):m_p(value), m_order(0u) {}
-        explicit gdual_v(coefficient_v value):m_p(value), m_order(0u) {}
+        explicit gdual_v(detail::coefficient_v value):m_p(value), m_order(0u) {}
         explicit gdual_v(std::initializer_list<double> value):m_p(value), m_order(0u) {}
 
         /// Constructor from value, symbol and truncation order
@@ -295,7 +295,7 @@ class gdual_v
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual_v(coefficient_v value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
+        explicit gdual_v(detail::coefficient_v value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
             check_var_name(symbol);
             if (order == 0) {
@@ -303,7 +303,7 @@ class gdual_v
             } else {
                 m_p = p_type(std::string("d") + symbol) * std::vector<double>(value.size(),1.);
             }
-            m_p+=coefficient_v(value);
+            m_p+=detail::coefficient_v(value);
         }
 
         explicit gdual_v(std::initializer_list<double> value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
@@ -314,7 +314,7 @@ class gdual_v
             } else {
                 m_p = p_type(std::string("d") + symbol) * std::vector<double>(value.size(),1.);
             }
-            m_p+=coefficient_v(value);
+            m_p+=detail::coefficient_v(value);
         }
 
         /// Defaulted assignment operator
@@ -430,7 +430,7 @@ class gdual_v
          * @throws unspecified any exception thrown by:
          * - piranha::series::subs,
          */
-        gdual_v subs( const std::string sym, coefficient_v val)
+        gdual_v subs( const std::string sym, detail::coefficient_v val)
         {
             auto new_p = m_p.subs(sym, val);
             return gdual_v(std::move(new_p), m_order);
@@ -619,7 +619,7 @@ class gdual_v
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
          * @return the coefficient
          */
-        coefficient_v constant_cf() const
+        detail::coefficient_v constant_cf() const
         {
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_symbol_set_size()),0));

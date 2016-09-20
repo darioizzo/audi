@@ -8,6 +8,8 @@
 #include <boost/timer/timer.hpp>
 
 
+namespace audi { namespace detail {
+
 class coefficient_v
 {
 public:
@@ -172,10 +174,12 @@ private:
     std::vector<double> m_c;
 };
 
+}} // end of audi::detail namespace
+
 namespace piranha { namespace math {
 
 template <typename T>
-struct is_zero_impl<T,typename std::enable_if<std::is_same<T,coefficient_v>::value>::type>
+struct is_zero_impl<T,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
 {
   bool operator()(const T &v) const
   {
@@ -184,7 +188,7 @@ struct is_zero_impl<T,typename std::enable_if<std::is_same<T,coefficient_v>::val
 };
 
 template <typename T>
-struct mul3_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::value>::type> {
+struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type> {
     /// Call operator.
     /**
      * @param[out] out the output value.
@@ -222,7 +226,7 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::value
 };
 
 template <typename T>
-struct partial_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::value>::type> {
+struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type> {
     /// Call operator.
     /**
      * @return an instance of piranha::mp_integer constructed from zero.
@@ -234,9 +238,9 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::va
 };
 
 template <typename T, typename U>
-struct pow_impl<T,U,typename std::enable_if<std::is_same<T,coefficient_v>::value>::type>
+struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
 {
-  coefficient_v operator()(const coefficient_v &c, const U &exp) const
+  audi::detail::coefficient_v operator()(const audi::detail::coefficient_v &c, const U &exp) const
   {
     auto retval(c);
     std::transform(retval.begin(),retval.end(),retval.begin(),[exp](double x) {return piranha::math::pow(x,exp);});
@@ -244,5 +248,4 @@ struct pow_impl<T,U,typename std::enable_if<std::is_same<T,coefficient_v>::value
   };
 };
 
-
-}}
+}} // end of piranha::math namespace

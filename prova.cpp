@@ -25,15 +25,6 @@ std::vector<double> random_vector_double(unsigned int N, double lb, double ub)
 using namespace piranha;
 
 int main() {
-    using p_type_vector = piranha::polynomial<coefficient_v,piranha::monomial<char>>;
-    using p_type = piranha::polynomial<double,piranha::monomial<char>>;
-
-    auto c1  = 0.5;
-    auto c2  = 0.23;
-    auto c3  = -0.44;
-    auto c4  = 0.1;
-
-
     unsigned int N = 100u;
     auto lb = -0.5;
     auto ub = 0.5;
