@@ -236,7 +236,7 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,coefficient_v>::va
 template <typename T, typename U>
 struct pow_impl<T,U,typename std::enable_if<std::is_same<T,coefficient_v>::value && is_exponentiable<typename T::value_type,U>::value>::type>
 {
-  coefficient_v operator()(const my_coefficient &c, const U &exp) const
+  coefficient_v operator()(const coefficient_v &c, const U &exp) const
   {
     auto retval(c);
     std::transform(retval.begin(),retval.end(),retval.begin(),[exp](double x) {return piranha::math::pow(x,exp);});
