@@ -103,7 +103,7 @@ SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${MPFR_LIBRARIES} ${GMP_LIBRARIES
 # Add the subdirectory for the library.
 ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/src")
 
-# Link main to piranha library.
+# Link main to mandatory libraries.
 IF(BUILD_MAIN)
 	ADD_EXECUTABLE(main main.cpp)
 	TARGET_LINK_LIBRARIES(main ${MANDATORY_LIBRARIES})
