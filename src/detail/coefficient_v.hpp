@@ -7,21 +7,32 @@
 #include <random>
 #include <boost/timer/timer.hpp>
 
+// The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
+#define MAX_STREAMED_COMPONENTS 5u
 
 namespace audi { namespace detail {
+
+// This class implements a vectorized coefficient to be used as the coefficient type in a piranha polynomial
+// The coefficient is, essentially a vector of doubles [a0,a1,a2,...an] on which all arithmetic operations and
+// function calls operate element-wise.
 
 class coefficient_v
 {
 public:
+    // Default constructor. Constructs [0.]
     coefficient_v() : m_c({0.}) {};
+    // Constructor from int. Its mandatory for piranha::polynomial coefficient
     coefficient_v(int a) : m_c({static_cast<double>(a)}) {};
+    // Constructor from double value a. Construct [a]
     coefficient_v(double a) : m_c({a}) {};
+    // Constructor from an std::vector
     coefficient_v(const std::vector<double> &c) : m_c(c) {
         if (c.size() == 0) {
-            throw std::invalid_argument("A coefficient of size zero is detected: NAAAA");
+            throw std::invalid_argument("Caonnot build an empty coeffciient_v");
         }
     };
 
+    // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
     friend coefficient_v operator+(const coefficient_v &d1, const coefficient_v &d2)
     {
         coefficient_v retval(d1);
@@ -46,6 +57,9 @@ public:
         retval /= d2;
         return retval;
     };
+
+    // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
+    // take care of scalar multiplication/division etc.
     coefficient_v& operator+=(const coefficient_v &d1)
     {
         if (d1.size() == this->size())
@@ -122,6 +136,12 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
     }
+    coefficient_v operator-() const
+    {
+        coefficient_v retval(m_c);
+        transform (retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<double>());
+        return retval;
+    }
     friend bool operator==(const coefficient_v &d1, const coefficient_v &d2)
     {
         return d1.m_c == d2.m_c;
@@ -132,17 +152,18 @@ public:
     }
     friend std::ostream &operator<<(std::ostream &os, const coefficient_v &d) {
         os << "[";
-        for (auto i = 0u; i < d.m_c.size() - 1u; ++i) {
-            os << d.m_c[i] << ", ";
+        if (d.size() <= MAX_STREAMED_COMPONENTS) {
+            for (auto i = 0u; i < d.size() - 1u; ++i) {
+                os << d.m_c[i] << ", ";
+            }
+            os << d.m_c[d.m_c.size() - 1u] << "]";
+        } else {
+            for (auto i = 0u; i < MAX_STREAMED_COMPONENTS; ++i) {
+                os << d.m_c[i] << ", ";
+            }
+            os  << "... ]";
         }
-        os << d.m_c[d.m_c.size() - 1u] << "]";
         return os;
-    }
-    coefficient_v operator-() const
-    {
-        coefficient_v retval(m_c);
-        transform (retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<double>());
-        return retval;
     }
     std::vector<double>::size_type size() const
     {
@@ -178,6 +199,7 @@ private:
 
 namespace piranha { namespace math {
 
+// ---------------------   impl functions needed for coefficient_v to pass piranha::is_cf type trait
 template <typename T>
 struct is_zero_impl<T,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
 {
@@ -225,6 +247,7 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coeffic
     }
 };
 
+// ------------------ impl functions needed to have the methods partial, integrate and subs
 template <typename T>
 struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type> {
     /// Call operator.
@@ -236,7 +259,6 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coef
         return T(std::vector<double>(in.size(), 0.));
     }
 };
-
 template <typename T, typename U>
 struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
 {
@@ -249,3 +271,5 @@ struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::detail::coeffic
 };
 
 }} // end of piranha::math namespace
+
+#undef MAX_STREAMED_COMPONENTS

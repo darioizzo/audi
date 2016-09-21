@@ -29,22 +29,11 @@
 namespace audi
 {
 
-/// Generalized dual number class.
+/// Vectorized Generalized dual number class.
 /**
- * This class represents a generalized dual number, or more formally, an element
- * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$.
- *
- * The basic operations defined in the algebra \f$\mathcal P_{n,m}\f$ are
- * implemented as operators overloads, thus the new audi::gdual_v type can be used
- * in substitution to the simple double type to also compute derivatives.
- *
- * The order of truncation \f$m\f$ is determined upon construction and cannot be later
- * modified. The number of variables \f$n\f$ will instead by determined dynamically
- * when operations are performed on the audi::gdual_v type.
- *
- * The actual truncated polynomial is contained in audi::gdual_v as a data member
- * of type piranha::polynomial<double,piranha::monomial<char> >,
- * allowing to support a high number of monomials.
+ * This class represents a vectorized audi::gdual, or more formally, an element
+ * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$ where the polynomial
+ * coefficients are vectors and all operations operate element-wise
  *
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
@@ -54,8 +43,8 @@ class gdual_v
         using p_type = piranha::polynomial<detail::coefficient_v,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
-        // - at least one operand is a dual,
-        // - the other operand, if not dual, must be double, int or unsigned int
+        // - at least one operand is a gdual_v,
+        // - the other operand, if not gdual_v, must be double, int or unsigned int or detail::coefficient_v
         template <typename T, typename U>
         using gdual_v_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual_v>::value && std::is_same<U,gdual_v>::value) ||
@@ -93,6 +82,11 @@ class gdual_v
         // A private constructor to move-initialise a gdual_v from a polynomial. Used
         // in the implementation of the operators.
         explicit gdual_v(p_type &&p, unsigned int order):m_p(std::move(p)),m_order(order) {}
+        // A private constructor used in the implementation of the operators (is it necessary?)
+        explicit gdual_v(detail::coefficient_v value, unsigned int order):m_p(value),m_order(order)
+        {
+            check_order();
+        }
 
         // Basic overloads for the addition
         static gdual_v add(const gdual_v &d1, const gdual_v &d2)
@@ -213,53 +207,6 @@ class gdual_v
             assert(m_p.degree() >= 0);
             assert(static_cast<unsigned>(m_p.degree()) <= m_order);
          }
-
-        /// Constructor from symbol and truncation order
-        /**
-         *
-         * Will construct a generalized dual number made of a constant and a single term with unitary coefficient and exponent,
-         * representing the expansion around zero of the symbolic variable \p symbol. The truncation order
-         * is also set to \p order.
-         *
-         * @note If the \p order is requested to be zero, this will instead construct a constant, while
-         * keeping in the symbol set the requested symbol name. If, later on,
-         * any derivative will be requested with respect to that symbol, it will be zero.
-         *
-         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx".
-         *
-         * @param[in] symbol symbolic name
-         * @param[in] order truncation order
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
-         */
-        explicit gdual_v(const std::string &symbol, unsigned int order):m_p(),m_order(order)
-        {
-            check_var_name(symbol);
-            if (order == 0) {
-                extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
-            } else {
-                m_p = p_type(std::string("d") + symbol);
-            }
-        }
-
-        /// Constructor from value and truncation order
-        /**
-         *
-         * Will construct a generalized dual number representing a constant number
-         *
-         * @param[in] value value of the constant
-         * @param[in] order truncation order of the underlying algebra
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         */
-        explicit gdual_v(detail::coefficient_v value, unsigned int order):m_p(value),m_order(order)
-        {
-            check_order();
-        }
 
         /// Constructor from value
         /**

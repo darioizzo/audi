@@ -528,7 +528,7 @@ class gdual
         template <typename T>
         auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
         {
-            double cumfact = 1;
+            double cumfact = 1.;
             for (auto i = c.begin(); i < c.end(); ++i)
             {
                 cumfact*=boost::math::factorial<double>(static_cast<unsigned int>(*i));
@@ -555,7 +555,7 @@ class gdual
         template <typename T>
         auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            double cumfact = 1;
+            double cumfact = 1.;
             for (auto i = l.begin(); i < l.end(); ++i)
             {
                 cumfact*=boost::math::factorial<double>((unsigned int)(*i));
