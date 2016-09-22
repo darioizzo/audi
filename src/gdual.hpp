@@ -171,9 +171,6 @@ class gdual
             gdual retval(1.);
             double fatt = -1.;
             auto p0 = d2.constant_cf();
-            if (p0 == 0) {
-                throw std::domain_error("gdual: divide by zero");
-            }
             auto phat = (d2 - p0);
             phat = phat / p0;
             gdual tmp(phat);
@@ -184,7 +181,7 @@ class gdual
                 phat*=tmp;
                 retval =  retval + fatt * phat;
             }
-            return retval / (d1 * p0);
+            return (d1 * retval) / p0;
         }
 
         template <typename T>
