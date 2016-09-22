@@ -51,6 +51,6 @@ inline bool EPSILON_COMPARE(double d1, double d2, const double epsilon)
     return true;
 }
 
-} // end of namespace audi 
+} // end of namespace audi
 
 #endif

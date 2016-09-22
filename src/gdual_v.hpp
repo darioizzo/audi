@@ -238,7 +238,7 @@ class gdual_v
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual_v(std::vector<double> value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
+        explicit gdual_v(const std::vector<double>& value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
             check_order();
             check_var_name(symbol);
@@ -278,7 +278,7 @@ class gdual_v
             } else {
                 m_p = p_type(std::string("d") + symbol) * std::vector<double>(value.size(),1.);
             }
-            m_p+=detail::coefficient_v(value);
+            m_p += detail::coefficient_v(value);
         }
 
         /// Defaulted assignment operator
@@ -394,9 +394,15 @@ class gdual_v
          * @throws unspecified any exception thrown by:
          * - piranha::series::subs,
          */
-        gdual_v subs( const std::string sym, detail::coefficient_v val)
+        gdual_v subs(const std::string& sym, const std::vector<double>& val)
         {
-            auto new_p = m_p.subs(sym, val);
+            auto new_p = m_p.subs(sym, detail::coefficient_v(val));
+            return gdual_v(std::move(new_p), m_order);
+        }
+        // Same as above but with an rvalue
+        gdual_v subs(const std::string& sym, std::vector<double>&& val)
+        {
+            auto new_p = m_p.subs(sym, detail::coefficient_v(std::move(val)));
             return gdual_v(std::move(new_p), m_order);
         }
 

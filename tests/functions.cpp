@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(sine_and_cosine)
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
 
     BOOST_CHECK(EPSILON_COMPARE(sin(2. * p1), 2. * sin(p1) * cos(p1), 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(2. * p1), 1. - 2. * sin(p1) * sin(p1), 1e-12) == true);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
     }
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
     }
 
@@ -147,16 +147,16 @@ BOOST_AUTO_TEST_CASE(tangent)
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-12) == true);
     }
-    
+
     {
     unsigned int order = 11; // tolerance decreases here to 1e-11 as high order derivatives can loose precision
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tan(p1), sin(p1) / cos(p1), 1e-11) == true);
     }
 }
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_sine_and_cosine)
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
 
-    auto p1 = x + y;  
+    auto p1 = x + y;
 
     // Checking some trivial identities
     BOOST_CHECK(EPSILON_COMPARE(sinh(2. * p1), 2. * sinh(p1) * cosh(p1), 1e-12) == true);
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     unsigned int order = 5;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tanh(p1), (exp(p1) - exp(-p1)) / (exp(p1) + exp(-p1)), 1e-12) == true);
     }
 
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     unsigned int order = 5;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
     }
 
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     unsigned int order = 6;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
     }
 
@@ -219,15 +219,15 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     unsigned int order = 8;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
     }
-    
+
     {
-    unsigned int order = 9; 
+    unsigned int order = 9;
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK(EPSILON_COMPARE(tanh(p1), sinh(p1) / cosh(p1), 1e-12) == true);
     }
 }
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
     unsigned int order = 5;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(atanh(tanh(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(tanh(atanh(p1)), p1, 1e-12) == true);
     }
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
     unsigned int order = 6;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(atanh(tanh(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(tanh(atanh(p1)), p1, 1e-12) == true);
     }
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(inverse_tangent)
     unsigned int order = 5;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(atan(tan(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(tan(atan(p1)), p1, 1e-12) == true);
     }
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(inverse_tangent)
     unsigned int order = 6;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(atan(tan(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(tan(atan(p1)), p1, 1e-12) == true);
     }
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
     unsigned int order = 5;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(asinh(sinh(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sinh(asinh(p1)), p1, 1e-12) == true);
     }
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
     unsigned int order = 6;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(asinh(sinh(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sinh(asinh(p1)), p1, 1e-12) == true);
     }
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(inverse_sine)
     unsigned int order = 5;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);   
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(asin(sin(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sin(asin(p1)), p1, 1e-12) == true);
     }
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(inverse_sine)
     unsigned int order = 6;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(asin(sin(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sin(asin(p1)), p1, 1e-12) == true);
     }
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_cosine)
     unsigned int order = 4;
     gdual x(0.1, "x",order);
     gdual y(0.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(acosh(cosh(p1)), p1, 1e-8) == true);
     BOOST_CHECK(EPSILON_COMPARE(cosh(acosh(p1)), p1, 1e-8) == true);
     }
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_cosine)
     unsigned int order = 5;
     gdual x(0.1, "x",order);
     gdual y(0.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(acosh(cosh(p1)), p1, 1e-8) == true);
     BOOST_CHECK(EPSILON_COMPARE(cosh(acosh(p1)), p1, 1e-8) == true);
     }
@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE(inverse_cosine)
     unsigned int order = 5;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(acos(cos(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(acos(p1)), p1, 1e-12) == true);
     }
@@ -354,7 +354,7 @@ BOOST_AUTO_TEST_CASE(inverse_cosine)
     unsigned int order = 6;
     gdual x(1.1, "x",order);
     gdual y(1.2, "y",order);
-    auto p1 = 1. / (x + y);  
+    auto p1 = 1. / (x + y);
     BOOST_CHECK(EPSILON_COMPARE(acos(cos(p1)), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(cos(acos(p1)), p1, 1e-12) == true);
     }
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(absolute_value)
     {
     gdual x(2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK_EQUAL(p1, abs(p1));
     }
 
@@ -394,7 +394,7 @@ BOOST_AUTO_TEST_CASE(absolute_value)
     {
     gdual x(-2.3, "x",order);
     gdual y(1.5, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK_EQUAL(-p1, abs(p1));
     }
 
@@ -402,7 +402,7 @@ BOOST_AUTO_TEST_CASE(absolute_value)
     {
     gdual x(-2.3, "x",order);
     gdual y(2.3, "y",order);
-    auto p1 = x + y;  
+    auto p1 = x + y;
     BOOST_CHECK_EQUAL(p1, abs(p1));
     }
 }

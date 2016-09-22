@@ -31,6 +31,12 @@ public:
             throw std::invalid_argument("Caonnot build an empty coeffciient_v");
         }
     };
+    // Constructor from an std::vector r value
+    coefficient_v(std::vector<double> && c) : m_c(c) {
+        if (c.size() == 0) {
+            throw std::invalid_argument("Caonnot build an empty coeffciient_v");
+        }
+    };
 
     // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
     friend coefficient_v operator+(const coefficient_v &d1, const coefficient_v &d2)
@@ -123,15 +129,12 @@ public:
         {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::divides<double>());
             return *this;
-            std::cout<<"1"<<"\n";
         }
         else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](double x){return x / d1.m_c[0];});
-            std::cout<<"2"<<"\n";
             return *this;
         }
         else if (this->size() == 1u) {
-            std::cout<<"3"<<"\n";
             double scalar = m_c[0];
             this->resize(d1.size());
             std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x){return scalar / x;});

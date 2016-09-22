@@ -130,9 +130,10 @@ BOOST_AUTO_TEST_CASE(division)
         BOOST_CHECK_EQUAL(p1.find_cf({2,0}), 9);
         BOOST_CHECK_EQUAL(p1.find_cf({0,2}), 3);
     }
-    {
-        gdual x(50., "x",2);
-        BOOST_CHECK_EQUAL(5. / x, gdual(5.) / x);
+    { // added when a bug was fixed in the corresponding called template
+        gdual x(123., "x",2);
+        BOOST_CHECK_EQUAL(7.1 / x, gdual(7.1) / x);
+        BOOST_CHECK_EQUAL(7.1 / x, 1. / (x / 7.1));
     }
 }
 

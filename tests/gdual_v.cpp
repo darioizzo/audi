@@ -183,12 +183,52 @@ BOOST_AUTO_TEST_CASE(arithmetic_mul)
 }
 BOOST_AUTO_TEST_CASE(arithmetic_div)
 {
+    gdual_v x({1., 1.}, "x", 3);
+    gdual_v y({-1., 1}, "y", 3);
+    gdual_v z({1.2,1.3,1.4},"z",3);
+    BOOST_CHECK_THROW(x / z, std::invalid_argument);
+    auto div = x / y;
+    BOOST_CHECK_EQUAL(div.get_symbol_set_size(), 2u);
+    auto div0 = div.constant_cf();
+    auto divdx = div.get_derivative({1,0});
+    auto divdy = div.get_derivative({0,1});
+    BOOST_CHECK_EQUAL(div0[0], -1.);
+    BOOST_CHECK_EQUAL(div0[1], 1.);
+    BOOST_CHECK_EQUAL(divdx[0], -1.);
+    BOOST_CHECK_EQUAL(divdx[1], 1.);
+    BOOST_CHECK_EQUAL(divdy[0], -1.);
+    BOOST_CHECK_EQUAL(divdy[1], -1.);
     { // scalar case
-    auto N = 2u;
-    gdual_v x(std::vector<double>(N, 50.), "x", 0);
-    auto div = gdual_v({5.}) / x;
-    auto div2 = 5. / x;
-    std::cout << div << "\n";
-    std::cout << div2 << "\n";
+    auto N = 10u;
+    gdual_v x(std::vector<double>(N, 50.), "x", 3);
+    auto div = x / 5.;
+    auto div2 = x / gdual_v({5});
+    auto div3 = 5. / x;
+    BOOST_CHECK_EQUAL(div, div2);
+    BOOST_CHECK_EQUAL(div2, 1./ div3); //this will not work if floats are not representable
+    for (auto i = 0u; i < N; ++i) {
+        BOOST_CHECK_EQUAL(div.constant_cf()[i], 50. / 5.);
+        BOOST_CHECK_EQUAL(div.get_derivative({1})[i], 1 / 5.);
     }
+    }
+}
+BOOST_AUTO_TEST_CASE(substitution)
+{
+    gdual_v x({1., 1.}, "x", 1);
+    gdual_v y({-1., -1}, "y", 1);
+    auto res = x*y*x / (x-y); // [-0.75, -0.75]*dx+[-0.5, -0.5]+[0.25, 0.25]*dy
+    auto res2 = res.subs("dx", {1.});
+    auto res3 = res.subs("dy", {1.});
+    BOOST_CHECK_EQUAL(res2.constant_cf()[0], -1.25);
+    BOOST_CHECK_EQUAL(res2.constant_cf()[1], -1.25);
+    BOOST_CHECK_EQUAL(res2.get_derivative({0,1})[0], 0.25);
+    BOOST_CHECK_EQUAL(res2.get_derivative({0,1})[1], 0.25);
+    BOOST_CHECK_EQUAL(res2.get_derivative({1,0})[0], 0.);
+    BOOST_CHECK_EQUAL(res2.get_derivative({1,0}).size(), 1);
+    BOOST_CHECK_EQUAL(res3.constant_cf()[0], -0.25);
+    BOOST_CHECK_EQUAL(res3.constant_cf()[1], -0.25);
+    BOOST_CHECK_EQUAL(res3.get_derivative({1,0})[0], -0.75);
+    BOOST_CHECK_EQUAL(res3.get_derivative({1,0})[1], -0.75);
+    BOOST_CHECK_EQUAL(res3.get_derivative({0,1})[0], 0.);
+    BOOST_CHECK_EQUAL(res3.get_derivative({0,1}).size(), 1);
 }
