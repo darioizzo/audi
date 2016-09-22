@@ -68,8 +68,8 @@ public:
             return *this;
         }
         else if (d1.size() == 1u) {
-            return *this;
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](double x){return x + d1.m_c[0];});
+            return *this;
         }
         else if (this->size() == 1u) {
             double scalar = m_c[0];
@@ -123,12 +123,15 @@ public:
         {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::divides<double>());
             return *this;
+            std::cout<<"1"<<"\n";
         }
         else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](double x){return x / d1.m_c[0];});
+            std::cout<<"2"<<"\n";
             return *this;
         }
         else if (this->size() == 1u) {
+            std::cout<<"3"<<"\n";
             double scalar = m_c[0];
             this->resize(d1.size());
             std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x){return scalar / x;});
