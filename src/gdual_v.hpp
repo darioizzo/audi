@@ -245,7 +245,7 @@ class gdual_v
             if (order == 0) {
                 extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
             } else {
-                m_p = p_type(std::string("d") + symbol) * std::vector<double>(value.size(),1.);
+                m_p = p_type(std::string("d") + symbol);
             }
             m_p+=detail::coefficient_v(value);
         }
@@ -276,7 +276,7 @@ class gdual_v
             if (order == 0) {
                 extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
             } else {
-                m_p = p_type(std::string("d") + symbol) * std::vector<double>(value.size(),1.);
+                m_p = p_type(std::string("d") + symbol);
             }
             m_p += detail::coefficient_v(value);
         }

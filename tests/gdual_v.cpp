@@ -121,6 +121,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_plus)
 }
 BOOST_AUTO_TEST_CASE(arithmetic_minus)
 {
+    {
     gdual_v x({1., 1.}, "x", 3);
     gdual_v y({-1., 1}, "y", 3);
     gdual_v z({1.2,1.3,1.4},"z",3);
@@ -136,6 +137,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_minus)
     BOOST_CHECK_EQUAL(diffdx[1], 1.);
     BOOST_CHECK_EQUAL(diffdy[0], -1.);
     BOOST_CHECK_EQUAL(diffdy[1], -1.);
+    }
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 123.), "x", 3);
@@ -152,6 +154,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_minus)
 }
 BOOST_AUTO_TEST_CASE(arithmetic_mul)
 {
+    {
     gdual_v x({1., 1.}, "x", 3);
     gdual_v y({-1., 1}, "y", 3);
     gdual_v z({1.2,1.3,1.4},"z",3);
@@ -167,6 +170,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_mul)
     BOOST_CHECK_EQUAL(muldx[1], 1.);
     BOOST_CHECK_EQUAL(muldy[0], 1.);
     BOOST_CHECK_EQUAL(muldy[1], 1.);
+    }
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 123.), "x", 3);
@@ -183,6 +187,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_mul)
 }
 BOOST_AUTO_TEST_CASE(arithmetic_div)
 {
+    {
     gdual_v x({1., 1.}, "x", 3);
     gdual_v y({-1., 1}, "y", 3);
     gdual_v z({1.2,1.3,1.4},"z",3);
@@ -198,6 +203,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_div)
     BOOST_CHECK_EQUAL(divdx[1], 1.);
     BOOST_CHECK_EQUAL(divdy[0], -1.);
     BOOST_CHECK_EQUAL(divdy[1], -1.);
+    }
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 50.), "x", 3);

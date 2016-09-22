@@ -150,11 +150,21 @@ public:
     }
     friend bool operator==(const coefficient_v &d1, const coefficient_v &d2)
     {
-        return d1.m_c == d2.m_c;
+        if (d1.size() == d2.size())
+        {
+            return d1.m_c == d2.m_c;
+        }
+        else if (d1.size() == 1u) {
+            return std::all_of(d2.begin(),d2.end(),[d1](double x) {return x == d1[0];});
+        }
+        else if (d2.size() == 1u) {
+            return std::all_of(d1.begin(),d1.end(),[d2](double x) {return x == d2[0];});
+        }
+        return false;
     }
     friend bool operator!=(const coefficient_v &d1, const coefficient_v &d2)
     {
-        return d1.m_c != d2.m_c;
+        return !(d1 == d2);
     }
     friend std::ostream &operator<<(std::ostream &os, const coefficient_v &d) {
         os << "[";
@@ -195,6 +205,9 @@ public:
         m_c.resize(new_size);
     }
     double operator[] (const std::vector<double>::size_type idx) const {
+        if (m_c.size() == 1u) {
+            return m_c[0];
+        }
         return m_c[idx];
     }
 private:
