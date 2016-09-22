@@ -15,7 +15,9 @@ BOOST_AUTO_TEST_CASE(construction)
 {
     // Constructing a vectorized constant
     { // 1 - from initializer_list
-    BOOST_CHECK_THROW(gdual_v({}), std::invalid_argument);
+    BOOST_CHECK_THROW(gdual_v(std::vector<double>{}), std::invalid_argument);
+    BOOST_CHECK_EQUAL(gdual_v({}), gdual_v{});
+    BOOST_CHECK_EQUAL(gdual_v({}), gdual_v(0.));
     gdual_v x({0.});
     gdual_v y({1.2, 2.2});
     BOOST_CHECK_EQUAL(x.get_order(), 0);
@@ -44,7 +46,8 @@ BOOST_AUTO_TEST_CASE(construction)
     }
     // Constructing a "full" vectorized gdual_v
     { // 1 - from initializer_list
-    BOOST_CHECK_THROW(gdual_v({}, "x", 3), std::invalid_argument);
+    BOOST_CHECK_THROW(gdual_v(std::vector<double>{}, "x", 3), std::invalid_argument);
+    BOOST_CHECK_EQUAL(gdual_v({}, "x", 3), gdual_v(std::vector<double>{0.}, "x", 3));
     BOOST_CHECK_THROW(gdual_v({2,3}, "dx", 3), std::invalid_argument);
     BOOST_CHECK_THROW(gdual_v({2,3}, "x", std::numeric_limits<unsigned int>::max()-8u), std::invalid_argument);
     gdual_v x({0.}, "x", 3);

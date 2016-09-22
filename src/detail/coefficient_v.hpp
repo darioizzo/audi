@@ -27,17 +27,21 @@ public:
     coefficient_v(double a) : m_c({a}) {};
     // Constructor from an std::vector
     coefficient_v(const std::vector<double> &c) : m_c(c) {
-        if (c.size() == 0) {
-            throw std::invalid_argument("Caonnot build an empty coeffciient_v");
+        if (m_c.size() == 0) {
+            throw std::invalid_argument("Cannot build an empty coeffciient_v");
         }
     };
     // Constructor from an std::vector r value
     coefficient_v(std::vector<double> && c) : m_c(c) {
-        if (c.size() == 0) {
-            throw std::invalid_argument("Caonnot build an empty coeffciient_v");
+        if (m_c.size() == 0) {
+            throw std::invalid_argument("Cannot build an empty coeffciient_v");
         }
     };
-
+    coefficient_v(std::initializer_list<double> c) : m_c(c) {
+        if (m_c.size() == 0) {
+            throw std::invalid_argument("Cannot build an empty coeffciient_v");
+        }
+    };
     // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
     friend coefficient_v operator+(const coefficient_v &d1, const coefficient_v &d2)
     {

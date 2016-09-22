@@ -209,14 +209,14 @@ class gdual_v
          *
          * @param[in] value initializer_list containing the various vaues of the vectorized coefficient
          */
-        explicit gdual_v(std::initializer_list<double> value):m_p(value), m_order(0u) {}
+        //explicit gdual_v(std::initializer_list<double> value):m_p(value), m_order(0u) {}
         /// Constructs a constant gdual_v
         /**
          * Will construct a generalized dual number of order 0 containing a constant coefficient
          *
          * @param[in] value std::vector<double> containing the vectorized coefficient
          */
-        explicit gdual_v(std::vector<double> value):m_p(value), m_order(0u) {}
+        explicit gdual_v(const detail::coefficient_v &value):m_p(value), m_order(0u) {}
 
         /// Constructs a gdual_v
         /**
@@ -238,7 +238,7 @@ class gdual_v
          * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
          * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
          */
-        explicit gdual_v(const std::vector<double>& value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
+        explicit gdual_v(const detail::coefficient_v& value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
             check_order();
             check_var_name(symbol);
@@ -249,38 +249,6 @@ class gdual_v
             }
             m_p+=detail::coefficient_v(value);
         }
-        /// Constructs a gdual_v
-        /**
-         * Will construct a vectorized generalized dual number representing the expansion around \p value
-         * of the symbolic variable \p symbol. The truncation order is also set to \p order.
-         *
-         * @note If the \p order is requested to be zero, this will instead construct a constant, while
-         * keeping in the symbol set the requested symbol name. If, later on,
-         * any derivative will be requested with respect to that symbol, it will be zero.
-         *
-         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx".
-         *
-         * @param[in] value std::initializer_list<double> containing all the values of the variable
-         * @param[in] symbol symbolic name
-         * @param[in] order truncation order
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
-         */
-        explicit gdual_v(std::initializer_list<double> value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
-        {
-            check_order();
-            check_var_name(symbol);
-            if (order == 0) {
-                extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
-            } else {
-                m_p = p_type(std::string("d") + symbol);
-            }
-            m_p += detail::coefficient_v(value);
-        }
-
         /// Defaulted assignment operator
         gdual_v &operator=(const gdual_v &) = default;
         /// Defaulted assignment operator
@@ -394,15 +362,15 @@ class gdual_v
          * @throws unspecified any exception thrown by:
          * - piranha::series::subs,
          */
-        gdual_v subs(const std::string& sym, const std::vector<double>& val)
+        gdual_v subs(const std::string& sym, const detail::coefficient_v& val)
         {
-            auto new_p = m_p.subs(sym, detail::coefficient_v(val));
+            auto new_p = m_p.subs(sym, val);
             return gdual_v(std::move(new_p), m_order);
         }
         // Same as above but with an rvalue
-        gdual_v subs(const std::string& sym, std::vector<double>&& val)
+        gdual_v subs(const std::string& sym, detail::coefficient_v&& val)
         {
-            auto new_p = m_p.subs(sym, detail::coefficient_v(std::move(val)));
+            auto new_p = m_p.subs(sym, std::move(val));
             return gdual_v(std::move(new_p), m_order);
         }
 
