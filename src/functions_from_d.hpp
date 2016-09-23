@@ -5,6 +5,7 @@
 #include <boost/math/constants/constants.hpp>
 
 #include "gdual.hpp"
+#include "detail/overloads.hpp"
 
 namespace audi
 {
@@ -31,8 +32,8 @@ namespace audi
  * @param[in] dg Taylor expansion of the derivative of the outer function
  * @param[in] g0 Value of the outer function at the expansion point
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
-inline T _compose_from_derivative(T f, T dg, double g0)
+template <typename T, typename V, std::enable_if_t<is_gdual<T>::value && std::is_same<V,typename T::cf_type>::value, int> = 0>
+inline T _compose_from_derivative(T f, T dg, V g0)
 {
     auto ss = f.get_symbol_set();
     if (ss.size() == 0) {
@@ -62,7 +63,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atanh_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::atanh(f0);
+    auto g0 = audi::atanh(f0);
     auto dg = 1. / (1 - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
@@ -82,7 +83,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atan_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::atan(f0);
+    auto g0 = audi::atan(f0);
     auto dg = 1. / (1 + f*f);
     return _compose_from_derivative(f, dg, g0);
 }
@@ -102,7 +103,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asin_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::asin(f0);
+    auto g0 = audi::asin(f0);
     auto dg = 1. / sqrt(1 - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
@@ -122,7 +123,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asinh_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::asinh(f0);
+    auto g0 = audi::asinh(f0);
     auto dg = 1. / sqrt(1 + f*f);
     return _compose_from_derivative(f, dg, g0);
 }
@@ -142,7 +143,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acos_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::acos(f0);
+    auto g0 = audi::acos(f0);
     auto dg = - 1. / sqrt(1 - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
@@ -162,7 +163,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acosh_d(const T& f)
 {
     auto f0 = f.constant_cf();
-    double g0 = std::acosh(f0);
+    auto g0 = audi::acosh(f0);
     auto dg = 1. / sqrt((f - 1)*(f + 1));
     return _compose_from_derivative(f, dg, g0);
 }
@@ -182,7 +183,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T erf(const T& d)
 {
     auto f0 = d.constant_cf();
-    double g0 = std::erf(f0);
+    auto g0 = audi::erf(f0);
     auto dg = (2. / std::sqrt(boost::math::constants::pi<double>())) * exp(- d * d);
     return _compose_from_derivative(d, dg, g0);
 }

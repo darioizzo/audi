@@ -3,40 +3,15 @@
 
 #include <boost/math/special_functions/bernoulli.hpp>
 #include <boost/math/constants/constants.hpp>
-#include <boost/type_traits/is_complex.hpp>
 #include <cmath>
 #include <piranha/binomial.hpp>
 #include <stdexcept>
 
 #include "gdual.hpp"
-#include "vectorized_double.hpp"
+#include "detail/overloads.hpp"
 
 namespace audi
 {
-
-// type traits
-template <typename T>
-struct is_gdual: std::false_type {};
-template <typename T>
-struct is_gdual<gdual<T>>: std::true_type {};
-
-template< class T >
-struct is_arithmetic_or_complex : std::integral_constant<bool, std::is_arithmetic<T>::value ||
-                                                               boost::is_complex<T>::value> {};
-
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T exp(T in) {
-    return std::exp(in);
-}
-inline vectorized_double exp(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::exp(el);
-    }
-    return in;
-}
 /// Overload for the exponential
 /**
  * Implements the exponential of a audi::gdual.
@@ -71,18 +46,6 @@ inline T exp(const T &d)
     return retval * audi::exp(p0);
 }
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T log(T in) {
-    return std::log(in);
-}
-inline vectorized_double log(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::log(el);
-    }
-    return in;
-}
 /// Overload for the logarithm
 /**
  * Implements the logarithm of a audi::gdual.
@@ -121,28 +84,6 @@ inline T log(const T &d)
     return retval;
 }
 
-template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value &&
-                                                  is_arithmetic_or_complex<U>::value, int> = 0>
-inline T pow(const U& base, const T &d)
-{
-    return std::pow(base, d);
-}
-inline vectorized_double pow(double base, vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::pow(base, el);
-    }
-    return in;
-}
-inline vectorized_double pow(vectorized_double in, double exponent)
-{
-    for (auto &el : in)
-    {
-        el = std::pow(el, exponent);
-    }
-    return in;
-}
 
 /// Overload for the exponentiation to a gdual power
 /**
@@ -278,23 +219,6 @@ inline T sqrt(const T &d)
     return pow(d, 0.5); // TODO: subsitute this by similar code to cbrt?
 }
 
-template<typename T, std::enable_if_t<std::is_arithmetic<T>::value, int> = 0>
-inline T cbrt(T in) {
-    return std::cbrt(in);
-}
-template<typename T, std::enable_if_t<boost::is_complex<T>::value, int> = 0>
-inline T cbrt(T in) {
-    return std::pow(in, 1./3.); // needs a separate template as cbrt does not exist for complex types
-}
-inline vectorized_double cbrt(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cbrt(el);
-    }
-    return in;
-}
-
 /// Overload for the cubic root
 /**
  * Implements the cubic root of a audi::gdual.
@@ -333,31 +257,6 @@ inline T cbrt(const T& d)
     return retval;
 }
 
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T sin(T in) {
-    return std::sin(in);
-}
-inline vectorized_double sin(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::sin(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T cos(T in) {
-    return std::cos(in);
-}
-inline vectorized_double cos(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cos(el);
-    }
-    return in;
-}
 /// Overload for the sine
 /**
  * Implements the sine of a audi::gdual.
@@ -505,19 +404,6 @@ std::array<T,2> sin_and_cos(const T& d)
     return std::array<T,2>{{std::move(sine), std::move(cosine)}};
 }
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T tan(T in) {
-    return std::tan(in);
-}
-inline vectorized_double tan(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::tan(el);
-    }
-    return in;
-}
-
 /// Overload for the tangent
 /**
  * Implements the tangent of a audi::gdual.
@@ -561,30 +447,6 @@ inline T tan(const T& d)
     return (tan_p0 + tan_taylor) / (1. - tan_p0 * tan_taylor);
 }
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T sinh(T in) {
-    return std::sinh(in);
-}
-inline vectorized_double sinh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::sinh(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T cosh(T in) {
-    return std::cosh(in);
-}
-inline vectorized_double cosh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cosh(el);
-    }
-    return in;
-}
 
 /// Overload for the hyperbolic sine
 /**
@@ -721,19 +583,6 @@ std::array<T,2> sinh_and_cosh(const T& d)
     return std::array<T,2>{{std::move(sineh), std::move(cosineh)}};
 }
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T tanh(T in) {
-    return std::tanh(in);
-}
-inline vectorized_double tanh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::tanh(el);
-    }
-    return in;
-}
-
 /// Overload for the hyperbolic tangent
 /**
  * Implements the hyperbolic tangent of a audi::gdual.
@@ -776,19 +625,6 @@ inline T tanh(const T& d)
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
 }
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T atanh(T in) {
-    return std::atanh(in);
-}
-inline vectorized_double atanh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::atanh(el);
-    }
-    return in;
-}
-
 /// Overload for the inverse hyperbolic tangent
 /**
  * Implements the inverse hyperbolic tangent of an audi::gdual.
@@ -823,19 +659,6 @@ inline T atanh(const T& d)
         powphat*=phat;
     }
     return atanh_p0 + 0.5 * retval;
-}
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T atan(T in) {
-    return std::atan(in);
-}
-inline vectorized_double atan(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::atan(el);
-    }
-    return in;
 }
 
 /// Overload for the inverse tangent
@@ -1032,7 +855,6 @@ inline T abs(const T& d)
     }
     return retval;
 }
-
 
 } // end of namespace audi
 
