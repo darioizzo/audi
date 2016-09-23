@@ -184,7 +184,7 @@ class gdual
                 phat*=tmp;
                 retval =  retval + fatt * phat;
             }
-            return retval / (d1 * p0);
+            return (d1 * retval) / p0;
         }
 
         template <typename T>
