@@ -14,13 +14,18 @@
 namespace audi
 {
 
+// type traits
 template <typename T>
 struct is_gdual: std::false_type {};
 template <typename T>
 struct is_gdual<gdual<T>>: std::true_type {};
 
+template< class T >
+struct is_arithmetic_or_complex : std::integral_constant<bool, std::is_arithmetic<T>::value ||
+                                                               boost::is_complex<T>::value> {};
 
-template<typename T, std::enable_if_t<std::is_arithmetic<T>::value || boost::is_complex<T>::value, int> = 0>
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
 inline T exp(T in) {
     return std::exp(in);
 }
@@ -66,7 +71,7 @@ inline T exp(const T &d)
     return retval * audi::exp(p0);
 }
 
-template<typename T, std::enable_if_t<std::is_arithmetic<T>::value || boost::is_complex<T>::value, int> = 0>
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
 inline T log(T in) {
     return std::log(in);
 }
@@ -116,8 +121,8 @@ inline T log(const T &d)
     return retval;
 }
 
-template<typename T, typename U, std::enable_if_t<(std::is_arithmetic<T>::value || boost::is_complex<T>::value) &&
-                                                  (std::is_arithmetic<U>::value || boost::is_complex<U>::value), int> = 0>
+template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value &&
+                                                  is_arithmetic_or_complex<U>::value, int> = 0>
 inline T pow(const U& base, const T &d)
 {
     return std::pow(base, d);
@@ -223,7 +228,7 @@ template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T& d, int n)
 {
     if (n <= 0) {
-        return pow(d, (double)n);
+        return audi::pow(d, (double)n);
     }
     T retval(d);
     for (auto i = 1; i < n; ++i) {
@@ -247,16 +252,6 @@ inline T pow(const T& d, int n)
 template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T &d1, const T &d2)
 {
-    double int_part;
-    // checks wether the exponent is an integer, in which case it calls
-    // a different overload
-    if (d2.degree() == 0) {
-        auto p0 = d2.constant_cf();
-        double float_part = std::modf(p0, &int_part);
-        if (float_part == 0.) {
-            return pow(d1, p0);
-        }
-    }
     return exp(d2 * log(d1));
 }
 
@@ -283,6 +278,23 @@ inline T sqrt(const T &d)
     return pow(d, 0.5); // TODO: subsitute this by similar code to cbrt?
 }
 
+template<typename T, std::enable_if_t<std::is_arithmetic<T>::value, int> = 0>
+inline T cbrt(T in) {
+    return std::cbrt(in);
+}
+template<typename T, std::enable_if_t<boost::is_complex<T>::value, int> = 0>
+inline T cbrt(T in) {
+    return std::pow(in, 1./3.); // needs a separate template as cbrt does not exist for complex types
+}
+inline vectorized_double cbrt(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::cbrt(el);
+    }
+    return in;
+}
+
 /// Overload for the cubic root
 /**
  * Implements the cubic root of a audi::gdual.
@@ -306,7 +318,7 @@ inline T cbrt(const T& d)
     double alpha = 1/3.;
     T retval(1.);
     auto p0 = d.constant_cf();
-    double cbrt_p0 = std::cbrt(p0);
+    auto cbrt_p0 = audi::cbrt(p0);
 
     auto phat = d - p0;
     phat = phat/p0;
@@ -321,6 +333,31 @@ inline T cbrt(const T& d)
     return retval;
 }
 
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T sin(T in) {
+    return std::sin(in);
+}
+inline vectorized_double sin(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::sin(el);
+    }
+    return in;
+}
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T cos(T in) {
+    return std::cos(in);
+}
+inline vectorized_double cos(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::cos(el);
+    }
+    return in;
+}
 /// Overload for the sine
 /**
  * Implements the sine of a audi::gdual.
@@ -344,8 +381,8 @@ inline T sin(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    auto sin_p0 = std::sin(p0);
-    auto cos_p0 = std::cos(p0);
+    auto sin_p0 = audi::sin(p0);
+    auto cos_p0 = audi::cos(p0);
 
     double factorial=1.;
     double coeff=1.;
@@ -394,8 +431,8 @@ inline T cos(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sin_p0 = std::sin(p0);
-    double cos_p0 = std::cos(p0);
+    auto sin_p0 = audi::sin(p0);
+    auto cos_p0 = audi::cos(p0);
 
     double factorial=1.;
     double coeff=1.;
@@ -439,8 +476,8 @@ std::array<T,2> sin_and_cos(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sin_p0 = std::sin(p0);
-    double cos_p0 = std::cos(p0);
+    auto sin_p0 = audi::sin(p0);
+    auto cos_p0 = audi::cos(p0);
 
     double factorial=1.;
     double coeff=1.;
@@ -468,6 +505,19 @@ std::array<T,2> sin_and_cos(const T& d)
     return std::array<T,2>{{std::move(sine), std::move(cosine)}};
 }
 
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T tan(T in) {
+    return std::tan(in);
+}
+inline vectorized_double tan(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::tan(el);
+    }
+    return in;
+}
+
 /// Overload for the tangent
 /**
  * Implements the tangent of a audi::gdual.
@@ -491,7 +541,7 @@ inline T tan(const T& d)
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto phat2 = phat * phat;
-    double tan_p0 = std::tan(p0);
+    auto tan_p0 = audi::tan(p0);
 
     // Pre-compute Bernoulli numbers.
     std::vector<double> bn;
@@ -509,6 +559,31 @@ inline T tan(const T& d)
         factorial*=(2. * k + 1.) * (2. * k + 2.);
     }
     return (tan_p0 + tan_taylor) / (1. - tan_p0 * tan_taylor);
+}
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T sinh(T in) {
+    return std::sinh(in);
+}
+inline vectorized_double sinh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::sinh(el);
+    }
+    return in;
+}
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T cosh(T in) {
+    return std::cosh(in);
+}
+inline vectorized_double cosh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::cosh(el);
+    }
+    return in;
 }
 
 /// Overload for the hyperbolic sine
@@ -534,8 +609,8 @@ inline T sinh(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sinh_p0 = std::sinh(p0);
-    double cosh_p0 = std::cosh(p0);
+    auto sinh_p0 = audi::sinh(p0);
+    auto cosh_p0 = audi::cosh(p0);
 
     double factorial=1.;
     T cosh_taylor(1.);
@@ -580,8 +655,8 @@ inline T cosh(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sinh_p0 = std::sinh(p0);
-    double cosh_p0 = std::cosh(p0);
+    auto sinh_p0 = audi::sinh(p0);
+    auto cosh_p0 = audi::cosh(p0);
 
     double factorial=1.;
     T cosh_taylor(1.);
@@ -621,8 +696,8 @@ std::array<T,2> sinh_and_cosh(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sinh_p0 = std::sinh(p0);
-    double cosh_p0 = std::cosh(p0);
+    auto sinh_p0 = audi::sinh(p0);
+    auto cosh_p0 = audi::cosh(p0);
 
     double factorial=1.;
     T cosh_taylor(1.);
@@ -644,6 +719,19 @@ std::array<T,2> sinh_and_cosh(const T& d)
     auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
     auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
     return std::array<T,2>{{std::move(sineh), std::move(cosineh)}};
+}
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T tanh(T in) {
+    return std::tanh(in);
+}
+inline vectorized_double tanh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::tanh(el);
+    }
+    return in;
 }
 
 /// Overload for the hyperbolic tangent
@@ -669,7 +757,7 @@ inline T tanh(const T& d)
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto phat2 = phat * phat;
-    double tanh_p0 = std::tanh(p0);
+    auto tanh_p0 = audi::tanh(p0);
 
     // Pre-compute Bernoulli numbers.
     std::vector<double> bn;
@@ -688,6 +776,18 @@ inline T tanh(const T& d)
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
 }
 
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T atanh(T in) {
+    return std::atanh(in);
+}
+inline vectorized_double atanh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::atanh(el);
+    }
+    return in;
+}
 
 /// Overload for the inverse hyperbolic tangent
 /**
@@ -725,6 +825,19 @@ inline T atanh(const T& d)
     return atanh_p0 + 0.5 * retval;
 }
 
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T atan(T in) {
+    return std::atan(in);
+}
+inline vectorized_double atan(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::atan(el);
+    }
+    return in;
+}
+
 /// Overload for the inverse tangent
 /**
  * Implements the inverse tangent of an audi::gdual.
@@ -749,7 +862,7 @@ inline T atan(const T& d)
     auto phat = (d - p0) / (1. + p0*p0);
     auto powphat(phat);
 
-    T retval(std::atan(p0));
+    auto retval = audi::atan(p0);
     double coeff1 = 1.;
     double coeff2 = -1.;
 
@@ -888,7 +1001,7 @@ inline T acos(const T& d)
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, std::enable_if_t<is_gdual<T>::value && std::is_arithmetic<typename T::cf_type>::value, int> = 0>
 inline T abs(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -896,6 +1009,28 @@ inline T abs(const T& d)
         return d;
     }
     return -d;
+}
+// Vectorized abs
+template <typename T, std::enable_if_t<is_gdual<T>::value && std::is_same<vectorized_double,typename T::cf_type>::value, int> = 0>
+inline T abs(const T& d)
+{
+    T retval(d);
+    auto p0 = retval.constant_cf();
+    for (auto it = retval._container().begin(); it != retval._container().end(); ++it)
+    {
+        // if the coefficient has one only element copy it over to the whole length of p0
+        if (it->m_cf.size() == 1u) {
+            it->m_cf.resize(p0.size(), it->m_cf[0]);
+        }
+        for (auto i = 0u; i < p0.size(); ++i)
+        {
+            if (p0[i] < 0)
+            {
+                it->m_cf.set_value(i,-it->m_cf[i]);
+            }
+        }
+    }
+    return retval;
 }
 
 

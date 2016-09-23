@@ -36,22 +36,25 @@ namespace audi
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
  */
-template<typename COEFFICIENT_TYPE>
+template<typename Cf>
 class gdual
 {
-        using p_type = piranha::polynomial<COEFFICIENT_TYPE,piranha::monomial<char>>;
+public:
+        using cf_type = Cf;
+private:
+        using p_type = piranha::polynomial<Cf,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a gdual,
-        // - the other operand, if not gdual, must be double, int or unsigned int or COEFFICIENT_TYPE
+        // - the other operand, if not gdual, must be double, int or unsigned int or Cf
         template <typename T, typename U>
         using gdual_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual>::value && std::is_same<U,gdual>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,COEFFICIENT_TYPE>::value) ||
+        (std::is_same<T,gdual>::value && std::is_same<U,Cf>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,double>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,int>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,COEFFICIENT_TYPE>::value) ||
+        (std::is_same<U,gdual>::value && std::is_same<T,Cf>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,double>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,int>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,unsigned int>::value),
@@ -60,7 +63,7 @@ class gdual
         // Enable the generic ctor only if T is not a gdual (after removing
         // const/reference qualifiers).
         template <typename T>
-        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<COEFFICIENT_TYPE>,std::decay_t<T>>::value,int>;
+        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<Cf>,std::decay_t<T>>::value,int>;
 
         void check_order() const
         {
@@ -87,7 +90,7 @@ class gdual
         // in the implementation of the operators.
         explicit gdual(p_type &&p, unsigned int order):m_p(std::move(p)),m_order(order) {}
         // A private constructor used in the implementation of the operators (is it necessary?)
-        explicit gdual(COEFFICIENT_TYPE value, unsigned int order):m_p(value),m_order(order) {}
+        explicit gdual(Cf value, unsigned int order):m_p(value),m_order(order) {}
 
         // Basic overloads for the addition
         static gdual add(const gdual &d1, const gdual &d2)
@@ -221,7 +224,7 @@ class gdual
             } else {
                 m_p = p_type(std::string("d") + symbol);
             }
-            m_p+=COEFFICIENT_TYPE(value);
+            m_p+=Cf(value);
         }
 
         /// Defaulted assignment operator
@@ -340,7 +343,7 @@ class gdual
         template<typename T>
         gdual subs(const std::string& sym, const T& val)
         {
-            auto new_p = m_p.subs(sym, COEFFICIENT_TYPE(val));
+            auto new_p = m_p.subs(sym, Cf(val));
             return gdual(std::move(new_p), m_order);
         }
 
@@ -527,7 +530,7 @@ class gdual
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
          * @return the coefficient
          */
-        COEFFICIENT_TYPE constant_cf() const
+        Cf constant_cf() const
         {
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_symbol_set_size()),0));

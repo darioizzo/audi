@@ -26,7 +26,7 @@ public:
     vectorized_double() : m_c({0.}) {};
     // Constructor from int. Its mandatory for piranha::polynomial coefficient
     explicit vectorized_double(int a) : m_c({static_cast<double>(a)}) {};
-    // Constructor from double value a. Construct [a] TODO: should we make this explicit? 
+    // Constructor from double value a. Construct [a] TODO: should we make this explicit?
     vectorized_double(double a) : m_c({a}) {};
     // Constructor from an std::vector
     explicit vectorized_double(const std::vector<double> &c) : m_c(c) {
@@ -211,11 +211,17 @@ public:
     void resize(std::vector<double>::size_type new_size) {
         m_c.resize(new_size);
     }
+    void resize(std::vector<double>::size_type new_size, double val) {
+        m_c.resize(new_size, val);
+    }
     double operator[] (const std::vector<double>::size_type idx) const {
         if (m_c.size() == 1u) {
             return m_c[0];
         }
         return m_c[idx];
+    }
+    void set_value(const std::vector<double>::size_type idx, double val) {
+        m_c[idx] = val;
     }
 private:
     std::vector<double> m_c;
