@@ -1,6 +1,3 @@
-#include "../src/gdual_v.hpp"
-#include "helpers.hpp"
-
 #define BOOST_TEST_MODULE audi_gdual_test
 #include <boost/test/unit_test.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -9,17 +6,21 @@
 #include <stdexcept>
 #include <vector>
 
+#include "../src/gdual.hpp"
+#include "../src/vectorized_double.hpp"
+#include "helpers.hpp"
+
 using namespace audi;
+using gdual_v = gdual<vectorized_double>;
 
 BOOST_AUTO_TEST_CASE(construction)
 {
     // Constructing a vectorized constant
     { // 1 - from initializer_list
     BOOST_CHECK_THROW(gdual_v(std::vector<double>{}), std::invalid_argument);
-    BOOST_CHECK_EQUAL(gdual_v({}), gdual_v{});
-    BOOST_CHECK_EQUAL(gdual_v({}), gdual_v(0.));
-    gdual_v x({0.});
-    gdual_v y({1.2, 2.2});
+    BOOST_CHECK_EQUAL(gdual_v{}, gdual_v(0.));
+    gdual_v x{0.};
+    gdual_v y(std::vector<double>{1.2, 2.2});
     BOOST_CHECK_EQUAL(x.get_order(), 0);
     BOOST_CHECK_EQUAL(y.get_order(), 0);
     auto x0 = x.constant_cf();
@@ -47,11 +48,10 @@ BOOST_AUTO_TEST_CASE(construction)
     // Constructing a "full" vectorized gdual_v
     { // 1 - from initializer_list
     BOOST_CHECK_THROW(gdual_v(std::vector<double>{}, "x", 3), std::invalid_argument);
-    BOOST_CHECK_EQUAL(gdual_v({}, "x", 3), gdual_v(std::vector<double>{0.}, "x", 3));
-    BOOST_CHECK_THROW(gdual_v({2,3}, "dx", 3), std::invalid_argument);
-    BOOST_CHECK_THROW(gdual_v({2,3}, "x", std::numeric_limits<unsigned int>::max()-8u), std::invalid_argument);
-    gdual_v x({0.}, "x", 3);
-    gdual_v y({1.2, 2.2}, "y", 3);
+    BOOST_CHECK_THROW(gdual_v(std::vector<double>{2,3}, "dx", 3), std::invalid_argument);
+    BOOST_CHECK_THROW(gdual_v(std::vector<double>{2,3}, "x", std::numeric_limits<unsigned int>::max()-8u), std::invalid_argument);
+    gdual_v x(std::vector<double>{0.}, "x", 3);
+    gdual_v y(std::vector<double>{1.2, 2.2}, "y", 3);
     BOOST_CHECK_EQUAL(x.get_order(), 3);
     BOOST_CHECK_EQUAL(y.get_order(), 3);
     auto x0 = x.constant_cf();
@@ -92,9 +92,9 @@ BOOST_AUTO_TEST_CASE(construction)
 BOOST_AUTO_TEST_CASE(arithmetic_plus)
 {
     { // nominal case
-    gdual_v x({1., 1.}, "x", 3);
-    gdual_v y({-1., 1}, "y", 3);
-    gdual_v z({1.2,1.3,1.4},"z",3);
+    gdual_v x(std::vector<double>{1., 1.}, "x", 3);
+    gdual_v y(std::vector<double>{-1., 1}, "y", 3);
+    gdual_v z(std::vector<double>{1.2,1.3,1.4},"z",3);
     BOOST_CHECK_THROW(x + z, std::invalid_argument);
     auto sum = x + y;
     BOOST_CHECK_EQUAL(sum.get_symbol_set_size(), 2u);
@@ -111,9 +111,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_plus)
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 123.), "x", 3);
-    auto sum = x + 5;
-    auto sum2 = x + gdual_v({5});
-    auto sum3 = 5 + x;
+    auto sum = x + 5.;
+    auto sum2 = x + gdual_v(std::vector<double>{5.});
+    auto sum3 = 5. + x;
     BOOST_CHECK_EQUAL(sum, sum2);
     BOOST_CHECK_EQUAL(sum2, sum3);
     for (auto i = 0u; i < N; ++i) {
@@ -125,9 +125,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_plus)
 BOOST_AUTO_TEST_CASE(arithmetic_minus)
 {
     {
-    gdual_v x({1., 1.}, "x", 3);
-    gdual_v y({-1., 1}, "y", 3);
-    gdual_v z({1.2,1.3,1.4},"z",3);
+    gdual_v x(std::vector<double>{1., 1.}, "x", 3);
+    gdual_v y(std::vector<double>{-1., 1}, "y", 3);
+    gdual_v z(std::vector<double>{1.2,1.3,1.4},"z",3);
     BOOST_CHECK_THROW(x - z, std::invalid_argument);
     auto diff = x - y;
     BOOST_CHECK_EQUAL(diff.get_symbol_set_size(), 2u);
@@ -144,9 +144,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_minus)
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 123.), "x", 3);
-    auto diff = x - 5;
-    auto diff2 = x - gdual_v({5});
-    auto diff3 = 5 - x;
+    auto diff = x - 5.;
+    auto diff2 = x - gdual_v(std::vector<double>{5.});
+    auto diff3 = 5. - x;
     BOOST_CHECK_EQUAL(diff, diff2);
     BOOST_CHECK_EQUAL(diff2, -diff3);
     for (auto i = 0u; i < N; ++i) {
@@ -158,9 +158,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_minus)
 BOOST_AUTO_TEST_CASE(arithmetic_mul)
 {
     {
-    gdual_v x({1., 1.}, "x", 3);
-    gdual_v y({-1., 1}, "y", 3);
-    gdual_v z({1.2,1.3,1.4},"z",3);
+    gdual_v x(std::vector<double>{1., 1.}, "x", 3);
+    gdual_v y(std::vector<double>{-1., 1}, "y", 3);
+    gdual_v z(std::vector<double>{1.2,1.3,1.4},"z",3);
     BOOST_CHECK_THROW(x * z, std::invalid_argument);
     auto mul = x * y;
     BOOST_CHECK_EQUAL(mul.get_symbol_set_size(), 2u);
@@ -177,9 +177,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_mul)
     { // scalar case
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 123.), "x", 3);
-    auto mul = x * 5;
-    auto mul2 = x * gdual_v({5});
-    auto mul3 = 5 * x;
+    auto mul = x * 5.;
+    auto mul2 = x * gdual_v(std::vector<double>{5.});
+    auto mul3 = 5. * x;
     BOOST_CHECK_EQUAL(mul, mul2);
     BOOST_CHECK_EQUAL(mul3, mul2);
     for (auto i = 0u; i < N; ++i) {
@@ -191,9 +191,9 @@ BOOST_AUTO_TEST_CASE(arithmetic_mul)
 BOOST_AUTO_TEST_CASE(arithmetic_div)
 {
     {
-    gdual_v x({1., 1.}, "x", 3);
-    gdual_v y({-1., 1}, "y", 3);
-    gdual_v z({1.2,1.3,1.4},"z",3);
+    gdual_v x(std::vector<double>{1., 1.}, "x", 3);
+    gdual_v y(std::vector<double>{-1., 1}, "y", 3);
+    gdual_v z(std::vector<double>{1.2,1.3,1.4},"z",3);
     BOOST_CHECK_THROW(x / z, std::invalid_argument);
     auto div = x / y;
     BOOST_CHECK_EQUAL(div.get_symbol_set_size(), 2u);
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(arithmetic_div)
     auto N = 10u;
     gdual_v x(std::vector<double>(N, 50.), "x", 3);
     auto div = x / 5.;
-    auto div2 = x / gdual_v({5});
+    auto div2 = x / gdual_v(std::vector<double>{5.});
     auto div3 = 5. / x;
     BOOST_CHECK_EQUAL(div, div2);
     BOOST_CHECK_EQUAL(div2, 1./ div3); //this will not work if floats are not representable
@@ -223,11 +223,11 @@ BOOST_AUTO_TEST_CASE(arithmetic_div)
 }
 BOOST_AUTO_TEST_CASE(substitution)
 {
-    gdual_v x({1., 1.}, "x", 1);
-    gdual_v y({-1., -1}, "y", 1);
+    gdual_v x(std::vector<double>{1., 1.}, "x", 1);
+    gdual_v y(std::vector<double>{-1., -1}, "y", 1);
     auto res = x*y*x / (x-y); // [-0.75, -0.75]*dx+[-0.5, -0.5]+[0.25, 0.25]*dy
-    auto res2 = res.subs("dx", {1.});
-    auto res3 = res.subs("dy", {1.});
+    auto res2 = res.subs("dx", std::vector<double>{1.});
+    auto res3 = res.subs("dy", std::vector<double>{1.});
     BOOST_CHECK_EQUAL(res2.constant_cf()[0], -1.25);
     BOOST_CHECK_EQUAL(res2.constant_cf()[1], -1.25);
     BOOST_CHECK_EQUAL(res2.get_derivative({0,1})[0], 0.25);

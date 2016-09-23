@@ -13,13 +13,13 @@ using namespace audi;
 void scalable_mul(int m, int n)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double> > variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(1, m);
-    gdual p2(1, m);
-    gdual p3(0,10);
+        variables.emplace_back(0., "x"+std::to_string(i), m);
+    }
+    gdual<double> p1(1.);
+    gdual<double> p2(1.);
+    gdual<double> p3(0.);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
     for (int i = 0u; i < n; ++i) {p2 -= variables[i];} // 1 - x1 - x2 + ...
 

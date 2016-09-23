@@ -10,67 +10,67 @@
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
 
-namespace audi { namespace detail {
+namespace audi {
 
 // This class implements a vectorized coefficient to be used as the coefficient type in a piranha polynomial
 // The coefficient is, essentially a vector of doubles [a0,a1,a2,...an] on which all arithmetic operations and
 // function calls operate element-wise.
 
-class coefficient_v
+class vectorized_double
 {
 public:
     // Default constructor. Constructs [0.]
-    coefficient_v() : m_c({0.}) {};
+    vectorized_double() : m_c({0.}) {};
     // Constructor from int. Its mandatory for piranha::polynomial coefficient
-    coefficient_v(int a) : m_c({static_cast<double>(a)}) {};
+    explicit vectorized_double(int a) : m_c({static_cast<double>(a)}) {};
     // Constructor from double value a. Construct [a]
-    coefficient_v(double a) : m_c({a}) {};
+    vectorized_double(double a) : m_c({a}) {};
     // Constructor from an std::vector
-    coefficient_v(const std::vector<double> &c) : m_c(c) {
+    explicit vectorized_double(const std::vector<double> &c) : m_c(c) {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coeffciient_v");
         }
     };
     // Constructor from an std::vector r value
-    coefficient_v(std::vector<double> && c) : m_c(c) {
+    explicit vectorized_double(std::vector<double> && c) : m_c(c) {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coeffciient_v");
         }
     };
-    coefficient_v(std::initializer_list<double> c) : m_c(c) {
+    explicit vectorized_double(std::initializer_list<double> c) : m_c(c) {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coeffciient_v");
         }
     };
     // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
-    friend coefficient_v operator+(const coefficient_v &d1, const coefficient_v &d2)
+    friend vectorized_double operator+(const vectorized_double &d1, const vectorized_double &d2)
     {
-        coefficient_v retval(d1);
+        vectorized_double retval(d1);
         retval += d2;
         return retval;
     };
-    friend coefficient_v operator-(const coefficient_v &d1, const coefficient_v &d2)
+    friend vectorized_double operator-(const vectorized_double &d1, const vectorized_double &d2)
     {
-        coefficient_v retval(d1);
+        vectorized_double retval(d1);
         retval -= d2;
         return retval;
     };
-    friend coefficient_v operator*(const coefficient_v &d1, const coefficient_v &d2)
+    friend vectorized_double operator*(const vectorized_double &d1, const vectorized_double &d2)
     {
-        coefficient_v retval(d1);
+        vectorized_double retval(d1);
         retval *= d2;
         return retval;
     };
-    friend coefficient_v operator/(const coefficient_v &d1, const coefficient_v &d2)
+    friend vectorized_double operator/(const vectorized_double &d1, const vectorized_double &d2)
     {
-        coefficient_v retval(d1);
+        vectorized_double retval(d1);
         retval /= d2;
         return retval;
     };
 
     // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
     // take care of scalar multiplication/division etc.
-    coefficient_v& operator+=(const coefficient_v &d1)
+    vectorized_double& operator+=(const vectorized_double &d1)
     {
         if (d1.size() == this->size())
         {
@@ -89,7 +89,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in +");
     }
-    coefficient_v& operator-=(const coefficient_v &d1)
+    vectorized_double& operator-=(const vectorized_double &d1)
     {
         if (d1.size() == this->size())
         {
@@ -108,7 +108,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in -");
     }
-    coefficient_v& operator*=(const coefficient_v &d1)
+    vectorized_double& operator*=(const vectorized_double &d1)
     {
         if (d1.size() == this->size())
         {
@@ -127,7 +127,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in *");
     }
-    coefficient_v& operator/=(const coefficient_v &d1)
+    vectorized_double& operator/=(const vectorized_double &d1)
     {
         if (d1.size() == this->size())
         {
@@ -146,13 +146,13 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
     }
-    coefficient_v operator-() const
+    vectorized_double operator-() const
     {
-        coefficient_v retval(m_c);
+        vectorized_double retval(m_c);
         transform (retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<double>());
         return retval;
     }
-    friend bool operator==(const coefficient_v &d1, const coefficient_v &d2)
+    friend bool operator==(const vectorized_double &d1, const vectorized_double &d2)
     {
         if (d1.size() == d2.size())
         {
@@ -166,11 +166,11 @@ public:
         }
         return false;
     }
-    friend bool operator!=(const coefficient_v &d1, const coefficient_v &d2)
+    friend bool operator!=(const vectorized_double &d1, const vectorized_double &d2)
     {
         return !(d1 == d2);
     }
-    friend std::ostream &operator<<(std::ostream &os, const coefficient_v &d) {
+    friend std::ostream &operator<<(std::ostream &os, const vectorized_double &d) {
         os << "[";
         if (d.size() <= MAX_STREAMED_COMPONENTS) {
             for (auto i = 0u; i < d.size() - 1u; ++i) {
@@ -218,13 +218,13 @@ private:
     std::vector<double> m_c;
 };
 
-}} // end of audi::detail namespace
+} // end of audi namespace
 
 namespace piranha { namespace math {
 
-// ---------------------   impl functions needed for coefficient_v to pass piranha::is_cf type trait
+// ---------------------   impl functions needed for vectorized_double to pass piranha::is_cf type trait
 template <typename T>
-struct is_zero_impl<T,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
+struct is_zero_impl<T,typename std::enable_if<std::is_same<T,audi::vectorized_double>::value>::type>
 {
   bool operator()(const T &v) const
   {
@@ -233,7 +233,7 @@ struct is_zero_impl<T,typename std::enable_if<std::is_same<T,audi::detail::coeff
 };
 
 template <typename T>
-struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type> {
+struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::vectorized_double>::value>::type> {
     /// Call operator.
     /**
      * @param[out] out the output value.
@@ -272,7 +272,7 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coeffic
 
 // ------------------ impl functions needed to have the methods partial, integrate and subs
 template <typename T>
-struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type> {
+struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::vectorized_double>::value>::type> {
     /// Call operator.
     /**
      * @return an instance of piranha::mp_integer constructed from zero.
@@ -283,9 +283,9 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::detail::coef
     }
 };
 template <typename T, typename U>
-struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::detail::coefficient_v>::value>::type>
+struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::vectorized_double>::value>::type>
 {
-  audi::detail::coefficient_v operator()(const audi::detail::coefficient_v &c, const U &exp) const
+  audi::vectorized_double operator()(const audi::vectorized_double &c, const U &exp) const
   {
     auto retval(c);
     std::transform(retval.begin(),retval.end(),retval.begin(),[exp](double x) {return piranha::math::pow(x,exp);});

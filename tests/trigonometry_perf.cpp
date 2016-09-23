@@ -13,11 +13,11 @@ using namespace audi;
 void scalable_test_sin_cos(int m, int n)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double>> variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(1, m);
+        variables.emplace_back(0., "x" + std::to_string(i), m);
+    }
+    gdual<double> p1(1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
@@ -27,11 +27,11 @@ void scalable_test_sin_cos(int m, int n)
 void scalable_test_sin_and_cos(int m, int n)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double>> variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(1, m);
+        variables.emplace_back(0., "x"+std::to_string(i), m);
+    }
+    gdual<double> p1(1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
@@ -41,14 +41,14 @@ void scalable_test_sin_and_cos(int m, int n)
 void scalable_test_tan(int m, int n)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double>> variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(1, m);
-    gdual tangent(p1);
-    gdual sine(p1);
-    gdual cosine(p1);
+        variables.emplace_back(0., "x" + std::to_string(i), m);
+    }
+    gdual<double> p1(1);
+    gdual<double> tangent(p1);
+    gdual<double> sine(p1);
+    gdual<double> cosine(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
@@ -58,12 +58,12 @@ void scalable_test_tan(int m, int n)
 void scalable_test_sin_over_cos(int m, int n)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double> > variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(1, m);
-    gdual tangent(p1);
+        variables.emplace_back(0., "x"+std::to_string(i), m);
+    }
+    gdual<double> p1(1.);
+    gdual<double> tangent(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     auto res = sin_and_cos(p1);
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(trigonometry_perf)
         piranha::settings::set_n_threads(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
     }
 
-    unsigned int low=10, high=12;
+    unsigned int low=9, high=10;
 
     // sin and cos
     std::cout << "Computing sin(1 + x1 + x2 + ...) and cos(1 + x1 + x2 + ...) separately: " << std::endl;

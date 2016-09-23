@@ -27,43 +27,40 @@
 namespace audi
 {
 
-/// Generalized dual number class.
+/// Vectorized Generalized dual number class.
 /**
- * This class represents a generalized dual number, or more formally, an element
- * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$.
- *
- * The basic operations defined in the algebra \f$\mathcal P_{n,m}\f$ are
- * implemented as operators overloads, thus the new audi::gdual type can be used
- * in substitution to the simple double type to also compute derivatives.
- *
- * The order of truncation \f$m\f$ is determined upon construction and cannot be later
- * modified. The number of variables \f$n\f$ will instead by determined dynamically
- * when operations are performed on the audi::gdual type.
- *
- * The actual truncated polynomial is contained in audi::gdual as a data member
- * of type piranha::polynomial<double,piranha::monomial<char> >,
- * allowing to support a high number of monomials.
+ * This class represents a vectorized audi::gdual, or more formally, an element
+ * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$ where the polynomial
+ * coefficients are vectors and all operations operate element-wise
  *
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
  */
+template<typename COEFFICIENT_TYPE>
 class gdual
 {
-        using p_type = piranha::polynomial<double,piranha::monomial<char>>;
+        using p_type = piranha::polynomial<COEFFICIENT_TYPE,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
-        // - at least one operand is a dual,
-        // - the other operand, if not dual, must be double, int or unsigned int
+        // - at least one operand is a gdual,
+        // - the other operand, if not gdual, must be double, int or unsigned int or COEFFICIENT_TYPE
         template <typename T, typename U>
         using gdual_if_enabled = typename std::enable_if<
         (std::is_same<T,gdual>::value && std::is_same<U,gdual>::value) ||
+        (std::is_same<T,gdual>::value && std::is_same<U,COEFFICIENT_TYPE>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,double>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,int>::value) ||
         (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value) ||
+        (std::is_same<U,gdual>::value && std::is_same<T,COEFFICIENT_TYPE>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,double>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,int>::value) ||
         (std::is_same<U,gdual>::value && std::is_same<T,unsigned int>::value),
         gdual>::type;
+
+        // Enable the generic ctor only if T is not a gdual (after removing
+        // const/reference qualifiers).
+        template <typename T>
+        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<COEFFICIENT_TYPE>,std::decay_t<T>>::value,int>;
 
         void check_order() const
         {
@@ -89,6 +86,8 @@ class gdual
         // A private constructor to move-initialise a gdual from a polynomial. Used
         // in the implementation of the operators.
         explicit gdual(p_type &&p, unsigned int order):m_p(std::move(p)),m_order(order) {}
+        // A private constructor used in the implementation of the operators (is it necessary?)
+        explicit gdual(COEFFICIENT_TYPE value, unsigned int order):m_p(value),m_order(order) {}
 
         // Basic overloads for the addition
         static gdual add(const gdual &d1, const gdual &d2)
@@ -148,7 +147,7 @@ class gdual
         // Basic overloads for the division
         static gdual div(const gdual &d1, const gdual &d2)
         {
-            gdual retval(1.);
+            gdual retval(1);
             double fatt = -1.;
             auto p0 = d2.constant_cf();
             auto phat = (d2 - p0);
@@ -168,9 +167,10 @@ class gdual
         template <typename T>
         static gdual div(const T &d1, const gdual &d2)
         {
-            gdual retval(1.);
+            gdual retval(1);
             double fatt = -1.;
             auto p0 = d2.constant_cf();
+
             auto phat = (d2 - p0);
             phat = phat / p0;
             gdual tmp(phat);
@@ -199,7 +199,7 @@ class gdual
         /// Defaulted move constructor.
         gdual(gdual &&) = default;
         /// Default constuctor
-        explicit gdual() : m_order(0u) {}
+        gdual() : m_order(0u) {}
         /// Destructor (contains a sanity check)
         ~gdual()
          {
@@ -207,94 +207,21 @@ class gdual
             assert(static_cast<unsigned>(m_p.degree()) <= m_order);
          }
 
-        /// Constructor from symbol and truncation order
-        /**
-         *
-         * Will construct a generalized dual number made of a constant and a single term with unitary coefficient and exponent,
-         * representing the expansion around zero of the symbolic variable \p symbol. The truncation order
-         * is also set to \p order.
-         *
-         * @note If the \p order is requested to be zero, this will instead construct a constant, while
-         * keeping in the symbol set the requested symbol name. If, later on,
-         * any derivative will be requested with respect to that symbol, it will be zero.
-         *
-         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx".
-         *
-         * @param[in] symbol symbolic name
-         * @param[in] order truncation order
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
-         */
-        explicit gdual(const std::string &symbol, unsigned int order):m_p(),m_order(order)
-        {
-            check_var_name(symbol);
-            if (order == 0) {
-                extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
-            } else {
-                m_p = p_type(std::string("d") + symbol);
-            }
-        }
 
-        /// Constructor from value and truncation order
-        /**
-         *
-         * Will construct a generalized dual number representing a constant number
-         *
-         * @param[in] value value of the constant
-         * @param[in] order truncation order of the underlying algebra
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         */
-        explicit gdual(double value, unsigned int order):m_p(value),m_order(order)
+        template <typename T, generic_ctor_enabler<T> = 0>
+        explicit gdual(const T &value):m_p(value), m_order(0u) {}
+
+        template <typename T, generic_ctor_enabler<T> = 0>
+        explicit gdual(const T& value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
         {
             check_order();
-        }
-
-        /// Constructor from value
-        /**
-         *
-         * Will construct a generalized dual number of order 0 representing
-         * a constant number
-         *
-         * @param[in] value value of the constant
-         *
-         */
-        explicit gdual(double value):m_p(value), m_order(0u) {}
-
-        /// Constructor from value, symbol and truncation order
-        /**
-         *
-         * Will construct a generalized dual number representing the expansion around \p value
-         * of the symbolic variable \p symbol. The truncation order is also set to \p order.
-         *
-         * @note If the \p order is requested to be zero, this will instead construct a constant, while
-         * keeping in the symbol set the requested symbol name. If, later on,
-         * any derivative will be requested with respect to that symbol, it will be zero.
-         *
-         * The type of \p symbol must be a string type (either C or C++) and its variation will be indicated prepending the letter "d"
-         * so that "x" -> "dx".
-         *
-         * @param[in] value value of the variable
-         * @param[in] symbol symbolic name
-         * @param[in] order truncation order
-         *
-         * @throws std::invalid_argument:
-         * - if \p order is not in [0, std::numeric_limits<int>::max() - 10u]
-         * - if \p symbol already starts with the letter "d" (this avoids to create confusing variation symbols of the form "ddname")
-         */
-        explicit gdual(double value, const std::string &symbol, unsigned int order):m_p(),m_order(order)
-        {
             check_var_name(symbol);
             if (order == 0) {
                 extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
             } else {
                 m_p = p_type(std::string("d") + symbol);
             }
-            m_p+=value;
+            m_p+=COEFFICIENT_TYPE(value);
         }
 
         /// Defaulted assignment operator
@@ -410,9 +337,10 @@ class gdual
          * @throws unspecified any exception thrown by:
          * - piranha::series::subs,
          */
-        gdual subs( const std::string sym, double val)
+        template<typename T>
+        gdual subs(const std::string& sym, const T& val)
         {
-            auto new_p = m_p.subs(sym, val);
+            auto new_p = m_p.subs(sym, COEFFICIENT_TYPE(val));
             return gdual(std::move(new_p), m_order);
         }
 
@@ -525,7 +453,7 @@ class gdual
         template <typename T>
         auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
         {
-            double cumfact = 1.;
+            double cumfact = 1;
             for (auto i = c.begin(); i < c.end(); ++i)
             {
                 cumfact*=boost::math::factorial<double>(static_cast<unsigned int>(*i));
@@ -552,7 +480,7 @@ class gdual
         template <typename T>
         auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
         {
-            double cumfact = 1.;
+            double cumfact = 1;
             for (auto i = l.begin(); i < l.end(); ++i)
             {
                 cumfact*=boost::math::factorial<double>((unsigned int)(*i));
@@ -599,7 +527,7 @@ class gdual
          * \note This method is identical to the other overload with the same name, and it is provided for convenience.
          * @return the coefficient
          */
-        double constant_cf() const
+        COEFFICIENT_TYPE constant_cf() const
         {
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_symbol_set_size()),0));

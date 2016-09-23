@@ -11,15 +11,15 @@
 
 using namespace audi;
 
-void scalable_test(int m, int n, gdual(*func)(const gdual& d), double param)
+void scalable_test(int m, int n, gdual<double>(*func)(const gdual<double>& d), double param)
 {
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-    std::vector<gdual> variables;
+    std::vector<gdual<double> > variables;
     for (auto i = 0; i < n; ++i) {
-        variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual p1(param, m);
-    gdual value(p1);
+        variables.emplace_back(0., "x"+std::to_string(i), m);
+    }
+    gdual<double> p1(param);
+    gdual<double> value(p1);
     for (int i = 0u; i < n; ++i) {p1 += variables[i];} // 1 + x1 + x2 + ...
 
     boost::timer::auto_cpu_timer t; // We only time the following operation
@@ -139,5 +139,5 @@ BOOST_AUTO_TEST_CASE(functions_from_derivative_vs_nilpotency)
             scalable_test(m,n,&audi::acos_d, 0.1);
         }
     }
-    
+
 }
