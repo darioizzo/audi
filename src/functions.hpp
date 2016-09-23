@@ -647,7 +647,7 @@ inline T atanh(const T& d)
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto powphat(phat);
-    double atanh_p0 = std::atanh(p0);
+    auto atanh_p0 = audi::atanh(p0);
 
     T retval(0.);
     double coeff = 1;
@@ -685,15 +685,15 @@ inline T atan(const T& d)
     auto phat = (d - p0) / (1. + p0*p0);
     auto powphat(phat);
 
-    auto retval = audi::atan(p0);
+    auto retval = T(audi::atan(p0));
     double coeff1 = 1.;
     double coeff2 = -1.;
 
     for (auto k=1u; k <= d.get_order(); ++k) {
         if (k % 2) {        // This is for odd powers 1..3..5
-            double binom = 1.;
-            double f0 = p0 * p0;
-            double cf_i = -1.;
+            auto binom = 1.;
+            auto f0 = p0 * p0;
+            auto cf_i = -1.;
             for (auto j = 1u; 2*j <= k; ++j) {
                 binom += piranha::math::binomial(k, 2*j) * f0 * cf_i;
                 f0 *= p0 * p0;
@@ -702,9 +702,9 @@ inline T atan(const T& d)
             retval += binom * powphat * coeff1 / k;
             coeff1 *= -1.;
         } else {            //This is for even powers 2..4..6
-            double binom = 0.;
-            double f0 = p0;
-            double cf_i = 1.;
+            auto binom = 0.;
+            auto f0 = p0;
+            auto cf_i = 1.;
             for (auto j = 1u; 2*j - 1 <= k; ++j) {
                 binom += piranha::math::binomial(k, 2*j - 1) * f0 * cf_i;
                 f0 *= p0 * p0;

@@ -27,7 +27,7 @@
 namespace audi
 {
 
-/// Vectorized Generalized dual number class.
+/// Generalized dual number class.
 /**
  * This class represents a vectorized audi::gdual, or more formally, an element
  * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$ where the polynomial
