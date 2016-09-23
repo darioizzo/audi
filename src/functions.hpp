@@ -3,11 +3,13 @@
 
 #include <boost/math/special_functions/bernoulli.hpp>
 #include <boost/math/constants/constants.hpp>
+#include <boost/type_traits/is_complex.hpp>
 #include <cmath>
 #include <piranha/binomial.hpp>
 #include <stdexcept>
 
 #include "gdual.hpp"
+#include "vectorized_double.hpp"
 
 namespace audi
 {
@@ -17,6 +19,19 @@ struct is_gdual: std::false_type {};
 template <typename T>
 struct is_gdual<gdual<T>>: std::true_type {};
 
+
+template<typename T, std::enable_if_t<std::is_arithmetic<T>::value || boost::is_complex<T>::value, int> = 0>
+inline T exp(T in) {
+    return std::exp(in);
+}
+inline vectorized_double exp(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::exp(el);
+    }
+    return in;
+}
 /// Overload for the exponential
 /**
  * Implements the exponential of a audi::gdual.
@@ -48,9 +63,21 @@ inline T exp(const T &d)
         fact*=i;
         retval+=phat / fact;
     }
-    return retval * std::exp(p0);
+    return retval * audi::exp(p0);
 }
 
+template<typename T, std::enable_if_t<std::is_arithmetic<T>::value || boost::is_complex<T>::value, int> = 0>
+inline T log(T in) {
+    return std::log(in);
+}
+inline vectorized_double log(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::log(el);
+    }
+    return in;
+}
 /// Overload for the logarithm
 /**
  * Implements the logarithm of a audi::gdual.
@@ -74,7 +101,7 @@ inline T log(const T &d)
     T retval(0.);
     double fatt = 1;
     auto p0 = d.constant_cf();
-    auto log_p0 = std::log(p0);
+    auto log_p0 = audi::log(p0);
 
     auto phat = (d - p0);
     phat = phat/p0;
@@ -87,6 +114,29 @@ inline T log(const T &d)
         retval =  retval + fatt * phat / i;
     }
     return retval;
+}
+
+template<typename T, typename U, std::enable_if_t<(std::is_arithmetic<T>::value || boost::is_complex<T>::value) &&
+                                                  (std::is_arithmetic<U>::value || boost::is_complex<U>::value), int> = 0>
+inline T pow(const U& base, const T &d)
+{
+    return std::pow(base, d);
+}
+inline vectorized_double pow(double base, vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::pow(base, el);
+    }
+    return in;
+}
+inline vectorized_double pow(vectorized_double in, double exponent)
+{
+    for (auto &el : in)
+    {
+        el = std::pow(el, exponent);
+    }
+    return in;
 }
 
 /// Overload for the exponentiation to a gdual power
@@ -103,15 +153,11 @@ inline T log(const T &d)
 template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(double base, const T &d)
 {
-    double int_part;
-    // checks wether the exponent is an integer, in which case
-    // it calls a different overload
+    // checks wether the exponent is a constant in which
+    // case it calls for a different overload
     if (d.degree() == 0) {
         auto p0 = d.constant_cf();
-        double float_part = std::modf(p0, &int_part);
-        if (float_part == 0.) {
-            return T(std::pow(base, p0)); //nan is possible here
-        }
+        return T(audi::pow(base, p0));
     }
     return exp(std::log(base) * d);
 }
@@ -143,7 +189,7 @@ inline T pow(const T &d, double alpha)
     // TODO: is there a better way to do this? Calling the pow (gdual, int) overload is not possible as it
     // cannot be moved upfront.
     double n;
-    if (modf(alpha, &n) == 0.0 && n > 0) {
+    if (std::modf(alpha, &n) == 0.0 && n > 0) {
         T retval(d);
         for (auto i = 1; i < (int)n; ++i) {
             retval*=d;
@@ -152,14 +198,14 @@ inline T pow(const T &d, double alpha)
     }
     auto p0 = d.constant_cf();
     auto phat = d - p0;
-    T retval(std::pow(p0, alpha));
+    T retval(audi::pow(p0, alpha));
     phat = phat;
     T tmp(phat);
 
-    retval+=alpha * phat * std::pow(p0, alpha-1);
+    retval+=alpha * phat * audi::pow(p0, alpha-1);
     for (auto i = 2u; i <= d.get_order(); ++i) {
         phat*=tmp;
-        retval+=piranha::math::binomial(alpha,i) * phat * std::pow(p0, alpha-i);
+        retval+=piranha::math::binomial(alpha,i) * phat * audi::pow(p0, alpha-i);
     }
     return retval;
 }
@@ -298,8 +344,8 @@ inline T sin(const T& d)
     auto phat = (d - p0);
     auto phat2 = phat * phat;
 
-    double sin_p0 = std::sin(p0);
-    double cos_p0 = std::cos(p0);
+    auto sin_p0 = std::sin(p0);
+    auto cos_p0 = std::cos(p0);
 
     double factorial=1.;
     double coeff=1.;

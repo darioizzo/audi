@@ -3,8 +3,8 @@
 using namespace audi;
 
 int main() {
-	gdual<double> x(0., "y", 3);
+	gdual<std::complex<double>> x(std::complex<double>(1., 1.), "x", 3);
 
-	auto f = erf(x);
+	auto f = exp(x);
 	std::cout << f << std::endl;
 }

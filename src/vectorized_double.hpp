@@ -1,3 +1,6 @@
+#ifndef AUDI_VECTORIZED_DOUBLE_HPP
+#define AUDI_VECTORIZED_DOUBLE_HPP
+
 #include <piranha/polynomial.hpp>
 #include <piranha/type_traits.hpp>
 #include <piranha/pow.hpp>
@@ -23,7 +26,7 @@ public:
     vectorized_double() : m_c({0.}) {};
     // Constructor from int. Its mandatory for piranha::polynomial coefficient
     explicit vectorized_double(int a) : m_c({static_cast<double>(a)}) {};
-    // Constructor from double value a. Construct [a]
+    // Constructor from double value a. Construct [a] TODO: should we make this explicit? 
     vectorized_double(double a) : m_c({a}) {};
     // Constructor from an std::vector
     explicit vectorized_double(const std::vector<double> &c) : m_c(c) {
@@ -296,3 +299,4 @@ struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::vectorized_doub
 }} // end of piranha::math namespace
 
 #undef MAX_STREAMED_COMPONENTS
+#endif
