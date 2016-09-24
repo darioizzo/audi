@@ -31,7 +31,7 @@ struct pow_impl<T,U,typename std::enable_if<boost::is_complex<T>::value>::type>
 }}
 
 // We need the operator *,/ defined so that std::complex<double>(0.) * char(0) compiles
-// as that is needed in partial
+// as that is needed in partial. IF THE COMPILER DECIDES TO IMPLEMENT THESE, REMOVE.
 namespace std{
 template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator*(const std::complex<double> &d1, T d2)

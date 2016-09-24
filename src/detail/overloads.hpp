@@ -187,5 +187,57 @@ inline vectorized_double atan(vectorized_double in)
     }
     return in;
 }
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T acos(T in) {
+    return std::acos(in);
+}
+inline vectorized_double acos(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::acos(el);
+    }
+    return in;
+}
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T acosh(T in) {
+    return std::acosh(in);
+}
+inline vectorized_double acosh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::acosh(el);
+    }
+    return in;
+}
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T asin(T in) {
+    return std::asin(in);
+}
+inline vectorized_double asin(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::asin(el);
+    }
+    return in;
+}
+
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
+inline T asinh(T in) {
+    return std::asinh(in);
+}
+inline vectorized_double asinh(vectorized_double in)
+{
+    for (auto &el : in)
+    {
+        el = std::asinh(el);
+    }
+    return in;
+}
+
 }
 #endif
