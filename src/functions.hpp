@@ -650,10 +650,10 @@ inline T atanh(const T& d)
     auto atanh_p0 = audi::atanh(p0);
 
     T retval(0.);
-    double coeff = 1;
+    double coeff = 1.;
 
     for (auto k=1u; k <= d.get_order(); ++k) {
-        double add = (1. / std::pow(1 - p0, k) + coeff / std::pow(1 + p0, k)) / k;
+        auto add = (1. / std::pow(1. - p0, k) + coeff / std::pow(1. + p0, k)) / k;
         retval += add * powphat;
         coeff*=-1;
         powphat*=phat;

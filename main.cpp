@@ -7,10 +7,14 @@ int main() {
 	gdual<double> xd(0.5, "x", 3);
 	gdual<vectorized_double> xv(std::vector<double>{0.5,-0.5}, "x", 3);
 
-	//auto fc = audi::atanh_d(xc);
-	auto fd = audi::atanh_d(xd);
+	std::complex<double>(0) * char(0);
+
+	auto fc = audi::atanh_d(xc);
+	auto fd = audi::atanh(xc);
 	auto fv = audi::atanh_d(xv);
-	//std::cout << fc << std::endl;
+
+	std::cout << fc << std::endl;
 	std::cout << fd << std::endl;
 	std::cout << fv << std::endl;
+
 }

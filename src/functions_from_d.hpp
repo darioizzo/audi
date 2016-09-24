@@ -64,7 +64,7 @@ inline T atanh_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atanh(f0);
-    auto dg = 1. / (1 - f*f);
+    auto dg = 1. / (1. - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -84,7 +84,7 @@ inline T atan_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atan(f0);
-    auto dg = 1. / (1 + f*f);
+    auto dg = 1. / (1. + f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -104,7 +104,7 @@ inline T asin_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asin(f0);
-    auto dg = 1. / sqrt(1 - f*f);
+    auto dg = 1. / sqrt(1. - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -124,7 +124,7 @@ inline T asinh_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asinh(f0);
-    auto dg = 1. / sqrt(1 + f*f);
+    auto dg = 1. / sqrt(1. + f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -144,7 +144,7 @@ inline T acos_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acos(f0);
-    auto dg = - 1. / sqrt(1 - f*f);
+    auto dg = - 1. / sqrt(1. - f*f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -164,7 +164,7 @@ inline T acosh_d(const T& f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acosh(f0);
-    auto dg = 1. / sqrt((f - 1)*(f + 1));
+    auto dg = 1. / sqrt((f - 1.)*(f + 1.));
     return _compose_from_derivative(f, dg, g0);
 }
 

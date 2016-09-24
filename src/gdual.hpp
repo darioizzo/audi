@@ -16,6 +16,7 @@
 #include <piranha/safe_cast.hpp>
 #include <piranha/series_multiplier.hpp>
 #include <piranha/symbol.hpp>
+#include <piranha/type_traits.hpp>
 #include <stdexcept>
 #include <string>
 #include <type_traits> // For std::enable_if, std::is_same, etc.
@@ -36,7 +37,7 @@ namespace audi
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
  */
-template<typename Cf>
+template<typename Cf, std::enable_if_t<piranha::is_cf<Cf>::value && piranha::is_differentiable<Cf>::value, int> = 0>
 class gdual
 {
 public:
@@ -170,7 +171,7 @@ private:
         template <typename T>
         static gdual div(const T &d1, const gdual &d2)
         {
-            gdual retval(1);
+            gdual retval(1.);
             double fatt = -1.;
             auto p0 = d2.constant_cf();
 

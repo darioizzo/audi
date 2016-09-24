@@ -1,14 +1,10 @@
 #ifndef AUDI_VECTORIZED_DOUBLE_HPP
 #define AUDI_VECTORIZED_DOUBLE_HPP
 
-#include <piranha/polynomial.hpp>
-#include <piranha/type_traits.hpp>
-#include <piranha/pow.hpp>
-#include <vector>
 #include <algorithm>
-#include <functional>
-#include <random>
-#include <boost/timer/timer.hpp>
+#include <vector>
+#include <exception>
+
 
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
@@ -294,7 +290,7 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T,audi::vectorized_d
 template <typename T, typename U>
 struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::vectorized_double>::value>::type>
 {
-  audi::vectorized_double operator()(const audi::vectorized_double &c, const U &exp) const
+  T operator()(const T &c, const U &exp) const
   {
     auto retval(c);
     std::transform(retval.begin(),retval.end(),retval.begin(),[exp](double x) {return piranha::math::pow(x,exp);});
