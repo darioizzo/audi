@@ -30,9 +30,21 @@ namespace audi
 
 /// Generalized dual number class.
 /**
- * This class represents a vectorized audi::gdual, or more formally, an element
- * of the truncated polynomial algebra \f$\mathcal P_{n,m}\f$ where the polynomial
- * coefficients are vectors and all operations operate element-wise
+ * This class represents a generalized dual number, in a nutshell, a truncated multivariate Taylor polynomial.
+ * Using the multi-index notation, a generalized dual number may be written as:
+ * \f[
+ * T_f(\mathbf x) = \sum_{|\alpha| = 0}^m  \frac{(\mathbf x-\mathbf a)^\alpha}{\alpha!}(\partial^\alpha f)(\mathbf a)
+ * \f]
+ *
+ * All arithmetic operators +,*,/,- are overloaded so that the Taylor expansion of arithmetic computations is obtained.
+ *
+ * Integration and differentiation are also implemented so that a differntial algebra is, at the end, obtained.
+ *
+ * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
+ * piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and
+ * the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
+ * and integration are availiable.
+ *
  *
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
@@ -238,7 +250,6 @@ private:
          * Returns the size of the symbol set.
          *
          * @return the size of the symbol set.
-         *
          */
         auto get_symbol_set_size() const -> decltype(m_p.get_symbol_set().size())
         {
@@ -305,6 +316,7 @@ private:
          * - piranha::series::truncate_degree,
          * - piranha::series::integrate
          */
+        template<std::enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
         gdual integrate(const std::string& var_name)
         {
             check_var_name(var_name);
@@ -327,6 +339,7 @@ private:
          * @throws unspecified any exception thrown by:
          * - piranha::series::partial,
          */
+        template<std::enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
         gdual partial(const std::string& var_name)
         {
             check_var_name(var_name);
@@ -643,8 +656,7 @@ private:
 
         /// Overloaded addition operator
         /**
-         * Implements the sum operation in the algebra \f$\mathcal P_{n,m}\f$
-         * of truncated polynomials.
+         * Implements the sum operation between truncated Taylor polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
@@ -662,8 +674,7 @@ private:
 
         /// Overloaded difference operator
         /**
-         * Implements the difference operation in the algebra \f$\mathcal P_{n,m}\f$
-         * of truncated polynomials.
+         * Implements the difference operation between truncated Taylor polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
@@ -681,8 +692,7 @@ private:
 
         /// Overloaded multiplication operator
         /**
-         * Implements the multiplication operation in the algebra \f$\mathcal P_{n,m}\f$
-         * of truncated polynomials.
+         * Implements the multiplication operation between truncated Taylor polynomials.
          * \note In order for this overload to be active (SFINAE rules), at least one
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
@@ -704,8 +714,8 @@ private:
 
         /// Overloaded division operator
         /**
-         * Implements the division operation in the algebra \f$\mathcal P_{n,m}\f$
-         * of truncated polynomials. Essentially defined (in case of two audi:gdual) by a multiplication and
+         * Implements the division operation between truncated Taylor polynomials.
+         * Essentially, defined (in case of two audi::gdual) by a multiplication and
          * the reciprocal rule:
          *
          * \f[

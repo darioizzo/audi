@@ -3,58 +3,77 @@
 
 #include <boost/type_traits/is_complex.hpp>
 #include "../vectorized_double.hpp"
+#include "../type_traits.hpp"
+
+// This macro writes the overload for std::fun_name performing elementwise evaluations on a vectorized_double
+#define VECTORIZED_OVERLOAD(fun_name)                               \
+inline vectorized_double fun_name(vectorized_double in)             \
+{                                                                   \
+   for (auto &el : in)                                              \
+   {                                                                \
+       el = std::fun_name(el);                                      \
+   }                                                                \
+   return in;                                                       \
+}                                                                   \
+
+// This macro writes the overload for std::fun_name af an arithmetic or complex type. It simply calls std::fun_name
+// It is used to allow calls such as audi::cos(T) [T = double] in templated functions.
+#define ARITH_OR_COMPLEX_OVERLOAD(fun_name)                                          \
+template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>  \
+inline T fun_name(T in) {                                                            \
+   return std::fun_name(in);                                                         \
+}                                                                                    \
 
 namespace audi {
-// type traits
-template <typename T>
-struct is_gdual: std::false_type {};
-template <typename T>
-struct is_gdual<gdual<T>>: std::true_type {};
 
-template< class T >
-struct is_arithmetic_or_complex : std::integral_constant<bool, std::is_arithmetic<T>::value ||
-                                                               boost::is_complex<T>::value> {};
-// overloads for the coefficients
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T exp(T in) {
-   return std::exp(in);
-}
-inline vectorized_double exp(vectorized_double in)
-{
-   for (auto &el : in)
-   {
-       el = std::exp(el);
-   }
-   return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T erf(T in) {
-   return std::erf(in);
-}
-inline vectorized_double erf(vectorized_double in)
-{
-   for (auto &el : in)
-   {
-       el = std::erf(el);
-   }
-   return in;
-}
+VECTORIZED_OVERLOAD(exp);
+ARITH_OR_COMPLEX_OVERLOAD(exp);
 
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T log(T in) {
-    return std::log(in);
-}
-inline vectorized_double log(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::log(el);
-    }
-    return in;
-}
+VECTORIZED_OVERLOAD(erf);
+ARITH_OR_COMPLEX_OVERLOAD(erf);
 
-template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value &&
-                                                  is_arithmetic_or_complex<U>::value, int> = 0>
+VECTORIZED_OVERLOAD(log);
+ARITH_OR_COMPLEX_OVERLOAD(log);
+
+VECTORIZED_OVERLOAD(sin);
+ARITH_OR_COMPLEX_OVERLOAD(sin);
+
+VECTORIZED_OVERLOAD(cos);
+ARITH_OR_COMPLEX_OVERLOAD(cos);
+
+VECTORIZED_OVERLOAD(tan);
+ARITH_OR_COMPLEX_OVERLOAD(tan);
+
+VECTORIZED_OVERLOAD(sinh);
+ARITH_OR_COMPLEX_OVERLOAD(sinh);
+
+VECTORIZED_OVERLOAD(cosh);
+ARITH_OR_COMPLEX_OVERLOAD(cosh);
+
+VECTORIZED_OVERLOAD(tanh);
+ARITH_OR_COMPLEX_OVERLOAD(tanh);
+
+VECTORIZED_OVERLOAD(asin);
+ARITH_OR_COMPLEX_OVERLOAD(asin);
+
+VECTORIZED_OVERLOAD(acos);
+ARITH_OR_COMPLEX_OVERLOAD(acos);
+
+VECTORIZED_OVERLOAD(atan);
+ARITH_OR_COMPLEX_OVERLOAD(atan);
+
+VECTORIZED_OVERLOAD(asinh);
+ARITH_OR_COMPLEX_OVERLOAD(asinh);
+
+VECTORIZED_OVERLOAD(acosh);
+ARITH_OR_COMPLEX_OVERLOAD(acosh);
+
+VECTORIZED_OVERLOAD(atanh);
+ARITH_OR_COMPLEX_OVERLOAD(atanh);
+
+VECTORIZED_OVERLOAD(cbrt);
+
+template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value && is_arithmetic_or_complex<U>::value, int> = 0>
 inline T pow(const U& base, const T &d)
 {
     return std::pow(base, d);
@@ -75,6 +94,7 @@ inline vectorized_double pow(vectorized_double in, double exponent)
     }
     return in;
 }
+
 template<typename T, std::enable_if_t<std::is_arithmetic<T>::value, int> = 0>
 inline T cbrt(T in) {
     return std::cbrt(in);
@@ -82,161 +102,6 @@ inline T cbrt(T in) {
 template<typename T, std::enable_if_t<boost::is_complex<T>::value, int> = 0>
 inline T cbrt(T in) {
     return std::pow(in, 1./3.); // needs a separate template as cbrt does not exist for complex types
-}
-inline vectorized_double cbrt(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cbrt(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T sin(T in) {
-    return std::sin(in);
-}
-inline vectorized_double sin(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::sin(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T cos(T in) {
-    return std::cos(in);
-}
-inline vectorized_double cos(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cos(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T tan(T in) {
-    return std::tan(in);
-}
-inline vectorized_double tan(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::tan(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T sinh(T in) {
-    return std::sinh(in);
-}
-inline vectorized_double sinh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::sinh(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T cosh(T in) {
-    return std::cosh(in);
-}
-inline vectorized_double cosh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::cosh(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T tanh(T in) {
-    return std::tanh(in);
-}
-inline vectorized_double tanh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::tanh(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T atanh(T in) {
-    return std::atanh(in);
-}
-inline vectorized_double atanh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::atanh(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T atan(T in) {
-    return std::atan(in);
-}
-inline vectorized_double atan(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::atan(el);
-    }
-    return in;
-}
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T acos(T in) {
-    return std::acos(in);
-}
-inline vectorized_double acos(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::acos(el);
-    }
-    return in;
-}
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T acosh(T in) {
-    return std::acosh(in);
-}
-inline vectorized_double acosh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::acosh(el);
-    }
-    return in;
-}
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T asin(T in) {
-    return std::asin(in);
-}
-inline vectorized_double asin(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::asin(el);
-    }
-    return in;
-}
-
-template<typename T, std::enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>
-inline T asinh(T in) {
-    return std::asinh(in);
-}
-inline vectorized_double asinh(vectorized_double in)
-{
-    for (auto &el : in)
-    {
-        el = std::asinh(el);
-    }
-    return in;
 }
 
 }

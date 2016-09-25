@@ -8,9 +8,8 @@
 
 namespace piranha { namespace math {
 
-// These overloads are needed by piranha to define the partial and integral operations on
-// the polynomial having coefficient in std::complex
-
+// This overload is needed for T = std::complex<double> "meet" the rquirement: piranha::is_differentiable<T>
+// necessary for the methods partial, integrate and evaluate to be defined.
 template <typename T>
 struct partial_impl<T, typename std::enable_if<boost::is_complex<T>::value>::type>
 {
@@ -25,13 +24,16 @@ struct pow_impl<T,U,typename std::enable_if<boost::is_complex<T>::value>::type>
 {
   T operator()(const T &c, const U &exp) const
   {
-    return std::pow(c,exp);
+    return piranha::math::pow(c,exp);
   };
 };
-}}
+}} // end of namespace piranha math
 
-// We need the operator *,/ defined so that std::complex<double>(0.) * char(0) compiles
-// as that is needed in partial. IF THE COMPILER DECIDES TO IMPLEMENT THESE, REMOVE.
+// These operators are not in the C++ standard for the type std::complex<double> and most
+// compilers do not "offer" them, but they are necessary for the methods partial and integrate
+// as Cf *,/ Key must be defined and, in this case that is std::complex<double> * char(0)
+// They basically allow multiplication and decision between std::complex<double> and any
+// integer type
 namespace std{
 template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator*(const std::complex<double> &d1, T d2)
@@ -56,5 +58,5 @@ std::complex<double> operator/(T d2, const std::complex<double> &d1)
 {
 	return d1 / std::complex<double>(d2);
 };
-}
+} // end namespace std
 #endif
