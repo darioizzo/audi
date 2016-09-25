@@ -5,9 +5,8 @@
 #include <functional>
 #include <random>
 #include <boost/timer/timer.hpp>
-#include "src/gdual_v.hpp"
-#include "src/gdual.hpp"
 
+#include "../src/audi.hpp"
 
 
 std::vector<double> random_vector_double(unsigned int N, double lb, double ub)
@@ -44,20 +43,22 @@ int main() {
             foo *= coeff_v + x + y + z - w + q + r + s;
         }
         foo *= foo;
-        std::cout << foo.get_derivative({0,1,0,0,0,0,0}) << std::endl;
+        sin(foo);
+        //std::cout << foo.get_derivative({0,1,0,0,0,0,0}) << std::endl;
     }
     {
         boost::timer::auto_cpu_timer t;
         for (auto i = 0u; i < N; ++i) {
-            audi::gdual x{xcoeff[i], "x",order}, y{ycoeff[i], "y",order}, z{zcoeff[i], "z",order}, w{zcoeff[i], "w",order}, q{zcoeff[i], "q",order}, r{zcoeff[i], "r",order}, s{zcoeff[i], "s",order} ;
+            audi::gdual_d x{xcoeff[i], "x",order}, y{ycoeff[i], "y",order}, z{zcoeff[i], "z",order}, w{zcoeff[i], "w",order}, q{zcoeff[i], "q",order}, r{zcoeff[i], "r",order}, s{zcoeff[i], "s",order} ;
             auto foo = coeff[i] + x + y + z - w + q + r + s;
             for (int j = 1; j < 25; ++j) {
                 foo *= coeff[i] + x + y + z - w + q + r + s;
             }
             foo *= foo;
-            if (i < 5) {
-                std::cout << foo.get_derivative({0,1,0,0,0,0,0}) << ", ";
-            }
+            sin(foo);
+            //if (i < 5) {
+            //    std::cout << foo.get_derivative({0,1,0,0,0,0,0}) << ", ";
+            //}
         }
     }
 
