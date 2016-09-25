@@ -819,6 +819,8 @@ inline T acos(const T& d)
  *
  * \note If \f$f_0\f$ is zero, the right Taylor expansion will be returned rather than nans.
  *
+ * \note This operation is not availiable for std::complex types.
+ *
  * @param[in] d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d

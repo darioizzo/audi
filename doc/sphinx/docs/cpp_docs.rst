@@ -21,7 +21,7 @@ Functions
 exp: Overload for the exponential.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::exp(const gdual&)
+.. doxygenfunction:: audi::exp(const T&)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -29,7 +29,7 @@ exp: Overload for the exponential.
 log: Overload for the logarithm.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::log(const gdual&)
+.. doxygenfunction:: audi::log(const T&)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -37,7 +37,7 @@ log: Overload for the logarithm.
 pow: Overload for pow(const gdual&, double)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::pow(const gdual&, double)
+.. doxygenfunction:: audi::pow(const T&, double)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -45,7 +45,7 @@ pow: Overload for pow(const gdual&, double)
 pow: Overload for pow(const gdual&, int)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::pow(const gdual&, int)
+.. doxygenfunction:: audi::pow(const T&, int)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -53,7 +53,7 @@ pow: Overload for pow(const gdual&, int)
 pow: Overload for pow(double, const gdual&)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::pow(double, const gdual&)
+.. doxygenfunction:: audi::pow(double, const T&)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -61,7 +61,7 @@ pow: Overload for pow(double, const gdual&)
 pow: Overload for pow(const gdual&, const gdual&)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. doxygenfunction:: audi::pow(const gdual&, const gdual&)
+.. doxygenfunction:: audi::pow(const T&, const T&)
    :project: AuDi
 
 ----------------------------------------------------------
@@ -208,4 +208,3 @@ abs: Overload for the absolute value.
 
 .. doxygenfunction:: audi::abs(const gdual&)
    :project: AuDi
-

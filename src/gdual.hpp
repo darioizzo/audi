@@ -36,9 +36,25 @@ namespace audi
  * T_f(\mathbf x) = \sum_{|\alpha| = 0}^m  \frac{(\mathbf x-\mathbf a)^\alpha}{\alpha!}(\partial^\alpha f)(\mathbf a)
  * \f]
  *
- * All arithmetic operators +,*,/,- are overloaded so that the Taylor expansion of arithmetic computations is obtained.
+ * and thus depends on the order \f$m\f$ as well as on the expansion point \f$\mathbf a\f$. All arithmetic
+ * operators +,*,/,- are overloaded so that the Taylor expansion of arithmetic computations is obtained.
+ * A basic use case, where \f$m = 2\f$, \f$\mathbf a = [1.2, -0.1]\f$ and \f$f = \frac{x1+x2}{x1-x2}\f$ is thus:
  *
- * Integration and differentiation are also implemented so that a differntial algebra is, at the end, obtained.
+ * @code
+ * gdual<double> x1(1.2, "x1", 2);
+ * gdual<double> x2(-0.1, "x2", 2);
+ * std::cout << (x1+x2) / (x1-x2) << "\n";
+ * @endcode
+ *
+ * resulting in the output:
+ *
+ * @code
+ * 0.118343*dx1+0.846154+1.42012*dx2+1.0924*dx2**2-0.0910332*dx1**2-1.00137*dx1*dx2
+ * @endcode
+ *
+ *
+ * Integration and differentiation are also implemented so that the generalized dual computations are 
+ * formally made in a differential algebra.
  *
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
  * piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and

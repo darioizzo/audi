@@ -15,4 +15,8 @@ int main() {
 	std::cout << fd << std::endl;
 	std::cout << fv << std::endl;
 
+	gdual_d x(1.2, "x", 2);
+    gdual_d y(-0.1, "y", 2);
+    std::cout << (x+y) / (x-y) << "\n";
+
 }
