@@ -6,12 +6,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../src/gdual.hpp"
-#include "../src/vectorized_double.hpp"
+#include "../src/audi.hpp"
 #include "helpers.hpp"
 
 using namespace audi;
-using gdual_v = gdual<vectorized_double>;
 
 BOOST_AUTO_TEST_CASE(construction)
 {

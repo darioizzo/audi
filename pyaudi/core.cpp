@@ -75,8 +75,8 @@ PYBIND11_PLUGIN(_core) {
         .def_property_readonly("order",&gdual_d::get_order)
         .def_property_readonly("constant_cf",&gdual_d::constant_cf)
         .def("extend_symbol_set", &gdual_d::extend_symbol_set, "Extends the symbol set")
-        .def("integrate", &gdual_d::integrate, "Integrate with respect to argument")
-        .def("partial", &gdual_d::partial, "Partial derivative with respect to argument")
+        .def("integrate", &gdual_d::integrate<>, "Integrate with respect to argument")
+        .def("partial", &gdual_d::partial<>, "Partial derivative with respect to argument")
         .def("evaluate",[](const gdual_d &g, const std::map< std::string, double> &dict) {return g.evaluate(std::unordered_map< std::string, double>(dict.begin(), dict.end()));} , "Evaluates the Taylor polynomial")
         .def("find_cf", [](const gdual_d &g, const std::vector<int> &v) {
             return g.find_cf(v);
