@@ -10,13 +10,13 @@
 
 using namespace DACE;
 
-void scalable_mul(int m, int n)
+void scalable_mul(unsigned int m, unsigned int n, double value)
 {
     // m is order, n is the number of variables
     DA::init(m,n);
     std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
     std::vector<DA> variables;
-    for (int i = 1; i <= n; ++i) {variables.emplace_back(i,1.);} // 1 + x1 + x2 + ...
+    for (auto i = 1u; i <= n; ++i) {variables.emplace_back(i, value);} // [x1, x2,...,xn]
 
     DA p1(1.);
     DA p2(1.);
@@ -34,9 +34,9 @@ void scalable_mul(int m, int n)
 int main()
 {
     std::cout << "Testing multiplication of (1 + x1 + .. + xn)^m * (1 - x1 - .. - xn)^m: " << std::endl;
-    for (auto m = 10; m < 11; ++m) {
-        for (auto n = 10; n < 11; ++n) {
-            scalable_mul(m,n);
+    for (auto m = 10u; m < 11u; ++m) {
+        for (auto n = 10u; n < 11u; ++n) {
+            scalable_mul(m,n, 1.);
         }
     }
     return 0;
