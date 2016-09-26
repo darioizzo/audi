@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.3.4/spacelab/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/spacelab/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="AuDi documentation" href="../index.html" />
 <meta charset='utf-8'>
@@ -95,7 +95,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 content">
       
   <div class="section" id="c-documentation">
 <h1><a class="toc-backref" href="#id1">C++ Documentation</a><a class="headerlink" href="#c-documentation" title="Permalink to this headline">¶</a></h1>
@@ -143,14 +143,30 @@
 <div class="section" id="gdual-generalized-dual-number-class">
 <h3><a class="toc-backref" href="#id3">gdual: Generalized dual number class.</a><a class="headerlink" href="#gdual-generalized-dual-number-class" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
+<dt>
+<span class="target" id="AuDiclassaudi_1_1gdual"></span><em class="property">template </em>&lt;<em class="property">typename</em> Cf, std::enable_if_t&lt; piranha::is_cf&lt; Cf &gt;::value &amp;&amp;piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
 <dt id="_CPPv2N4audi5gdualE">
-<span id="audi::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual"></span><em class="property">class </em><code class="descclassname">audi::</code><code class="descname">gdual</code><a class="headerlink" href="#_CPPv2N4audi5gdualE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual"></span><em class="property">class </em><code class="descclassname">audi::</code><code class="descname">gdual</code><a class="headerlink" href="#_CPPv2N4audi5gdualE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generalized dual number class. </p>
-<p>This class represents a generalized dual number, or more formally, an element of the truncated polynomial algebra <span class="math">\(\mathcal P_{n,m}\)</span>.</p>
-<p>The basic operations defined in the algebra <span class="math">\(\mathcal P_{n,m}\)</span> are implemented as operators overloads, thus the new <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> type can be used in substitution to the simple double type to also compute derivatives.</p>
-<p>The order of truncation <span class="math">\(m\)</span> is determined upon construction and cannot be later modified. The number of variables <span class="math">\(n\)</span> will instead by determined dynamically when operations are performed on the <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> type.</p>
-<p>The actual truncated polynomial is contained in <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> as a data member of type piranha::polynomial&lt;double,piranha::monomial&lt;char&gt; &gt;, allowing to support a high number of monomials.</p>
+<p>This class represents a generalized dual number, in a nutshell, a truncated multivariate Taylor polynomial. Using the multi-index notation, a generalized dual number may be written as: <div class="math">
+\[ T_f(\mathbf x) = \sum_{|\alpha| = 0}^m \frac{(\mathbf x-\mathbf a)^\alpha}{\alpha!}(\partial^\alpha f)(\mathbf a) \]</div>
+</p>
+<p>and thus depends on the order <span class="math">\(m\)</span> as well as on the expansion point <span class="math">\(\mathbf a\)</span>. All arithmetic operators +,*,/,- are overloaded so that the Taylor expansion of arithmetic computations is obtained. A basic use case, where <span class="math">\(m = 2\)</span>, <span class="math">\(\mathbf a = [1.2, -0.1]\)</span> and <span class="math">\(f = \frac{x1+x2}{x1-x2}\)</span> is thus:</p>
+<p><div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</p>
+<p>resulting in the output:</p>
+<p><div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">0.118343</span><span class="o">*</span><span class="n">dx1</span><span class="o">+</span><span class="mf">0.846154</span><span class="o">+</span><span class="mf">1.42012</span><span class="o">*</span><span class="n">dx2</span><span class="o">+</span><span class="mf">1.0924</span><span class="o">*</span><span class="n">dx2</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mf">0.0910332</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mf">1.00137</span><span class="o">*</span><span class="n">dx1</span><span class="o">*</span><span class="n">dx2</span>
+</pre></div>
+</div>
+</p>
+<p>Integration and differentiation are also implemented so that the generalized dual computations are formally made in a differential algebra.</p>
 <p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial ( piranha::is_cf&lt;Cf&gt;::value must be true). Classical examples would be double, float, std::complex&lt;double&gt;, and the audi::vectorized_double type. If piranha::is_differentiable&lt;Cf&gt;::value is also true then derivation and integration are availiable.</dd>
 <dt><strong>Author</strong></dt>
 <dd>Dario Izzo (<a class="reference external" href="mailto:dario&#46;izzo&#37;&#52;&#48;gmail&#46;com">dario<span>&#46;</span>izzo<span>&#64;</span>gmail<span>&#46;</span>com</a>) </dd>
 <dt><strong>Author</strong></dt>
@@ -161,64 +177,20 @@
 <p class="breathe-sectiondef-title rubric">Algebraic operators</p>
 <dl class="function">
 <dt>
-<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
-<dt id="_CPPv2N4audi5gdualpLERK1T">
-<span id="audi::gdual::add-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af0daf87112d638ea2ddf08c6a7a80299"></span>auto <code class="descname">operator+=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualpLERK1T" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add and assignment operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt>
-<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
-<dt id="_CPPv2N4audi5gdualmIERK1T">
-<span id="audi::gdual::sub-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a68217cd19dec843302aaab09e3c98dd5"></span>auto <code class="descname">operator-=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmIERK1T" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subtract and assignment operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt>
-<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
-<dt id="_CPPv2N4audi5gdualmLERK1T">
-<span id="audi::gdual::mul-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a09719aa3af3f8a4c6d689491629bf5d1"></span>auto <code class="descname">operator*=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmLERK1T" title="Permalink to this definition">¶</a></dt>
-<dd><p>Multiply and assignment operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt>
-<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
-<dt id="_CPPv2N4audi5gdualdVERK1T">
-<span id="audi::gdual::div-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aae9e5dfc55bdf33646503885419fdb71"></span>auto <code class="descname">operator/=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualdVERK1T" title="Permalink to this definition">¶</a></dt>
-<dd><p>Divide and assignment operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N4audi5gdualmiEv">
-<span id="audi::gdual::sub-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a72105c0b0c6322c10bf8c4dfa2776083"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> <code class="descname">operator-</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualmiEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Negate operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N4audi5gdualplEv">
-<span id="audi::gdual::add-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a66cb074fcbb6f8f148ef2492b18d93b3"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> <code class="descname">operator+</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualplEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Identity operator. </p>
-</dd></dl>
-
-<dl class="function">
-<dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T, <em class="property">typename</em> U&gt;</dt>
 <dt id="_CPPv2plRK1TRK1U">
 <span id="add-operator__TCR.UCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aedf88fc2b910098026c5a285531489de"></span>gdual_if_enabled&lt;T, U&gt; <code class="descname">operator+</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em>, <em class="property">const</em> U &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2plRK1TRK1U" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded addition operator. </p>
-<p>Implements the sum operation in the algebra <span class="math">\(\mathcal P_{n,m}\)</span> of truncated polynomials. <dl class="docutils">
+<p>Implements the sum operation between truncated Taylor polynomials. <dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
+<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
 <dt><strong>Return</strong></dt>
 <dd>the sum between d1 and d2 </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -232,16 +204,16 @@
 <dt id="_CPPv2miRK1TRK1U">
 <span id="sub-operator__TCR.UCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a73b9da1f799717756566fdf421ba764f"></span>gdual_if_enabled&lt;T, U&gt; <code class="descname">operator-</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em>, <em class="property">const</em> U &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2miRK1TRK1U" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded difference operator. </p>
-<p>Implements the difference operation in the algebra <span class="math">\(\mathcal P_{n,m}\)</span> of truncated polynomials. <dl class="docutils">
+<p>Implements the difference operation between truncated Taylor polynomials. <dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
+<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
 <dt><strong>Return</strong></dt>
 <dd>the difference between d1 and d2 </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -255,18 +227,18 @@
 <dt id="_CPPv2mlRK1TRK1U">
 <span id="mul-operator__TCR.UCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af6e21f8aa99bf6cf4c9a14b49c32b2fe"></span>gdual_if_enabled&lt;T, U&gt; <code class="descname">operator*</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em>, <em class="property">const</em> U &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2mlRK1TRK1U" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded multiplication operator. </p>
-<p>Implements the multiplication operation in the algebra <span class="math">\(\mathcal P_{n,m}\)</span> of truncated polynomials. <dl class="docutils">
+<p>Implements the multiplication operation between truncated Taylor polynomials. <dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
+<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
 <dt><strong>Note</strong></dt>
 <dd>The truncated polynomial multiplication operator is at the very heart of AuDi and its details / performances are those of the piranha multiplication algorithm which is, essentially, used.</dd>
 <dt><strong>Return</strong></dt>
 <dd>the (truncated) multiplication between d1 and d2 </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -280,21 +252,21 @@
 <dt id="_CPPv2dvRK1TRK1U">
 <span id="div-operator__TCR.UCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a193be1e6e87734564d3169f50fad648e"></span>gdual_if_enabled&lt;T, U&gt; <code class="descname">operator/</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em>, <em class="property">const</em> U &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2dvRK1TRK1U" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded division operator. </p>
-<p>Implements the division operation in the algebra <span class="math">\(\mathcal P_{n,m}\)</span> of truncated polynomials. Essentially defined (in case of two audi:gdual) by a multiplication and the reciprocal rule:</p>
+<p>Implements the division operation between truncated Taylor polynomials. Essentially, defined (in case of two <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>) by a multiplication and the reciprocal rule:</p>
 <p><div class="math">
 \[ T_g = \frac 1{T_f} = \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right) \]</div>
 </p>
 <p>where <span class="math">\(T_f = f_0 + \hat f\)</span>.</p>
 <p><dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
+<dd>In order for this overload to be active (SFINAE rules), at least one of the arguments must be an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>, while the second argument may only be a double or int.</dd>
 <dt><strong>Return</strong></dt>
 <dd>an audi:gdual containing the (truncated) multiplication between d1 and d2 </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -302,12 +274,56 @@
 </p>
 </dd></dl>
 
+<dl class="function">
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
+<dt id="_CPPv2N4audi5gdualpLERK1T">
+<span id="audi::gdual::add-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a950e201c822f7fccc3f067c444572f8b"></span>auto <code class="descname">operator+=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualpLERK1T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add and assignment operator. </p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
+<dt id="_CPPv2N4audi5gdualmIERK1T">
+<span id="audi::gdual::sub-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af7db25823fca7f95f93849acd5c5c428"></span>auto <code class="descname">operator-=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmIERK1T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtract and assignment operator. </p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
+<dt id="_CPPv2N4audi5gdualmLERK1T">
+<span id="audi::gdual::mul-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1afb0d7b3e6bcf221bce2451ed414de943"></span>auto <code class="descname">operator*=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmLERK1T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply and assignment operator. </p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
+<dt id="_CPPv2N4audi5gdualdVERK1T">
+<span id="audi::gdual::div-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a9332438fd6e42ba1d80a0582fdff42d6"></span>auto <code class="descname">operator/=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualdVERK1T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide and assignment operator. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4audi5gdualmiEv">
+<span id="audi::gdual::sub-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a25ae431d75eb8f659472ef1dd542774b"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator-</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualmiEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Negate operator. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4audi5gdualplEv">
+<span id="audi::gdual::add-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad7ad0fbe805397b4e312398d835ebbe6"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator+</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualplEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identity operator. </p>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef container">
 <p class="breathe-sectiondef-title rubric">Low-level interface</p>
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual10_containerEv">
-<span id="audi::gdual::_container"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1905d0e7c16af499c7c22cbb32b01c83"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::_container"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a56389297315a9492e5370ac0086ded02"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a mutable reference to the container of terms. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -318,11 +334,33 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual10_containerEv">
-<span id="audi::gdual::_container"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a471da1de8ad7e60989af44fd8ef32125"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="AuDiclassaudi_1_1gdual_1abe2a49f5d510d746fea7df8298dacf2b"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a const reference to the container of terms. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>a const reference to the internal container of terms. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4audi5gdual5_polyEv">
+<span id="audi::gdual::_poly"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a3d74c1755fa1723209a50329d8061da1"></span><em class="property">const</em> p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a const reference to the polynomial. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a const reference to the internal polynomial. </dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N4audi5gdual5_polyEv">
+<span class="target" id="AuDiclassaudi_1_1gdual_1aaf76253bb1bf37e246da7bfbad19c8bd"></span>p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a mutable reference to the polynomial. </p>
+<p><dl class="docutils">
+<dt><strong>Return</strong></dt>
+<dd>a reference to the internal polynomial. </dd>
 </dl>
 </p>
 </dd></dl>
@@ -332,145 +370,43 @@
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualERK5gdual">
-<span id="audi::gdual::gdual__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a9288ea0a65ef02f7975ff6408d1ab811"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aa9534c8e91d2c24596b6883cdba31ad1"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted copy constructor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualERR5gdual">
-<span id="audi::gdual::gdual__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a4949e4b722e55bd7bda78209d6399465"></span><code class="descname">gdual</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERR5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a73a25445fdf82d4111661a0005bcc2b5"></span><code class="descname">gdual</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERR5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted move constructor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualEv">
-<span id="audi::gdual::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a5414ec22471ad29540cea2b96d9812a6"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af04470cc149884b2be93cdf8c44dd657"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default constuctor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualD0Ev">
-<span id="audi::gdual::~gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a28af137d9dcbfcec4825f0e8d6d1b9ff"></span><code class="descname">~gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualD0Ev" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::~gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8ec18c7021f2a80183e98b0e295ebfcf"></span><code class="descname">~gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualD0Ev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Destructor (contains a sanity check) </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N4audi5gdual5gdualERKNSt6stringEj">
-<span id="audi::gdual::gdual__ssCR.unsigned-i"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a7aa21056ab3fde1144e7a1471ec2b47c"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned int <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERKNSt6stringEj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor from symbol and truncation order. </p>
-<p>Will construct a generalized dual number made of a single term with unitary coefficient and exponent, representing the expansion around zero of the symbolic variable <code class="docutils literal"><span class="pre">symbol</span></code>. The truncation order is also set to <code class="docutils literal"><span class="pre">order</span></code>. The type of <code class="docutils literal"><span class="pre">symbol</span></code> must be a string type (either C or C++) and its variation will be indicated prepending the letter &#8220;d&#8221; so that &#8220;x&#8221; -&gt; &#8220;dx&#8221;.</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">symbol</span></code> - <p>symbolic name </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">order</span></code> - <p>truncation order</p>
-</li>
-</ul>
-</dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
-<li>if <code class="docutils literal"><span class="pre">order</span></code> is not in [0, std::numeric_limits&lt;int&gt;::max() - 10u]</li>
-<li>if <code class="docutils literal"><span class="pre">symbol</span></code> already starts with the letter &#8220;d&#8221; (this avoids to create confusing variation symbols of the form &#8220;ddname&#8221;) </li>
-</ul>
-</p>
-</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N4audi5gdual5gdualEdj">
-<span id="audi::gdual::gdual__double.unsigned-i"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a77c6cc10b9cee2785d9014d7ee62d077"></span><code class="descname">gdual</code><span class="sig-paren">(</span>double <em>value</em>, unsigned int <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEdj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor from value and truncation order. </p>
-<p>Will construct a generalized dual number representing a constant number</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">value</span></code> - <p>value of the constant </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">order</span></code> - <p>truncation order of the underlying algebra</p>
-</li>
-</ul>
-</dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
-<li>if <code class="docutils literal"><span class="pre">order</span></code> is not in [0, std::numeric_limits&lt;int&gt;::max() - 10u] </li>
-</ul>
-</p>
-</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N4audi5gdual5gdualEd">
-<span id="audi::gdual::gdual__double"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ae727c0208fa9480394f954a01b4d6236"></span><code class="descname">gdual</code><span class="sig-paren">(</span>double <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor from value. </p>
-<p>Will construct a generalized dual number of order 0 representing a constant number</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">value</span></code> - <p>value of the constant </p>
-</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv2N4audi5gdual5gdualEdRKNSt6stringEj">
-<span id="audi::gdual::gdual__double.ssCR.unsigned-i"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ac2229888181b82aaf8b32c9ffd7defa9"></span><code class="descname">gdual</code><span class="sig-paren">(</span>double <em>value</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned int <em>order</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEdRKNSt6stringEj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructor from value, symbol and truncation order. </p>
-<p>Will construct a generalized dual number representing the expansion around <code class="docutils literal"><span class="pre">value</span></code> of the symbolic variable <code class="docutils literal"><span class="pre">symbol</span></code>. The truncation order is also set to <code class="docutils literal"><span class="pre">order</span></code>.</p>
-<p>The type of <code class="docutils literal"><span class="pre">symbol</span></code> must be a string type (either C or C++) and its variation will be indicated prepending the letter &#8220;d&#8221; so that &#8220;x&#8221; -&gt; &#8220;dx&#8221;.</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">value</span></code> - <p>value of the variable </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">symbol</span></code> - <p>symbolic name </p>
-</li>
-<li><code class="first docutils literal"><span class="pre">order</span></code> - <p>truncation order</p>
-</li>
-</ul>
-</dd>
-<dt><strong>Exceptions</strong></dt>
-<dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
-<li>if <code class="docutils literal"><span class="pre">order</span></code> is not in [0, std::numeric_limits&lt;int&gt;::max() - 10u]</li>
-<li>if <code class="docutils literal"><span class="pre">symbol</span></code> already starts with the letter &#8220;d&#8221; (this avoids to create confusing variation symbols of the form &#8220;ddname&#8221;) </li>
-</ul>
-</p>
-</li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="_CPPv2N4audi5gdualaSERK5gdual">
-<span id="audi::gdual::assign-operator__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af10b01e4b004d254a4379a02b747e899"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERK5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::assign-operator__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a7e359e82ef2ed60c8b5ac6cdad99566a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted assignment operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualaSERR5gdual">
-<span id="audi::gdual::assign-operator__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a2c78cbe6041d95b7fee10e653aef998b"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERR5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::assign-operator__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a0eec1dc51408a199552b92b8316baaf1"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERR5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted assignment operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual19get_symbol_set_sizeEv">
-<span id="audi::gdual::get_symbol_set_size"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a04f09a2203c9cdaff27c52f76b0b5ae8"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_symbol_set_size"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a6596f29815f8f6cb9c4dac2e991980ec"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the symbol set size. </p>
 <p>Returns the size of the symbol set.</p>
 <p><dl class="docutils">
@@ -482,9 +418,9 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual14get_symbol_setEv">
-<span id="audi::gdual::get_symbol_set"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a885dc6d486b1ccf5e29f4afc3a8bcfd3"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbol_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_symbol_setEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_symbol_set"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad0bb6280d89146169404ce7033474e78"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbol_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_symbol_setEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the symbol set size. </p>
-<p>Returns the symbol set</p>
+<p>Returns the symbol set (not the differentials)</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>the symbol set </dd>
@@ -494,18 +430,23 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE">
-<span id="audi::gdual::extend_symbol_set__std::vector:ss:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a2b2690be248ce9887946d893df6a8a7b"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::extend_symbol_set__std::vector:ss:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8221c1d7c1d82da3a56dd777220099dd"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extends the symbol set. </p>
 <p>Adds some symbolic variables to the current polynomial This is useful in situations where some variable <span class="math">\( dx\)</span> does not appear in the final polynomial but we still want to treat the Taylor expansion as a function of <span class="math">\( dx\)</span> too (for example when extracting the relative coefficient)</p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">sym_vars</span></code> - <p>list of symbolic names. It must contain all symbolic names of the current polynomial. It may contain more.</p>
+<li><code class="first docutils literal"><span class="pre">sym_vars</span></code> - <p>list of symbolic names. It must contain all symbolic names of the current polynomial. It may contain more. All symbols must start with the letter &#8220;d&#8221;.</p>
 </li>
 </ul>
 </dd>
 <dt><strong>Exceptions</strong></dt>
 <dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
+<li>if any symbol in <code class="docutils literal"><span class="pre">sym_vars</span></code> does not start with the letter &#8220;d&#8221;</li>
+</ul>
+</p>
+</li>
 <li><code class="first docutils literal"><span class="pre">unspecified</span></code> - <p>any exception thrown by:<ul class="simple">
 <li>piranha::series::extend_symbol_set, </li>
 </ul>
@@ -518,25 +459,27 @@
 </dd></dl>
 
 <dl class="function">
+<dt>
+<em class="property">template </em>&lt;std::enable_if_t&lt; piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
 <dt id="_CPPv2N4audi5gdual9integrateERKNSt6stringE">
-<span id="audi::gdual::integrate__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a3431956449b0fa8bbdaa46c7eb08ca67"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> <code class="descname">integrate</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>symbol</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual9integrateERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::integrate__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a4a747f39956b04424cde449f1c312cc4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">integrate</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual9integrateERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integration. </p>
 <p>Performs the integration of the gdual with respect to the symbol.</p>
 <p><dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>If <code class="docutils literal"><span class="pre">symbol</span></code> is not in the symbol set, then it is added.</dd>
+<dd>If the <code class="docutils literal"><span class="pre">var_name</span></code> differential is not in the symbol set, then it is added.</dd>
 <dt><strong>Note</strong></dt>
 <dd>Information may be lost as the truncation order is preserved.</dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">symbol</span></code> - <p>Symbolic variable (must start with &#8220;d&#8221;).</p>
+<li><code class="first docutils literal"><span class="pre">var_name</span></code> - <p>Symbol name (cannot start with &#8220;d&#8221;).</p>
 </li>
 </ul>
 </dd>
 <dt><strong>Exceptions</strong></dt>
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
-<li>if <code class="docutils literal"><span class="pre">symbol</span></code> does not start with the letter &#8220;d&#8221;.</li>
+<li>if <code class="docutils literal"><span class="pre">var_name</span></code> starts with the letter &#8220;d&#8221; (this avoid creating confusing names for symbol&#8217;s differentials)</li>
 </ul>
 </p>
 </li>
@@ -553,23 +496,25 @@
 </dd></dl>
 
 <dl class="function">
+<dt>
+<em class="property">template </em>&lt;std::enable_if_t&lt; piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7partialERKNSt6stringE">
-<span id="audi::gdual::partial__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a278fcebac61b77aed2776fa6a741b218"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> <code class="descname">partial</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>symbol</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual7partialERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::partial__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aaa28e5db56e0cffcf2316677a49e5b5a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">partial</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual7partialERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial derivative. </p>
 <p>Performs the partial derivative of the gdual with respect to the symbol</p>
 <p><dl class="docutils">
 <dt><strong>Note</strong></dt>
-<dd>If <code class="docutils literal"><span class="pre">symbol</span></code> is not in the symbol set it returns zero</dd>
+<dd>If the <code class="docutils literal"><span class="pre">var_name</span></code> differential is not in the symbol set, then it is added.</dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">symbol</span></code> - <p>Symbolic variable (must start with &#8220;d&#8221;).</p>
+<li><code class="first docutils literal"><span class="pre">var_name</span></code> - <p>Symbol name (cannot start with &#8220;d&#8221;).</p>
 </li>
 </ul>
 </dd>
 <dt><strong>Exceptions</strong></dt>
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p><ul class="simple">
-<li>if <code class="docutils literal"><span class="pre">symbol</span></code> does not start with the letter &#8220;d&#8221;</li>
+<li>if <code class="docutils literal"><span class="pre">symbol</span></code> starts with the letter &#8220;d&#8221; (this avoid creating confusing names for symbol&#8217;s differentials)</li>
 </ul>
 </p>
 </li>
@@ -585,8 +530,10 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N4audi5gdual4subsEKNSt6stringEd">
-<span id="audi::gdual::subs__ssC.double"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aebe612ee2cf6854fafdb6771729c26a9"></span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string <em>sym</em>, double <em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual4subsEKNSt6stringEd" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
+<dt id="_CPPv2N4audi5gdual4subsERKNSt6stringERK1T">
+<span id="audi::gdual::subs__ssCR.TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a904564221157d5cae0748ccdcdeac807"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute symbol with value. </p>
 <p>Substitute the symbol <code class="docutils literal"><span class="pre">sym</span></code> with the value <code class="docutils literal"><span class="pre">val</span></code> </p>
 <p><dl class="docutils">
@@ -604,10 +551,29 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N4audi5gdual8evaluateERKNSt13unordered_mapINSt6stringEdEE">
+<span id="audi::gdual::evaluate__std::unordered_map:ss.double:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad9405ba4301f110f4ead4bee7c9f72f8"></span>auto <code class="descname">evaluate</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, double&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual8evaluateERKNSt13unordered_mapINSt6stringEdEE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Taylor polynomial. </p>
+<p>Evaluates the Taylor polynomial using the values in <code class="docutils literal"><span class="pre">dict</span></code> for all the differentials (variables variations)</p>
+<p><dl class="docutils">
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">unspecified</span></code> - <p>any exception thrown by:<ul class="simple">
+<li>piranha::math::evaluate, </li>
+</ul>
+</p>
+</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N4audi5gdual6degreeEv">
-<span id="audi::gdual::degree"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8a5e54dba67b9814af23327aac4c6c25"></span>auto <code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual6degreeEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::degree"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a42076a71152756d2f4750d7d0a884881"></span>auto <code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual6degreeEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current degree. </p>
-<p>Returns the current degree of the polynomial represented as an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. This may be different from the truncation order <span class="math">\(m\)</span> and, in particular will be smaller or equal.</p>
+<p>Returns the current degree of the polynomial represented as an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. This may be different from the truncation order <span class="math">\(m\)</span> and, in particular will be smaller or equal.</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>the current degree of the polynomial </dd>
@@ -616,20 +582,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N4audi5gdual15get_n_variablesEv">
-<span id="audi::gdual::get_n_variables"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a6773f37813dd289d87eb64f5a3045fc3"></span>auto <code class="descname">get_n_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual15get_n_variablesEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of symbolic variables. </p>
-<p>Returns the number of symbolic variables in the polynomial represented as an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>.</p>
-<p><dl class="docutils">
-<dt><strong>Return</strong></dt>
-<dd>the number of symbolic variables </dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="_CPPv2N4audi5gdual9get_orderEv">
-<span id="audi::gdual::get_order"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a75039d54992d92496cf3daf57c038d55"></span>unsigned int <code class="descname">get_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual9get_orderEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_order"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a6deb2d4767f35039cea39dc43132770f"></span>unsigned int <code class="descname">get_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual9get_orderEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the truncation order. </p>
 <p>Returns the truncation order of the underlying <span class="math">\(\mathcal P_{n,m}\)</span> algebra.</p>
 <p><dl class="docutils">
@@ -643,7 +597,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7find_cfERK1T">
-<span id="audi::gdual::find_cf__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aae763e4976978770885251862bf14127"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::find_cf__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad1ee3bfdf8b687469294b704e57c2190"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the coefficient of a particular monomial. </p>
 <p>Returns the coefficient of the monomial specified in the container <code class="docutils literal"><span class="pre">c</span></code> </p>
 <p>
@@ -674,7 +628,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE">
-<span id="audi::gdual::find_cf__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a55e7e7c089f57c69957f4b09627d2967"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::find_cf__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aa6d768ce63dd0a4a6345996dcddd25e9"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the coefficient of a particular monomial. </p>
 <p>Returns the coefficient of the monomial specified in the initializer list <code class="docutils literal"><span class="pre">l</span></code> </p>
 <p><dl class="docutils">
@@ -699,7 +653,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual14get_derivativeERK1T">
-<span id="audi::gdual::get_derivative__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a4240d101b39e51e67fea6ca0308d5f74"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_derivative__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8933b90db849115e6582579196a4fb04"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the derivative value. </p>
 <p>Returns the (mixed) derivative value of order specified by the container <code class="docutils literal"><span class="pre">c</span></code> </p>
 <p><dl class="docutils">
@@ -726,7 +680,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE">
-<span id="audi::gdual::get_derivative__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a04a9bddb8ead37d42fa5b24198b2af47"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_derivative__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a873ab0c11d1a8477e7fa2b59d582c687"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the derivative value. </p>
 <p>Returns the (mixed) derivative value of order specified by the initializer list <code class="docutils literal"><span class="pre">l</span></code> </p>
 <p><dl class="docutils">
@@ -750,8 +704,32 @@ This method will first construct a term with zero coefficient and key initialise
 </dd></dl>
 
 <dl class="function">
+<dt id="_CPPv2N4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE">
+<span id="audi::gdual::get_derivative__std::unordered_map:ss.unsigned-i:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af8f17c4e139b7520fc4730ddcc4331db"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, unsigned int&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the derivative value. </p>
+<p>Returns the (mixed) derivative value of order specified by the container <code class="docutils literal"><span class="pre">c</span></code> </p>
+<p><dl class="docutils">
+<dt><strong>Note</strong></dt>
+<dd>To get the following derivative: <span class="math">\( \frac{d^6}{dxdy^3dz^2}\)</span> the input should be {{&#8220;x&#8221;, 1u},{&#8220;y&#8221;,3u},{&#8220;z&#8221;,2u}}</dd>
+<dt><strong>Note</strong></dt>
+<dd>The current implementation call internally the other templated implementations. WHen piranha will implement the sparse monomial this will change and be more efficient.</dd>
+<dt><strong>Return</strong></dt>
+<dd>the value of the derivative</dd>
+<dt><strong>Exceptions</strong></dt>
+<dd><ul class="breatheparameterlist first last">
+<li><code class="first docutils literal"><span class="pre">unspecified</span></code> - <p>all exceptions thrown by the templated version call. </p>
+</li>
+<li><code class="first docutils literal"><span class="pre">std::invalid_argument</span></code> - <p>if one of the symbols is not found in the expression </p>
+</li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv2N4audi5gdual11constant_cfEv">
-<span id="audi::gdual::constant_cf"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8e508093ad84232b110be7d321ff87e9"></span>double <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual11constant_cfEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::constant_cf"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a06f3c8056cb7cbd4012d97f40dc8fa94"></span>Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual11constant_cfEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the constant coefficient. </p>
 <p>Returns the coefficient of the of the constant part of the polynomial so that if <span class="math">\(T_{f} = f_0 + \hat f\)</span>,m <span class="math">\(f_0\)</span> is returned</p>
 <p><dl class="docutils">
@@ -782,7 +760,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">os</span></code> - <p>target stream. </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument.</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument.</p>
 </li>
 </ul>
 </dd>
@@ -794,16 +772,16 @@ This method will first construct a term with zero coefficient and key initialise
 <dt id="_CPPv2eqRK5gdualRK5gdual">
 <span id="eq-operator__gdualCR.gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ae45eafd4b2796ef03ded16067f847b20"></span>bool <code class="descname">operator==</code><span class="sig-paren">(</span><em class="property">const</em> gdual &amp;<em>d1</em>, <em class="property">const</em> gdual &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2eqRK5gdualRK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded Equality operator. </p>
-<p>Compares the single polynomial coefficients of two <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> objects and returns true if equal.</p>
+<p>Compares the single polynomial coefficients of two <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> objects and returns true if equal.</p>
 <p>/note The truncation order of <code class="docutils literal"><span class="pre">d1</span></code> and <code class="docutils literal"><span class="pre">d2</span></code> may be different</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>The result of the cmparison </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -815,15 +793,15 @@ This method will first construct a term with zero coefficient and key initialise
 <dt id="_CPPv2neRK5gdualRK5gdual">
 <span id="neq-operator__gdualCR.gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1720b0c7b7fee3512708133495d9116c"></span>bool <code class="descname">operator!=</code><span class="sig-paren">(</span><em class="property">const</em> gdual &amp;<em>d1</em>, <em class="property">const</em> gdual &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2neRK5gdualRK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded Non equality operator. </p>
-<p>Compares the truncation order and the single polynomial coefficients of two <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> objects and returns false if equal.</p>
+<p>Compares the truncation order and the single polynomial coefficients of two <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> objects and returns false if equal.</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>The result of the cmparison </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p>first <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p>second <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -841,10 +819,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="exp-overload-for-the-exponential">
 <h3><a class="toc-backref" href="#id5">exp: Overload for the exponential.</a><a class="headerlink" href="#exp-overload-for-the-exponential" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3expERK5gdual">
-<span id="audi::exp__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1abc6fc320e20791ef2dfb7821da0eec69"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">exp</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3expERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3expERK1T">
+<span id="audi::exp__TCR"></span><span class="target" id="AuDinamespaceaudi_1af718491596ab5e7e7c4d683b72c01425"></span>T <code class="descclassname">audi::</code><code class="descname">exp</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3expERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the exponential. </p>
-<p>Implements the exponential of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the exponential of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right) \]</div>
 </p>
@@ -854,7 +834,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the exponential of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -867,10 +847,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="log-overload-for-the-logarithm">
 <h3><a class="toc-backref" href="#id6">log: Overload for the logarithm.</a><a class="headerlink" href="#log-overload-for-the-logarithm" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3logERK5gdual">
-<span id="audi::log__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a8af379f801041edcedcaadf2f999f358"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">log</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3logERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3logERK1T">
+<span id="audi::log__TCR"></span><span class="target" id="AuDinamespaceaudi_1a340af557a8112eb193765c9591fd9486"></span>T <code class="descclassname">audi::</code><code class="descname">log</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3logERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the logarithm. </p>
-<p>Implements the logarithm of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the logarithm of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ... \]</div>
 </p>
@@ -880,7 +862,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the logarithm of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -893,10 +875,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="pow-overload-for-pow-const-gdual-double">
 <h3><a class="toc-backref" href="#id7">pow: Overload for pow(const gdual&amp;, double)</a><a class="headerlink" href="#pow-overload-for-pow-const-gdual-double" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3powERK5gduald">
-<span id="audi::pow__gdualCR.double"></span><span class="target" id="AuDinamespaceaudi_1a0e553e2267f182ae0165201315361fa3"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em>, double <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK5gduald" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3powERK1Td">
+<span id="audi::pow__TCR.double"></span><span class="target" id="AuDinamespaceaudi_1ac6c61b65bc79cc276da0f726cdc9c49f"></span>T <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em>, double <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK1Td" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the exponentiation. </p>
-<p>Implements the exponentiation of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the exponentiation of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k \]</div>
 </p>
@@ -906,7 +890,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of <code class="docutils literal"><span class="pre">d</span></code> elevated to the power <code class="docutils literal"><span class="pre">alpha</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
 <li><code class="first docutils literal"><span class="pre">alpha</span></code> - <p>exponent</p>
 </li>
@@ -921,14 +905,16 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="pow-overload-for-pow-const-gdual-int">
 <h3><a class="toc-backref" href="#id8">pow: Overload for pow(const gdual&amp;, int)</a><a class="headerlink" href="#pow-overload-for-pow-const-gdual-int" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3powERK5gduali">
-<span id="audi::pow__gdualCR.i"></span><span class="target" id="AuDinamespaceaudi_1ac6c9eb09488109d4560bc366d9868447"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK5gduali" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3powERK1Ti">
+<span id="audi::pow__TCR.i"></span><span class="target" id="AuDinamespaceaudi_1af6b5e0cb1e76a1228fd89654aa3e77a2"></span>T <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK1Ti" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the integer exponentiation. </p>
-<p>Implements the integer exponentiation of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it uses the <span class="math">\(\mathcal P_{n,m}\)</span> multiplication on <code class="docutils literal"><span class="pre">d</span></code> <code class="docutils literal"><span class="pre">n</span></code> times</p>
+<p>Implements the integer exponentiation of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it uses the <span class="math">\(\mathcal P_{n,m}\)</span> multiplication on <code class="docutils literal"><span class="pre">d</span></code> <code class="docutils literal"><span class="pre">n</span></code> times</p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
 <li><code class="first docutils literal"><span class="pre">n</span></code> - <p>integer exponent </p>
 </li>
@@ -943,16 +929,18 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="pow-overload-for-pow-double-const-gdual">
 <h3><a class="toc-backref" href="#id9">pow: Overload for pow(double, const gdual&amp;)</a><a class="headerlink" href="#pow-overload-for-pow-double-const-gdual" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3powEdRK5gdual">
-<span id="audi::pow__double.gdualCR"></span><span class="target" id="AuDinamespaceaudi_1aa18dd8636f92ea12ac848788204aa8d9"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span>double <em>base</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powEdRK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3powEdRK1T">
+<span id="audi::pow__double.TCR"></span><span class="target" id="AuDinamespaceaudi_1a5462fb27460af65be40fb3b84e2fc376"></span>T <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span>double <em>base</em>, <em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powEdRK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the exponentiation to a gdual power. </p>
-<p>Computes the exponentiation to the power of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. If the exponent is an integer constant, it calls the std::pow overload. Otherwise it converts <span class="math">\(a^{T_f}\)</span> to <span class="math">\(\exp(T_g*\log(a))\)</span> and computes this last expression instead.</p>
+<p>Computes the exponentiation to the power of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. If the exponent is an integer constant, it calls the std::pow overload. Otherwise it converts <span class="math">\(a^{T_f}\)</span> to <span class="math">\(\exp(T_g*\log(a))\)</span> and computes this last expression instead.</p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
 <li><code class="first docutils literal"><span class="pre">base</span></code> - <p>the base for the exponent </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
 </ul>
 </dd>
@@ -965,16 +953,18 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="pow-overload-for-pow-const-gdual-const-gdual">
 <h3><a class="toc-backref" href="#id10">pow: Overload for pow(const gdual&amp;, const gdual&amp;)</a><a class="headerlink" href="#pow-overload-for-pow-const-gdual-const-gdual" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3powERK5gdualRK5gdual">
-<span id="audi::pow__gdualCR.gdualCR"></span><span class="target" id="AuDinamespaceaudi_1aecfc195e10e2e7aade962f11df137152"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d1</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK5gdualRK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3powERK1TRK1T">
+<span id="audi::pow__TCR.TCR"></span><span class="target" id="AuDinamespaceaudi_1a2543f5f5d672d8240648e5e029670c74"></span>T <code class="descclassname">audi::</code><code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em>, <em class="property">const</em> T &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3powERK1TRK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the exponentiation of a gdual to a gdual power. </p>
-<p>Computes the exponentiation of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> to the power of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. If the exponent is an integer constant, it calls a different overload. Otherwise it converts <span class="math">\(T_f^{T_g}\)</span> to <span class="math">\(\exp(T_g*\log(T_f))\)</span> and computes this last expression instead.</p>
+<p>Computes the exponentiation of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> to the power of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. If the exponent is an integer constant, it calls a different overload. Otherwise it converts <span class="math">\(T_f^{T_g}\)</span> to <span class="math">\(\exp(T_g*\log(T_f))\)</span> and computes this last expression instead.</p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument </p>
+<li><code class="first docutils literal"><span class="pre">d1</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p>
 </li>
-<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d2</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -993,10 +983,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sin-overload-for-the-sine">
 <h3><a class="toc-backref" href="#id11">sin: Overload for the sine.</a><a class="headerlink" href="#sin-overload-for-the-sine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3sinERK5gdual">
-<span id="audi::sin__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a8e098bd700c7e156d265ed0de19d2be3"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3sinERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3sinERK1T">
+<span id="audi::sin__TCR"></span><span class="target" id="AuDinamespaceaudi_1a1f140a1aafe6b61609798a234ecc6c8f"></span>T <code class="descclassname">audi::</code><code class="descname">sin</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3sinERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the sine. </p>
-<p>Implements the sine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the sine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[\begin{split} T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
 </p>
@@ -1006,7 +998,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1019,10 +1011,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="cos-overload-for-the-cosine">
 <h3><a class="toc-backref" href="#id12">cos: Overload for the cosine.</a><a class="headerlink" href="#cos-overload-for-the-cosine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3cosERK5gdual">
-<span id="audi::cos__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1af51fe1cdca348e1902ee3776cfafe2f3"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3cosERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3cosERK1T">
+<span id="audi::cos__TCR"></span><span class="target" id="AuDinamespaceaudi_1ac5bd00c020bfc3bb6f9727cacc927e80"></span>T <code class="descclassname">audi::</code><code class="descname">cos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3cosERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the cosine. </p>
-<p>Implements the cosine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the cosine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \]</div>
 </p>
@@ -1032,7 +1026,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1045,8 +1039,10 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sin-and-cos-computes-both-at-once">
 <h3><a class="toc-backref" href="#id13">sin_and_cos: Computes both at once</a><a class="headerlink" href="#sin-and-cos-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi11sin_and_cosERK5gdual">
-<span id="audi::sin_and_cos__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a9ff75d2f5dd73cd8ce3b31681d0797e3"></span>std::array&lt;<a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>, 2&gt; <code class="descclassname">audi::</code><code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi11sin_and_cosERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi11sin_and_cosERK1T">
+<span id="audi::sin_and_cos__TCR"></span><span class="target" id="AuDinamespaceaudi_1ac10deb6e5f72665371505bdf08ac2dc9"></span>std::array&lt;T, 2&gt; <code class="descclassname">audi::</code><code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi11sin_and_cosERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes both sine and cosine. </p>
 <p>As most of the computations for the sine and cosine is the same, it is twice as fast to get both sine and cosine at once rather than computing them in sequence. Use this function when both sine and cosine are needed.</p>
 <p><dl class="docutils">
@@ -1054,7 +1050,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an std::array containing the Taylor expansions of sine and the cosine (first element, second element) </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1067,10 +1063,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="tan-overload-for-the-tangent">
 <h3><a class="toc-backref" href="#id14">tan: Overload for the tangent.</a><a class="headerlink" href="#tan-overload-for-the-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3tanERK5gdual">
-<span id="audi::tan__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a4fcfc1a2ba79ee703bac47fe11b329bf"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3tanERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3tanERK1T">
+<span id="audi::tan__TCR"></span><span class="target" id="AuDinamespaceaudi_1a817157267b65e8ed47956e930ddb8bd4"></span>T <code class="descclassname">audi::</code><code class="descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3tanERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the tangent. </p>
-<p>Implements the tangent of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the tangent of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} } \]</div>
 </p>
@@ -1080,7 +1078,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1093,20 +1091,22 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="atan-overload-for-the-inverse-tangent">
 <h3><a class="toc-backref" href="#id15">atan: Overload for the inverse  tangent.</a><a class="headerlink" href="#atan-overload-for-the-inverse-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4atanERK5gdual">
-<span id="audi::atan__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a3f12e97d3f1e36f497a05be7cfcc7591"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4atanERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4atanERK1T">
+<span id="audi::atan__TCR"></span><span class="target" id="AuDinamespaceaudi_1a003bc73373876546a0deecb2dfd104af"></span>T <code class="descclassname">audi::</code><code class="descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4atanERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse tangent. </p>
-<p>Implements the inverse tangent of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse tangent of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{atan} f)} = \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k \]</div>
 </p>
-<p>This formula derives directly from the formula for <a class="reference internal" href="#AuDinamespaceaudi_1abf0a4e38e7fdcd9cab862b22038fed20"><span>audi::atanh</span></a> noting that: <span class="math">\( \mbox{atan}(z) = i \mbox{atanh}(-iz)\)</span></p>
+<p>This formula derives directly from the formula for <a class="reference internal" href="#AuDinamespaceaudi_1a0cd869475ee9813d9b814218b9ce386f"><span class="std std-ref">audi::atanh</span></a> noting that: <span class="math">\( \mbox{atan}(z) = i \mbox{atanh}(-iz)\)</span></p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1119,19 +1119,21 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="acos-overload-for-the-inverse-cosine">
 <h3><a class="toc-backref" href="#id16">acos: Overload for the inverse cosine.</a><a class="headerlink" href="#acos-overload-for-the-inverse-cosine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4acosERK5gdual">
-<span id="audi::acos__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1ac5f93cf50e68969930d2b222068acdf8"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">acos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4acosERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4acosERK1T">
+<span id="audi::acos__TCR"></span><span class="target" id="AuDinamespaceaudi_1a024e4663bd050837967e4807f98e2d7c"></span>T <code class="descclassname">audi::</code><code class="descname">acos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4acosERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse cosine. </p>
-<p>Implements the inverse inverse cosine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse inverse cosine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{acos} f)} = T_{\left(\mbox{atan} \left(\sqrt{1 - f^2} / f\right)\right)} \]</div>
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1144,19 +1146,21 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="asin-overload-for-the-inverse-sine">
 <h3><a class="toc-backref" href="#id17">asin: Overload for the inverse sine.</a><a class="headerlink" href="#asin-overload-for-the-inverse-sine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4asinERK5gdual">
-<span id="audi::asin__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1ab72a44c7709ca5a4919969ccd33dab09"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">asin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4asinERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4asinERK1T">
+<span id="audi::asin__TCR"></span><span class="target" id="AuDinamespaceaudi_1a4d069b291d2deec3d4e4d9ffb120a226"></span>T <code class="descclassname">audi::</code><code class="descname">asin</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4asinERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse sine. </p>
-<p>Implements the inverse inverse sine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse inverse sine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{asin} f)} = T_{\left(\mbox{atan} \left(f / \sqrt{1 - f^2}\right)\right)} \]</div>
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1169,10 +1173,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sinh-overload-for-the-hyperbolic-sine">
 <h3><a class="toc-backref" href="#id18">sinh: Overload for the hyperbolic sine.</a><a class="headerlink" href="#sinh-overload-for-the-hyperbolic-sine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4sinhERK5gdual">
-<span id="audi::sinh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a033eaf4e9086b793cb49a13cc9647c7f"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sinhERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4sinhERK1T">
+<span id="audi::sinh__TCR"></span><span class="target" id="AuDinamespaceaudi_1a27049e5825941e639e48a8f2709d0423"></span>T <code class="descclassname">audi::</code><code class="descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sinhERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the hyperbolic sine. </p>
-<p>Implements the hyperbolic sine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the hyperbolic sine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[\begin{split} T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
 </p>
@@ -1182,7 +1188,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the hyperbolic sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1195,10 +1201,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="cosh-overload-for-the-hyperbolic-cosine">
 <h3><a class="toc-backref" href="#id19">cosh: Overload for the hyperbolic cosine.</a><a class="headerlink" href="#cosh-overload-for-the-hyperbolic-cosine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4coshERK5gdual">
-<span id="audi::cosh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a5e10cb66ad2251c146e3e33095803115"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4coshERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4coshERK1T">
+<span id="audi::cosh__TCR"></span><span class="target" id="AuDinamespaceaudi_1ae337ffc34e7587d3d67a68a6bccf0708"></span>T <code class="descclassname">audi::</code><code class="descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4coshERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the hyperbolic cosine. </p>
-<p>Implements the hyperbolic cosine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the hyperbolic cosine of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[\begin{split} T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
 </p>
@@ -1208,7 +1216,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the hyperbolic cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1221,8 +1229,10 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sinh-and-cosh-computes-both-at-once">
 <h3><a class="toc-backref" href="#id20">sinh_and_cosh: Computes both at once</a><a class="headerlink" href="#sinh-and-cosh-computes-both-at-once" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi13sinh_and_coshERK5gdual">
-<span id="audi::sinh_and_cosh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a35f5046e918775150794ba594f1430ac"></span>std::array&lt;<a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>, 2&gt; <code class="descclassname">audi::</code><code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi13sinh_and_coshERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi13sinh_and_coshERK1T">
+<span id="audi::sinh_and_cosh__TCR"></span><span class="target" id="AuDinamespaceaudi_1ac6c185c78b02e11e4cab4b0e78ebc74f"></span>std::array&lt;T, 2&gt; <code class="descclassname">audi::</code><code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi13sinh_and_coshERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes both the hyperbolic sine and the hyperbolic cosine. </p>
 <p>As most of the computations for the hyperbolic sine and hyperbolic cosine is the same, it is twice as fast to get them both at once rather than computing them in sequence. Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.</p>
 <p><dl class="docutils">
@@ -1230,7 +1240,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element) </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1243,20 +1253,22 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="tanh-overload-for-the-hyperbolic-tangent">
 <h3><a class="toc-backref" href="#id21">tanh: Overload for the hyperbolic tangent.</a><a class="headerlink" href="#tanh-overload-for-the-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4tanhERK5gdual">
-<span id="audi::tanh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1acb1ffba2d7549ab070305ac4c9e6642c"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4tanhERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4tanhERK1T">
+<span id="audi::tanh__TCR"></span><span class="target" id="AuDinamespaceaudi_1a53839c3938f9f808abaa8d22f9843f4d"></span>T <code class="descclassname">audi::</code><code class="descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4tanhERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the hyperbolic tangent. </p>
-<p>Implements the hyperbolic tangent of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the hyperbolic tangent of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\tan f)} = \frac{\tanh f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{4^k(4^k-1)}{2k!}x^{2k - 1}}{1 + \tanh f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} } \]</div>
 </p>
 <p>where <span class="math">\(T_f = f_0 + \hat f\)</span> and <span class="math">\( B_{2k}\)</span> are the Bernoulli numbers.</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1269,19 +1281,21 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="atanh-overload-for-the-inverse-hyperbolic-tangent">
 <h3><a class="toc-backref" href="#id22">atanh: Overload for the inverse hyperbolic tangent.</a><a class="headerlink" href="#atanh-overload-for-the-inverse-hyperbolic-tangent" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi5atanhERK5gdual">
-<span id="audi::atanh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1abf0a4e38e7fdcd9cab862b22038fed20"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5atanhERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi5atanhERK1T">
+<span id="audi::atanh__TCR"></span><span class="target" id="AuDinamespaceaudi_1a0cd869475ee9813d9b814218b9ce386f"></span>T <code class="descclassname">audi::</code><code class="descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5atanhERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse hyperbolic tangent. </p>
-<p>Implements the inverse hyperbolic tangent of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse hyperbolic tangent of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{atanh} f)} = \mbox{atanh} f_0 +\frac 12 \sum_{k=1}^m \left(\frac{1}{(1-f_0)^k} + \frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k} \]</div>
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic tangent of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1294,19 +1308,21 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="acosh-overload-for-the-inverse-hyperbolic-cosine">
 <h3><a class="toc-backref" href="#id23">acosh: Overload for the inverse hyperbolic cosine.</a><a class="headerlink" href="#acosh-overload-for-the-inverse-hyperbolic-cosine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi5acoshERK5gdual">
-<span id="audi::acosh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a95a6776d5b2e927d7031cfa952ee73c2"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">acosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5acoshERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi5acoshERK1T">
+<span id="audi::acosh__TCR"></span><span class="target" id="AuDinamespaceaudi_1a58a5d1009aa817910947f8022b116feb"></span>T <code class="descclassname">audi::</code><code class="descname">acosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5acoshERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse hyperbolic cosine. </p>
-<p>Implements the inverse inverse hyperbolic cosine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse inverse hyperbolic cosine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{acosh} f)} = T_{\left(\log\left(f + \sqrt{f^2 - 1}\right)\right)} \]</div>
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic cosine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1319,19 +1335,21 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="asinh-overload-for-the-inverse-hyperbolic-sine">
 <h3><a class="toc-backref" href="#id24">asinh: Overload for the inverse hyperbolic sine.</a><a class="headerlink" href="#asinh-overload-for-the-inverse-hyperbolic-sine" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi5asinhERK5gdual">
-<span id="audi::asinh__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a733ecb5af571582f98e7bb4f34ddf88c"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">asinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5asinhERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi5asinhERK1T">
+<span id="audi::asinh__TCR"></span><span class="target" id="AuDinamespaceaudi_1a52b02566a435b59a6408b5436b0770f5"></span>T <code class="descclassname">audi::</code><code class="descname">asinh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5asinhERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the inverse hyperbolic sine. </p>
-<p>Implements the inverse inverse hyperbolic sine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the inverse inverse hyperbolic sine of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{(\mbox{asinh} f)} = T_{\left(\log\left(f + \sqrt{1 + f^2}\right)\right)} \]</div>
 </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
-<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
+<dd>an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic sine of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1344,16 +1362,18 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="erf-overload-for-the-error-function">
 <h3><a class="toc-backref" href="#id25">erf: Overload for the error function</a><a class="headerlink" href="#erf-overload-for-the-error-function" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3erfERK5gdual">
-<span id="audi::erf__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a33cb6cdc2012ca7f13f477174470c5d4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">erf</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3erfERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3erfERK1T">
+<span id="audi::erf__TCR"></span><span class="target" id="AuDinamespaceaudi_1acaf9539a3d61171dca7125c4cbf417d6"></span>T <code class="descclassname">audi::</code><code class="descname">erf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3erfERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the error function. </p>
-<p>Implements the error function of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it makes use of the fact that <span class="math">\( \frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\)</span> to then use audi::_compose_from_derivative</p>
+<p>Implements the error function of an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it makes use of the fact that <span class="math">\( \frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\)</span> to then use audi::_compose_from_derivative</p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
 <dd>an audi:gdual containing the Taylor expansion of the error function of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">f</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">f</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1366,10 +1386,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="sqrt-overload-for-the-square-root">
 <h3><a class="toc-backref" href="#id26">sqrt: Overload for the square root.</a><a class="headerlink" href="#sqrt-overload-for-the-square-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4sqrtERK5gdual">
-<span id="audi::sqrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a8deb453baec52501f1806c02156432b4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sqrtERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4sqrtERK1T">
+<span id="audi::sqrt__TCR"></span><span class="target" id="AuDinamespaceaudi_1ac2e50a1a30ac40226f38f53165430588"></span>T <code class="descclassname">audi::</code><code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4sqrtERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the square root. </p>
-<p>Implements the square root of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the square root of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k \]</div>
 </p>
@@ -1379,7 +1401,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the square root of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1392,10 +1414,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="cbrt-overload-for-the-cubic-root">
 <h3><a class="toc-backref" href="#id27">cbrt: Overload for the cubic root.</a><a class="headerlink" href="#cbrt-overload-for-the-cubic-root" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi4cbrtERK5gdual">
-<span id="audi::cbrt__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1adda903acffda0d9351499fcef9a7b22a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4cbrtERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi4cbrtERK1T">
+<span id="audi::cbrt__TCR"></span><span class="target" id="AuDinamespaceaudi_1a7ed9d4b57223f9e356c92258d37a6875"></span>T <code class="descclassname">audi::</code><code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi4cbrtERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the cubic root. </p>
-<p>Implements the cubic root of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p>Implements the cubic root of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <p><div class="math">
 \[ T_{\sqrt[3]{f}} = \sqrt[3]{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k \]</div>
 </p>
@@ -1405,7 +1429,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dd>an audi:gdual containing the Taylor expansion of the square root of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1418,10 +1442,12 @@ This method will first construct a term with zero coefficient and key initialise
 <div class="section" id="abs-overload-for-the-absolute-value">
 <h3><a class="toc-backref" href="#id28">abs: Overload for the absolute value.</a><a class="headerlink" href="#abs-overload-for-the-absolute-value" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="_CPPv2N4audi3absERK5gdual">
-<span id="audi::abs__gdualCR"></span><span class="target" id="AuDinamespaceaudi_1a082f942a7ae65051ac6ed83cdb53c185"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descclassname">audi::</code><code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3absERK5gdual" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">template </em>&lt;<em class="property">typename</em> T, std::enable_if_t&lt; is_gdual&lt; T &gt;::value &amp;&amp;std::is_arithmetic&lt; typename T::cf_type &gt;::value, int &gt; = 0&gt;</dt>
+<dt id="_CPPv2N4audi3absERK1T">
+<span id="audi::abs__TCR"></span><span class="target" id="AuDinamespaceaudi_1a190187f6cbdafdc9baefcda8e313965e"></span>T <code class="descclassname">audi::</code><code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi3absERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overload for the absolute value. </p>
-<p>Implements the absolute value of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a>. Essentially, it inverts the sign of <span class="math">\(T_f\)</span> as follows:</p>
+<p>Implements the absolute value of a <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it inverts the sign of <span class="math">\(T_f\)</span> as follows:</p>
 <p><div class="math">
 \[\begin{split} T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 \ge 0 \\ -T_f &amp; f_0 &lt; 0 \end{array} \right. \end{split}\]</div>
 </p>
@@ -1429,11 +1455,13 @@ This method will first construct a term with zero coefficient and key initialise
 <p><dl class="docutils">
 <dt><strong>Note</strong></dt>
 <dd>If <span class="math">\(f_0\)</span> is zero, the right Taylor expansion will be returned rather than nans.</dd>
+<dt><strong>Note</strong></dt>
+<dd>This operation is not availiable for std::complex types.</dd>
 <dt><strong>Return</strong></dt>
 <dd>an audi:gdual containing the Taylor expansion of the absoute value of <code class="docutils literal"><span class="pre">d</span></code> </dd>
 <dt><strong>Parameters</strong></dt>
 <dd><ul class="breatheparameterlist first last">
-<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span>audi::gdual</span></a> argument</p>
+<li><code class="first docutils literal"><span class="pre">d</span></code> - <p><a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </li>
 </ul>
 </dd>
@@ -1458,7 +1486,7 @@ This method will first construct a term with zero coefficient and key initialise
     </p>
     <p>
         &copy; Copyright 2015, Dario Izzo &amp; Francesco Biscani.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.5.<br/>
     </p>
   </div>
 </footer>
