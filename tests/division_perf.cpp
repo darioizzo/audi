@@ -12,12 +12,12 @@ using namespace audi;
 void scalable_div(int m, int n)
 {
 	std::cout << "Testing for order, n_vars: " << m << ",\t" << n << std::endl;
-	std::vector<gdual> variables;
+	std::vector<gdual<double>> variables;
     for (auto i = 0; i < n; ++i) {
-    	variables.emplace_back("x"+std::to_string(i), m);
-    } 
-    gdual denom(1, m);
-    gdual num(1, m);
+    	variables.emplace_back(0., "x"+std::to_string(i), m);
+    }
+    gdual<double> denom(1.);
+    gdual<double> num(1.);
     for (int i = 0u; i < n; ++i) {num += variables[i]*variables[i];}
     for (int i = 0u; i < n; ++i) {denom += variables[0]*variables[i];}
     boost::timer::auto_cpu_timer t; // We only time the time cost of the following operation
