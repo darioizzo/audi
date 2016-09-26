@@ -689,13 +689,13 @@ inline T atan(const T& d)
     double coeff1 = 1.;
     double coeff2 = -1.;
 
-    for (auto k=1u; k <= d.get_order(); ++k) {
-        if (k % 2) {        // This is for odd powers 1..3..5
+    for (auto k = 1u; k <= d.get_order(); ++k) {
+        if (k % 2u) {        // This is for odd powers 1..3..5
             T binom(1.);
             auto f0 = p0 * p0;
             double cf_i = -1.;
-            for (auto j = 1u; 2*j <= k; ++j) {
-                binom += (piranha::math::binomial(k, 2*j) * cf_i) * f0 ;
+            for (auto j = 1u; 2 * j <= k; ++j) {
+                binom += T(piranha::math::binomial(k, 2u * j) * cf_i) * f0; // A bug in some old compiler requires the T()
                 f0 *= p0 * p0;
                 cf_i *= -1.;
             }
@@ -706,7 +706,7 @@ inline T atan(const T& d)
             auto f0 = p0;
             double cf_i = 1.;
             for (auto j = 1u; 2*j - 1 <= k; ++j) {
-                binom += (piranha::math::binomial(k, 2*j - 1)  * cf_i) * f0;
+                binom += T(piranha::math::binomial(k, 2u * j - 1u)  * cf_i) * f0; // A bug in some old compiler requires the T()
                 f0 *= p0 * p0;
                 cf_i *= -1;
             }
