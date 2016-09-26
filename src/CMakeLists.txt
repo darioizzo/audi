@@ -3,6 +3,12 @@ SET(HEADERS_LIST
 	functions_from_d.hpp
 	audi.hpp
 	gdual.hpp
+	type_traits.hpp
+	vectorized_double.hpp
+)
+SET(HEADERS_LIST_DETAIL
+	detail/complex.hpp
+    detail/overloads.hpp
 )
 
 # NOTE: this dummy cpp file is here with the sole purpose of getting the headers
@@ -11,3 +17,4 @@ add_library(audi_dummy STATIC audi_dummy.cpp ${HEADERS_LIST})
 
 # TODO header installation.
 install(FILES ${HEADERS_LIST} DESTINATION include/audi)
+install(FILES ${HEADERS_LIST_DETAIL} DESTINATION include/audi/detail)

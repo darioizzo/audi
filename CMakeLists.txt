@@ -100,7 +100,7 @@ INCLUDE_DIRECTORIES(${MPFR_INCLUDE_DIR})
 # NOTE: MPFR should be linked in before GMP, that's why we link GMP here.
 SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
 
-# Add the subdirectory for the library.
+# Add the subdirectory for the library / headers
 ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/src")
 
 # Link main to mandatory libraries.
