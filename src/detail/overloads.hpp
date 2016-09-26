@@ -73,7 +73,19 @@ ARITH_OR_COMPLEX_OVERLOAD(atanh)
 
 VECTORIZED_OVERLOAD(cbrt)
 
-template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value && is_arithmetic_or_complex<U>::value, int> = 0>
+template<typename T, typename U, std::enable_if_t<std::is_arithmetic<U>::value && std::is_arithmetic<T>::value, int> = 0>
+inline T pow(const U& base, const T &d)
+{
+    return std::pow(base, d);
+}
+
+template<typename T, typename U, std::enable_if_t<boost::is_complex<U>::value && std::is_arithmetic<T>::value, int> = 0>
+inline U pow(const U& base, const T &d)
+{
+    return std::pow(base, d);
+}
+
+template<typename T, typename U, std::enable_if_t<boost::is_complex<T>::value && std::is_arithmetic<U>::value, int> = 0>
 inline T pow(const U& base, const T &d)
 {
     return std::pow(base, d);
