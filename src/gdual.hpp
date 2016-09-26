@@ -53,7 +53,7 @@ namespace audi
  * @endcode
  *
  *
- * Integration and differentiation are also implemented so that the generalized dual computations are 
+ * Integration and differentiation are also implemented so that the generalized dual computations are
  * formally made in a differential algebra.
  *
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
@@ -796,8 +796,8 @@ private:
             return m_p;
         }
         //@}
-
-        /// Serialization
+private:
+        friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive & ar, const unsigned int)
         {

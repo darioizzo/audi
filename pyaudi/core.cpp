@@ -26,7 +26,6 @@
 #endif
 
 using namespace audi;
-using gdual_d = gdual<double>;
 namespace py = pybind11;
 
 PYBIND11_PLUGIN(_core) {
@@ -166,6 +165,123 @@ PYBIND11_PLUGIN(_core) {
 
     m.def("erf",[](const gdual_d &d) {return erf(d);},"Error function (gdual_d).");
     m.def("erf",[](double x) {return std::erf(x);},"Error function (double).");
+
+    py::class_<gdual_v>(m,"gdual_v")
+        .def(py::init<>())
+        .def(py::init<const gdual_v &>())
+        .def(py::init<std::vector<double>>())
+        .def(py::init<std::vector<double>, const std::string &, unsigned int>())
+        .def("__repr__",[](const gdual_v &g) -> std::string {
+            std::ostringstream oss;
+            oss << g;
+            return oss.str();
+        })
+        .def("_repr_latex_",[](const gdual_v &g) -> std::string {
+            std::ostringstream oss;
+            g._poly().print_tex(oss);
+            auto retval = oss.str();
+            retval += std::string("+\\mathcal{O}\\left(")
+                + boost::lexical_cast<std::string>(g.get_order() + 1) +  "\\right) \\]";
+            return std::string("\\[ ") + retval;
+        })
+        .def("__getstate__", [](const gdual_v &p) {
+            // Returns a tuple that contains the string
+            // representation of a gdual_d as obtained
+            // from the boost serialization library
+            std::stringstream ss;
+            boost::archive::text_oarchive oa(ss);
+            oa << p;
+            return py::make_tuple(ss.str());
+        })
+        .def("__setstate__", [](gdual_v &p, py::tuple t) {
+            if (t.size() != 1)
+                throw std::runtime_error("Invalid state!");
+            // Invoke the default constructor.
+            new (&p) gdual_v;
+            // Reconstruct the gdual_d
+            std::stringstream ss(t[0].cast<std::string>());
+            boost::archive::text_iarchive ia(ss);
+            ia >> p;
+        })
+        .def_property_readonly("symbol_set",&gdual_v::get_symbol_set)
+        .def_property_readonly("symbol_set_size",&gdual_v::get_symbol_set_size)
+        .def_property_readonly("degree",&gdual_v::degree)
+        .def_property_readonly("order",&gdual_v::get_order)
+        .def_property_readonly("constant_cf",&gdual_v::constant_cf)
+        .def("extend_symbol_set", &gdual_v::extend_symbol_set, "Extends the symbol set")
+        .def("integrate", &gdual_v::integrate<>, "Integrate with respect to argument")
+        .def("partial", &gdual_v::partial<>, "Partial derivative with respect to argument")
+        .def("evaluate",[](const gdual_v &g, const std::map< std::string, double> &dict) {return g.evaluate(std::unordered_map< std::string, double>(dict.begin(), dict.end()));} , "Evaluates the Taylor polynomial")
+        .def("find_cf", [](const gdual_v &g, const std::vector<int> &v) {
+            return g.find_cf(v);
+        },"Find the coefficient of the Taylor expansion")
+        .def("get_derivative", [](const gdual_v &g, const std::vector<int> &v) {
+            return g.get_derivative(v);
+        },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
+        .def("get_derivative", [](const gdual_v &g, const std::unordered_map<std::string, unsigned int> &dict) {
+            return g.get_derivative(dict);
+        },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
+        .def(py::self + py::self)
+        .def(py::self - py::self)
+        .def(py::self * py::self)
+        .def(py::self / py::self)
+        .def(py::self + double())
+        .def(py::self - double())
+        .def(py::self * double())
+        .def(py::self / double())
+        .def(-py::self)
+        .def(+py::self)
+        .def(double() + py::self)
+        .def(double() - py::self)
+        .def(double() * py::self)
+        .def(double() / py::self)
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        .def("__pow__",[](const gdual_v &g, double x) {return pow(g,x);} ,"Exponentiation (gdual_d, double).")
+        .def("__pow__",[](const gdual_v &base, const gdual_v &g) {return pow(base,g);} ,"Exponentiation (gdual_d, gdual_d).")
+        .def("__rpow__",[](const gdual_v &g, double x) {return pow(x,g);} ,"Exponentiation (double, gdual_d).")
+    ;
+
+    m.def("exp",[](const gdual_v &d) {return exp(d);},"Exponential (gdual_v).");
+
+    m.def("log",[](const gdual_v &d) {return log(d);},"Natural logarithm (gdual_v).");
+
+    m.def("sqrt",[](const gdual_v &d) {return sqrt(d);},"Square root (gdual_v).");
+
+    m.def("cbrt",[](const gdual_d &d) {return cbrt(d);},"Cubic root (gdual_v).");
+
+    m.def("sin",[](const gdual_v &d) {return sin(d);},"Sine (gdual_v).");
+    // m.def("sin",py::vectorize([](double x) {return std::sin(x);}),"Sine (vectorized double).");
+
+    m.def("asin",[](const gdual_v &d) {return asin(d);},"Arc sine (gdual_v).");
+
+    m.def("cos",[](const gdual_v &d) {return cos(d);},"Cosine (gdual_v).");
+
+    m.def("acos",[](const gdual_v &d) {return acos(d);},"Arc cosine (gdual_v).");
+
+    m.def("sin_and_cos",[](const gdual_v &d) {return sin_and_cos(d);}, "Sine and Cosine at once (gdual_v).");
+
+    m.def("tan",[](const gdual_v &d) {return tan(d);},"Tangent (gdual_v).");
+
+    m.def("atan",[](const gdual_v &d) {return atan(d);},"Arc tangent (gdual_v).");
+
+    m.def("sinh",[](const gdual_v &d) {return sinh(d);},"Hyperbolic sine (gdual_v).");
+
+    m.def("asinh",[](const gdual_v &d) {return asinh(d);},"Inverse hyperbolic sine (gdual_v).");
+
+    m.def("cosh",[](const gdual_v &d) {return cosh(d);},"Hyperbolic cosine (gdual_v).");
+
+    m.def("acosh",[](const gdual_v &d) {return acosh(d);},"Inverse hyperbolic cosine (gdual_v).");
+
+    m.def("sinh_and_cosh",[](const gdual_v &d) {return sinh_and_cosh(d);} ,"Hyperbolic sine and hyperbolic cosine at once (gdual_v).");
+
+    m.def("tanh",[](const gdual_v &d) {return tanh(d);},"Hyperbolic tangent (gdual_v).");
+
+    m.def("atanh",[](const gdual_v &d) {return atanh(d);},"Inverse hyperbolic arc tangent (gdual_v).");
+
+    m.def("abs",[](const gdual_v &d) {return abs(d);},"Absolute value (gdual_v).");
+
+    m.def("erf",[](const gdual_v &d) {return erf(d);},"Error function (gdual_v).");
 
     return m.ptr();
 }

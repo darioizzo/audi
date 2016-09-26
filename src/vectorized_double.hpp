@@ -2,6 +2,7 @@
 #define AUDI_VECTORIZED_DOUBLE_HPP
 
 #include <algorithm>
+#include <boost/serialization/vector.hpp>
 #include <vector>
 #include <exception>
 
@@ -27,18 +28,18 @@ public:
     // Constructor from an std::vector
     explicit vectorized_double(const std::vector<double> &c) : m_c(c) {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coeffciient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v");
         }
     };
     // Constructor from an std::vector r value
     explicit vectorized_double(std::vector<double> && c) : m_c(c) {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coeffciient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v");
         }
     };
     explicit vectorized_double(std::initializer_list<double> c) : m_c(c) {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coeffciient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v");
         }
     };
     // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
@@ -55,6 +56,12 @@ public:
         return retval;
     };
     friend vectorized_double operator*(const vectorized_double &d1, const vectorized_double &d2)
+    {
+        vectorized_double retval(d1);
+        retval *= d2;
+        return retval;
+    };
+    friend vectorized_double operator*(int d1, const vectorized_double &d2)
     {
         vectorized_double retval(d1);
         retval *= d2;
@@ -220,6 +227,13 @@ public:
         m_c[idx] = val;
     }
 private:
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int)
+    {
+        ar & m_c;
+    }
+
     std::vector<double> m_c;
 };
 

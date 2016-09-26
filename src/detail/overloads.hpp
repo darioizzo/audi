@@ -26,58 +26,59 @@ inline T fun_name(T in) {                                                       
 
 namespace audi {
 
-VECTORIZED_OVERLOAD(exp);
-ARITH_OR_COMPLEX_OVERLOAD(exp);
+VECTORIZED_OVERLOAD(exp)
+ARITH_OR_COMPLEX_OVERLOAD(exp)
 
-VECTORIZED_OVERLOAD(erf);
-ARITH_OR_COMPLEX_OVERLOAD(erf);
+VECTORIZED_OVERLOAD(erf)
+ARITH_OR_COMPLEX_OVERLOAD(erf)
 
-VECTORIZED_OVERLOAD(log);
-ARITH_OR_COMPLEX_OVERLOAD(log);
+VECTORIZED_OVERLOAD(log)
+ARITH_OR_COMPLEX_OVERLOAD(log)
 
-VECTORIZED_OVERLOAD(sin);
-ARITH_OR_COMPLEX_OVERLOAD(sin);
+VECTORIZED_OVERLOAD(sin)
+ARITH_OR_COMPLEX_OVERLOAD(sin)
 
-VECTORIZED_OVERLOAD(cos);
-ARITH_OR_COMPLEX_OVERLOAD(cos);
+VECTORIZED_OVERLOAD(cos)
+ARITH_OR_COMPLEX_OVERLOAD(cos)
 
-VECTORIZED_OVERLOAD(tan);
-ARITH_OR_COMPLEX_OVERLOAD(tan);
+VECTORIZED_OVERLOAD(tan)
+ARITH_OR_COMPLEX_OVERLOAD(tan)
 
-VECTORIZED_OVERLOAD(sinh);
-ARITH_OR_COMPLEX_OVERLOAD(sinh);
+VECTORIZED_OVERLOAD(sinh)
+ARITH_OR_COMPLEX_OVERLOAD(sinh)
 
-VECTORIZED_OVERLOAD(cosh);
-ARITH_OR_COMPLEX_OVERLOAD(cosh);
+VECTORIZED_OVERLOAD(cosh)
+ARITH_OR_COMPLEX_OVERLOAD(cosh)
 
-VECTORIZED_OVERLOAD(tanh);
-ARITH_OR_COMPLEX_OVERLOAD(tanh);
+VECTORIZED_OVERLOAD(tanh)
+ARITH_OR_COMPLEX_OVERLOAD(tanh)
 
-VECTORIZED_OVERLOAD(asin);
-ARITH_OR_COMPLEX_OVERLOAD(asin);
+VECTORIZED_OVERLOAD(asin)
+ARITH_OR_COMPLEX_OVERLOAD(asin)
 
-VECTORIZED_OVERLOAD(acos);
-ARITH_OR_COMPLEX_OVERLOAD(acos);
+VECTORIZED_OVERLOAD(acos)
+ARITH_OR_COMPLEX_OVERLOAD(acos)
 
-VECTORIZED_OVERLOAD(atan);
-ARITH_OR_COMPLEX_OVERLOAD(atan);
+VECTORIZED_OVERLOAD(atan)
+ARITH_OR_COMPLEX_OVERLOAD(atan)
 
-VECTORIZED_OVERLOAD(asinh);
-ARITH_OR_COMPLEX_OVERLOAD(asinh);
+VECTORIZED_OVERLOAD(asinh)
+ARITH_OR_COMPLEX_OVERLOAD(asinh)
 
-VECTORIZED_OVERLOAD(acosh);
-ARITH_OR_COMPLEX_OVERLOAD(acosh);
+VECTORIZED_OVERLOAD(acosh)
+ARITH_OR_COMPLEX_OVERLOAD(acosh)
 
-VECTORIZED_OVERLOAD(atanh);
-ARITH_OR_COMPLEX_OVERLOAD(atanh);
+VECTORIZED_OVERLOAD(atanh)
+ARITH_OR_COMPLEX_OVERLOAD(atanh)
 
-VECTORIZED_OVERLOAD(cbrt);
+VECTORIZED_OVERLOAD(cbrt)
 
 template<typename T, typename U, std::enable_if_t<is_arithmetic_or_complex<T>::value && is_arithmetic_or_complex<U>::value, int> = 0>
 inline T pow(const U& base, const T &d)
 {
     return std::pow(base, d);
 }
+
 inline vectorized_double pow(double base, vectorized_double in)
 {
     for (auto &el : in)
@@ -86,6 +87,7 @@ inline vectorized_double pow(double base, vectorized_double in)
     }
     return in;
 }
+
 inline vectorized_double pow(vectorized_double in, double exponent)
 {
     for (auto &el : in)

@@ -653,7 +653,7 @@ inline T atanh(const T& d)
     double coeff = 1.;
 
     for (auto k=1u; k <= d.get_order(); ++k) {
-        auto add = (1. / std::pow(1. - p0, k) + coeff / std::pow(1. + p0, k)) / k;
+        auto add = (1. / audi::pow(1. - p0, k) + coeff / audi::pow(1. + p0, k)) / k;
         retval += add * powphat;
         coeff*=-1;
         powphat*=phat;
@@ -681,7 +681,7 @@ inline T atanh(const T& d)
 template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atan(const T& d)
 {
-    double p0 = d.constant_cf();
+    auto p0 = d.constant_cf();
     auto phat = (d - p0) / (1. + p0*p0);
     auto powphat(phat);
 
@@ -691,22 +691,22 @@ inline T atan(const T& d)
 
     for (auto k=1u; k <= d.get_order(); ++k) {
         if (k % 2) {        // This is for odd powers 1..3..5
-            auto binom = 1.;
+            T binom(1.);
             auto f0 = p0 * p0;
-            auto cf_i = -1.;
+            double cf_i = -1.;
             for (auto j = 1u; 2*j <= k; ++j) {
-                binom += piranha::math::binomial(k, 2*j) * f0 * cf_i;
+                binom += (piranha::math::binomial(k, 2*j) * cf_i) * f0 ;
                 f0 *= p0 * p0;
                 cf_i *= -1.;
             }
             retval += binom * powphat * coeff1 / k;
             coeff1 *= -1.;
         } else {            //This is for even powers 2..4..6
-            auto binom = 0.;
+            T binom(0.);
             auto f0 = p0;
-            auto cf_i = 1.;
+            double cf_i = 1.;
             for (auto j = 1u; 2*j - 1 <= k; ++j) {
-                binom += piranha::math::binomial(k, 2*j - 1) * f0 * cf_i;
+                binom += (piranha::math::binomial(k, 2*j - 1)  * cf_i) * f0;
                 f0 *= p0 * p0;
                 cf_i *= -1;
             }
