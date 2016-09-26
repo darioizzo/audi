@@ -1,6 +1,6 @@
 # AuDi (Automated Differentiation)
 
-Implementation of an automated differentiation system using generalized dual numbers (i.e. truncated Taylor expansions). The underlying truncated Taylor polynomial algebra (a.k.a. differential algebra) is dealt with using [Piranha](https://github.com/bluescarni/piranha) and can deal with high orders and many variables without eating up the whole system memory.
+Implementation of a high-order automated differentiation system using generalized dual numbers (i.e. truncated Taylor polynomials). The underlying truncated Taylor polynomial algebra (a differential algebra since integration and derivations are defined too) is dealt with using [Piranha](https://github.com/bluescarni/piranha) and can deal with high orders and many variables without eating up the whole system memory.
 
 The polynomial multiplication algorithm used in piranha (original with the software author [Francesco Biscani](https://github.com/bluescarni)) takes advantage of sparsity, multiple-threads and cache efficiency allowing a modest memory usage also at high orders.
 
