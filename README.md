@@ -14,4 +14,6 @@ Documentation (preliminary) can be found [here](http://darioizzo.github.io/audi/
 
 Alternative projects that have similar capabilities to AuDi are [libtaylor](https://code.google.com/p/libtaylor/) and [COSY infinity](http://bt.pa.msu.edu/index_cosy.htm). Unlike libtaylor AuDi can be used in a dynamic library and can compute at high orders with greater efficiency. Unlike COSY infinity AuDi is entirely open source. 
 
+Audi also allows for making computations using complex numbers and a vectorized type.
+
 From the point of view of efficiency, the main difference of AuDi w.r.t. existing codes is in the polinomial multiplication algorithm. AuDi uses the third party [Piranha](https://github.com/bluescarni/piranha) code and thus gets all the pros and cons of that particular algebraic manipulation system which is still actively developed and was born to deal with massively large polynomial manipulations typically encountered in celestial mechanics perturbation theory. To cut a long story short, AuDi will be "unbeatable" for high orders and many variables (n>=11, m>=11). Below this orders AuDi will still be incredibly memory efficient and fast when used in a machine where multiple threading capabilities are possible.
