@@ -5,8 +5,8 @@
 
 #include <vector>
 
-// compile with g++ multiplication_perf_DACE.cpp -std=c++11 -I/usr/local/include -ldace -lboost_system
-// -lboost_unit_test_framework -lboost_timer
+// compile with g++ multiplication_perf_DACE.cpp -std=c++14 -I/usr/local/include -ldace -lboost_system
+// -lboost_unit_test_framework -lboost_timer 
 
 using namespace DACE;
 
