@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(get_derivative)
     dict = {{"dx", 4u},{"dy",1u},{"dz",1u}};
     BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
     dict = {{"dx", 1u},{"dr",1u},{"dz",1u}};
-    BOOST_CHECK_THROW(f.get_derivative(dict), std::invalid_argument);
+    BOOST_CHECK_EQUAL(f.get_derivative(dict), 0.);
 }
 
 BOOST_AUTO_TEST_CASE(integrate_partial)

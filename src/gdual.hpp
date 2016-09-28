@@ -545,7 +545,7 @@ private:
             for (const auto &entry : dict) {
                 auto idx = ss.index_of(piranha::symbol{entry.first});
                 if (idx == ss.size()) {
-                    throw std::invalid_argument("Symbol not found in the symbol set, cannot return a derivative");
+                    return cf_type(0.);
                 }
                 coeff[idx] = entry.second;
             }
