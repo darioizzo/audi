@@ -13,8 +13,12 @@ int main() {
     // 2 - Compute your function as usual
     auto f = exp(x*x + cbrt(y) / log(x*y));
 
-    // 3 - Inspect the results (this does not require any more computations)
+    // 3 - Inspect the results (this has a constant complexity now as all computations have been made already)
     std::cout << "Taylor polynomial: " << f << std::endl;                      // This is the Taylor expansion of f (truncated at the 7th order)
     std::cout << "Derivative value: " << f.get_derivative({1,0}) << std::endl; // This is the value of the derivative (d / dx)
     std::cout << "Derivative value: " << f.get_derivative({4,3}) << std::endl; // This is the value of the mixed derivative (d^7 / dx^4dy^3)
+
+    // 4 - Using the dictionary interface (note the presence of the "d" before all variables)
+    std::cout << "Derivative value: " << f.get_derivative({{"dx", 1}}) << std::endl; // This is the value of the derivative (d / dx)
+    std::cout << "Derivative value: " << f.get_derivative({{"dx", 4}, {"dy", 3}}) << std::endl; // This is the value of the mixed derivative (d^7 / dx^4dy^3)
 }

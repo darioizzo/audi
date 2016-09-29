@@ -27,7 +27,7 @@ std::vector<double> random_vector_double(unsigned int N, double lb, double ub)
     return retval;
 }
 
-void measure_speedup(int points, unsigned int order)
+void measure_speedup(int points, unsigned int order, unsigned int size)
 {
     auto lb = -0.5;
     auto ub = 0.5;
@@ -39,9 +39,9 @@ void measure_speedup(int points, unsigned int order)
     auto coeff_v = audi::gdual_v(coeff);
 
     boost::timer::cpu_timer t1;
-    audi::gdual_v x{xcoeff, "x",order}, y{ycoeff, "y",order}, z{zcoeff, "z",order}, w{zcoeff, "w",order}, q{zcoeff, "q",order}, r{zcoeff, "r",order}, s{zcoeff, "s",order} ;
+    audi::gdual_v x{xcoeff, "x",order}, y{ycoeff, "y",order}, z{zcoeff, "z",order}, w{zcoeff, "w",order}, q{zcoeff, "q",order}, r{zcoeff, "r",order}, s{zcoeff, "s",order};
     auto foo = coeff_v + x + y + z - w + q + r + s;
-    for (int i = 1; i < 20; ++i) {
+    for (int i = 1; i < size; ++i) {
         foo *= coeff_v + x + y + z - w + q + r + s;
     }
     foo *= foo;
@@ -52,7 +52,7 @@ void measure_speedup(int points, unsigned int order)
     for (auto i = 0u; i < points; ++i) {
         DA x{1, xcoeff[i]}, y{2, ycoeff[i]}, z{3, zcoeff[i]}, w{4, zcoeff[i]}, q{5, zcoeff[i]}, r{6, zcoeff[i]}, s{7, zcoeff[i]};
         auto foo = coeff[i] + x + y + z - w + q + r + s;
-        for (int j = 1; j < 20; ++j) {
+        for (int j = 1; j < size; ++j) {
             foo *= coeff[i] + x + y + z - w + q + r + s;
         }
         foo *= foo;
@@ -63,8 +63,13 @@ void measure_speedup(int points, unsigned int order)
 
 int main() {
     for (auto j = 1u; j < 6; ++j) {
-        for (auto i = 1u; i < 4; ++i) {
-            measure_speedup(pow(10,i), j);
+        for (auto i = 2u; i < 8; ++i) {
+            measure_speedup(pow(2,2*i), j, 20);
+        }
+    }
+    for (auto j = 6u; j < 10; ++j) {
+        for (auto i = 2u; i < 8; ++i) {
+            measure_speedup(pow(2,2*i), j, 10);
         }
     }
 }
