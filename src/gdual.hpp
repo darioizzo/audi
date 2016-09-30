@@ -89,10 +89,10 @@ private:
         (std::is_same<U,gdual>::value && std::is_same<T,unsigned int>::value),
         gdual>::type;
 
-        // Enable the generic ctor only if T is not a gdual (after removing
+        // Enable the generic ctor only if T is not a gdual<Cf> (after removing
         // const/reference qualifiers).
         template <typename T>
-        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<Cf>,std::decay_t<T>>::value,int>;
+        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<Cf>,std::decay_t<T>>::value && std::is_constructible<p_type,std::decay_t<T>>::value,int>;
 
         void check_order() const
         {
