@@ -108,8 +108,19 @@ void expose_gdual(py::module &m, std::string type)
     ;
 }
 
+template<typename T>
+class SomeClass {
+public:
+    SomeClass(T in) : m_in(in) {}
+    ~SomeClass() {}
+    T m_in;
+};
+
 PYBIND11_PLUGIN(_core) {
     py::module m("_core", "pyaudi's core module");
+
+    py::class_<SomeClass<double>>(m,"SomeClass")
+    .def(py::init<double>());
 
     expose_gdual<double>(m, "double");
     expose_gdual<vectorized_double>(m, "vdouble");
