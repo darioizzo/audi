@@ -29,13 +29,13 @@ using namespace audi;
 namespace py = pybind11;
 
 template<typename T>
-void expose_gdual(py::module &m, std::string type)
+auto expose_gdual(py::module &m, std::string type)
 {
-    py::class_<gdual<T>>(m,("gdual_"+type).c_str())
+     return py::class_<gdual<T>>(m,("gdual_"+type).c_str())
     .def(py::init<>())
     .def(py::init<const gdual<T> &>())
-    .def(py::init<double>())
-    .def(py::init<double, const std::string &, unsigned int>())
+    .def(py::init<T>())
+    .def(py::init<T, const std::string &, unsigned int>())
     .def("__repr__",[](const gdual<T> &g) -> std::string {
         std::ostringstream oss;
         oss << g;
@@ -108,23 +108,16 @@ void expose_gdual(py::module &m, std::string type)
     ;
 }
 
-template<typename T>
-class SomeClass {
-public:
-    SomeClass(T in) : m_in(in) {}
-    ~SomeClass() {}
-    T m_in;
-};
 
 PYBIND11_PLUGIN(_core) {
     py::module m("_core", "pyaudi's core module");
-
-    py::class_<SomeClass<double>>(m,"SomeClass")
-    .def(py::init<double>());
-
+    // We expose the gdual<double>
     expose_gdual<double>(m, "double");
-    expose_gdual<vectorized_double>(m, "vdouble");
-
+    // We expose the gdual<vectorized_double> and we add two custom constructors to construct it from lists
+    auto a = expose_gdual<vectorized_double>(m, "vdouble");
+    a.def(py::init<std::vector<double>>())
+    .def(py::init<std::vector<double>, const std::string &, unsigned int>());
+    // We expose the various functions
     m.def("exp",[](const gdual_d &d) {return exp(d);},"Exponential (gdual_d).");
     m.def("exp",[](double x) {return std::exp(x);},"Exponential (double).");
     m.def("exp",[](const gdual_v &d) {return exp(d);},"Exponential (gdual_v).");
