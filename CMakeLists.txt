@@ -1,37 +1,34 @@
-PROJECT(audi)
+project(audi)
 
-ENABLE_TESTING()
+# This is the minimum CMake Version required.
+cmake_minimum_required(VERSION 3.2.0)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules" "${CMAKE_SOURCE_DIR}/cmake_modules/yacma")
-
-MESSAGE(STATUS "System name: ${CMAKE_SYSTEM_NAME}")
+# Here we augment the cmake modules path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake/yacma")
 
 # Set default build type to "Release".
-IF(NOT CMAKE_BUILD_TYPE)
-	SET(CMAKE_BUILD_TYPE Release CACHE STRING
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release CACHE STRING
 		"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
 	FORCE)
-ENDIF(NOT CMAKE_BUILD_TYPE)
+endif(NOT CMAKE_BUILD_TYPE)
+
+include(YACMACompilerLinkerSettings)
+
+# Setup the CXX flags from YACMA and show final result
+YACMA_SETUP_CXX_FLAGS()
 
 # Build Option: when active the file main.cpp is built.
-OPTION(BUILD_MAIN "Build 'main.cpp'." OFF)
+option(BUILD_MAIN "Build 'main.cpp'." OFF)
 
 # Build option: enable test set.
-OPTION(BUILD_TESTS "Build test set." ON)
+option(BUILD_TESTS "Build test set." ON)
 
 # Build option: enable test set.
-OPTION(BUILD_PYAUDI "Build the Python bindings." OFF)
+option(BUILD_PYAUDI "Build the Python bindings." OFF)
 
 # Initialise (empty) list of libraries to link against.
 SET(MANDATORY_LIBRARIES "")
-
-# Initial setup of the compilation flags.
-include(AudiCompilerLinkerSettings)
-
-# Additional platform-specific setup.
-include(AudiPlatformSettings)
 
 # Threading setup.
 include(YACMAThreadingSetup)
@@ -53,60 +50,62 @@ if(BUILD_PYAUDI OR BUILD_TESTS)
 	list(APPEND REQUIRED_BOOST_LIBS serialization)
 endif()
 
-IF(BUILD_TESTS)
-	MESSAGE(STATUS "Linking unit tests to Boost.Test.")
-	LIST(APPEND REQUIRED_BOOST_LIBS unit_test_framework)
-	IF(CMAKE_BUILD_TYPE STREQUAL "Release")
-		MESSAGE(STATUS "Linking performance tests to Boost Timer and Boost.Chrono.")
-		LIST(APPEND REQUIRED_BOOST_LIBS timer chrono system)
-	ENDIF()
-ENDIF()
+if(BUILD_TESTS)
+	message(STATUS "Linking unit tests to Boost.Test.")
+	list(APPEND REQUIRED_BOOST_LIBS unit_test_framework)
+	if(CMAKE_BUILD_TYPE STREQUAL "Release")
+		message(STATUS "Linking performance tests to Boost Timer and Boost.Chrono.")
+		list(APPEND REQUIRED_BOOST_LIBS timer chrono system)
+	endif()
+endif()
 
-MESSAGE(STATUS "Required Boost libraries: ${REQUIRED_BOOST_LIBS}")
+message(STATUS "Required Boost libraries: ${REQUIRED_BOOST_LIBS}")
 # Timers are available since 1.48.0.
 FIND_PACKAGE(Boost 1.48.0 REQUIRED COMPONENTS "${REQUIRED_BOOST_LIBS}")
-MESSAGE(STATUS "Detected Boost version: ${Boost_VERSION}")
+message(STATUS "Detected Boost version: ${Boost_VERSION}")
 # Include system Boost headers.
-MESSAGE(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
-MESSAGE(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
+message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
 INCLUDE_DIRECTORIES(SYSTEM ${Boost_INCLUDE_DIRS})
 
 FIND_PACKAGE(Piranha REQUIRED)
-MESSAGE(STATUS "Piranha library found.")
-MESSAGE(STATUS "Piranha include dir is: ${Piranha_INCLUDE_DIR}")
+message(STATUS "Piranha library found.")
+message(STATUS "Piranha include dir is: ${Piranha_INCLUDE_DIR}")
 INCLUDE_DIRECTORIES(${Piranha_INCLUDE_DIR})
 
 # GMP setup.
 FIND_PACKAGE(GMP REQUIRED)
-MESSAGE(STATUS "GMP library found.")
-MESSAGE(STATUS "GMP include dir is: ${GMP_INCLUDE_DIR}")
-MESSAGE(STATUS "GMP library is: ${GMP_LIBRARIES}")
+message(STATUS "GMP library found.")
+message(STATUS "GMP include dir is: ${GMP_INCLUDE_DIR}")
+message(STATUS "GMP library is: ${GMP_LIBRARIES}")
 INCLUDE_DIRECTORIES(${GMP_INCLUDE_DIR})
 
 # MPFR setup.
 FIND_PACKAGE(MPFR REQUIRED)
-MESSAGE(STATUS "MPFR library found.")
-MESSAGE(STATUS "MPFR include dir is: ${MPFR_INCLUDE_DIR}")
-MESSAGE(STATUS "MPFR library is: ${MPFR_LIBRARIES}")
-MESSAGE(STATUS "Checking MPFR version.")
-TRY_COMPILE(MPFR_VERSION_CHECK ${CMAKE_BINARY_DIR} "${CMAKE_SOURCE_DIR}/cmake_modules/mpfr_check_version.cpp"
+message(STATUS "MPFR library found.")
+message(STATUS "MPFR include dir is: ${MPFR_INCLUDE_DIR}")
+message(STATUS "MPFR library is: ${MPFR_LIBRARIES}")
+message(STATUS "Checking MPFR version.")
+TRY_COMPILE(MPFR_VERSION_CHECK ${CMAKE_BINARY_DIR} "${CMAKE_SOURCE_DIR}/cmake/mpfr_check_version.cpp"
 	CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${MPFR_INCLUDE_DIR};${GMP_INCLUDE_DIR}")
 IF(NOT MPFR_VERSION_CHECK)
-	MESSAGE(FATAL_ERROR "Unsupported MPFR version, please upgrade.")
+	message(FATAL_ERROR "Unsupported MPFR version, please upgrade.")
 ENDIF(NOT MPFR_VERSION_CHECK)
-MESSAGE(STATUS "MPFR version is ok.")
+message(STATUS "MPFR version is ok.")
 INCLUDE_DIRECTORIES(${MPFR_INCLUDE_DIR})
 
 # NOTE: MPFR should be linked in before GMP, that's why we link GMP here.
-SET(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
+set(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
 
 # Add the subdirectory for the library / headers
 ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/src")
 
 # Link main to mandatory libraries.
 IF(BUILD_MAIN)
-	ADD_EXECUTABLE(main main.cpp)
+	add_executable(main main.cpp)
 	TARGET_LINK_LIBRARIES(main ${MANDATORY_LIBRARIES})
+	set_property(TARGET main PROPERTY CXX_STANDARD 14)
+    set_property(TARGET main PROPERTY CXX_STANDARD_REQUIRED YES)
 ENDIF(BUILD_MAIN)
 
 IF(BUILD_TESTS)

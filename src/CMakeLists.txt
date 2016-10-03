@@ -1,4 +1,4 @@
-SET(HEADERS_LIST
+set(HEADERS_LIST
 	functions.hpp
 	functions_from_d.hpp
 	audi.hpp
@@ -6,11 +6,11 @@ SET(HEADERS_LIST
 	type_traits.hpp
 	vectorized_double.hpp
 )
-SET(HEADERS_LIST_DETAIL
+set(HEADERS_LIST_DETAIL
 	detail/complex.hpp
     detail/overloads.hpp
 )
-SET(HEADERS_LIST_PYAUDI
+set(HEADERS_LIST_PYAUDI
 	../pyaudi/expose_gdual.hpp
 )
 
