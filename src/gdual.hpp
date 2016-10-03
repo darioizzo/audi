@@ -65,9 +65,15 @@ namespace audi
  * @author Dario Izzo (dario.izzo@gmail.com)
  * @author Francesco Biscani (bluescarni@gmail.com)
  */
-template<typename Cf, std::enable_if_t<piranha::is_cf<Cf>::value && piranha::is_differentiable<Cf>::value, int> = 0>
+template<typename Cf>
 class gdual
 {
+    // Static checks.
+    static_assert(
+        piranha::is_cf<Cf>::value &&
+        piranha::is_differentiable<Cf>::value,
+        "A gdual must be constructed froma coefficient satisfying piranha's conditions is_cf and is_differentiable."
+    );
 public:
         using cf_type = Cf;
 private:
