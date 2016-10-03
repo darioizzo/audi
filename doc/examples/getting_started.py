@@ -1,4 +1,5 @@
-from pyaudi import gdual, exp, log, cbrt
+from pyaudi import gdual_double as gdual
+from pyaudi import exp, log, cbrt
 
 # We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3
 # 1 - Define the generalized dual numbers (7 is the truncation order, i.e. the maximum order of derivation we will need)

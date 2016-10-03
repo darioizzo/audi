@@ -5,10 +5,11 @@ using namespace audi;
 
 int main() {
     // We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3
+    using gdual = gdual<double>;
     // 1 - Define the generalized dual numbers (over doubles, 7 is the truncation order, i.e. the maximum
     // order of derivation we will need)
-    gdual_d x(2, "x", 7);
-    gdual_d y(3, "y", 7);
+    gdual x(2, "x", 7);
+    gdual y(3, "y", 7);
 
     // 2 - Compute your function as usual
     auto f = exp(x*x + cbrt(y) / log(x*y));
