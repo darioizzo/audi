@@ -20,15 +20,15 @@
 
 using namespace audi;
 using namespace pyaudi;
-namespace py = pybind11;
+namespace py = pybind11; 
 
 PYBIND11_PLUGIN(_core) {
     py::module m("_core", "pyaudi's core module");
 
-    // We expose the gdual<double> using the expose_gdual defined in exposed_gdual.hpp
+    // We expose the gdual<double> using the expose_gdual defined in exposed_gdual.hpp as pyaudi::expose_gdual
     expose_gdual<double>(m, "double");
 
-    // We expose the gdual<vectorized_double> and we add two custom constructors to allow constructing it from lists
+    // Similarly, we expose the gdual<vectorized_double> and we add two custom constructors to allow constructing it from lists
     auto a = expose_gdual<vectorized_double>(m, "vdouble");
     a.def(py::init<std::vector<double>>())
     .def(py::init<std::vector<double>, const std::string &, unsigned int>());
