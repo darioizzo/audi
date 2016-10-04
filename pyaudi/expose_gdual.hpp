@@ -1,5 +1,5 @@
-#ifndef DCGP_FUNCTION_SET_H
-#define DCGP_FUNCTION_SET_H
+#ifndef AUDI_EXPOSE_GDUAL_H
+#define AUDI_EXPOSE_GDUAL_H
 
 #include <boost/lexical_cast.hpp>
 #include <boost/archive/text_oarchive.hpp>
