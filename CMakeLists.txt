@@ -39,11 +39,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${YACMA_THREADING_CXX_FLAGS}")
 message(STATUS "Current CXX flags: ${CMAKE_CXX_FLAGS}")
 message(STATUS "Current CXX debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
 
+set(REQUIRED_BOOST_LIBS "")
+
 if(BUILD_PYAUDI)
 	include(YACMAPythonSetup)
+    message(STATUS "Linking boost python.")
+	list(APPEND REQUIRED_BOOST_LIBS python)
 endif()
-
-set(REQUIRED_BOOST_LIBS "")
 
 if(BUILD_PYAUDI OR BUILD_TESTS)
 	message(STATUS "Linking boost serialization.")
@@ -61,7 +63,7 @@ endif()
 
 message(STATUS "Required Boost libraries: ${REQUIRED_BOOST_LIBS}")
 # Timers are available since 1.48.0.
-FIND_PACKAGE(Boost 1.48.0 REQUIRED COMPONENTS "${REQUIRED_BOOST_LIBS}")
+FIND_PACKAGE(Boost 1.60.0 REQUIRED COMPONENTS "${REQUIRED_BOOST_LIBS}")
 message(STATUS "Detected Boost version: ${Boost_VERSION}")
 # Include system Boost headers.
 message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
