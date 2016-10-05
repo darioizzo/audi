@@ -8,10 +8,12 @@
 using namespace audi;
 namespace bp = boost::python;
 
-static inline gdual_v* fake() {return ::new gdual_v(4);}
 
 BOOST_PYTHON_MODULE(_core)
 {
+    // We register a converter between vectorized_double and a python list
+    bp::to_python_converter<audi::vectorized_double, pyaudi::vectorized_double_to_python_list>();
+    
     // We expose the gdual<double> using the expose_gdual defined in exposed_gdual.hpp
     pyaudi::expose_gdual<double>("double");
 
@@ -29,6 +31,17 @@ BOOST_PYTHON_MODULE(_core)
             return ::new gdual_v(pyaudi::l_to_v<double>(value), symbol, order);
         }
     ));
+
+    // We expose the type vectorized double as to allow its construction from lists, but we make it "private" as the user
+    // does not need to see it
+    /*bp::class_<audi::vectorized_double>("v_double")
+   .def(bp::init<>())
+   .def("__init__", bp::make_constructor(
+       +[](const bp::object& value)
+       {
+           return ::new vectorized_double(pyaudi::l_to_v<double>(value));
+       }
+   ));*/
 
 
 

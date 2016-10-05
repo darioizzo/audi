@@ -226,6 +226,9 @@ public:
     void set_value(const std::vector<double>::size_type idx, double val) {
         m_c[idx] = val;
     }
+    const std::vector<double> & get_v() const {
+        return m_c;
+    }
 private:
     friend class boost::serialization::access;
     template<class Archive>

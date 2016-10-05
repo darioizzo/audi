@@ -81,18 +81,18 @@ private:
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a gdual,
-        // - the other operand, if not gdual, must be double, int or unsigned int or Cf
+        // - the other operand, if not gdual<Cf>, must be double, int or unsigned int or Cf
         template <typename T, typename U>
         using gdual_if_enabled = typename std::enable_if<
-        (std::is_same<T,gdual>::value && std::is_same<U,gdual>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,Cf>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,double>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,int>::value) ||
-        (std::is_same<T,gdual>::value && std::is_same<U,unsigned int>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,Cf>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,double>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,int>::value) ||
-        (std::is_same<U,gdual>::value && std::is_same<T,unsigned int>::value),
+        (std::is_same<T,gdual<Cf>>::value && std::is_same<U,gdual<Cf>>::value) ||
+        (std::is_same<T,gdual<Cf>>::value && std::is_same<U,Cf>::value) ||
+        (std::is_same<T,gdual<Cf>>::value && std::is_same<U,double>::value) ||
+        (std::is_same<T,gdual<Cf>>::value && std::is_same<U,int>::value) ||
+        (std::is_same<T,gdual<Cf>>::value && std::is_same<U,unsigned int>::value) ||
+        (std::is_same<U,gdual<Cf>>::value && std::is_same<T,Cf>::value) ||
+        (std::is_same<U,gdual<Cf>>::value && std::is_same<T,double>::value) ||
+        (std::is_same<U,gdual<Cf>>::value && std::is_same<T,int>::value) ||
+        (std::is_same<U,gdual<Cf>>::value && std::is_same<T,unsigned int>::value),
         gdual>::type;
 
         // Enable the generic ctor only if T is not a gdual<Cf> (after removing

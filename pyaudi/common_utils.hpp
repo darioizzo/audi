@@ -5,6 +5,8 @@
 #include <boost/python/stl_iterator.hpp>
 #include <unordered_map>
 
+#include "../src/audi.hpp"
+
 // A throwing macro similar to pagmo_throw, only for Python. This will set the global
 // error string of Python to "msg", the exception type to "type", and then invoke the Boost
 // Python function to raise the Python exception.
@@ -35,9 +37,8 @@ bp::object make_bytes(const char *ptr, Py_ssize_t len)
 // Converts a C++ vector to a python list
 template <typename T>
 inline bp::list v_to_l(std::vector<T> vector) {
-    typename std::vector<T>::iterator iter;
     bp::list list;
-    for (iter = vector.begin(); iter != vector.end(); ++iter) {
+    for (auto iter = vector.begin(); iter != vector.end(); ++iter) {
         list.append(*iter);
     }
     return list;
@@ -46,36 +47,23 @@ inline bp::list v_to_l(std::vector<T> vector) {
 // Converts a C++ unordered map to a python dict (TO BE TESTED)
 template <typename K, typename V>
 inline bp::dict umap_to_pydict(std::map<K, V> map) {
-    typename std::unordered_map<K, V>::iterator iter;
 	boost::python::dict dictionary;
-	for (iter = map.begin(); iter != map.end(); ++iter) {
+	for (auto iter = map.begin(); iter != map.end(); ++iter) {
 		dictionary[iter->first] = iter->second;
 	}
 	return dictionary;
 }
 
-// Converts a python dict to an std::unordered_map
+// Converts a python dict to an std::unordered_map if the Value type is double or unsigned int
 template<typename Key_type, typename Value_type>
-inline std::unordered_map<Key_type, Value_type> pydict_to_umap(const bp::dict& pydict)
+inline std::unordered_map<Key_type, Value_type> pydict_to_umap(const bp::dict& dict)
 {
     std::unordered_map<Key_type,Value_type> retval;
-    bp::list keys = pydict.keys();
-    for (int i = 0; i < len(keys); ++i) {
-       bp::extract<Key_type> extracted_key(keys[i]);
-       if(!extracted_key.check()){
-            std::cout<<"Key invalid, map might be incomplete"<<std::endl;
-            continue;
-       }
-       std::string key = extracted_key;
-       bp::extract<Value_type> extracted_val(pydict[key]);
-       if(!extracted_val.check()){
-       std::cout<<"Value invalid, map might be incomplete"<<std::endl;
-            continue;
-       }
-       Value_type value = extracted_val;
-       retval[key] = value;
-  }
-   return retval;
+    bp::stl_input_iterator<Key_type> it(dict), end;
+    for (; it != end; ++it) {
+        retval[*it] = bp::extract<Value_type>(dict[*it])();
+    }
+    return retval;
 }
 
 
@@ -85,6 +73,21 @@ inline std::vector<T> l_to_v(const bp::object& iterable)
 {
     return std::vector<T>( bp::stl_input_iterator<T>(iterable), bp::stl_input_iterator<T>());
 }
+
+// Used to register the vectorized_double to list converter
+struct vectorized_double_to_python_list
+{
+  static PyObject* convert(const audi::vectorized_double &vd)
+  {
+    bp::list list;
+    for (auto iter = vd.begin(); iter != vd.end(); ++iter) {
+        list.append(*iter);
+    }
+    return boost::python::incref(list.ptr());
+  }
+};
+
+
 
 }
 
