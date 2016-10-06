@@ -36,14 +36,13 @@ The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory. To 
 Python
 ------
 
-The main functionalities of AuDi are exposed into a python module called pyaudi. To create the module you need to get the AuDi submodule pybind11. To get AuDi submodules via git, type
+The main functionalities of AuDi are exposed into a python module called pyaudi. To create the module you need to have
+the boost python libraries installed and activate the BUILD_PYAUDI option from within cmake.
 
-.. code-block:: bash
+Check carefully what python version is detected and what libraries are linked to. In particular select the correct boost_python
+according to the python version (2 or 3) you want to compile the module for.
 
-   git submodule init
-   git submodule update
-
-from within AuDi git folders. You may now activate the BUILD_PYAUDI option from within CMake. Check carefully what python version is detected and what libraries are linked to. The CMAKE_INSTALL_PREFIX will be used to construct the final loacation of headers and python module after install. 
+The CMAKE_INSTALL_PREFIX will be used to construct the final location of headers and python module after install.
 
 When done, type (in your build directory):
 
@@ -52,5 +51,3 @@ When done, type (in your build directory):
    make install
 
 To check that all went well fire-up your python console and try the example in :ref:`quick-start example <getting_started>`.
-
-

@@ -144,7 +144,7 @@
 <h3><a class="toc-backref" href="#id3">gdual: Generalized dual number class.</a><a class="headerlink" href="#gdual-generalized-dual-number-class" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt>
-<span class="target" id="AuDiclassaudi_1_1gdual"></span><em class="property">template </em>&lt;<em class="property">typename</em> Cf, std::enable_if_t&lt; piranha::is_cf&lt; Cf &gt;::value &amp;&amp;piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
+<span class="target" id="AuDiclassaudi_1_1gdual"></span><em class="property">template </em>&lt;<em class="property">typename</em> Cf&gt;</dt>
 <dt id="_CPPv2N4audi5gdualE">
 <span id="audi::gdual"></span><em class="property">class </em><code class="descclassname">audi::</code><code class="descname">gdual</code><a class="headerlink" href="#_CPPv2N4audi5gdualE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generalized dual number class. </p>
@@ -278,7 +278,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdualpLERK1T">
-<span id="audi::gdual::add-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a950e201c822f7fccc3f067c444572f8b"></span>auto <code class="descname">operator+=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualpLERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::add-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a872b4c5b706644e07957f8748f14881b"></span>auto <code class="descname">operator+=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualpLERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add and assignment operator. </p>
 </dd></dl>
 
@@ -286,7 +286,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdualmIERK1T">
-<span id="audi::gdual::sub-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af7db25823fca7f95f93849acd5c5c428"></span>auto <code class="descname">operator-=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmIERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::sub-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a9d956e121c622cecc2913cf6f7b1a35b"></span>auto <code class="descname">operator-=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmIERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtract and assignment operator. </p>
 </dd></dl>
 
@@ -294,7 +294,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdualmLERK1T">
-<span id="audi::gdual::mul-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1afb0d7b3e6bcf221bce2451ed414de943"></span>auto <code class="descname">operator*=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmLERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::mul-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af3dd7ca106ef935791bb90af61ca94df"></span>auto <code class="descname">operator*=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualmLERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multiply and assignment operator. </p>
 </dd></dl>
 
@@ -302,19 +302,19 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdualdVERK1T">
-<span id="audi::gdual::div-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a9332438fd6e42ba1d80a0582fdff42d6"></span>auto <code class="descname">operator/=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualdVERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::div-assign-operator__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1acd17a19ede3b8f2c9c242afde47a8790"></span>auto <code class="descname">operator/=</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d1</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualdVERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Divide and assignment operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualmiEv">
-<span id="audi::gdual::sub-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a25ae431d75eb8f659472ef1dd542774b"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator-</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualmiEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::sub-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aab667089333d0a3b0c00fe28b78be07d"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator-</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualmiEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Negate operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualplEv">
-<span id="audi::gdual::add-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad7ad0fbe805397b4e312398d835ebbe6"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator+</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualplEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::add-operator"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1aeac2dd010ab0d110786e3f05b9f9ca"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">operator+</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdualplEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identity operator. </p>
 </dd></dl>
 
@@ -323,7 +323,7 @@
 <p class="breathe-sectiondef-title rubric">Low-level interface</p>
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual10_containerEv">
-<span id="audi::gdual::_container"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a56389297315a9492e5370ac0086ded02"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::_container"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ae0689d092a3a03560b323adb2cbf95f3"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a mutable reference to the container of terms. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -334,7 +334,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual10_containerEv">
-<span class="target" id="AuDiclassaudi_1_1gdual_1abe2a49f5d510d746fea7df8298dacf2b"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="AuDiclassaudi_1_1gdual_1a6ad909300a69adb547fe4ca7309226fd"></span>auto <code class="descname">_container</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual10_containerEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a const reference to the container of terms. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -345,7 +345,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5_polyEv">
-<span id="audi::gdual::_poly"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a3d74c1755fa1723209a50329d8061da1"></span><em class="property">const</em> p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::_poly"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a958806e725263b3be6d3bbc71072ff6e"></span><em class="property">const</em> p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a const reference to the polynomial. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -356,7 +356,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5_polyEv">
-<span class="target" id="AuDiclassaudi_1_1gdual_1aaf76253bb1bf37e246da7bfbad19c8bd"></span>p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="AuDiclassaudi_1_1gdual_1ac63d8def18add6e0153078000133b70f"></span>p_type &amp;<code class="descname">_poly</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5_polyEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a mutable reference to the polynomial. </p>
 <p><dl class="docutils">
 <dt><strong>Return</strong></dt>
@@ -370,43 +370,43 @@
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualERK5gdual">
-<span id="audi::gdual::gdual__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aa9534c8e91d2c24596b6883cdba31ad1"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ae83d0582f97c2b85775a03cd9af95887"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted copy constructor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualERR5gdual">
-<span id="audi::gdual::gdual__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a73a25445fdf82d4111661a0005bcc2b5"></span><code class="descname">gdual</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERR5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a081604095bb3a69bcd83dda2deccd0f8"></span><code class="descname">gdual</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdual5gdualERK5gdual" title="audi::gdual::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualERR5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted move constructor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual5gdualEv">
-<span id="audi::gdual::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af04470cc149884b2be93cdf8c44dd657"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aba6cd0a818763a942eec4f87bdb6b0fa"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual5gdualEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default constuctor. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualD0Ev">
-<span id="audi::gdual::~gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8ec18c7021f2a80183e98b0e295ebfcf"></span><code class="descname">~gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualD0Ev" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::~gdual"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ab244b9535bc702f50e19ba40f53edf7c"></span><code class="descname">~gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualD0Ev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Destructor (contains a sanity check) </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualaSERK5gdual">
-<span id="audi::gdual::assign-operator__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a7e359e82ef2ed60c8b5ac6cdad99566a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERK5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::assign-operator__gdualCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a649d6338d5b72d82716c03c40599ec85"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERK5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted assignment operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdualaSERR5gdual">
-<span id="audi::gdual::assign-operator__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a0eec1dc51408a199552b92b8316baaf1"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERR5gdual" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::assign-operator__gdualRR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1e399283e06a7cf794ea43cb6db2ebdc"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdualaSERR5gdual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defaulted assignment operator. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual19get_symbol_set_sizeEv">
-<span id="audi::gdual::get_symbol_set_size"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a6596f29815f8f6cb9c4dac2e991980ec"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_symbol_set_size"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad3c9a723a1e4b18c1eca33f22ca10de2"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the symbol set size. </p>
 <p>Returns the size of the symbol set.</p>
 <p><dl class="docutils">
@@ -418,7 +418,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual14get_symbol_setEv">
-<span id="audi::gdual::get_symbol_set"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad0bb6280d89146169404ce7033474e78"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbol_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_symbol_setEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_symbol_set"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ae4e63cf6d2c42993b1680bbabde50514"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbol_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_symbol_setEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the symbol set size. </p>
 <p>Returns the symbol set (not the differentials)</p>
 <p><dl class="docutils">
@@ -430,7 +430,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE">
-<span id="audi::gdual::extend_symbol_set__std::vector:ss:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8221c1d7c1d82da3a56dd777220099dd"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::extend_symbol_set__std::vector:ss:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a227e8918bf4944d20793aa53c60fa835"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extends the symbol set. </p>
 <p>Adds some symbolic variables to the current polynomial This is useful in situations where some variable <span class="math">\( dx\)</span> does not appear in the final polynomial but we still want to treat the Taylor expansion as a function of <span class="math">\( dx\)</span> too (for example when extracting the relative coefficient)</p>
 <p><dl class="docutils">
@@ -462,7 +462,7 @@
 <dt>
 <em class="property">template </em>&lt;std::enable_if_t&lt; piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
 <dt id="_CPPv2N4audi5gdual9integrateERKNSt6stringE">
-<span id="audi::gdual::integrate__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a4a747f39956b04424cde449f1c312cc4"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">integrate</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual9integrateERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::integrate__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aff28ab4917c18532d20d15e32ad1ab5b"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">integrate</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual9integrateERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integration. </p>
 <p>Performs the integration of the gdual with respect to the symbol.</p>
 <p><dl class="docutils">
@@ -499,7 +499,7 @@
 <dt>
 <em class="property">template </em>&lt;std::enable_if_t&lt; piranha::is_differentiable&lt; Cf &gt;::value, int &gt; = 0&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7partialERKNSt6stringE">
-<span id="audi::gdual::partial__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aaa28e5db56e0cffcf2316677a49e5b5a"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">partial</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual7partialERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::partial__ssCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af5cc133d2322b28fbd94e46876714d46"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">partial</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual7partialERKNSt6stringE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Partial derivative. </p>
 <p>Performs the partial derivative of the gdual with respect to the symbol</p>
 <p><dl class="docutils">
@@ -533,7 +533,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual4subsERKNSt6stringERK1T">
-<span id="audi::gdual::subs__ssCR.TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a904564221157d5cae0748ccdcdeac807"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::subs__ssCR.TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a355a0efdc1b5812058694c7cb8618c5f"></span><a class="reference internal" href="#_CPPv2N4audi5gdualE" title="audi::gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N4audi5gdual4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Substitute symbol with value. </p>
 <p>Substitute the symbol <code class="docutils literal"><span class="pre">sym</span></code> with the value <code class="docutils literal"><span class="pre">val</span></code> </p>
 <p><dl class="docutils">
@@ -552,7 +552,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual8evaluateERKNSt13unordered_mapINSt6stringEdEE">
-<span id="audi::gdual::evaluate__std::unordered_map:ss.double:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad9405ba4301f110f4ead4bee7c9f72f8"></span>auto <code class="descname">evaluate</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, double&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual8evaluateERKNSt13unordered_mapINSt6stringEdEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::evaluate__std::unordered_map:ss.double:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1acaa8de48a1c5189c371239fea6845324"></span>auto <code class="descname">evaluate</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, double&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual8evaluateERKNSt13unordered_mapINSt6stringEdEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the Taylor polynomial. </p>
 <p>Evaluates the Taylor polynomial using the values in <code class="docutils literal"><span class="pre">dict</span></code> for all the differentials (variables variations)</p>
 <p><dl class="docutils">
@@ -571,7 +571,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual6degreeEv">
-<span id="audi::gdual::degree"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a42076a71152756d2f4750d7d0a884881"></span>auto <code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual6degreeEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::degree"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a1fa4a934c8b273aa5d8151049ef3a2e8"></span>auto <code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual6degreeEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current degree. </p>
 <p>Returns the current degree of the polynomial represented as an <a class="reference internal" href="#AuDiclassaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. This may be different from the truncation order <span class="math">\(m\)</span> and, in particular will be smaller or equal.</p>
 <p><dl class="docutils">
@@ -583,7 +583,7 @@
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual9get_orderEv">
-<span id="audi::gdual::get_order"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a6deb2d4767f35039cea39dc43132770f"></span>unsigned int <code class="descname">get_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual9get_orderEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_order"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a52489a6b3c645dbf08e778c34aaa7172"></span>unsigned int <code class="descname">get_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual9get_orderEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the truncation order. </p>
 <p>Returns the truncation order of the underlying <span class="math">\(\mathcal P_{n,m}\)</span> algebra.</p>
 <p><dl class="docutils">
@@ -597,7 +597,7 @@
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7find_cfERK1T">
-<span id="audi::gdual::find_cf__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1ad1ee3bfdf8b687469294b704e57c2190"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::find_cf__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a44160236a6d54c0fe5235bc75c2f4f92"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the coefficient of a particular monomial. </p>
 <p>Returns the coefficient of the monomial specified in the container <code class="docutils literal"><span class="pre">c</span></code> </p>
 <p>
@@ -628,7 +628,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE">
-<span id="audi::gdual::find_cf__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1aa6d768ce63dd0a4a6345996dcddd25e9"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::find_cf__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a09c8b68f0b5da2b9251f7582f1fdcb43"></span>auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the coefficient of a particular monomial. </p>
 <p>Returns the coefficient of the monomial specified in the initializer list <code class="docutils literal"><span class="pre">l</span></code> </p>
 <p><dl class="docutils">
@@ -653,7 +653,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual14get_derivativeERK1T">
-<span id="audi::gdual::get_derivative__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8933b90db849115e6582579196a4fb04"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERK1T" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_derivative__TCR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a95fe275046ad679cf02458b5c01df566"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERK1T" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the derivative value. </p>
 <p>Returns the (mixed) derivative value of order specified by the container <code class="docutils literal"><span class="pre">c</span></code> </p>
 <p><dl class="docutils">
@@ -680,7 +680,7 @@ This method will first construct a term with zero coefficient and key initialise
 <dt>
 <em class="property">template </em>&lt;<em class="property">typename</em> T&gt;</dt>
 <dt id="_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE">
-<span id="audi::gdual::get_derivative__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a873ab0c11d1a8477e7fa2b59d582c687"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_derivative__std::initializer_list:T:"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a2e1e08012060d7949dfe1c3685ae55f9"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the derivative value. </p>
 <p>Returns the (mixed) derivative value of order specified by the initializer list <code class="docutils literal"><span class="pre">l</span></code> </p>
 <p><dl class="docutils">
@@ -705,7 +705,7 @@ This method will first construct a term with zero coefficient and key initialise
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE">
-<span id="audi::gdual::get_derivative__std::unordered_map:ss.unsigned-i:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1af8f17c4e139b7520fc4730ddcc4331db"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, unsigned int&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::get_derivative__std::unordered_map:ss.unsigned-i:CR"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a8369df8a0639de376504936848df22be"></span>auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, unsigned int&gt; &amp;<em>dict</em><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the derivative value. </p>
 <p>Returns the (mixed) derivative value of order specified by the container <code class="docutils literal"><span class="pre">c</span></code> </p>
 <p><dl class="docutils">
@@ -729,7 +729,7 @@ This method will first construct a term with zero coefficient and key initialise
 
 <dl class="function">
 <dt id="_CPPv2N4audi5gdual11constant_cfEv">
-<span id="audi::gdual::constant_cf"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a06f3c8056cb7cbd4012d97f40dc8fa94"></span>Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual11constant_cfEv" title="Permalink to this definition">¶</a></dt>
+<span id="audi::gdual::constant_cf"></span><span class="target" id="AuDiclassaudi_1_1gdual_1a67ab9efec70f6bdd8d1d44753fdb37a5"></span>Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span> const<a class="headerlink" href="#_CPPv2N4audi5gdual11constant_cfEv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds the constant coefficient. </p>
 <p>Returns the coefficient of the of the constant part of the polynomial so that if <span class="math">\(T_{f} = f_0 + \hat f\)</span>,m <span class="math">\(f_0\)</span> is returned</p>
 <p><dl class="docutils">
