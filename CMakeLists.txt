@@ -63,7 +63,7 @@ endif()
 
 message(STATUS "Required Boost libraries: ${REQUIRED_BOOST_LIBS}")
 # Timers are available since 1.48.0.
-FIND_PACKAGE(Boost 1.60.0 REQUIRED COMPONENTS "${REQUIRED_BOOST_LIBS}")
+FIND_PACKAGE(Boost 1.48.0 REQUIRED COMPONENTS "${REQUIRED_BOOST_LIBS}")
 message(STATUS "Detected Boost version: ${Boost_VERSION}")
 # Include system Boost headers.
 message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
