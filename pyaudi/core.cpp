@@ -11,9 +11,9 @@ namespace bp = boost::python;
 
 BOOST_PYTHON_MODULE(_core)
 {
-    // We register a converter between vectorized_double and a python list
+    // We register a converter between vectorized_double and a python list (not needed but may be handy in future extensions)
     bp::to_python_converter<audi::vectorized_double, pyaudi::vectorized_double_to_python_list>();
-    
+
     // We expose the gdual<double> using the expose_gdual defined in exposed_gdual.hpp
     pyaudi::expose_gdual<double>("double");
 
