@@ -1,13 +1,13 @@
 /*! \mainpage
 \section z Listen (Introduction)
 Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library that allows
-for AUtomated DIfferentiation implementing the Taylor truncated polynomial
+for high order AUtomated DIfferentiation implementing the Taylor truncated polynomial
 algebra (forward mode automated differentiation). It was created with the aim
-to offer a generic solution to the user in need of an automated
+to offer a solution to the user in need of a generic automated
 differentiation system. While other automated differentiation codes may be more
 efficient on some targeted application, AuDi was built to be fast and efficient
-across all application ranges (low orders, high orders, one variable,
-many variables). Its use should be rather straight forward and is illustarted
+across all application ranges (low/high order of derivation, one variable,
+many variables). Its use is straight forward and is illustarted
 in the getting started example below.
 
 \include getting_started.cpp

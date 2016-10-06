@@ -377,7 +377,7 @@ private:
          * - piranha::series::subs,
          */
         template<typename T>
-        gdual subs(const std::string& sym, const T& val)
+        gdual subs(const std::string& sym, const T& val) const
         {
             auto new_p = m_p.subs(sym, Cf(val));
             return gdual(std::move(new_p), m_order);
@@ -447,6 +447,10 @@ private:
         {
             if (std::accumulate(c.begin(),c.end(),0u) > m_order) {
                 throw std::invalid_argument("requested coefficient is beyond the truncation order.");
+            }
+            if (c.size() != this->get_symbol_set_size())
+            {
+                throw std::invalid_argument("requested monomial does not exist, check the length of the input with respect to the symbol set size");
             }
             return m_p.find_cf(c);
         }

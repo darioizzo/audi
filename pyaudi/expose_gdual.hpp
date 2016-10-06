@@ -25,59 +25,25 @@ namespace pyaudi {
 template<typename T, std::enable_if_t<!std::is_same<T, vectorized_double>::value, int > = 0 >
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 {
-    th.add_property("constant_cf",&gdual<T>::constant_cf, "Constant term of the polynomial")
-    .def("evaluate",
-        +[](const gdual<T> &gd, const bp::dict &dict)
+    th.def("subs",
+        +[](gdual<T> &gd, const std::string& sym, const T& in)
         {
-            return gd.evaluate(pydict_to_umap<std::string, double>(dict));
+            return gd.subs(sym, in);
         }
-        , "Evaluates the Taylor polynomial"
-    )
-    .def("find_cf", +[](const gdual<T> &gd, const bp::object& in) {
-        return gd.find_cf(pyaudi::l_to_v<int>(in));
-    }, "Finds the coefficient of the Taylor expansion")
-    .def("get_derivative", +[](const gdual<T> &gd, const bp::object& in) {
-        return gd.get_derivative(pyaudi::l_to_v<int>(in));
-    },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor")
-    .def("get_derivative", +[](const gdual<T> &g, const bp::dict &pydict) {
-        return g.get_derivative(pydict_to_umap<std::string, unsigned int>(pydict));
-    },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor");
+        , "Substitutes a symbol with a value (does not remove symbol from symbol set)"
+    );
 }
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
 template<typename T, std::enable_if_t<std::is_same<T, vectorized_double>::value, int > = 0 >
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 {
-    th.add_property("constant_cf", +[](const gdual<T> &gd)
-    {
-        return pyaudi::v_to_l(gd.constant_cf().get_v());
-
-    }
-    , "Constant term of the polynomial")
-    .def("evaluate",
-        +[](const gdual<T> &gd, const bp::dict &dict)
+    th.def("subs",
+        +[](gdual<T> &gd, const std::string& sym, const bp::object& in)
         {
-            return pyaudi::v_to_l(gd.evaluate(pydict_to_umap<std::string, double>(dict)).get_v());
+            return gd.subs(sym, T(l_to_v<double>(in)));
         }
-        , "Evaluates the Taylor polynomial"
-    )
-    .def("find_cf", +[](const gdual<T> &gd, const bp::object& in)
-        {
-            return pyaudi::v_to_l(gd.find_cf(pyaudi::l_to_v<int>(in)).get_v());
-        }
-        , "Finds the coefficient of the Taylor expansion"
-    )
-    .def("get_derivative", +[](const gdual<T> &gd, const bp::object& in)
-        {
-            return pyaudi::v_to_l(gd.get_derivative(pyaudi::l_to_v<int>(in)).get_v());
-        }
-        ,"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor"
-    )
-    .def("get_derivative", +[](const gdual<T> &gd, const bp::dict &pydict)
-        {
-            return pyaudi::v_to_l(gd.get_derivative(pydict_to_umap<std::string, unsigned int>(pydict)).get_v());
-        }
-        ,"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor"
+        , "Substitutes a symbol with a value (does not remove symbol from symbol set)"
     );
 }
 
@@ -172,7 +138,7 @@ auto expose_gdual(std::string type)
         return g.get_derivative(pydict_to_umap<std::string, unsigned int>(pydict));
     },"Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor")
     ;
-    //expose_T_dependent_stuff<T>(th);
+    expose_T_dependent_stuff<T>(th);
     return th;
 }
 }
