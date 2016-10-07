@@ -6,6 +6,8 @@
 #include<type_traits>
 #include<vector>
 
+#include "../back_compatibility.hpp"
+
 namespace piranha { namespace math {
 
 // This overload is needed for T = std::complex<double> "meet" the requirement: piranha::is_differentiable<T>
@@ -35,25 +37,25 @@ struct pow_impl<T,U,typename std::enable_if<boost::is_complex<T>::value>::type>
 // They basically allow multiplication and division between std::complex<double> and any
 // integer type
 namespace std{
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, audi::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator*(const std::complex<double> &d1, T d2)
 {
 	return d1 * std::complex<double>(d2);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, audi::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator*(T d2, const std::complex<double> &d1)
 {
 	return d1 * std::complex<double>(d2);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, audi::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator/(const std::complex<double> &d1, T d2)
 {
 	return d1 / std::complex<double>(d2);
 }
 
-template <typename T, std::enable_if_t<std::is_integral<T>::value, int> = 0>
+template <typename T, audi::enable_if_t<std::is_integral<T>::value, int> = 0>
 std::complex<double> operator/(T d2, const std::complex<double> &d1)
 {
 	return d1 / std::complex<double>(d2);

@@ -5,6 +5,7 @@ set(HEADERS_LIST
 	gdual.hpp
 	type_traits.hpp
 	vectorized_double.hpp
+    back_compatibility.hpp
 )
 set(HEADERS_LIST_DETAIL
 	detail/complex.hpp

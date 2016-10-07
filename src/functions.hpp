@@ -9,6 +9,7 @@
 
 #include "gdual.hpp"
 #include "detail/overloads.hpp"
+#include "back_compatibility.hpp"
 
 namespace audi
 {
@@ -28,7 +29,7 @@ namespace audi
  *
  * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T exp(const T &d)
 {
     T retval(1.);
@@ -63,7 +64,7 @@ inline T exp(const T &d)
  * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
  *
  */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T log(const T &d)
 {
     T retval(0.);
@@ -96,7 +97,7 @@ inline T log(const T &d)
  * @param[in] d audi::gdual argument
  *
  */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(double base, const T &d)
 {
     // checks wether the exponent is a constant in which
@@ -126,7 +127,7 @@ inline T pow(double base, const T &d)
  * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
  *
  */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T &d, double alpha)
 {
     // We check if the exponent is representable as a positive integer,
@@ -165,7 +166,7 @@ inline T pow(const T &d, double alpha)
  * @param[in] d audi::gdual argument
  * @param[in] n integer exponent
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T& d, int n)
 {
     if (n <= 0) {
@@ -190,7 +191,7 @@ inline T pow(const T& d, int n)
  *
  * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T &d1, const T &d2)
 {
     return exp(d2 * log(d1));
@@ -213,7 +214,7 @@ inline T pow(const T &d1, const T &d2)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T sqrt(const T &d)
 {
     return pow(d, 0.5); // TODO: subsitute this by similar code to cbrt?
@@ -236,7 +237,7 @@ inline T sqrt(const T &d)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T cbrt(const T& d)
 {
     double alpha = 1/3.;
@@ -273,7 +274,7 @@ inline T cbrt(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the sine of \p d
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T sin(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -323,7 +324,7 @@ inline T sin(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the cosine of \p d
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T cos(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -368,7 +369,7 @@ inline T cos(const T& d)
  * @return an std::array containing the Taylor expansions of sine and the cosine (first element, second element)
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 std::array<T,2> sin_and_cos(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -421,7 +422,7 @@ std::array<T,2> sin_and_cos(const T& d)
  * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T tan(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -464,7 +465,7 @@ inline T tan(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic sine of \p d
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T sinh(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -510,7 +511,7 @@ inline T sinh(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic cosine of \p d
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T cosh(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -551,7 +552,7 @@ inline T cosh(const T& d)
  * @return an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element)
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 std::array<T,2> sinh_and_cosh(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -600,7 +601,7 @@ std::array<T,2> sinh_and_cosh(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the hyperbolic tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T tanh(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -641,7 +642,7 @@ inline T tanh(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atanh(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -678,7 +679,7 @@ inline T atanh(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atan(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -734,7 +735,7 @@ inline T atan(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asinh(const T& d)
 {
     return log(d + sqrt(1. + d*d));
@@ -756,7 +757,7 @@ inline T asinh(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acosh(const T& d)
 {
     return log(d + sqrt(d*d - 1.));
@@ -778,7 +779,7 @@ inline T acosh(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse sine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asin(const T& d)
 {
     return atan(d / sqrt(1. - d*d));
@@ -800,7 +801,7 @@ inline T asin(const T& d)
  * @return an audi::gdual containing the Taylor expansion of the inverse cosine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acos(const T& d)
 {
     return 0.5 * boost::math::constants::pi<double>() - atan(d / sqrt(1. - d*d));
@@ -826,7 +827,7 @@ inline T acos(const T& d)
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value && std::is_arithmetic<typename T::cf_type>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value && std::is_arithmetic<typename T::cf_type>::value, int> = 0>
 inline T abs(const T& d)
 {
     auto p0 = d.constant_cf();
@@ -836,7 +837,7 @@ inline T abs(const T& d)
     return -d;
 }
 // Vectorized abs
-template <typename T, std::enable_if_t<is_gdual<T>::value && std::is_same<vectorized_double,typename T::cf_type>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value && std::is_same<vectorized_double,typename T::cf_type>::value, int> = 0>
 inline T abs(const T& d)
 {
     T retval(d);

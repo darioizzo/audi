@@ -24,7 +24,7 @@
 #include <vector>
 #include <cassert>
 
-//#include "functions.hpp"
+#include "back_compatibility.hpp"
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -100,7 +100,7 @@ private:
         // Enable the generic ctor only if T is not a gdual<Cf> (after removing
         // const/reference qualifiers).
         template <typename T>
-        using generic_ctor_enabler = std::enable_if_t<!std::is_same<gdual<Cf>,std::decay_t<T>>::value && std::is_constructible<p_type,std::decay_t<T>>::value,int>;
+        using generic_ctor_enabler = enable_if_t<!std::is_same<gdual<Cf>,decay_t<T>>::value && std::is_constructible<p_type,decay_t<T>>::value,int>;
 
         void check_order() const
         {
@@ -340,7 +340,7 @@ private:
          * - piranha::series::truncate_degree,
          * - piranha::series::integrate
          */
-        template<std::enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
+        template<enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
         gdual integrate(const std::string& var_name)
         {
             check_var_name(var_name);
@@ -363,7 +363,7 @@ private:
          * @throws unspecified any exception thrown by:
          * - piranha::series::partial,
          */
-        template<std::enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
+        template<enable_if_t<piranha::is_differentiable<Cf>::value,int> = 0>
         gdual partial(const std::string& var_name)
         {
             check_var_name(var_name);

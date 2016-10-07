@@ -6,6 +6,7 @@
 
 #include "gdual.hpp"
 #include "detail/overloads.hpp"
+#include "back_compatibility.hpp"
 
 namespace audi
 {
@@ -32,7 +33,7 @@ namespace audi
  * @param[in] dg Taylor expansion of the derivative of the outer function
  * @param[in] g0 Value of the outer function at the expansion point
 */
-template <typename T, typename V, std::enable_if_t<is_gdual<T>::value && std::is_same<V,typename T::cf_type>::value, int> = 0>
+template <typename T, typename V, enable_if_t<is_gdual<T>::value && std::is_same<V,typename T::cf_type>::value, int> = 0>
 inline T _compose_from_derivative(T f, T dg, V g0)
 {
     auto ss = f.get_symbol_set();
@@ -59,7 +60,7 @@ inline T _compose_from_derivative(T f, T dg, V g0)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atanh_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -79,7 +80,7 @@ inline T atanh_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the inverse tangent of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T atan_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -99,7 +100,7 @@ inline T atan_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the inverse sine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asin_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -119,7 +120,7 @@ inline T asin_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T asinh_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -139,7 +140,7 @@ inline T asinh_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the inverse cosine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acos_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -159,7 +160,7 @@ inline T acos_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T acosh_d(const T& f)
 {
     auto f0 = f.constant_cf();
@@ -179,7 +180,7 @@ inline T acosh_d(const T& f)
  * @return an audi:gdual containing the Taylor expansion of the error function of \p d
  *
 */
-template <typename T, std::enable_if_t<is_gdual<T>::value, int> = 0>
+template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T erf(const T& d)
 {
     auto f0 = d.constant_cf();

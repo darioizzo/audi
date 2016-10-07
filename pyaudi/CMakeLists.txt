@@ -5,7 +5,7 @@ YACMA_PYTHON_MODULE(_core SHARED
 	test.py
 )
 
-set_property(TARGET _core PROPERTY CXX_STANDARD 14)
+set_property(TARGET _core PROPERTY CXX_STANDARD 11)
 set_property(TARGET _core PROPERTY CXX_STANDARD_REQUIRED YES)
 
 # Setup the installation path.

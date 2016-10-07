@@ -15,6 +15,7 @@
 #include "common_utils.hpp"
 #include "python_includes.hpp"
 #include "../src/audi.hpp"
+#include "../src/back_compatibility.hpp"
 
 namespace bp = boost::python;
 using namespace audi;
@@ -22,7 +23,7 @@ using namespace audi;
 namespace pyaudi {
 
 // For non vectorized_double we do not perform any converion on in-out types
-template<typename T, std::enable_if_t<!std::is_same<T, vectorized_double>::value, int > = 0 >
+template<typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int > = 0 >
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 {
     th.def("subs",
@@ -35,7 +36,7 @@ inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 }
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
-template<typename T, std::enable_if_t<std::is_same<T, vectorized_double>::value, int > = 0 >
+template<typename T, enable_if_t<std::is_same<T, vectorized_double>::value, int > = 0 >
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 {
     th.def("subs",
@@ -49,7 +50,7 @@ inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 
 // This is the interface common across types
 template<typename T>
-auto expose_gdual(std::string type)
+bp::class_<gdual<T>> expose_gdual(std::string type)
 {
      auto th =  bp::class_<gdual<T>>(("gdual_"+type).c_str())
     .def(bp::init<>())
