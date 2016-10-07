@@ -205,8 +205,8 @@ class test_gdual_double(_ut.TestCase):
         y = gdual(1, "y", 4)
         z = gdual(1, "z", 4)
         f = (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)
-        pk.dump(f, open("tmp.pk", "w"))
-        newf = pk.load(open("tmp.pk", "r"))
+        pk.dump(f, open("tmp.pk", "wb"))
+        new_f = pk.load(open("tmp.pk", "rb"))
         self.assertEqual(f, new_f)
         self.assertEqual(f.order, new_f.order)
 
