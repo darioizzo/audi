@@ -47,7 +47,7 @@ BOOST_PYTHON_MODULE(_core)
 
     bp::def("cbrt",+[](const gdual_d &d) {return cbrt(d);},"Cubic root (gdual_d).");
     bp::def("cbrt",+[](double x) {return std::cbrt(x);},"Cubic root (double).");
-    bp::def("cbrt",+[](const gdual_d &d) {return cbrt(d);},"Cubic root (gdual_v).");
+    bp::def("cbrt",+[](const gdual_v &d) {return cbrt(d);},"Cubic root (gdual_v).");
 
     bp::def("sin",+[](const gdual_d &d) {return sin(d);},"Sine (gdual_d).");
     bp::def("sin",+[](double x) {return std::sin(x);},"Sine (double).");

@@ -1,7 +1,21 @@
 import unittest as _ut
 
-def some_complex_f(x,y,z):
+def some_complex_rational_f(x,y,z):
     return (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)/(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)
+
+def some_complex_irrational_f(x,y,z):
+    from pyaudi import exp, log, cos, sin, tan, sqrt, cbrt, cos, sin, tan, acos, asin, atan, cosh, sinh, tanh, acosh, asinh, atanh
+    from pyaudi import abs as gd_abs
+    from pyaudi import sin_and_cos, sinh_and_cosh
+    f = (x+y+z) / 10.
+    retval = exp(f) + log(f) + f**2 + sqrt(f) + cbrt(f) + cos(f) + sin(f)
+    retval += tan(f) + acos(f) + asin(f) + atan(f)  + cosh(f) + sinh(f)
+    retval += tanh(f) + acosh(f) + asinh(f) + atanh(f)
+    a = sin_and_cos(f)
+    b = sinh_and_cosh(f)
+    retval+=a[0]+a[1]+b[0]+b[1]
+    return retval
+
 
 
 class test_gdual_double(_ut.TestCase):
@@ -378,25 +392,25 @@ class test_gdual_vdouble(_ut.TestCase):
             gdual(1, "x", 2)
             gdual(1)
 
-    def test_consistency_wrt_gdual_double(self):
+    def test_consistency(self):
         from pyaudi import gdual_vdouble as gdual_v
         from pyaudi import gdual_double as gdual_d
         x1 = gdual_d(1, "x", 4)
         y1 = gdual_d(0.1, "y", 4)
         z1 = gdual_d(-0.3, "z", 4)
-        f1 = some_complex_f(x1,y1,z1)
+        f1 = some_complex_rational_f(x1,y1,z1)
         x2 = gdual_d(-0.5, "x", 4)
         y2 = gdual_d(0.03, "y", 4)
         z2 = gdual_d(0.23, "z", 4)
-        f2 = some_complex_f(x2,y2,z2)
+        f2 = some_complex_rational_f(x2,y2,z2)
         x3 = gdual_d(0.441413, "x", 4)
         y3 = gdual_d(-0.2341243241, "y", 4)
         z3 = gdual_d(0.2421413, "z", 4)
-        f3 = some_complex_f(x3,y3,z3)
+        f3 = some_complex_rational_f(x3,y3,z3)
         xv = gdual_v([1,-0.5, 0.441413], "x", 4)
         yv = gdual_v([0.1,0.03, -0.2341243241], "y", 4)
         zv = gdual_v([-0.3,0.23, 0.2421413], "z", 4)
-        fv = some_complex_f(xv,yv,zv)
+        fv = some_complex_rational_f(xv,yv,zv)
         for dx in range(0, 4):
             for dy in range(0, 4):
                 for dz in range(0, 4):
@@ -404,6 +418,43 @@ class test_gdual_vdouble(_ut.TestCase):
                         self.assertAlmostEqual(f1.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[0], delta=1e-12)
                         self.assertAlmostEqual(f2.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[1], delta=1e-12)
                         self.assertAlmostEqual(f3.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[2], delta=1e-12)
+
+    def test_consistency_functions(self):
+        from pyaudi import gdual_vdouble as gdual_v
+        from pyaudi import gdual_double as gdual_d
+        from numpy import isnan, nan
+        x1 = gdual_d(0.23, "x", 4)
+        y1 = gdual_d(0.1, "y", 4)
+        z1 = gdual_d(-0.3, "z", 4)
+        f1 = some_complex_irrational_f(x1,y1,z1)
+        x2 = gdual_d(-0.5, "x", 4)
+        y2 = gdual_d(0.03, "y", 4)
+        z2 = gdual_d(0.23, "z", 4)
+        f2 = some_complex_irrational_f(x2,y2,z2)
+        x3 = gdual_d(0.441413, "x", 4)
+        y3 = gdual_d(-0.2341243241, "y", 4)
+        z3 = gdual_d(0.2421413, "z", 4)
+        f3 = some_complex_irrational_f(x3,y3,z3)
+        xv = gdual_v([0.23,-0.5, 0.441413], "x", 4)
+        yv = gdual_v([0.1,0.03, -0.2341243241], "y", 4)
+        zv = gdual_v([-0.3,0.23, 0.2421413], "z", 4)
+        fv = some_complex_irrational_f(xv,yv,zv)
+        for dx in range(0, 4):
+            for dy in range(0, 4):
+                for dz in range(0, 4):
+                    if dx+dy+dz <= 4:
+                        if isnan(f1.get_derivative([dx,dy,dz])):
+                            self.assertTrue(isnan(fv.get_derivative([dx,dy,dz])[0]))
+                        else:
+                            self.assertAlmostEqual(f1.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[0], delta=1e-12)
+                        if isnan(f2.get_derivative([dx,dy,dz])):
+                            self.assertTrue(isnan(fv.get_derivative([dx,dy,dz])[1]))
+                        else:
+                            self.assertAlmostEqual(f2.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[1], delta=1e-12)
+                        if isnan(f3.get_derivative([dx,dy,dz])):
+                            self.assertTrue(isnan(fv.get_derivative([dx,dy,dz])[2]))
+                        else:
+                            self.assertAlmostEqual(f3.get_derivative([dx,dy,dz]), fv.get_derivative([dx,dy,dz])[2], delta=1e-12)
 
 def run_test_suite():
     """Run the full test suite.
