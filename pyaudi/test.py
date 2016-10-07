@@ -1,10 +1,5 @@
 import unittest as _ut
 
-def gdual_double_norm(p):
-    order = p.order
-    res = [p.find_cf([x,y]) for x in range(0,order) for y in range(0,order) if (x+y) <= order]
-    return sum(res) / len(res)
-
 def some_complex_f(x,y,z):
     return (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)/(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)
 
@@ -118,8 +113,8 @@ class test_gdual_double(_ut.TestCase):
         self.assertEqual((p1 + p2)*(p1 + p2), p1*p1 + p2*p2 + 2*p1*p2)
         self.assertEqual(x*x*x*x-y*y*y*y, (x-y)*(x+y)*(x*x+y*y))
         self.assertEqual(p1*p1*p1*p1-p2*p2*p2*p2, (p1-p2)*(p1+p2)*(p1*p1+p2*p2))
-        self.assertAlmostEqual(gdual_double_norm((p1/p2) * (p2/p1) - 1), 0, delta=1e-12)
-        self.assertAlmostEqual(gdual_double_norm((p1/p2) * p2 - p1), 0, delta=1e-12)
+        self.assertTrue(((p1/p2) * (p2/p1) - 1).is_zero(1e-12))
+        self.assertTrue(((p1/p2) * p2 - p1).is_zero(1e-12))
 
     def test_derivatives(self):
         from pyaudi import gdual_double as gdual
@@ -205,46 +200,152 @@ class test_function_calls(_ut.TestCase):
     def test_exponentiation(self):
         from pyaudi import gdual_double as gdual
 
-        x = gdual(0., "x",3);
-        y = gdual(0., "y",3);
+        x = gdual(0., "x",3)
+        y = gdual(0., "y",3)
 
-        p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x + 3.2;
+        p1 = x*x*y + x*y*x*x*x - 3*y*y*y*y*x*y*x + 3.2
         self.assertEqual(p1**3, p1*p1*p1)
         self.assertEqual(p1**3., p1*p1*p1)
-        self.assertAlmostEqual(gdual_double_norm(p1**gdual(3)- p1*p1*p1), 0, delta=1e-12)
-        self.assertAlmostEqual(gdual_double_norm(p1**gdual(3.1) - p1**3.1), 0, delta=1e-12)
+        self.assertTrue((p1**gdual(3)- p1*p1*p1).is_zero(1e-12))
+        self.assertTrue((p1**gdual(3.1) - p1**3.1).is_zero(1e-12))
 
-'''
-    {
-    gdual_d x(0., "x",3);
-    gdual_d y(0.,"y",3);
-    gdual_d p1 = x+y-3*x*y+y*y;
-    gdual_d p2 = p1 - 3.5;
+        x = gdual(0., "x",3)
+        y = gdual(0., "y",3)
+        p1 = x+y-3*x*y+y*y
+        p2 = p1 - 3.5
+        self.assertTrue( (3**gdual(3.2) - 3**3.2).is_zero(1e-12) )
+        self.assertTrue( (p2**3 - p2**3.).is_zero(1e-12) )
+        self.assertTrue( (p2**-1 - 1 / p2).is_zero(1e-12) )
+        self.assertTrue( (p2**-1. - 1 / p2).is_zero(1e-12) )
+        self.assertTrue( ((p1+3.5)**gdual(-1.1) - (p1+3.5)**-1.1).is_zero(1e-12) )
 
-    self.assertAlmostEqual(pow(3, gdual_d(3.2)), std::pow(3, 3.2) * gdual_d(1), 1e-12) == true);
-    self.assertAlmostEqual(pow(p2, 3), pow(p2, 3.), 1e-12) == true);
+    def test_sqrt(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sqrt
+        x = gdual(2.3, "x",3);
+        y = gdual(1.5, "y",3);
 
-    self.assertAlmostEqual(pow(p2, -1), 1 / p2, 1e-12) == true);                                      // negative exponent (gdual_d, int)
-    self.assertAlmostEqual(pow(p2, -1.), 1 / p2, 1e-12) == true);                                     // negative exponent (gdual_d, double)
-    self.assertAlmostEqual(pow(p1 + 3.5, gdual_d(-1.1)), pow(p1 + 3.5, -1.1), 1e-12) == true);       // negative exponent (gdual_d, gdual_d)
-    }
+        p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  # positive p0
+        p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  # negative coefficient
+        self.assertTrue((sqrt(p1)*sqrt(p1) - p1).is_zero(1e-12))
+        self.assertTrue((sqrt(p2)*sqrt(p2) - p2).is_zero(1e-12))
 
-    // We check the implementation of pow(gdual_d, double) with respect to the behaviour in 0.
-    // We compute the Taylor expansion of f = x^3.1 around 0. Which is T_f = 0. + 0.dx + 0.dx^2 + 0.dx^3 + inf dx^4-inf dx^5 ...
+    def test_cbrt(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import cbrt
+        x = gdual(2.3, "x",3);
+        y = gdual(1.5, "y",3);
 
-    gdual_d x(0., "x", 7);
-    auto f = pow(x, 3.1);
-    self.assertEqual(f.find_cf({0}), 0.);
-    self.assertEqual(f.find_cf({1}), 0.);
-    self.assertEqual(f.find_cf({2}), 0.);
-    self.assertEqual(f.find_cf({3}), 0.);
-    self.assertEqual(f.find_cf({4}),   1./0.);
-    self.assertEqual(f.find_cf({5}), - 1./0.);
-    self.assertEqual(f.find_cf({6}),   1./0.);
-    self.assertEqual(f.find_cf({7}), - 1./0.);
+        p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;  # positive p0
+        p2 = x*x*y - x*y*x*x*x - 3*y*y*y*y*x*y*x;  # negative coefficient
+        self.assertTrue((cbrt(p1)*cbrt(p1)*cbrt(p1) - p1).is_zero(1e-12))
+        self.assertTrue((cbrt(p2)*cbrt(p2)*cbrt(p2) - p2).is_zero(1e-12))
 
-}
-'''
+    def test_exp_log(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import exp, log
+        x = gdual(2.3, "x",5);
+        y = gdual(1.5, "y",5);
+
+        p1 = x*x*y - x*y*x*x*x + 3*y*y*y*y*x*y*x;
+        self.assertTrue((exp(log(p1)) - p1).is_zero(1e-10))
+
+    def test_sin_and_cos(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sin, cos, sin_and_cos
+        x = gdual(2.3, "x",8);
+        y = gdual(1.5, "y",8);
+
+        p1 = x + y;
+
+        self.assertTrue((sin(2*p1) - 2 * sin(p1) * cos(p1)).is_zero(1e-12))
+        self.assertTrue((cos(2*p1) - 1 + 2*sin(p1)*sin(p1)).is_zero(1e-12))
+        self.assertTrue((cos(2*p1) + 1 - 2*cos(p1)*cos(p1)).is_zero(1e-12))
+        self.assertTrue((cos(2*p1) - cos(p1)*cos(p1) + sin(p1) * sin(p1)).is_zero(1e-12))
+        self.assertTrue((sin(p1)*sin(p1) + cos(p1)*cos(p1) - 1).is_zero(1e-12))
+
+        res = sin_and_cos(p1);
+        self.assertTrue((res[0] - sin(p1)).is_zero(1e-12))
+        self.assertTrue((res[1] - cos(p1)).is_zero(1e-12))
+
+    def test_tan(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sin, cos, tan
+
+        x = gdual(2.3, "x",10);
+        y = gdual(1.5, "y",10);
+
+        p1 = x + y;
+        self.assertTrue((tan(p1) - sin(p1) / cos(p1)).is_zero(1e-12))
+
+    def test_sinh_and_cosh(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sinh, cosh, sinh_and_cosh
+        x = gdual(2.3, "x",8);
+        y = gdual(1.5, "y",8);
+
+        p1 = x + y;
+
+        self.assertTrue((sinh(2*p1) - 2 * sinh(p1) * cosh(p1)).is_zero(1e-12))
+        self.assertTrue((cosh(2*p1) - 1 - 2*sinh(p1)*sinh(p1)).is_zero(1e-12))
+        self.assertTrue((cosh(2*p1) + 1 - 2*cosh(p1)*cosh(p1)).is_zero(1e-12))
+        self.assertTrue((cosh(2*p1) - cosh(p1)*cosh(p1) - sinh(p1) * sinh(p1)).is_zero(1e-12))
+        self.assertTrue((- sinh(p1)*sinh(p1) + cosh(p1)*cosh(p1) - 1).is_zero(1e-12))
+
+        res = sinh_and_cosh(p1);
+        self.assertTrue((res[0] - sinh(p1)).is_zero(1e-12))
+        self.assertTrue((res[1] - cosh(p1)).is_zero(1e-12))
+
+    def test_tanh(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sinh, cosh, tanh
+
+        x = gdual(2.3, "x",10);
+        y = gdual(1.5, "y",10);
+
+        p1 = x + y;
+        self.assertTrue((tanh(p1) - sinh(p1) / cosh(p1)).is_zero(1e-12))
+
+    def test_inverse_functions(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sinh, cosh, tanh
+        from pyaudi import asinh, acosh, atanh
+        from pyaudi import sin, cos, tan
+        from pyaudi import asin, acos, atan
+
+        x = gdual(1.1, "x",6);
+        y = gdual(1.2, "y",6);
+        p1 = 1. / (x + y);
+
+        self.assertTrue((cos(acos(p1))-p1).is_zero(1e-12))
+        self.assertTrue((acos(cos(p1))-p1).is_zero(1e-12))
+
+        self.assertTrue((sin(asin(p1))-p1).is_zero(1e-12))
+        self.assertTrue((asin(sin(p1))-p1).is_zero(1e-12))
+
+        self.assertTrue((tan(atan(p1))-p1).is_zero(1e-12))
+        self.assertTrue((atan(tan(p1))-p1).is_zero(1e-12))
+
+        self.assertTrue((cosh(acosh(p1))-p1).is_zero(1e-12))
+        self.assertTrue((acosh(cosh(p1))-p1).is_zero(1e-12))
+
+        self.assertTrue((sinh(asinh(p1))-p1).is_zero(1e-12))
+        self.assertTrue((asinh(sinh(p1))-p1).is_zero(1e-12))
+
+        self.assertTrue((tanh(atanh(p1))-p1).is_zero(1e-12))
+        self.assertTrue((atanh(tanh(p1))-p1).is_zero(1e-12))
+
+    def test_abs(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import abs as gd_abs
+
+        x = gdual(1.1, "x",6);
+        y = gdual(1.2, "y",6);
+
+        self.assertEqual(x+y, gd_abs(x+y))
+        self.assertEqual(-(x + y), - gd_abs(x+y))
+
+
 
 class test_gdual_vdouble(_ut.TestCase):
 

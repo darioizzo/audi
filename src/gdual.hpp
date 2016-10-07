@@ -24,6 +24,8 @@
 #include <vector>
 #include <cassert>
 
+//#include "functions.hpp"
+
 /// Root namespace for AuDi symbols
 namespace audi
 {
@@ -473,6 +475,10 @@ private:
             if (std::accumulate(l.begin(),l.end(),0u) > m_order) {
                 throw std::invalid_argument("requested coefficient is beyond the truncation order.");
             }
+            if (l.size() != this->get_symbol_set_size())
+            {
+                throw std::invalid_argument("requested monomial does not exist, check the length of the input with respect to the symbol set size");
+            }
             return m_p.find_cf(l);
         }
 
@@ -534,10 +540,10 @@ private:
         /// Gets the derivative value
         /**
          * Returns the (mixed) derivative value of order specified
-         * by the container \p c
+         * by the unordered_map \p dict
          *
          * \note To get the following derivative: \f$ \frac{d^6}{dxdy^3dz^2}\f$
-         * the input should be {{"x", 1u},{"y",3u},{"z",2u}}
+         * the input should be {{"dx", 1u},{"dy",3u},{"dz",2u}}
          *
          * \note The current implementation call internally the other templated
          * implementations. WHen piranha will implement the sparse monomial
@@ -574,6 +580,24 @@ private:
         {
             using v_size_type = std::vector<int>::size_type;
             return find_cf(std::vector<int>(boost::numeric_cast<v_size_type>(get_symbol_set_size()),0));
+        }
+
+        /// Determines if a gdual is zero within tolerance
+        /**
+         * Returns true if all coefficients of the gdual are zero within a tolerance \p tol
+         *
+         * @return
+         */
+        bool is_zero(double tol)
+        {
+            for (auto it = _container().begin(); it != _container().end(); ++it)
+            {
+                if (abs(it->m_cf) > tol)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 

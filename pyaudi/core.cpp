@@ -66,8 +66,8 @@ BOOST_PYTHON_MODULE(_core)
     bp::def("acos",+[](double x) {return std::acos(x);},"Arc cosine (double).");
     bp::def("acos",+[](const gdual_v &d) {return acos(d);},"Arc cosine (gdual_v).");
 
-    bp::def("sin_and_cos",+[](const gdual_d &d) {return sin_and_cos(d);}, "Sine and Cosine at once (gdual_d).");
-    bp::def("sin_and_cos",+[](const gdual_v &d) {return sin_and_cos(d);}, "Sine and Cosine at once (gdual_v).");
+    bp::def("sin_and_cos",+[](const gdual_d &d) {return pyaudi::v_to_l(sin_and_cos(d));}, "Sine and Cosine at once (gdual_d).");
+    bp::def("sin_and_cos",+[](const gdual_v &d) {return pyaudi::v_to_l(sin_and_cos(d));}, "Sine and Cosine at once (gdual_v).");
 
     bp::def("tan",+[](const gdual_d &d) {return tan(d);},"Tangent (gdual_d).");
     bp::def("tan",+[](double x) {return std::tan(x);},"Tangent (double).");
@@ -93,8 +93,8 @@ BOOST_PYTHON_MODULE(_core)
     bp::def("acosh",+[](double x) {return std::acosh(x);},"Inverse hyperbolic cosine (double).");
     bp::def("acosh",+[](const gdual_v &d) {return acosh(d);},"Inverse hyperbolic cosine (gdual_v).");
 
-    bp::def("sinh_and_cosh",+[](const gdual_d &d) {return sinh_and_cosh(d);} ,"Hyperbolic sine and hyperbolic cosine at once (gdual_d).");
-    bp::def("sinh_and_cosh",+[](const gdual_v &d) {return sinh_and_cosh(d);} ,"Hyperbolic sine and hyperbolic cosine at once (gdual_v).");
+    bp::def("sinh_and_cosh",+[](const gdual_d &d) {return pyaudi::v_to_l(sinh_and_cosh(d));} ,"Hyperbolic sine and hyperbolic cosine at once (gdual_d).");
+    bp::def("sinh_and_cosh",+[](const gdual_v &d) {return pyaudi::v_to_l(sinh_and_cosh(d));} ,"Hyperbolic sine and hyperbolic cosine at once (gdual_v).");
 
     bp::def("tanh",+[](const gdual_d &d) {return tanh(d);},"Hyperbolic tangent (gdual_d).");
     bp::def("tanh",+[](double x) {return std::tanh(x);},"Hyperbolic tangent (double).");

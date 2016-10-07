@@ -1,6 +1,7 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
+#include "gdual.hpp"
 
 namespace audi
 {
@@ -15,7 +16,7 @@ namespace audi
 template <typename T>
 struct is_gdual: std::false_type {};
 template <typename T>
-struct is_gdual<gdual<T>>: std::true_type {};
+struct is_gdual<gdual<T> >: std::true_type {};
 
 /// Type is arithmetic or complex
 /**

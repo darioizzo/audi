@@ -44,6 +44,16 @@ inline bp::list v_to_l(std::vector<T> vector) {
     return list;
 }
 
+// Converts a C++ array to a python list
+template <typename T,  std::size_t dim>
+inline bp::list v_to_l(std::array<T, dim> vector) {
+    bp::list list;
+    for (auto iter = vector.begin(); iter != vector.end(); ++iter) {
+        list.append(*iter);
+    }
+    return list;
+}
+
 // Converts a C++ unordered map to a python dict (TO BE TESTED)
 template <typename K, typename V>
 inline bp::dict umap_to_pydict(std::map<K, V> map) {

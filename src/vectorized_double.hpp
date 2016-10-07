@@ -176,6 +176,25 @@ public:
     {
         return !(d1 == d2);
     }
+    friend bool operator>(const vectorized_double &d1, const vectorized_double &d2)
+    {
+        if (d1.size() == d2.size())
+        {
+            return d1.m_c > d2.m_c;
+        }
+        else if (d1.size() == 1u) {
+            return std::all_of(d2.begin(),d2.end(),[d1](double x) {return x > d1[0];});
+        }
+        else if (d2.size() == 1u) {
+            return std::all_of(d1.begin(),d1.end(),[d2](double x) {return x > d2[0];});
+        }
+        return false;
+    }
+    friend vectorized_double abs(vectorized_double in)
+    {
+        std::transform(in.m_c.begin(), in.m_c.end(), in.m_c.begin(), [](double x){return std::abs(x);});
+        return in;
+    }
     friend std::ostream &operator<<(std::ostream &os, const vectorized_double &d) {
         os << "[";
         if (d.size() <= MAX_STREAMED_COMPONENTS) {
@@ -239,6 +258,8 @@ private:
 
     std::vector<double> m_c;
 };
+
+
 
 } // end of audi namespace
 

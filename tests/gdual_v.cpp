@@ -239,3 +239,19 @@ BOOST_AUTO_TEST_CASE(substitution)
     BOOST_CHECK_EQUAL(res3.get_derivative({0,1})[0], 0.);
     BOOST_CHECK_EQUAL(res3.get_derivative({0,1}).size(), 1);
 }
+
+BOOST_AUTO_TEST_CASE(is_zero)
+{
+    // We test some trivial cases where truncation order does not influence the results
+    {
+    gdual_v x(std::vector<double>{{1,2,3,4,0.123,-21.211}}, "x", 4);
+    gdual_v y(std::vector<double>{{0.123,1.2,4.3,2.4,0.23,-1.211}}, "y", 4);
+    gdual_v z(std::vector<double>{{-0.2,-2.01,0.123,-0.132,1.123,-0.211}}, "z", 4);
+    gdual_v f = x*x*x + x*y*z + z*x*y;
+
+    BOOST_CHECK((f-f).is_zero(1e-12));
+    BOOST_CHECK((f-1/(1/f)).is_zero(1e-12));
+    BOOST_CHECK(((f*f)/(f) - f).is_zero(1e-12));
+    BOOST_CHECK(!f.is_zero(1e-12));
+    }
+}

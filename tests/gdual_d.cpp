@@ -229,6 +229,22 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     }
 }
 
+BOOST_AUTO_TEST_CASE(is_zero)
+{
+    // We test some trivial cases where truncation order does not influence the results
+    {
+    gdual_d x(1, "x", 4);
+    gdual_d y(1, "y", 4);
+    gdual_d z(1, "z", 4);
+    gdual_d f = x*x*x + x*y*z + z*x*y;
+
+    BOOST_CHECK((f-f).is_zero(1e-12));
+    BOOST_CHECK((f-1/(1/f)).is_zero(1e-12));
+    BOOST_CHECK(((f*f)/(f) - f).is_zero(1e-12));
+    BOOST_CHECK(!f.is_zero(1e-12));
+    }
+}
+
 BOOST_AUTO_TEST_CASE(serialization_test)
 {
     gdual_d x(1, "x", 4);
