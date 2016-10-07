@@ -22,6 +22,44 @@ using namespace audi;
 
 namespace pyaudi {
 
+template<typename T>
+struct gdual_pickle_suite : bp::pickle_suite
+{
+    static bp::tuple getinitargs(const gdual<T>& w)
+    {
+        return bp::make_tuple();
+    }
+
+    static bp::tuple getstate(const gdual<T>& w)
+    {
+        // Returns a tuple that contains the string
+        // representation of a gdual<T> as obtained
+        // from the boost serialization library
+        std::stringstream ss;
+        boost::archive::text_oarchive oa(ss);
+        oa << w;
+        auto s = ss.str();
+        return bp::make_tuple(pyaudi::make_bytes(s.data(),boost::numeric_cast<Py_ssize_t>(s.size())));
+    }
+
+    static void setstate(gdual<T>& w, bp::tuple state)
+    {
+        if (len(state) != 1) {
+            pyaudi_throw(PyExc_ValueError,"the state tuple must have a single element");
+        }
+        auto ptr = PyBytes_AsString(bp::object(state[0]).ptr());
+        if (!ptr) {
+            pyaudi_throw(PyExc_TypeError,"a bytes object is needed to deserialize a population");
+        }
+        const auto size = len(state[0]);
+        std::string s(ptr,ptr + size);
+        std::istringstream iss;
+        iss.str(s);
+        boost::archive::text_iarchive ia(iss);
+        ia >> w;
+    }
+};
+
 // For non vectorized_double we do not perform any converion on in-out types
 template<typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int > = 0 >
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
@@ -57,28 +95,11 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
     .def(bp::init<const gdual<T> &>())
     .def(bp::init<T>())
     .def(bp::init<T, const std::string &, unsigned int>())
+    .def_pickle(gdual_pickle_suite<T>())
     .def("__repr__", +[](const gdual<T> &g) -> std::string {
         std::ostringstream oss;
         oss << g;
         return oss.str();
-    })
-    .def("_repr_latex_",+[](const gdual<T> &g) -> std::string {
-        std::ostringstream oss;
-        g._poly().print_tex(oss);
-        auto retval = oss.str();
-        retval += std::string("+\\mathcal{O}\\left(")
-            + boost::lexical_cast<std::string>(g.get_order() + 1) +  "\\right) \\]";
-        return std::string("\\[ ") + retval;
-    })
-    .def("__getstate__", +[](const gdual<T> &p) {
-        // Returns a tuple that contains the string
-        // representation of a gdual<T> as obtained
-        // from the boost serialization library
-        std::stringstream ss;
-        boost::archive::text_oarchive oa(ss);
-        oa << p;
-        auto s = ss.str();
-        return bp::make_tuple(pyaudi::make_bytes(s.data(),boost::numeric_cast<Py_ssize_t>(s.size())));
     })
     .def("__setstate__", +[](gdual<T> &p, bp::tuple state) {
         if (len(state) != 1) {

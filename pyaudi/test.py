@@ -200,12 +200,13 @@ class test_gdual_double(_ut.TestCase):
 
     def test_serialization(self):
         from pyaudi import gdual_double as gdual
+        import pickle as pk
         x = gdual(1, "x", 4)
         y = gdual(1, "y", 4)
         z = gdual(1, "z", 4)
         f = (x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)*(x*x*x + x*y*z + z*x*y)
-        new_f = gdual(0)
-        new_f.__setstate__(f.__getstate__())
+        pk.dump(f, open("tmp.pk", "w"))
+        newf = pk.load(open("tmp.pk", "r"))
         self.assertEqual(f, new_f)
         self.assertEqual(f.order, new_f.order)
 
