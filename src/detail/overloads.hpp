@@ -3,8 +3,12 @@
 
 #include <boost/type_traits/is_complex.hpp>
 #include "../vectorized_double.hpp"
-#include "../type_traits.hpp"
 #include "../back_compatibility.hpp"
+
+// This is repeated here instead of including type_traits as to avoid a circular dependency
+template< class T >
+struct is_arithmetic_or_complex : std::integral_constant<bool, std::is_arithmetic<T>::value || boost::is_complex<T>::value> {};
+
 
 // This macro writes the overload for std::fun_name performing elementwise evaluations on a vectorized_double
 #define VECTORIZED_OVERLOAD(fun_name)                               \
@@ -118,6 +122,8 @@ template<typename T, enable_if_t<boost::is_complex<T>::value, int> = 0>
 inline T cbrt(T in) {
     return std::pow(in, 1./3.); // needs a separate template as cbrt does not exist for complex types
 }
+
+ARITH_OR_COMPLEX_OVERLOAD(abs)
 
 }
 #endif

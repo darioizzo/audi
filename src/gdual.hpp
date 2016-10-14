@@ -25,6 +25,7 @@
 #include <cassert>
 
 #include "back_compatibility.hpp"
+#include "detail/overloads.hpp" //for audi::abs
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -592,7 +593,7 @@ private:
         {
             for (auto it = _container().begin(); it != _container().end(); ++it)
             {
-                if (abs(it->m_cf) > tol)
+                if (abs(it->m_cf) > tol) // call to audi abs has precedence
                 {
                     return false;
                 }

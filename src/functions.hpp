@@ -10,6 +10,7 @@
 #include "gdual.hpp"
 #include "detail/overloads.hpp"
 #include "back_compatibility.hpp"
+#include "type_traits.hpp"
 
 namespace audi
 {
