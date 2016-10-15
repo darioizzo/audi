@@ -101,6 +101,14 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
         oss << g;
         return oss.str();
     })
+    .def("_repr_latex_", +[](const gdual<T> &g) -> std::string {
+        std::ostringstream oss;
+        g._poly().print_tex(oss);
+        auto retval = oss.str();
+        retval += std::string("+\\mathcal{O}\\left(")
+            + boost::lexical_cast<std::string>(g.get_order() + 1) +  "\\right) \\]";
+        return std::string("\\[ ") + retval;
+    })
     .def("__setstate__", +[](gdual<T> &p, bp::tuple state) {
         if (len(state) != 1) {
             pyaudi_throw(PyExc_ValueError,"the state tuple must have a single element");
