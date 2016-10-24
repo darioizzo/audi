@@ -336,7 +336,15 @@ struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::vectorized_doub
   };
 };
 
-}} // end of piranha::math namespace
+} // end of math namespace
+
+template <typename Archive>
+struct boost_save_impl<Archive,vectorized_cf>: boost_save_via_boost_api<Archive, vectorized_cf> {};
+
+template <typename Archive>
+struct boost_load_impl<Archive,vectorized_cf>: boost_load_via_boost_api<Archive, vectorized_cf> {};
+
+} // end of piranha namespace
 
 #undef MAX_STREAMED_COMPONENTS
 #endif

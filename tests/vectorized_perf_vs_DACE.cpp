@@ -64,12 +64,12 @@ void measure_speedup(int points, unsigned int order, unsigned int size)
 int main() {
     for (auto j = 1u; j < 6; ++j) {
         for (auto i = 2u; i < 8; ++i) {
-            measure_speedup(pow(2,2*i), j, 20);
+            measure_speedup(pow(2,2*i), j, 13);
         }
     }
     for (auto j = 6u; j < 10; ++j) {
         for (auto i = 2u; i < 8; ++i) {
-            measure_speedup(pow(2,2*i), j, 10);
+            measure_speedup(pow(2,2*i), j, 5);
         }
     }
 }
