@@ -344,6 +344,9 @@ struct boost_save_impl<Archive,audi::vectorized_double>: boost_save_via_boost_ap
 template <typename Archive>
 struct boost_load_impl<Archive,audi::vectorized_double>: boost_load_via_boost_api<Archive, audi::vectorized_double> {};
 
+template <>
+struct zero_is_absorbing<audi::vectorized_double>: std::false_type {};
+
 } // end of piranha namespace
 
 #undef MAX_STREAMED_COMPONENTS
