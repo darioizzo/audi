@@ -339,10 +339,10 @@ struct pow_impl<T,U,typename std::enable_if<std::is_same<T,audi::vectorized_doub
 } // end of math namespace
 
 template <typename Archive>
-struct boost_save_impl<Archive,vectorized_cf>: boost_save_via_boost_api<Archive, vectorized_cf> {};
+struct boost_save_impl<Archive,audi::vectorized_double>: boost_save_via_boost_api<Archive, audi::vectorized_double> {};
 
 template <typename Archive>
-struct boost_load_impl<Archive,vectorized_cf>: boost_load_via_boost_api<Archive, vectorized_cf> {};
+struct boost_load_impl<Archive,audi::vectorized_double>: boost_load_via_boost_api<Archive, audi::vectorized_double> {};
 
 } // end of piranha namespace
 
