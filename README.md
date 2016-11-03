@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/41722955.svg)](https://zenodo.org/badge/latestdoi/41722955)
+
 # AuDi (Automated Differentiation)
 
 Implementation of a high-order automated differentiation system using generalized dual numbers (i.e. truncated Taylor polynomials). The underlying truncated Taylor polynomial algebra (a differential algebra since integration and derivations are defined too) is dealt with using [Piranha](https://github.com/bluescarni/piranha) and can deal with high orders and many variables without eating up the whole system memory.
