@@ -6,6 +6,10 @@
 #include <vector>
 #include <exception>
 
+#include<piranha/math.hpp>
+#include<piranha/pow.hpp>
+#include<piranha/s11n.hpp>
+
 
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
