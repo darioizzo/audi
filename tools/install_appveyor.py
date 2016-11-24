@@ -97,8 +97,8 @@ if is_python_build:
     pinterp = r'c:\\Python' + python_version + r'\\python.exe'
     pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
     twine = r'c:\\Python' + python_version + r'\\scripts\\twine'
-    pykep_install_path = r'C:\\Python' + \
-        python_version + r'\\Lib\\site-packages\\PyKEP'
+    pyaudi_install_path = r'C:\\Python' + \
+        python_version + r'\\Lib\\site-packages\\pyaudi'
     # Get Python.
     wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
          python_package, 'python.7z')
@@ -139,24 +139,24 @@ run_command(r'mingw32-make install VERBOSE=1')
 if is_python_build:
     # Run the Python tests.
     run_command(
-        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_d(0.12,"x",1)"')
+        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_d(0.12,"x",1))"')
     # Build the wheel.
     import shutil
     os.chdir('wheel')
-    shutil.move(pykep_install_path, r'.')
+    shutil.move(pyaudi_install_path, r'.')
     wheel_libs = 'mingw_wheel_libs_python{}.txt'.format(python_version[0])
     DLL_LIST = [_[:-1] for _ in open(wheel_libs, 'r').readlines()]
     for _ in DLL_LIST:
-        shutil.copy(_, 'PyKEP/core')
+        shutil.copy(_, 'pyaudi/core')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
     run_command(pip + r' install dist\\' + os.listdir('dist')[0])
 
     os.chdir('/')
     run_command(
-        pinterp + r' -c "import PyKEP; print(PyKEP.epoch(0))"')
+        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_d(0.12,"x",1))"')
     if is_release_build:
-        os.chdir('C:/projects/pykep/build/wheel')
+        os.chdir('C:/projects/audi/build/wheel')
         run_command(twine + r' upload -u darioizzo dist\\' +
                     os.listdir('dist')[0])
 elif BUILD_TYPE == 'Release':
