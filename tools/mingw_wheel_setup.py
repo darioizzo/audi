@@ -57,7 +57,7 @@ setup(name=NAME,
     keywords=KEYWORDS,
     platforms=PLATFORMS,
     install_requires=INSTALL_REQUIRES,
-    packages=['pyaudi],
+    packages=['pyaudi'],
     # Include pre-compiled extension
     package_data={
                 'pyaudi': ['_core.pyd'] + DLL_LIST
