@@ -65,8 +65,10 @@ run_command(r'unzip piranhav08.zip', verbose=False)
 os.chdir('piranha-0.8')
 os.makedirs('build')
 os.chdir('build')
+print("Installing piranha")
 run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+os.chdir('../../')
 
 # Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
@@ -130,7 +132,7 @@ else:
 
 # Build+install step.
 #run_command(r'cmake --build . --target install')
-run_command(r'mingw32-make install VERBOSE=1')
+run_command(r'mingw32-make VERBOSE=1')
 
 # Move the shared library in the correct python DESTINATION
 #run_command(r'move "C:\Program Files (x86)\Keplerian_Toolbox\lib\libkeplerian_toolbox.dll" "c:\local\lib"')
