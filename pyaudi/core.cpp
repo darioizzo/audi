@@ -1,6 +1,7 @@
 #include <boost/python.hpp>
 #include <cmath>
 #include <vector>
+#include <piranha/thread_pool.hpp>
 
 #include "../src/audi.hpp"
 #include "expose_gdual.hpp"
@@ -111,4 +112,19 @@ BOOST_PYTHON_MODULE(_core)
     bp::def("erf",+[](const gdual_d &d) {return erf(d);},"Error function (gdual_d).");
     bp::def("erf",+[](double x) {return std::erf(x);},"Error function (double).");
     bp::def("erf",+[](const gdual_v &d) {return erf(d);},"Error function (gdual_v).");
+
+    // Define a cleanup functor to be run when the module is unloaded.
+    struct cleanup_functor {
+        void operator()() const
+        {
+            std::cout << "Shutting down the thread pool.\n";
+            piranha::thread_pool_shutdown<void>();
+        }
+    };
+    // Expose it.
+    bp::class_<cleanup_functor> cl_c("_cleanup_functor", bp::init<>());
+    cl_c.def("__call__", &cleanup_functor::operator());
+    // Register it.
+    bp::object atexit_mod = bp::import("atexit");
+    atexit_mod.attr("register")(cleanup_functor{});
 }
