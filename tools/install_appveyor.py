@@ -139,8 +139,7 @@ run_command(r'mingw32-make install VERBOSE=1')
 if is_python_build:
     # Run the Python tests.
     run_command(
-        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_double(0.12,\"x\",1)); print(\"Done\")"')
-    print("Out of Python")
+        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_double(0.12,\"x\",1))"')
     # Build the wheel.
     import shutil
     os.chdir('wheel')
