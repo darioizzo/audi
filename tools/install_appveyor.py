@@ -65,10 +65,8 @@ run_command(r'unzip piranhav08.zip', verbose=False)
 os.chdir('piranha-0.8')
 os.makedirs('build')
 os.chdir('build')
-run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local ')
-run_command(r'mingw32-make install VERBOSE=1')
-
-azz
+run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
+run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 
 # Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
@@ -118,7 +116,7 @@ if is_python_build:
 os.makedirs('build')
 os.chdir('build')
 
-common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DBUILD_SPICE=yes' #REMEMBER TO PUT THIS TO YES WHEN FINISHED
+common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DBUILD_MAIN=no' #REMEMBER TO PUT THIS TO YES WHEN FINISHED
 
 # Configuration step.
 if is_python_build:
