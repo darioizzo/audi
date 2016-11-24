@@ -1,6 +1,6 @@
-project(audi)
-
 cmake_minimum_required(VERSION 3.2.0)
+
+project(audi VERSION 1.0.1)
 
 enable_testing()
 
@@ -117,4 +117,9 @@ ENDIF(BUILD_TESTS)
 
 if(BUILD_PYAUDI)
 	ADD_SUBDIRECTORY("${CMAKE_SOURCE_DIR}/pyaudi")
+    if(MINGW)
+		message(STATUS "Creating the files for the generation of a binary wheel for MinGW.")
+		configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/mingw_wheel_setup.py" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.py")
+		configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/mingw_wheel_libs_python${PYTHON_VERSION_MAJOR}.txt" "${CMAKE_CURRENT_BINARY_DIR}/wheel/mingw_wheel_libs_python${PYTHON_VERSION_MAJOR}.txt")
+	endif()
 endif()

@@ -3,11 +3,11 @@ from setuptools.dist import Distribution
 from distutils import util
 import sys
 
-NAME = 'PyKEP'
-VERSION = '@PyKEP_VERSION@'
-DESCRIPTION = 'Basic space flight mechanics computations mostly based on perturbed Keplerian dynamics'
-LONG_DESCRIPTION = 'PyKEP is a scientific library providing basic space flight mechanics computations mostly based on perturbed Keplerian dynamics.'
-URL = 'https://github.com/esa/pykep'
+NAME = 'pyaudi'
+VERSION = '@audi_VERSION@'
+DESCRIPTION = 'Implementation of a high-order automated differentiation system using generalized dual numbers. Implementation of a differential algebra.'
+LONG_DESCRIPTION = 'Implementation of a high-order automated differentiation system using generalized dual numbers. Implementation of a differential algebra.'
+URL = 'https://github.com/darioizzo/audi'
 AUTHOR = 'Dario Izzo'
 AUTHOR_EMAIL = 'dario.izzo@gmail.com'
 LICENSE = 'GPLv3+/LGPL3+'
@@ -22,9 +22,9 @@ CLASSIFIERS = [
 
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering',
-    'Topic :: Scientific/Engineering :: Astronomy',
     'Topic :: Scientific/Engineering :: Mathematics',
     'Topic :: Scientific/Engineering :: Physics',
+    'Topic :: Scientific/Engineering :: Computer Science',
 
     'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
     'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
@@ -32,8 +32,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 3'
 ]
-KEYWORDS = 'space keplerian math physics interplanetary'
-INSTALL_REQUIRES = ['numpy']
+KEYWORDS = 'differential algebra taylor polynomials automatic differentiation'
 PLATFORMS = ['Unix','Windows','OSX']
 
 class BinaryDistribution(Distribution):
@@ -58,12 +57,9 @@ setup(name=NAME,
     keywords=KEYWORDS,
     platforms=PLATFORMS,
     install_requires=INSTALL_REQUIRES,
-    packages=['PyKEP', 'PyKEP.core', 'PyKEP.examples', 'PyKEP.orbit_plots', 'PyKEP.phasing', 'PyKEP.planet', 'PyKEP.sims_flanagan', 'PyKEP.trajopt', 'PyKEP.util'],
+    packages=['pyaudi],
     # Include pre-compiled extension
     package_data={
-                'PyKEP.core': ['_core.pyd'] + DLL_LIST,
-                'PyKEP.planet': ['_planet.pyd'],
-                'PyKEP.sims_flanagan': ['_sims_flanagan.pyd'],
-                'PyKEP.util': ['_util.pyd']
+                'pyaudi': ['_core.pyd'] + DLL_LIST
                 },
     distclass=BinaryDistribution)
