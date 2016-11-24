@@ -25,9 +25,14 @@ set(YACMA_PY_MODULE_EXTENSION "")
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     message(STATUS "OS X platform detected.")
     # Apparently on OS X Python expects the .so extension for compiled modules.
-	message(STATUS "Output extension for compiled modules will be '.so'.")
+	  message(STATUS "Output extension for compiled modules will be '.so'.")
     set(YACMA_PY_MODULE_EXTENSION "so")
-    # TODO fill in.
+    # We must establish if the installation dir for Python modules is named 'site-packages' (as usual)
+    # or 'dist-packages' (apparently Ubuntu 9.04 or maybe Python 2.6, it's not clear).
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_LIST_DIR}/yacma_python_packages_dir.py"
+        OUTPUT_VARIABLE _YACMA_PY_PACKAGES_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+    message(STATUS "Python packages dir is: ${_YACMA_PY_PACKAGES_DIR}")
+    set(YACMA_PYTHON_MODULES_INSTALL_PATH "lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/${_YACMA_PY_PACKAGES_DIR}")
 elseif(UNIX)
     message(STATUS "Generic UNIX platform detected.")
     # We must establish if the installation dir for Python modules is named 'site-packages' (as usual)
@@ -40,7 +45,12 @@ elseif(WIN32)
     message(STATUS "Windows platform detected.")
     message(STATUS "Output extension for compiled modules will be '.pyd'.")
     set(YACMA_PY_MODULE_EXTENSION "pyd")
-    # TODO fill in.
+    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+        OUTPUT_VARIABLE YACMA_PYTHON_MODULES_INSTALL_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+if("${YACMA_PYTHON_MODULES_INSTALL_PATH}" STREQUAL "")
+  message(FATAL_ERROR "Python module install path not detected correctly.")
 endif()
 
 message(STATUS "Python modules install path: " "${YACMA_PYTHON_MODULES_INSTALL_PATH}")
@@ -53,7 +63,7 @@ macro(YACMA_PYTHON_MODULE name)
     set_target_properties("${name}" PROPERTIES PREFIX "")
     if(NOT ${YACMA_PY_MODULE_EXTENSION} STREQUAL "")
         # If needed, set a custom extension for the module.
-        message(STATUS "Setting up custom extension \"${YACMA_PY_MODULE_EXTENSION}\" for the Python module \"${name}.\"")
+        message(STATUS "Setting up custom extension \"${YACMA_PY_MODULE_EXTENSION}\" for the Python module \"${name}\".")
         set_target_properties("${name}" PROPERTIES SUFFIX ".${YACMA_PY_MODULE_EXTENSION}")
     endif()
     # We need extra flags to be set when compiling Python modules, at least
@@ -67,12 +77,21 @@ macro(YACMA_PYTHON_MODULE name)
         set_target_properties("${name}" PROPERTIES COMPILE_FLAGS "-fwrapv")
         set_target_properties("${name}" PROPERTIES LINK_FLAGS "-fwrapv")
         if(${PYTHON_VERSION_MAJOR} LESS 3)
-            message(STATUS "Python < 3 detected, setting up extra compiler flag \"-fno-strict-aliasing\" for the Python module \"${name}.\"")
+            message(STATUS "Python < 3 detected, setting up extra compiler flag \"-fno-strict-aliasing\" for the Python module \"${name}\".")
             set_target_properties("${name}" PROPERTIES COMPILE_FLAGS "-fno-strict-aliasing")
             set_target_properties("${name}" PROPERTIES LINK_FLAGS "-fno-strict-aliasing")
         endif()
     endif()
 endmacro()
+
+# Look if NumPy is avaiable.
+execute_process(COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_LIST_DIR}/yacma_numpy_includes_dir.py"
+    OUTPUT_VARIABLE YACMA_NUMPY_INCLUDES_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+if(YACMA_NUMPY_INCLUDES_DIR)
+    message(STATUS "NumPy includes dir: ${YACMA_NUMPY_INCLUDES_DIR}")
+else()
+    message(STATUS "NumPy headers were not found.")
+endif()
 
 # Mark as included.
 set(YACMAPythonSetupIncluded YES)
