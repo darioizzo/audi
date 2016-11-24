@@ -9,7 +9,6 @@ def wget(url, out):
 
 
 def rm_fr(path):
-    import os
     import shutil
     if os.path.isdir(path) and not os.path.islink(path):
         shutil.rmtree(path)
@@ -61,7 +60,12 @@ run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 
 # Download piranha 0.8 https://github.com/bluescarni/piranha/archive/v0.8.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.8.zip', 'piranhav08.zip')
-run_command(r'7z x -aoa -oC:\\ piranhav08.zip', verbose=True)
+run_command(r'unzip piranhav08.zip', verbose=True)
+# Move to the directory created and make piranha install its headers
+os.chdir('piranha-0.8')
+os.makedirs('build')
+os.chdir('build')
+run_command(r'mingw32-make install -DCMAKE_INSTALL_PREFIX=c:\\local ')
 
 azz
 
