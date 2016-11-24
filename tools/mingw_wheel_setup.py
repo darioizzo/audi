@@ -56,7 +56,6 @@ setup(name=NAME,
     classifiers=CLASSIFIERS,
     keywords=KEYWORDS,
     platforms=PLATFORMS,
-    install_requires=INSTALL_REQUIRES,
     packages=['pyaudi'],
     # Include pre-compiled extension
     package_data={
