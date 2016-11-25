@@ -24,7 +24,7 @@ CLASSIFIERS = [
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: Mathematics',
     'Topic :: Scientific/Engineering :: Physics',
-    'Topic :: Scientific/Engineering :: Computer Science',
+    'Topic :: Scientific/Engineering :: Artificial Intelligence',
 
     'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
     'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
