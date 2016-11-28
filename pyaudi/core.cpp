@@ -114,7 +114,7 @@ BOOST_PYTHON_MODULE(_core)
     bp::def("erf",+[](const gdual_v &d) {return erf(d);},"Error function (gdual_v).");
 
     // Define a cleanup functor to be run when the module is unloaded.
-    struct cleanup_functor {
+    struct audi_cleanup_functor {
         void operator()() const
         {
             std::cout << "Shutting down the thread pool.\n";
@@ -122,9 +122,9 @@ BOOST_PYTHON_MODULE(_core)
         }
     };
     // Expose it.
-    bp::class_<cleanup_functor> cl_c("_cleanup_functor", bp::init<>());
-    cl_c.def("__call__", &cleanup_functor::operator());
+    bp::class_<audi_cleanup_functor> cl_c("_audi_cleanup_functor", bp::init<>());
+    cl_c.def("__call__", &audi_cleanup_functor::operator());
     // Register it.
     bp::object atexit_mod = bp::import("atexit");
-    atexit_mod.attr("register")(cleanup_functor{});
+    atexit_mod.attr("register")(audi_cleanup_functor{});
 }

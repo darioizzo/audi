@@ -51,3 +51,13 @@ When done, type (in your build directory):
    make install
 
 To check that all went well fire-up your python console and try the example in :ref:`quick-start example <getting_started>`.
+
+Binaries
+--------
+
+For some architectures (i.e. windows with 64 bit python 27, 34 and 35), we provide pre-built binaries for pyaudi via PyPi. If you have
+a system compatible with those requirements, you can just type:
+
+.. code-block:: bash
+
+   pip install pyaudi
