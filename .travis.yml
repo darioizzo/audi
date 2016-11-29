@@ -24,6 +24,11 @@ matrix:
     - compiler: gcc
       env: BUILD_TYPE="Debug"
 
+install:
+    - export AUDI_COMPILER=gcc;
+      export CC=gcc-6;
+      export CXX=g++-6;
+
 script:
     - mkdir build
     - cd build
