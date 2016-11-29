@@ -12,7 +12,7 @@ unzip v0.8
 cd piranha-0.8
 mkdir build
 cd build
-sudo make install
+make install
 
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
