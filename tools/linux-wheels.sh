@@ -14,7 +14,7 @@ unzip v0.8
 
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    ${PYBIN}/pip wheel /io/ -w wheelhouse/ -I piranha-0.8/src
+    ${PYBIN}/pip wheel /io/ -w wheelhouse/ --global-option="-I piranha-0.8/src"
 done
 
 # Bundle external shared libraries into the wheels
