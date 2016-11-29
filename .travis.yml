@@ -12,10 +12,12 @@ addons:
 
 matrix:
   include:
+    #- compiler: gcc
+    #  env: BUILD_TYPE="Release"
+    #- compiler: gcc
+    #  env: BUILD_TYPE="Debug"
     - compiler: gcc
-      env: BUILD_TYPE="Release"
-    - compiler: gcc
-      env: BUILD_TYPE="Debug"
+      env: BUILD_TYPE="Python2"
 
 install:
     - export AUDI_COMPILER=gcc;
