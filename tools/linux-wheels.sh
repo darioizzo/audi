@@ -10,15 +10,11 @@ yum install -y cmake
 # Install piranha release 0.8
 wget https://github.com/bluescarni/piranha/archive/v0.8.zip
 unzip v0.8
-cd piranha-0.8
-mkdir build
-cd build
-cmake ../
-make install
+# this will get a directory piranha-0.8/ in the current dir
 
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    ${PYBIN}/pip wheel /io/ -w wheelhouse/
+    ${PYBIN}/pip wheel /io/ -w wheelhouse/ -I piranha-0.8/src
 done
 
 # Bundle external shared libraries into the wheels
