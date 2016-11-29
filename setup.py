@@ -5,7 +5,7 @@ extension_module = Extension(
     'pyaudi/_core',
      sources=['pyaudi/core.cpp'],
      libraries=['boost_python3', 'boost_serialization', 'gmp', 'mpfr'],
-     include_dirs=['include']
+     include_dirs=['/io/include']
 )
 
 setup(
