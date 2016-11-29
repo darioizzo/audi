@@ -40,7 +40,7 @@ install:
           export CC=gcc-6;
           export CXX=g++-6;
       else
-          docker pull $DOCKER_IMAGE
+          docker pull $DOCKER_IMAGE;
       fi
 
 script:
