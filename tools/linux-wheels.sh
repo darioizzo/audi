@@ -6,6 +6,14 @@ yum install -y gmp
 yum install -y mpfr
 yum install -y boost-devel
 
+# Install piranha release 0.8
+wget https://github.com/bluescarni/piranha/archive/v0.8.zip
+unzip v0.8.zip
+cd piranha-0.8
+mkdir build
+cd build
+sudo make install
+
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
     ${PYBIN}/pip wheel /io/ -w wheelhouse/
