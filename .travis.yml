@@ -8,6 +8,7 @@ addons:
     packages:
     - gcc-6
     - g++-6
+    - g++-4.8
     - curl
 
 matrix:
@@ -23,8 +24,8 @@ matrix:
 
 install:
     - export AUDI_COMPILER=gcc;
-      export CC=gcc-6;
-      export CXX=g++-6;
+      export CC=gcc-4;
+      export CXX=g++-4;
 
 script:
     - mkdir build

@@ -37,6 +37,7 @@ if [[ "${BUILD_TYPE}" == "Python27" || "${BUILD_TYPE}" == "Python34" || "${BUILD
     cd ../tools
     mv $PYAUDI_SYSTEM_DIRECTORY ./
     pip wheel ./ -w wheelhouse
+    auditwheel show wheelhouse/*.whl
     auditwheel repair wheelhouse/*.whl -w wheelhouse
 fi
 
