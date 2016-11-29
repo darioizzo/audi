@@ -12,8 +12,8 @@ mkdir include
 wget https://github.com/bluescarni/piranha/archive/v0.8.zip
 unzip v0.8
 # this will get a directory piranha-0.8/ in the current dir
-mkdir ../include/piranha
-cp -r piranha-0.8/src/*  include/piranha
+mkdir io/include/piranha
+cp -r piranha-0.8/src/*  /io/include/piranha
 ls /io/include -al
 ls /io/include/piranha -al
 
