@@ -16,8 +16,10 @@ matrix:
     #  env: BUILD_TYPE="Release"
     #- compiler: gcc
     #  env: BUILD_TYPE="Debug"
+    #- compiler: gcc
+    #  env: BUILD_TYPE="Python2"
     - compiler: gcc
-      env: BUILD_TYPE="Python2"
+      env: BUILD_TYPE="Python3"
 
 install:
     - export AUDI_COMPILER=gcc;
