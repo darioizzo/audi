@@ -8,7 +8,7 @@ addons:
     packages:
     - gcc-6
     - g++-6
-    - g++-4.8
+    - clang-3.8
     - curl
 
 matrix:
@@ -23,9 +23,9 @@ matrix:
       env: BUILD_TYPE="Python34"
 
 install:
-    - export AUDI_COMPILER=gcc;
-      export CC=gcc-4.8;
-      export CXX=g++-4.8;
+    - export AUDI_COMPILER=clang;
+      export CC=clang-3.8;
+      export CXX=clang-3.8;
 
 script:
     - mkdir build
