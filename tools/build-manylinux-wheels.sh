@@ -4,10 +4,14 @@ set -e -x
 yum install -y gmp
 yum install -y mpfr
 
-# Install boost
 cd /io
-wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
+mkdir libs
+# Install boost
+wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 --no-check-certificate
 tar --bzip2 -xf /io/boost_1_62_0.tar.bz2
+cd boost_1_62_0
+./bootstrap.sh --prefix=/io/libs
+
 #
 # Install cmake
 #

@@ -18,8 +18,8 @@ matrix:
     #  env: BUILD_TYPE="Debug"
     #- compiler: gcc
     #  env: BUILD_TYPE="Python27"
-    - compiler: gcc
-      env: BUILD_TYPE="Python35"
+    #- compiler: gcc
+    #  env: BUILD_TYPE="Python35"
 
     - sudo: required
       services:
@@ -27,12 +27,12 @@ matrix:
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
            BUILD_TYPE="wheels"
 
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
-           PRE_CMD=linux32
-           BUILD_TYPE="wheels"
+    #- sudo: required
+    #  services:
+    #    - docker
+    #  env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+    #       PRE_CMD=linux32
+    #       BUILD_TYPE="wheels"
 
 install:
     - if [[ "${BUILD_TYPE}" != "wheels" ]]; then
