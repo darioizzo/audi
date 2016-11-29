@@ -17,10 +17,12 @@ conda config --add channels conda-forge --force
 
 conda_pkgs="gmp mpfr boost>=1.55 cmake>=3.0"
 
-if [[ "${BUILD_TYPE}" == "Python2" ]]; then
-    conda_pkgs="$conda_pkgs python=2.7 sphinx sphinx-bootstrap-theme"
-elif [[ "${BUILD_TYPE}" == "Python3" ]]; then
-    conda_pkgs="$conda_pkgs python=3.5 sphinx sphinx-bootstrap-theme"
+if [[ "${BUILD_TYPE}" == "Python27" ]]; then
+    conda_pkgs="$conda_pkgs python=2.7 auditwheel sphinx sphinx-bootstrap-theme"
+elif [[ "${BUILD_TYPE}" == "Python34" ]]; then
+    conda_pkgs="$conda_pkgs python=3.4 auditwheel sphinx sphinx-bootstrap-theme"
+elif [[ "${BUILD_TYPE}" == "Python35" ]]; then
+    conda_pkgs="$conda_pkgs python=3.5 auditwheel sphinx sphinx-bootstrap-theme"
 fi
 
 conda create -q -p $deps_dir -y $conda_pkgs
