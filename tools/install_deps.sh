@@ -29,11 +29,11 @@ source activate $deps_dir
 # Installing piranha 0.8
 wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz
 tar xzf v0.8.tar.gz
-cd v0.8
+cd piranha-0.8
 
 mkdir build
 cd build
-cmake ../ -DCMAKE_BUILD_TYPE=Release
+cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
 make install
 cd ..
 cd ..
