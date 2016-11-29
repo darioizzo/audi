@@ -26,10 +26,14 @@ fi
 conda create -q -p $deps_dir -y $conda_pkgs
 source activate $deps_dir
 
+# Installing piranha 0.8
+wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz
+tar xzf v0.8.tar.gz
+cd v0.8
+
 mkdir build
 cd build
-cmake ../ -DCMAKE_BUILD_TYPE=Release -DMSGPACK_BUILD_EXAMPLES=FALSE -DMSGPACK_CXX11=TRUE -DMSGPACK_ENABLE_CXX=TRUE -DMSGPACK_ENABLE_SHARED=FALSE -DCMAKE_INSTALL_PREFIX=$deps_dir
-make
+cmake ../ -DCMAKE_BUILD_TYPE=Release
 make install
 cd ..
 cd ..
