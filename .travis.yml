@@ -45,6 +45,7 @@ install:
 
 script:
     - if [[ "${BUILD_TYPE}" != "wheels" ]]; then
+          mkdir build;
           cd build;
           source ../tools/install_deps.sh;
           source ../tools/install_travis.sh;
