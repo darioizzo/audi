@@ -5,6 +5,7 @@ set -e -x
 yum install -y gmp
 yum install -y mpfr
 yum install -y boost-devel
+yum install -y cmake
 
 # Install piranha release 0.8
 wget https://github.com/bluescarni/piranha/archive/v0.8.zip
