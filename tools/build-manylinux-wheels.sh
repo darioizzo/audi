@@ -5,14 +5,16 @@ yum install -y gmp
 yum install -y mpfr
 
 # Install boost
+cd /io
+wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
+tar --bzip2 -xf /io/boost_1_62_0.tar.bz2
 #
 # Install cmake
 #
 # Install piranha
 
 # Install and compile pyaudi
-wget https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.gz
-tar --bzip2 -xf /io/boost_1_62_0.tar.bz2
+
 
 
 # Compile wheels
