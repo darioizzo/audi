@@ -27,6 +27,7 @@ elif [[ "${BUILD_TYPE}" == "Python34" ]]; then
     export PYAUDI_SYSTEM_DIRECTORY=/home/travis/local/lib/python3.4/site-packages/pyaudi
 elif [[ "${BUILD_TYPE}" == "Python35" ]]; then
     export PYAUDI_SYSTEM_DIRECTORY=/home/travis/local/lib/python3.5/site-packages/pyaudi
+fi
 
 if [[ "${BUILD_TYPE}" == "Python27" || "${BUILD_TYPE}" == "Python34" || "${BUILD_TYPE}" == "Python35" ]]; then
     cmake -DBUILD_MAIN=no -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=no -DBUILD_PYAUDI=yes ../;
