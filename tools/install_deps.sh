@@ -33,7 +33,7 @@ cd piranha-0.8
 
 mkdir build
 cd build
-cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$deps_dir
 make install
 cd ..
 cd ..

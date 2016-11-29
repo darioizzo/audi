@@ -6,13 +6,6 @@ addons:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.8
     packages:
-    - g++-4.8
-    - clang-3.8
-    - graphviz
-    - graphviz-dev
-    - texlive
-    - gcc-5
-    - g++-5
     - gcc-6
     - g++-6
     - curl
