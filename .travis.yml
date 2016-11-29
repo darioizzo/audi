@@ -24,8 +24,8 @@ matrix:
 
 install:
     - export AUDI_COMPILER=gcc;
-      export CC=gcc-4;
-      export CXX=g++-4;
+      export CC=gcc-4.8;
+      export CXX=g++-4.8;
 
 script:
     - mkdir build
