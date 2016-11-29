@@ -12,6 +12,7 @@ unzip v0.8
 cd piranha-0.8
 mkdir build
 cd build
+cmake ../
 make install
 
 # Compile wheels
