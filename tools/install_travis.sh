@@ -33,12 +33,6 @@ if [[ "${BUILD_TYPE}" == "Python27" || "${BUILD_TYPE}" == "Python34" || "${BUILD
     cmake -DBUILD_MAIN=no -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=no -DBUILD_PYAUDI=yes ../;
     make install VERBOSE=1;
     python -c "import pyaudi.test; pyaudi.test.run_test_suite()";
-    # We now make the python wheels for manylinux1_x86_64
-    cd ../tools
-    mv $PYAUDI_SYSTEM_DIRECTORY ./
-    pip wheel ./ -w wheelhouse
-    auditwheel show wheelhouse/*.whl
-    auditwheel repair wheelhouse/*.whl -w wheelhouse
 fi
 
 
