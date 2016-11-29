@@ -25,7 +25,7 @@ matrix:
 install:
     - export AUDI_COMPILER=clang;
       export CC=clang-3.8;
-      export CXX=clang-3.8;
+      export CXX=clang++-3.8;
 
 script:
     - mkdir build
