@@ -2,7 +2,6 @@
 set -e -x
 
 yum install -y gmp-devel
-yum install -y mpfr
 
 cd /audi
 echo "environment variables passed to docker:"
@@ -25,7 +24,7 @@ echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
 echo "     ;" >> project-config.jam  >> project-config.jam
 
 # Add here the boost libraries that are needed
-./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex
+./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex > /dev/null 2>&1
 cd ..
 
 # Install cmake
