@@ -15,20 +15,21 @@ else
     export BOOST_PYTHON_LIB_NAME=libboost_python.so
 fi
 
-# Install mpfr
-wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
-tar xvf mpfr-3.1.5.tar.gz > /dev/null 2>&1
-cd mpfr-3.1.5
+# Install gmp (before mpfr as its used by it)
+curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
+tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
+cd gmp-6.1.1
 ./configure
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
 
-# Install gmp
-curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
-tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
-cd gmp-6.1.1
-./configure > /dev/null 2>&1
+
+# Install mpfr
+wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
+tar xvf mpfr-3.1.5.tar.gz > /dev/null 2>&1
+cd mpfr-3.1.5
+./configure
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
@@ -56,7 +57,7 @@ cd ..
 wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
 tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
 cd cmake-3.7.0
-./bootstrap > /dev/null 2>&1
+./bootstrap
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
@@ -68,7 +69,7 @@ cd piranha-0.8
 mkdir build
 cd build
 cmake ../
-make install
+make install > /dev/null 2>&1
 cd ..
 # Apply patch (TODO: remove and use latest piranha with the accepted PR)
 wget --no-check-certificate https://raw.githubusercontent.com/darioizzo/piranha/22ab56da726df41ef18aa898e551af7415a32c25/src/thread_management.hpp
