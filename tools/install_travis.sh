@@ -15,6 +15,24 @@ else
     export BOOST_PYTHON_LIB_NAME=libboost_python.so
 fi
 
+# Install mpfr
+wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
+tar xvf mpfr-3.1.5.tar.gz > /dev/null 2>&1
+cd mpfr-3.1.5
+./configure
+make > /dev/null 2>&1
+make install > /dev/null 2>&1
+cd ..
+
+# Install gmp
+curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
+tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
+cd gmp-6.1.1
+./configure > /dev/null 2>&1
+make > /dev/null 2>&1
+make install > /dev/null 2>&1
+cd ..
+
 # Compile and install boost
 wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 tar --bzip2 -xf /audi/boost_1_62_0.tar.bz2 > /dev/null 2>&1
@@ -40,25 +58,7 @@ tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
 cd cmake-3.7.0
 ./bootstrap > /dev/null 2>&1
 make > /dev/null 2>&1
-make install
-cd ..
-
-# Install mpfr
-wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
-tar xvf mpfr-3.1.5.tar.gz
-cd mpfr-3.1.5
-./configure > /dev/null 2>&1
-make > /dev/null 2>&1
-make install
-cd ..
-
-# Install gmp
-curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
-tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
-cd gmp-6.1.1
-./configure > /dev/null 2>&1
-make > /dev/null 2>&1
-make install
+make install > /dev/null 2>&1
 cd ..
 
 # Install piranha
