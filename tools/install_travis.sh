@@ -18,7 +18,7 @@ fi
 # Install gmp (before mpfr as its used by it)
 curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
 tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
-cd gmp-6.1.1
+cd gmp-6.1.1 > /dev/null 2>&1
 ./configure
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
@@ -29,7 +29,7 @@ cd ..
 wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
 tar xvf mpfr-3.1.5.tar.gz > /dev/null 2>&1
 cd mpfr-3.1.5
-./configure
+./configure > /dev/null 2>&1
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
@@ -38,7 +38,7 @@ cd ..
 wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 tar --bzip2 -xf /audi/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 cd boost_1_62_0
-./bootstrap.sh
+./bootstrap.sh > /dev/null 2>&1
 # removing the wrongly detected python 2.4 (deletes 5 lines after the comment)
 sed -i.bak -e '/# Python configuration/,+5d' ./project-config.jam
 # defining the correct location for python
@@ -57,7 +57,7 @@ cd ..
 wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
 tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
 cd cmake-3.7.0
-./bootstrap
+./bootstrap > /dev/null 2>&1
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
@@ -81,7 +81,7 @@ cp thread_management.hpp /usr/local/include/piranha/
 cd /audi
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
 make
 make install
 
