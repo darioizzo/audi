@@ -1,28 +1,56 @@
 #!/bin/bash
 set -e -x
 
-yum install -y gmp
+yum install -y gmp-devel
 yum install -y mpfr
 
-cd /io
-mkdir lib
+cd /audi
 echo "environment variables passed to docker:"
 echo ${BUILD_TYPE}
 echo ${PATH_TO_PYTHON}
 echo ${PYTHON_VERSION}
-# Install boost
+# Compile and install boost
 wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 > /dev/null 2>&1
-tar --bzip2 -xf /io/boost_1_62_0.tar.bz2 > /dev/null 2>&1
+tar --bzip2 -xf /audi/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 cd boost_1_62_0
 ./bootstrap.sh
-echo "using python : ${PYTHON_VERSION} : ${PATH_TO_PYTHON}/bin/python : ${PATH_TO_PYTHON}/include/python3.5m : ${PATH_TO_PYTHON}/lib;" >> project-config.jam
-cat project-config.jam
-./b2 install --with-python --with-serialization
+# removing the wrongly detected python 2.4 (deletes 5 lines after the comment)
+sed -i.bak -e '/# Python configuration/,+5d' ./project-config.jam
+# defining the correct location for python
+echo "using python" >> project-config.jam
+echo "     : ${PYTHON_VERSION}" >> project-config.jam
+echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
+echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m"  >> project-config.jam
+echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
+echo "     ;" >> project-config.jam  >> project-config.jam
 
-#
+# Add here the boost libraries that are needed
+./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex
+cd ..
+
 # Install cmake
-#
+wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz
+tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
+cd cmake-3.7.0
+./bootstrap > /dev/null 2>&1
+make > /dev/null 2>&1
+make install
+cd ..
+
+# Install mpfr
+wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz
+tar xvf mpfr-3.1.5.tar.gz
+cd mpfr-3.1.5
+./configure
+make
+make install
+
 # Install piranha
+wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz
+tar xvf v0.8
+cd piranha-0.8
+mkdir build
+cd build
 
 # Install and compile pyaudi
 
@@ -30,7 +58,7 @@ cat project-config.jam
 
 # Compile wheels
 for PYBIN in /opt/python/*/bin; do
-    ${PYBIN}/pip wheel /io/ -w wheelhouse/
+    ${PYBIN}/pip wheel /audi/ -w wheelhouse/
 done
 
 # Bundle external shared libraries into the wheels
