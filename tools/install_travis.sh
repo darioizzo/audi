@@ -1,13 +1,20 @@
 #!/bin/bash
 set -e -x
 
-yum install -y gmp-devel
-
 cd /audi
-echo "environment variables passed to docker:"
+echo "Environment variables passed to docker from travis VM:"
 echo ${BUILD_TYPE}
 echo ${PATH_TO_PYTHON}
 echo ${PYTHON_VERSION}
+
+# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
+# But just in case
+if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+    export BOOST_PYTHON_LIB_NAME=libboost_python3.so
+else
+    export BOOST_PYTHON_LIB_NAME=libboost_python.so
+fi
+
 # Compile and install boost
 wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 tar --bzip2 -xf /audi/boost_1_62_0.tar.bz2 > /dev/null 2>&1
@@ -54,7 +61,6 @@ make > /dev/null 2>&1
 make install
 cd ..
 
-
 # Install piranha
 wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz > /dev/null 2>&1
 tar xvf v0.8
@@ -64,31 +70,25 @@ cd build
 cmake ../
 make install
 cd ..
-# Apply patch
-wget https://github.com/darioizzo/piranha/blob/master/src/thread_management.hpp
-rm /usr/local/include/piranha/thread_management.hpp
+# Apply patch (TODO: remove and use latest piranha with the accepted PR)
+wget --no-check-certificate https://raw.githubusercontent.com/darioizzo/piranha/22ab56da726df41ef18aa898e551af7415a32c25/src/thread_management.hpp
+rm -f /usr/local/include/piranha/thread_management.hpp
 cp thread_management.hpp /usr/local/include/piranha/
 
+
 # Install and compile pyaudi
+cd /audi
 mkdir build
 cd build
-
+cmake -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+make
+make install
 
 # Compile wheels
-for PYBIN in /opt/python/*/bin; do
-    ${PYBIN}/pip wheel /audi/ -w wheelhouse/
-done
-
+cd /audi/local/lib/python${PYTHON_VERSION}/site-packages/
+cp /audi/tools/setup.py ./
+${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels
-for whl in wheelhouse/*.whl; do
-    auditwheel repair $whl -w /io/wheelhouse/
-done
-
+${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse/
 # Install packages and test
-for PYBIN in /opt/python/*/bin/; do
-    ${PYBIN}/pip install python-manylinux-demo --no-index -f /io/wheelhouse
-    (cd $HOME; ${PYBIN}/nosetests pymanylinuxdemo)
-done
-
-# Python configuration
-using python : 3.5 : /opt/python/cp35-cp35m/bin/python3 : /opt/python/cp35-cp35m/include/python3.5m : /opt/python/cp35-cp35m/lib;
+${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse
