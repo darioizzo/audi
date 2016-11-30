@@ -6,16 +6,17 @@ yum install -y mpfr
 
 cd /io
 mkdir lib
-echo "env:"
+echo "environment variables passed to docker:"
 echo ${BUILD_TYPE}
 echo ${PATH_TO_PYTHON}
 echo ${PYTHON_VERSION}
 # Install boost
-wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
+wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 tar --bzip2 -xf /io/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 cd boost_1_62_0
 ./bootstrap.sh
 echo "using python : ${PYTHON_VERSION} : ${PATH_TO_PYTHON}/bin/python : ${PATH_TO_PYTHON}/include/python3.5m : ${PATH_TO_PYTHON}/lib;" >> project-config.jam
+cat project-config.jam
 ./b2 install --with-python --with-serialization
 
 #
