@@ -41,9 +41,10 @@ cd ..
 wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz
 tar xvf mpfr-3.1.5.tar.gz
 cd mpfr-3.1.5
-./configure
-make
+./configure > /dev/null 2>&1
+make > /dev/null 2>&1
 make install
+cd ..
 
 # Install piranha
 wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz
@@ -51,6 +52,9 @@ tar xvf v0.8
 cd piranha-0.8
 mkdir build
 cd build
+cmake ../
+make install
+cd ..
 
 # Install and compile pyaudi
 
