@@ -12,6 +12,11 @@ set_property(TARGET _core PROPERTY CXX_STANDARD_REQUIRED YES)
 set(PYAUDI_INSTALL_PATH "${YACMA_PYTHON_MODULES_INSTALL_PATH}/pyaudi")
 
 # Module needs the Python libs, plus the mandatory libraries.
+if(WIN32)
+    message(STATUS "Windows detected, linking also to the python library")
+    set(MANDATORY_LIBRARIES ${MANDATORY_LIBRARIES} ${PYTHON_LIBRARIES})
+endif()
+
 TARGET_LINK_LIBRARIES(_core ${MANDATORY_LIBRARIES} ${Boost_SERIALIZATION_LIBRARY} ${Boost_PYTHON_LIBRARY})
 INSTALL(TARGETS _core
 	RUNTIME DESTINATION ${PYAUDI_INSTALL_PATH}
