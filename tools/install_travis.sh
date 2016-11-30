@@ -24,11 +24,11 @@ echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
 echo "     ;" >> project-config.jam  >> project-config.jam
 
 # Add here the boost libraries that are needed
-./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex > /dev/null 2>&1
+./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system > /dev/null 2>&1
 cd ..
 
 # Install cmake
-wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz
+wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
 tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
 cd cmake-3.7.0
 ./bootstrap > /dev/null 2>&1
@@ -37,7 +37,7 @@ make install
 cd ..
 
 # Install mpfr
-wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz
+wget http://www.mpfr.org/mpfr-current/mpfr-3.1.5.tar.gz > /dev/null 2>&1
 tar xvf mpfr-3.1.5.tar.gz
 cd mpfr-3.1.5
 ./configure > /dev/null 2>&1
@@ -45,8 +45,18 @@ make > /dev/null 2>&1
 make install
 cd ..
 
+# Install gmp
+curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
+tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
+cd gmp-6.1.1
+./configure > /dev/null 2>&1
+make > /dev/null 2>&1
+make install
+cd ..
+
+
 # Install piranha
-wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz
+wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz > /dev/null 2>&1
 tar xvf v0.8
 cd piranha-0.8
 mkdir build
@@ -54,9 +64,14 @@ cd build
 cmake ../
 make install
 cd ..
+# Apply patch
+wget https://github.com/darioizzo/piranha/blob/master/src/thread_management.hpp
+rm /usr/local/include/piranha/thread_management.hpp
+cp thread_management.hpp /usr/local/include/piranha/
 
 # Install and compile pyaudi
-
+mkdir build
+cd build
 
 
 # Compile wheels

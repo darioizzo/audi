@@ -555,7 +555,7 @@ private:
          * @throws unspecified all exceptions thrown by the templated version call.
          * @throws std::invalid_argument: if one of the symbols is not found in the expression
          */
-        auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const -> decltype(get_derivative(std::vector<double>{}))
+        auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const -> decltype(std::declval<const gdual &>().get_derivative(std::vector<double>{}))
         {
             const auto &ss = m_p.get_symbol_set();
             std::vector<double> coeff(ss.size(), 0);
