@@ -1,56 +1,25 @@
-language: cpp
-sudo: false
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.8
-    packages:
-    - gcc-6
-    - g++-6
-    - curl
-
-matrix:
-  include:
-    #- compiler: gcc
-    #  env: BUILD_TYPE="Release"
-    #- compiler: gcc
-    #  env: BUILD_TYPE="Debug"
-    #- compiler: gcc
-    #  env: BUILD_TYPE="Python27"
-    #- compiler: gcc
-    #  env: BUILD_TYPE="Python35"
-
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-           BUILD_TYPE="wheels"
-
-    #- sudo: required
-    #  services:
-    #    - docker
-    #  env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
-    #       PRE_CMD=linux32
-    #       BUILD_TYPE="wheels"
-
-install:
-    - if [[ "${BUILD_TYPE}" != "wheels" ]]; then
-          export AUDI_COMPILER=gcc;
-          export CC=gcc-6;
-          export CXX=g++-6;
-      else
-          docker pull $DOCKER_IMAGE;
-      fi
-
-script:
-    - if [[ "${BUILD_TYPE}" != "wheels" ]]; then
-          mkdir build;
-          cd build;
-          source ../tools/install_deps.sh;
-          source ../tools/install_travis.sh;
-      else
-          docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build-manylinux-wheels.sh;
-      fi
 notifications:
   email: false
+
+  notifications:
+    email: false
+
+  matrix:
+    include:
+      - sudo: required
+        services:
+          - docker
+        env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+             BUILD_TYPE="python35"
+      #- sudo: required
+    #    services:
+    #      - docker
+    #    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686
+    #         PRE_CMD=linux32
+
+  install:
+    - docker pull $DOCKER_IMAGE
+
+  script:
+    - docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/build-manylinux-wheels.sh;
+    - ls wheelhouse/

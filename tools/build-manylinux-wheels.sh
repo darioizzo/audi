@@ -6,6 +6,8 @@ yum install -y mpfr
 
 cd /io
 mkdir lib
+echo "env:"
+echo ${BUILD_TYPE}
 # Install boost
 wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1.62.0/boost_1_62_0.tar.bz2
 tar --bzip2 -xf /io/boost_1_62_0.tar.bz2
