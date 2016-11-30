@@ -8,6 +8,8 @@ matrix:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
            BUILD_TYPE="Python35"
+           PYTHON_VERSION="3.5"
+           PATH_TO_PYTHON="/opt/python/cp35-cp35m"
     - sudo: required
       services:
         - docker
@@ -18,4 +20,4 @@ install:
   - docker pull $DOCKER_IMAGE
 
 script:
-  - docker run --rm -e BUILD_TYPE -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/install_travis.sh
+  - docker run --rm -e BUILD_TYPE -e PYTHON_VERSION -e PATH_TO_PYTHON -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/tools/install_travis.sh
