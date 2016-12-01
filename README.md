@@ -1,5 +1,6 @@
 [![DOI](https://zenodo.org/badge/41722955.svg)](https://zenodo.org/badge/latestdoi/41722955)
 [![Build status](https://ci.appveyor.com/api/projects/status/c8kjdcrxy52t8gy4?svg=true)](https://ci.appveyor.com/project/darioizzo/audi)
+[![Build Status](https://travis-ci.org/darioizzo/audi.svg?branch=master)](https://travis-ci.org/darioizzo/audi)
 [![PyPI](https://img.shields.io/pypi/v/pyaudi.svg)](https://pypi.python.org/pypi/pyaudi)
 
 # AuDi (Automated Differentiation) 
@@ -25,6 +26,8 @@ NEW: Audi also allows for making computations using complex numbers and a vector
 Izzo, Dario, Francesco Biscani, and Alessio Mereta. "Differentiable Genetic Programming." arXiv preprint arXiv:1611.04766 (2016).
 
 # pyaudi
-The python bindings are now available. You can build them, or install the binaries (only on win 64bits python 27, 34, 35) typing:
+The python bindings are now available. You can build them activating the BUILD_PYAUDI option in CMake, or install the precompiled binaries (for the last release) typing:
 
  ```pip install pyaudi```
+
+Only Windows 32 bits and OSX are not provided
