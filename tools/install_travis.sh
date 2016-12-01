@@ -87,7 +87,12 @@ make install
 
 # Compile wheels
 cd /audi/local/lib/python${PYTHON_VERSION}/site-packages/
-cp /audi/tools/setup.py ./
+cp /audi/tools/manylinux_wheel_setup.py ./setup.py
+# The following line is needed as a workaround to the auditwheel problem KeyError = .lib
+# Using and compiling a null extension module (see manylinux_wheel_setup.py)
+# fixes the issue (TODO: probably better ways?)
+touch dummy.cpp
+
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels
 ${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse/
