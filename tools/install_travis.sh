@@ -87,6 +87,7 @@ make install
 
 # Compile wheels
 cd /audi/build/wheel
+cp -R /audi/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
 # The following line is needed as a workaround to the auditwheel problem KeyError = .lib
 # Using and compiling a null extension module (see manylinux_wheel_setup.py)
 # fixes the issue (TODO: probably better ways?)
@@ -94,11 +95,12 @@ touch dummy.cpp
 
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels
-${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse2/
+${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/pyaudi*.whl -w ./wheelhouse2/
 # Install packages
 ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 # Test
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload int PyPi
-${PATH_TO_PYTHON}/bin/pip install twine upload -u darioizzo wheelhouse2/*.whl
+${PATH_TO_PYTHON}/bin/pip install twine
+${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi.whl
