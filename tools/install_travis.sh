@@ -11,7 +11,7 @@ echo ${PYTHON_VERSION}
 curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
 tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
 cd gmp-6.1.1 > /dev/null 2>&1
-./configure
+./configure > /dev/null 2>&1
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
@@ -87,7 +87,7 @@ make install
 
 # Compile wheels
 cd /audi/build/wheel
-cp -R /audi/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
+cp -R /audi/local/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
 # The following line is needed as a workaround to the auditwheel problem KeyError = .lib
 # Using and compiling a null extension module (see manylinux_wheel_setup.py)
 # fixes the issue (TODO: probably better ways?)
