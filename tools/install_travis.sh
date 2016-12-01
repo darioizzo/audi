@@ -7,14 +7,6 @@ echo ${BUILD_TYPE}
 echo ${PATH_TO_PYTHON}
 echo ${PYTHON_VERSION}
 
-# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
-# But just in case
-if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
-    export BOOST_PYTHON_LIB_NAME=libboost_python3.so
-else
-    export BOOST_PYTHON_LIB_NAME=libboost_python.so
-fi
-
 # Install gmp (before mpfr as its used by it)
 curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
 tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
@@ -52,6 +44,14 @@ echo "     ;" >> project-config.jam  >> project-config.jam
 # Add here the boost libraries that are needed
 ./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system > /dev/null 2>&1
 cd ..
+
+# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
+# But just in case
+if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+    export BOOST_PYTHON_LIB_NAME=libboost_python3.so
+else
+    export BOOST_PYTHON_LIB_NAME=libboost_python.so
+fi
 
 # Install cmake
 wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
@@ -95,8 +95,11 @@ touch dummy.cpp
 
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels
-${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse/
+${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse2/
 # Install packages
-${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse
+${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 # Test
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
+
+# Upload int PyPi
+${PATH_TO_PYTHON}/bin/pip install twine upload -u darioizzo wheelhouse2/*.whl
