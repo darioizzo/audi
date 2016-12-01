@@ -34,21 +34,21 @@ cd boost_1_62_0
 # removing the wrongly detected python 2.4 (deletes 5 lines after the comment)
 sed -i.bak -e '/# Python configuration/,+5d' ./project-config.jam
 # Defining the correct locations for python and boost_python
-if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+if [[ "${PYTHON_VERSION}" != "2.7" ]]; then #python3
     export BOOST_PYTHON_LIB_NAME=libboost_python3.so
     echo "using python" >> project-config.jam
     echo "     : ${PYTHON_VERSION}" >> project-config.jam
     echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
     # note the m is not there !!
-    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}"  >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m"  >> project-config.jam
     echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
     echo "     ;" >> project-config.jam
-else
+else #python2
     export BOOST_PYTHON_LIB_NAME=libboost_python.so
     echo "using python" >> project-config.jam
     echo "     : ${PYTHON_VERSION}" >> project-config.jam
     echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
-    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m"  >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}"  >> project-config.jam
     echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
     echo "     ;" >> project-config.jam
 fi
@@ -105,16 +105,16 @@ cp -R /audi/local/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
 # fixes the issue (TODO: probably better ways?)
 touch dummy.cpp
 
-# We install required dependncies
+# We install required dependncies (do it here, do not let pip install do it)
 ${PATH_TO_PYTHON}/bin/pip install numpy
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels (only py35 has auditwheel)
 /opt/python/cp35-cp35m/bin/auditwheel repair wheelhouse/pyaudi*.whl -w ./wheelhouse2/
-# Install packages
+# Install packages (not sure what --no-index -f does, should also work without, but just in case)
 ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 # Test
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
-# Upload int PyPi
+# Upload in PyPi
 ${PATH_TO_PYTHON}/bin/pip install twine
-${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi.whl
+${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi*.whl
