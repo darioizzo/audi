@@ -33,25 +33,31 @@ cd boost_1_62_0
 ./bootstrap.sh > /dev/null 2>&1
 # removing the wrongly detected python 2.4 (deletes 5 lines after the comment)
 sed -i.bak -e '/# Python configuration/,+5d' ./project-config.jam
-# defining the correct location for python
-echo "using python" >> project-config.jam
-echo "     : ${PYTHON_VERSION}" >> project-config.jam
-echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
-echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m"  >> project-config.jam
-echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
-echo "     ;" >> project-config.jam  >> project-config.jam
+# Defining the correct locations for python and boost_python
+if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+    export BOOST_PYTHON_LIB_NAME=libboost_python3.so
+    echo "using python" >> project-config.jam
+    echo "     : ${PYTHON_VERSION}" >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
+    # note the m is not there !!
+    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}"  >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
+    echo "     ;" >> project-config.jam
+else
+    export BOOST_PYTHON_LIB_NAME=libboost_python.so
+    echo "using python" >> project-config.jam
+    echo "     : ${PYTHON_VERSION}" >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/bin/python"  >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m"  >> project-config.jam
+    echo "     : ${PATH_TO_PYTHON}/lib"  >> project-config.jam
+    echo "     ;" >> project-config.jam
+fi
 
 # Add here the boost libraries that are needed
 ./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system > /dev/null 2>&1
 cd ..
 
-# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
-# But just in case
-if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
-    export BOOST_PYTHON_LIB_NAME=libboost_python3.so
-else
-    export BOOST_PYTHON_LIB_NAME=libboost_python.so
-fi
+
 
 # Install cmake
 wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
@@ -81,7 +87,13 @@ cp thread_management.hpp /usr/local/include/piranha/
 cd /audi
 mkdir build
 cd build
-cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
+# But just in case
+if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+else
+    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+fi
 make
 make install
 
@@ -93,9 +105,11 @@ cp -R /audi/local/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
 # fixes the issue (TODO: probably better ways?)
 touch dummy.cpp
 
+# We install required dependncies
+${PATH_TO_PYTHON}/bin/pip install numpy
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
-# Bundle external shared libraries into the wheels
-${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/pyaudi*.whl -w ./wheelhouse2/
+# Bundle external shared libraries into the wheels (only py35 has auditwheel)
+/opt/python/cp35-cp35m/bin/auditwheel repair wheelhouse/pyaudi*.whl -w ./wheelhouse2/
 # Install packages
 ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 # Test
