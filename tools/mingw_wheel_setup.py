@@ -11,6 +11,7 @@ URL = 'https://github.com/darioizzo/audi'
 AUTHOR = 'Dario Izzo'
 AUTHOR_EMAIL = 'dario.izzo@gmail.com'
 LICENSE = 'GPLv3+/LGPL3+'
+INSTALL_REQUIRES = ['numpy']
 CLASSIFIERS = [
     # How mature is this project? Common values are
     #   3 - Alpha
@@ -56,6 +57,7 @@ setup(name=NAME,
     classifiers=CLASSIFIERS,
     keywords=KEYWORDS,
     platforms=PLATFORMS,
+    install_requires=INSTALL_REQUIRES,
     packages=['pyaudi'],
     # Include pre-compiled extension
     package_data={

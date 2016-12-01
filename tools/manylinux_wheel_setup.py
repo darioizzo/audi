@@ -48,9 +48,9 @@ setup(name=NAME,
     classifiers=CLASSIFIERS,
     keywords=KEYWORDS,
     platforms=PLATFORMS,
-    packages=['pyaudi'],
-    ext_modules = [extension_module],
     install_requires=INSTALL_REQUIRES,
+    ext_modules = [extension_module],
+    packages=['pyaudi'],
     # Include pre-compiled extension
     package_data={
                	'pyaudi': ['_core.so']

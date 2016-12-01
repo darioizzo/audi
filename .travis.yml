@@ -39,7 +39,7 @@ matrix:
 install:
 - docker pull $DOCKER_IMAGE
 script:
-- docker run --rm -e TWINE_PASSWORD -e BUILD_TYPE -e PYTHON_VERSION -e PATH_TO_PYTHON -v `pwd`:/audi
+- docker run --rm -e TWINE_PASSWORD -e BUILD_TYPE -e PYTHON_VERSION -e PATH_TO_PYTHON -e TRAVIS_TAG -v `pwd`:/audi
   $DOCKER_IMAGE $PRE_CMD /audi/tools/install_travis.sh
 env:
   global:

@@ -84,7 +84,7 @@ cp thread_management.hpp /usr/local/include/piranha/
 cd /audi
 mkdir build
 cd build
-# The include directory for py3 is X.Xm, while for py2 is X.X 
+# The include directory for py3 is X.Xm, while for py2 is X.X
 if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
     cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
 else
@@ -112,5 +112,10 @@ ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
-${PATH_TO_PYTHON}/bin/pip install twine
-${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi*.whl
+# This variable will contain something if this is a tagged build (vx.y.z), otherwise it will be empty.
+export AUDI_RELEASE_VERSION=`echo "${TRAVIS_TAG}"|grep -E 'v[0-9]+\.[0-9]+.*'|cut -c 2-`
+if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
+    echo "Release build detected, uploading to PyPi."
+    ${PATH_TO_PYTHON}/bin/pip install twine
+    ${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi*.whl
+fi
