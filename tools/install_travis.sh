@@ -86,8 +86,7 @@ make
 make install
 
 # Compile wheels
-cd /audi/local/lib/python${PYTHON_VERSION}/site-packages/
-cp /audi/tools/manylinux_wheel_setup.py ./setup.py
+cd /audi/build/wheel
 # The following line is needed as a workaround to the auditwheel problem KeyError = .lib
 # Using and compiling a null extension module (see manylinux_wheel_setup.py)
 # fixes the issue (TODO: probably better ways?)
