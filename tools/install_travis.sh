@@ -31,7 +31,7 @@ wget --no-check-certificate https://sourceforge.net/projects/boost/files/boost/1
 tar --bzip2 -xf /audi/boost_1_62_0.tar.bz2 > /dev/null 2>&1
 cd boost_1_62_0
 ./bootstrap.sh > /dev/null 2>&1
-# removing the wrongly detected python 2.4 (deletes 5 lines after the comment)
+# removing the wrongly detected python 2.4 (deletes 5 lines after the comment "# Python configuration" )
 sed -i.bak -e '/# Python configuration/,+5d' ./project-config.jam
 # Defining the correct locations for python and boost_python
 if [[ "${PYTHON_VERSION}" != "2.7" ]]; then #python3
@@ -57,8 +57,6 @@ fi
 ./b2 install cxxflags="-std=c++11" --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system > /dev/null 2>&1
 cd ..
 
-
-
 # Install cmake
 wget --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.0.tar.gz > /dev/null 2>&1
 tar xvf /audi/cmake-3.7.0.tar.gz > /dev/null 2>&1
@@ -82,13 +80,11 @@ wget --no-check-certificate https://raw.githubusercontent.com/darioizzo/piranha/
 rm -f /usr/local/include/piranha/thread_management.hpp
 cp thread_management.hpp /usr/local/include/piranha/
 
-
 # Install and compile pyaudi
 cd /audi
 mkdir build
 cd build
-# This should not be necessary as ./b2 seems to be putting two identical libs under different names.
-# But just in case
+# The include directory for py3 is X.Xm, while for py2 is X.X 
 if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
     cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
 else

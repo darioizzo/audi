@@ -20,8 +20,22 @@ matrix:
   - sudo: required
     services:
     - docker
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 BUILD_TYPE="Python35" PYTHON_VERSION="3.5"
+      PATH_TO_PYTHON="/opt/python/cp35-cp35m"
+      PRE_CMD=linux32
+  - sudo: required
+    services:
+    - docker
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 BUILD_TYPE="Python34" PYTHON_VERSION="3.4"
+      PATH_TO_PYTHON="/opt/python/cp34-cp34m"
+      PRE_CMD=linux32
+  - sudo: required
+    services:
+    - docker
     env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 BUILD_TYPE="Python27" PYTHON_VERSION="2.7"
-      PATH_TO_PYTHON="/opt/python/cp27-cp27m" PRE_CMD=linux32
+      PATH_TO_PYTHON="/opt/python/cp27-cp27m"
+      PRE_CMD=linux32
+
 install:
 - docker pull $DOCKER_IMAGE
 script:
