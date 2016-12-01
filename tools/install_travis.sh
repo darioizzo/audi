@@ -96,5 +96,7 @@ touch dummy.cpp
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels
 ${PATH_TO_PYTHON}/bin/auditwheel repair wheelhouse/*.whl -w ./wheelhouse/
-# Install packages and test
+# Install packages
 ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse
+# Test
+${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
