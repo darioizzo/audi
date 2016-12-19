@@ -8,7 +8,3 @@ For the C++ library you may also read the `doxygen documentation <http://darioiz
   :maxdepth: 2
 
   cpp_docs
-
------------------------------------------------
-
-

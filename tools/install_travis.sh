@@ -109,12 +109,14 @@ ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Install packages (not sure what --no-index -f does, should also work without, but just in case)
 ${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
 # Test
+cd /
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
 # This variable will contain something if this is a tagged build (vx.y.z), otherwise it will be empty.
 export AUDI_RELEASE_VERSION=`echo "${TRAVIS_TAG}"|grep -E 'v[0-9]+\.[0-9]+.*'|cut -c 2-`
 if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
+    cd audi/build/wheel
     echo "Release build detected, uploading to PyPi."
     ${PATH_TO_PYTHON}/bin/pip install twine
     ${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi*.whl
