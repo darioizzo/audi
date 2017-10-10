@@ -10,8 +10,8 @@ matrix:
   - sudo: required
     services:
     - docker
-    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64 BUILD_TYPE="Python34" PYTHON_VERSION="3.4"
-      PATH_TO_PYTHON="/opt/python/cp34-cp34m"
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64 BUILD_TYPE="Python36" PYTHON_VERSION="3.6"
+      PATH_TO_PYTHON="/opt/python/cp36-cp36m"
   - sudo: required
     services:
     - docker
@@ -26,8 +26,8 @@ matrix:
   - sudo: required
     services:
     - docker
-    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 BUILD_TYPE="Python34" PYTHON_VERSION="3.4"
-      PATH_TO_PYTHON="/opt/python/cp34-cp34m"
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 BUILD_TYPE="Python36" PYTHON_VERSION="3.6"
+      PATH_TO_PYTHON="/opt/python/cp36-cp36m"
       PRE_CMD=linux32
   - sudo: required
     services:
