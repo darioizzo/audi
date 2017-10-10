@@ -26,7 +26,7 @@ namespace audi
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
 */
@@ -60,7 +60,7 @@ inline T exp(const T &d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
  *
@@ -94,8 +94,8 @@ inline T log(const T &d)
  * it converts \f$a^{T_f}\f$ to \f$\exp(T_g*\log(a))\f$ and computes this
  * last expression instead.
  *
- * @param[in] base the base for the exponent
- * @param[in] d audi::gdual argument
+ * @param base the base for the exponent
+ * @param d audi::gdual argument
  *
  */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
@@ -122,8 +122,8 @@ inline T pow(double base, const T &d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
- * @param[in] alpha exponent
+ * @param d audi::gdual argument
+ * @param alpha exponent
  *
  * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
  *
@@ -164,8 +164,8 @@ inline T pow(const T &d, double alpha)
  * Implements the integer exponentiation of a audi::gdual. Essentially,
  * it uses the \f$\mathcal P_{n,m}\f$ multiplication on \p d \p n times
  *
- * @param[in] d audi::gdual argument
- * @param[in] n integer exponent
+ * @param d audi::gdual argument
+ * @param n integer exponent
 */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T& d, int n)
@@ -187,8 +187,8 @@ inline T pow(const T& d, int n)
  * it converts \f$T_f^{T_g}\f$ to \f$\exp(T_g*\log(T_f))\f$ and computes this
  * last expression instead.
  *
- * @param[in] d1 audi::gdual argument
- * @param[in] d2 audi::gdual argument
+ * @param d1 audi::gdual argument
+ * @param d2 audi::gdual argument
  *
  * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
 */
@@ -210,7 +210,7 @@ inline T pow(const T &d1, const T &d2)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
@@ -233,7 +233,7 @@ inline T sqrt(const T &d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
@@ -271,7 +271,7 @@ inline T cbrt(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the sine of \p d
 */
@@ -321,7 +321,7 @@ inline T sin(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the cosine of \p d
 */
@@ -365,7 +365,7 @@ inline T cos(const T& d)
  * to get both sine and cosine at once rather than computing them in sequence.
  * Use this function when both sine and cosine are needed.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an std::array containing the Taylor expansions of sine and the cosine (first element, second element)
  *
@@ -418,7 +418,7 @@ std::array<T,2> sin_and_cos(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
  *
@@ -462,7 +462,7 @@ inline T tan(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic sine of \p d
 */
@@ -508,7 +508,7 @@ inline T sinh(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic cosine of \p d
 */
@@ -548,7 +548,7 @@ inline T cosh(const T& d)
  * to get them both at once rather than computing them in sequence.
  * Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element)
  *
@@ -597,7 +597,7 @@ std::array<T,2> sinh_and_cosh(const T& d)
  *
  * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the hyperbolic tangent of \p d
  *
@@ -638,7 +638,7 @@ inline T tanh(const T& d)
  * \f]
  *
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
@@ -675,7 +675,7 @@ inline T atanh(const T& d)
  *
  * This formula derives directly from the formula for audi::atanh noting that: \f$ \mbox{atan}(z) = i \mbox{atanh}(-iz)\f$
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse tangent of \p d
  *
@@ -731,7 +731,7 @@ inline T atan(const T& d)
  * \f]
  *
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
@@ -753,7 +753,7 @@ inline T asinh(const T& d)
  * \f]
  *
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
@@ -775,7 +775,7 @@ inline T acosh(const T& d)
  * \f]
  *
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse sine of \p d
  *
@@ -797,7 +797,7 @@ inline T asin(const T& d)
  * \f]
  *
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse cosine of \p d
  *
@@ -823,7 +823,7 @@ inline T acos(const T& d)
  *
  * \note This operation is not availiable for std::complex types.
  *
- * @param[in] d audi::gdual argument
+ * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
  *

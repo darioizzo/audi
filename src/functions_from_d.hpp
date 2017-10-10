@@ -29,9 +29,9 @@ namespace audi
  * methods based on the nilpotency of \f$ \hat f\f$ and should thus be used only when
  * necessary (that is when no formula is found to exploit nilpotency.)
  *
- * @param[in] f Taylor expansion of the inner function
- * @param[in] dg Taylor expansion of the derivative of the outer function
- * @param[in] g0 Value of the outer function at the expansion point
+ * @param f Taylor expansion of the inner function
+ * @param dg Taylor expansion of the derivative of the outer function
+ * @param g0 Value of the outer function at the expansion point
 */
 template <typename T, typename V, enable_if_t<is_gdual<T>::value && std::is_same<V,typename T::cf_type>::value, int> = 0>
 inline T _compose_from_derivative(T f, T dg, V g0)
@@ -55,7 +55,7 @@ inline T _compose_from_derivative(T f, T dg, V g0)
  * overload is actually faster and this is only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
@@ -75,7 +75,7 @@ inline T atanh_d(const T& f)
  * overload is actually faster and this is only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse tangent of \p d
  *
@@ -95,7 +95,7 @@ inline T atan_d(const T& f)
  * overload may be slower, but this is currently only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse sine of \p d
  *
@@ -115,7 +115,7 @@ inline T asin_d(const T& f)
  * overload may be slower, but this is currently only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
@@ -135,7 +135,7 @@ inline T asinh_d(const T& f)
  * overload may be slower, but this is currently only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse cosine of \p d
  *
@@ -155,7 +155,7 @@ inline T acos_d(const T& f)
  * is faster, and this is currently only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
@@ -175,7 +175,7 @@ inline T acosh_d(const T& f)
  * makes use of the fact that \f$ \frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\f$
  * to then use audi::_compose_from_derivative
  *
- * @param[in] f audi::gdual argument
+ * @param f audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the error function of \p d
  *

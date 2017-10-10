@@ -284,8 +284,8 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T,audi::vectorized_doub
     /// Call operator.
     /**
      * @param[out] out the output value.
-     * @param[in] a the first operand.
-     * @param[in] b the second operand.
+     * @param a the first operand.
+     * @param b the second operand.
      *
      * @return the output of piranha::mp_integer::mul().
      */

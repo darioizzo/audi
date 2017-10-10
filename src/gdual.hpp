@@ -305,7 +305,7 @@ private:
          * treat the Taylor expansion as a function of \f$ dx\f$ too (for example
          * when extracting the relative coefficient)
          *
-         * @param[in] sym_vars list of symbolic names. It must contain all symbolic names of
+         * @param sym_vars list of symbolic names. It must contain all symbolic names of
          * the current polynomial. It may contain more. All symbols must start with the letter "d".
          *
          * @throws std::invalid_argument:
@@ -332,7 +332,7 @@ private:
          *
          * \note Information may be lost as the truncation order is preserved.
          *
-         * @param[in] var_name Symbol name (cannot start with "d").
+         * @param var_name Symbol name (cannot start with "d").
          *
          * @throws std::invalid_argument:
          * - if \p var_name starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
@@ -356,7 +356,7 @@ private:
          *
          * \note If the \p var_name differential is not in the symbol set, then it is added.
          *
-         * @param[in] var_name Symbol name (cannot start with "d").
+         * @param var_name Symbol name (cannot start with "d").
          *
          * @throws std::invalid_argument:
          * - if \p symbol starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
@@ -616,7 +616,7 @@ private:
          * is used to set this parameter.
          *
          * @param[in,out] os target stream.
-         * @param[in] d audi::gdual argument.
+         * @param d audi::gdual argument.
          *
          * @return reference to \p os.
          *
@@ -634,8 +634,8 @@ private:
          *
          * /note The truncation order of \p d1 and \p d2 may be different
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return The result of the cmparison
         */
@@ -649,8 +649,8 @@ private:
          * Compares the truncation order and the single polynomial coefficients of
          * two audi::gdual objects and returns false if equal.
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return The result of the cmparison
         */
@@ -712,8 +712,8 @@ private:
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return the sum between d1 and d2
         */
@@ -730,8 +730,8 @@ private:
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return the difference between d1 and d2
         */
@@ -752,8 +752,8 @@ private:
          * and its details / performances are those of the piranha multiplication
          * algorithm which is, essentially, used.
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return the (truncated) multiplication between d1 and d2
         */
@@ -779,8 +779,8 @@ private:
          * of the arguments must be an audi::gdual, while the second argument
          * may only be a double or int.
          *
-         * @param[in] d1 first audi::gdual argument
-         * @param[in] d2 second audi::gdual argument
+         * @param d1 first audi::gdual argument
+         * @param d2 second audi::gdual argument
          *
          * @return an audi:gdual containing the (truncated) multiplication between d1 and d2
         */
