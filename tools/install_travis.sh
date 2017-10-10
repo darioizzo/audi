@@ -18,7 +18,7 @@ cd ..
 
 
 # Install mpfr
-wget http://www.mpfr.org/mpfr-current/mpfr-3.1.6.tar.gz > /dev/null 2>&1
+wget http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > /dev/null 2>&1
 tar xvf mpfr-3.1.6.tar.gz > /dev/null 2>&1
 cd mpfr-3.1.6
 ./configure > /dev/null 2>&1
