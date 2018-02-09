@@ -79,8 +79,8 @@ class gdual
     );
 public:
         using cf_type = Cf;
+        using p_type = piranha::polynomial<Cf,piranha::monomial<char>>;        
 private:
-        using p_type = piranha::polynomial<Cf,piranha::monomial<char>>;
 
         // We enable the overloads of the +,-,*,/ operators only in the following cases:
         // - at least one operand is a gdual,
@@ -385,6 +385,23 @@ private:
             auto new_p = m_p.subs(sym, Cf(val));
             return gdual(std::move(new_p), m_order);
         }
+
+        /// Substitute symbol with a gdual
+        /**
+         * Substitute the symbol \p sym with the gdual \val
+         * The returned gdual has the same order, its symbol set will be
+         * expanded with the symbol set of \val
+         *
+         * @throws unspecified any exception thrown by:
+         * - piranha::math::subs,
+         */
+         gdual subs(const std::string& sym, const gdual& val) const
+         {
+             auto new_p = piranha::math::subs(m_p, sym, val.m_p);
+             // auto new_p2 = new_p.trim();
+             auto new_p2 = piranha::math::truncate_degree(new_p, m_order);
+             return gdual(std::move(new_p2), m_order);
+         }
 
         /// Evaluates the Taylor polynomial
         /**
