@@ -85,7 +85,7 @@ endif()
 
 
 if(AUDI_BUILD_PYAUDI)
-    # pygmo dependencies.
+    # audi dependencies.
     include(YACMAPythonSetup)
     # Python version check.
     if(${PYTHON_VERSION_MAJOR} LESS 2 OR (${PYTHON_VERSION_MAJOR} EQUAL 2 AND ${PYTHON_VERSION_MINOR} LESS 7))
@@ -182,7 +182,7 @@ if(AUDI_BUILD_AUDI)
 endif()
 
 if(AUDI_BUILD_PYAUDI)   
-    # Add the pygmo subdirectory.
+    # Add the pyaudi subdirectory.
     add_subdirectory("${CMAKE_SOURCE_DIR}/pyaudi")
 endif()
 
