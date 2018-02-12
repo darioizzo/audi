@@ -386,7 +386,7 @@ private:
             return gdual(std::move(new_p), m_order);
         }
 
-        /// Substitute symbol with a gdual
+        /// Substitute a symbol with a gdual
         /**
          * Substitute the symbol \p sym with the gdual \val
          * The returned gdual has the same order, its symbol set will be
@@ -399,9 +399,27 @@ private:
          {
              auto new_p = piranha::math::subs(m_p, sym, val.m_p);
              // auto new_p2 = new_p.trim();
-             auto new_p2 = piranha::math::truncate_degree(new_p, m_order);
+             auto new_p2 = piranha::math::truncate_degree(new_p, static_cast<decltype(m_p.degree())>(m_order));
              return gdual(std::move(new_p2), m_order);
          }
+
+        /// Extracts all terms of some order
+        /**
+         * Extracts all the terms with the given \order into a new gdual
+         *
+         * @throws std::invalid_argument
+         * - if the \order is higher than the gdual order
+         * @throws unspecified any exception thrown by:
+         * - piranha::math::subs,
+         */
+         gdual extract_terms(unsigned int order)
+         {
+            if (order > m_order) {
+                throw std::invalid_argument("requested order is beyond the truncation order.");
+            }
+            auto res = m_p.filter([order](const std::pair< Cf, p_type > & coeff) { return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order; });
+            return gdual(std::move(res), order);
+        }
 
         /// Evaluates the Taylor polynomial
         /**
