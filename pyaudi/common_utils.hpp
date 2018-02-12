@@ -5,7 +5,7 @@
 #include <boost/python/stl_iterator.hpp>
 #include <unordered_map>
 
-#include "../src/audi.hpp"
+#include <audi/audi.hpp>
 
 // A throwing macro similar to pagmo_throw, only for Python. This will set the global
 // error string of Python to "msg", the exception type to "type", and then invoke the Boost

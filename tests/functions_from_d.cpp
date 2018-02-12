@@ -1,7 +1,7 @@
 #include "helpers.hpp"
-#include "../src/gdual.hpp"
-#include "../src/functions.hpp"
-#include "../src/functions_from_d.hpp"
+#include <audi/gdual.hpp>
+#include <audi/functions.hpp>
+#include <audi/functions_from_d.hpp>
 
 #define BOOST_TEST_MODULE audi_functions_from_d_test
 #include <boost/test/unit_test.hpp>

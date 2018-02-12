@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "../src/gdual.hpp"
+#include <audi/gdual.hpp>
 
 /*
 // Boost 1.59 introduces a new floating point comparison method. In which case the below macro can substitute EPSILON_COMPARE

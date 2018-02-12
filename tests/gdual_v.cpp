@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../src/audi.hpp"
+#include <audi/audi.hpp>
 #include "helpers.hpp"
 
 using namespace audi;

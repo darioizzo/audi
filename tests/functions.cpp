@@ -1,13 +1,13 @@
-#include "helpers.hpp"
-#include "../src/gdual.hpp"
-#include "../src/functions.hpp"
-
 #define BOOST_TEST_MODULE audi_functions_test
 #include <boost/test/unit_test.hpp>
 #include <boost/math/constants/constants.hpp>
 
 #include <stdexcept>
 #include <vector>
+
+#include "helpers.hpp"
+#include <audi/gdual.hpp>
+#include <audi/functions.hpp>
 
 using namespace audi;
 using gdual_d = gdual<double>;
