@@ -392,7 +392,7 @@ public:
     /**
      * Substitute the symbol \p sym with the gdual \val
      * The returned gdual has the same order, its symbol set will be
-     * expanded with the symbol set of \val
+     * expanded with the symbol set of \val and then trimmed of the substituded symbol
      *
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
@@ -400,9 +400,9 @@ public:
     gdual subs(const std::string &sym, const gdual &val) const
     {
         auto new_p = piranha::math::subs(m_p, sym, val.m_p);
-        // auto new_p2 = new_p.trim();
-        auto new_p2 = piranha::math::truncate_degree(new_p, static_cast<decltype(m_p.degree())>(m_order));
-        return gdual(std::move(new_p2), m_order);
+        auto new_p2 = new_p.trim();
+        auto new_p3 = piranha::math::truncate_degree(new_p2, static_cast<decltype(m_p.degree())>(m_order));
+        return gdual(std::move(new_p3), m_order);
     }
 
     /// Extracts all terms of some order
@@ -414,7 +414,7 @@ public:
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
      */
-    gdual extract_terms(unsigned int order)
+    gdual extract_terms(unsigned order) const
     {
         if (order > m_order) {
             throw std::invalid_argument("requested order is beyond the truncation order.");

@@ -111,7 +111,7 @@ if(NOT _YACMACompilerLinkerSettingsRun)
         # This limit is supposed to be at least 1024 in C++11, but for some reason
         # clang sets this to 256, and gcc to 900.
         _YACMA_CHECK_ENABLE_CXX_FLAG(-ftemplate-depth=1024)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wold-style-cast)
+        #_YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wold-style-cast)
         # NOTE: disable this for now, as it results in a lot of clutter from Boost.
         # _YACMA_CHECK_ENABLE_CXX_FLAG(-Wzero-as-null-pointer-constant)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-pedantic-errors)
@@ -131,7 +131,7 @@ if(NOT _YACMACompilerLinkerSettingsRun)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wduplicated-cond)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wnull-dereference)
         # From GCC 7.
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wduplicated-branches)
+        #_YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wduplicated-branches)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wrestrict)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Waligned-new)
         if(YACMA_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER "5.999")

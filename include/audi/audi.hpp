@@ -1,10 +1,10 @@
 #ifndef AUDI_HPP
 #define AUDI_HPP
 
-#include "detail/complex.hpp"
-#include "functions.hpp"
-#include "functions_from_d.hpp"
-#include "gdual.hpp"
+#include <complex>
+
+#include <audi/vectorized_double.hpp>
+#include <audi/gdual.hpp>
 
 namespace audi
 {

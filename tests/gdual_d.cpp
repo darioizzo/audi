@@ -8,6 +8,8 @@
 
 #include "helpers.hpp"
 #include <audi/audi.hpp>
+#include <audi/functions.hpp>
+
 
 using namespace audi;
 

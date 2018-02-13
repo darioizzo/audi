@@ -83,6 +83,9 @@ if(MINGW)
 	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa,-mbig-obj")
 endif()
 
+# Some flags that generate warnings due to Eigen or Piranha obsolete versions
+list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wduplicated-branches")
+list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wold-style-cast")
 
 if(AUDI_BUILD_PYAUDI)
     # audi dependencies.
@@ -105,6 +108,12 @@ include(AudiFindBoost)
 if(AUDI_BUILD_AUDI)
     # audi dependencies.
 
+    # Eigen setup
+    find_package(Eigen3 REQUIRED)
+    message(STATUS "Eigen include directory: ${EIGEN3_INCLUDE_DIR}")
+    message(STATUS "Eigen version detected: ${EIGEN3_VERSION}")
+    include_directories(${EIGEN3_INCLUDE_DIR})
+    
     # Piranha setup.
     find_package(Piranha REQUIRED)
     message(STATUS "Piranha library found.")
@@ -134,7 +143,8 @@ if(AUDI_BUILD_AUDI)
 
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
-    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization)
+    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization)    
+    target_link_libraries(audi INTERFACE Eigen3::eigen3)
     
     # This sets up the include directory to be different if we build
     target_include_directories(audi INTERFACE
@@ -169,7 +179,7 @@ if(AUDI_BUILD_AUDI)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindGMP.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindMPFR.cmake"
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindPiranha.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"
-            DESTINATION "lib/cmake/audi")
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindEigen3.cmake" DESTINATION "lib/cmake/audi")
     install(EXPORT audi_export NAMESPACE Audi:: DESTINATION lib/cmake/audi)
     # Take care of versioning.
     include(CMakePackageConfigHelpers)
