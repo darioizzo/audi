@@ -34,33 +34,35 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3'
 ]
 KEYWORDS = 'differential algebra taylor polynomials automatic differentiation'
-PLATFORMS = ['Unix','Windows','OSX']
+PLATFORMS = ['Unix', 'Windows', 'OSX']
+
 
 class BinaryDistribution(Distribution):
+
     def has_ext_modules(foo):
         return True
 
 # Setup the list of external dlls.
 import os.path
 mingw_wheel_libs = 'mingw_wheel_libs_python{}.txt'.format(sys.version_info[0])
-l = open(mingw_wheel_libs,'r').readlines()
+l = open(mingw_wheel_libs, 'r').readlines()
 DLL_LIST = [os.path.basename(_[:-1]) for _ in l]
 
 setup(name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
-    long_description=LONG_DESCRIPTION,
-    url=URL,
-    author=AUTHOR,
-    author_email=AUTHOR_EMAIL,
-    license=LICENSE,
-    classifiers=CLASSIFIERS,
-    keywords=KEYWORDS,
-    platforms=PLATFORMS,
-    install_requires=INSTALL_REQUIRES,
-    packages=['pyaudi'],
-    # Include pre-compiled extension
-    package_data={
-                'pyaudi': ['_core.pyd'] + DLL_LIST
-                },
-    distclass=BinaryDistribution)
+      version=VERSION,
+      description=DESCRIPTION,
+      long_description=LONG_DESCRIPTION,
+      url=URL,
+      author=AUTHOR,
+      author_email=AUTHOR_EMAIL,
+      license=LICENSE,
+      classifiers=CLASSIFIERS,
+      keywords=KEYWORDS,
+      platforms=PLATFORMS,
+      install_requires=INSTALL_REQUIRES,
+      packages=['pyaudi'],
+      # Include pre-compiled extension
+      package_data={
+          'pyaudi': ['_core.pyd'] + DLL_LIST
+      },
+      distclass=BinaryDistribution)

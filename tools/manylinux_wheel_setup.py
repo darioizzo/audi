@@ -30,29 +30,29 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3'
 ]
 KEYWORDS = 'differential algebra taylor polynomials automatic differentiation'
-PLATFORMS = ['Unix','Windows','OSX']
+PLATFORMS = ['Unix', 'Windows', 'OSX']
 
 extension_module = Extension(
     'dummy',
-     sources=['dummy.cpp']
+    sources=['dummy.cpp']
 )
 
 setup(name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
-    long_description=LONG_DESCRIPTION,
-    url=URL,
-    author=AUTHOR,
-    author_email=AUTHOR_EMAIL,
-    license=LICENSE,
-    classifiers=CLASSIFIERS,
-    keywords=KEYWORDS,
-    platforms=PLATFORMS,
-    install_requires=INSTALL_REQUIRES,
-    ext_modules = [extension_module],
-    packages=['pyaudi'],
-    # Include pre-compiled extension
-    package_data={
-               	'pyaudi': ['_core.so']
-               	},
-)
+      version=VERSION,
+      description=DESCRIPTION,
+      long_description=LONG_DESCRIPTION,
+      url=URL,
+      author=AUTHOR,
+      author_email=AUTHOR_EMAIL,
+      license=LICENSE,
+      classifiers=CLASSIFIERS,
+      keywords=KEYWORDS,
+      platforms=PLATFORMS,
+      install_requires=INSTALL_REQUIRES,
+      ext_modules=[extension_module],
+      packages=['pyaudi'],
+      # Include pre-compiled extension
+      package_data={
+          'pyaudi': ['_core.so']
+      },
+      )
