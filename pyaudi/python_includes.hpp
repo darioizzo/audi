@@ -5,8 +5,8 @@
 // http://mail.python.org/pipermail/python-list/2004-March/907592.html
 // http://mail.python.org/pipermail/new-bugs-announce/2011-March/010395.html
 #if defined(_WIN32)
-#include <cmath>
 #include <Python.h>
+#include <cmath>
 #else
 #include <Python.h>
 #include <cmath>

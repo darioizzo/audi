@@ -1,15 +1,15 @@
 #ifndef AUDI_FUNCTIONS_HPP
 #define AUDI_FUNCTIONS_HPP
 
-#include <boost/math/special_functions/bernoulli.hpp>
 #include <boost/math/constants/constants.hpp>
+#include <boost/math/special_functions/bernoulli.hpp>
 #include <cmath>
 #include <piranha/binomial.hpp>
 #include <stdexcept>
 
-#include "gdual.hpp"
-#include "detail/overloads.hpp"
 #include "back_compatibility.hpp"
+#include "detail/overloads.hpp"
+#include "gdual.hpp"
 #include "type_traits.hpp"
 
 namespace audi
@@ -21,29 +21,29 @@ namespace audi
  * algebra:
  *
  * \f[
- * T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)
- * \f]
+ * T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ...
+ * \right) \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
  * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T exp(const T &d)
 {
     T retval(1.);
-    double fact=1;
+    double fact = 1;
     auto p0 = d.constant_cf();
     auto phat = d - p0;
     T tmp(phat);
 
-    retval+=phat;
+    retval += phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
-        phat*=tmp;
-        fact*=i;
-        retval+=phat / fact;
+        phat *= tmp;
+        fact *= i;
+        retval += phat / fact;
     }
     return retval * audi::exp(p0);
 }
@@ -55,8 +55,8 @@ inline T exp(const T &d)
  * algebra:
  *
  * \f[
- * T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...
- * \f]
+ * T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat
+ * f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ... \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
@@ -74,18 +74,17 @@ inline T log(const T &d)
     auto log_p0 = audi::log(p0);
 
     auto phat = (d - p0);
-    phat = phat/p0;
+    phat = phat / p0;
     T tmp(phat);
 
     retval = log_p0 + phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
         fatt *= -1;
-        phat*=tmp;
-        retval =  retval + fatt * phat / i;
+        phat *= tmp;
+        retval = retval + fatt * phat / i;
     }
     return retval;
 }
-
 
 /// Overload for the exponentiation to a gdual power
 /**
@@ -140,7 +139,7 @@ inline T pow(const T &d, double alpha)
     if (std::modf(alpha, &n) == 0.0 && n > 0) {
         T retval(d);
         for (auto i = 1; i < (int)n; ++i) {
-            retval*=d;
+            retval *= d;
         }
         return retval;
     }
@@ -150,10 +149,10 @@ inline T pow(const T &d, double alpha)
     phat = phat;
     T tmp(phat);
 
-    retval+=alpha * phat * audi::pow(p0, alpha-1);
+    retval += alpha * phat * audi::pow(p0, alpha - 1);
     for (auto i = 2u; i <= d.get_order(); ++i) {
-        phat*=tmp;
-        retval+=piranha::math::binomial(alpha,i) * phat * audi::pow(p0, alpha-i);
+        phat *= tmp;
+        retval += piranha::math::binomial(alpha, i) * phat * audi::pow(p0, alpha - i);
     }
     return retval;
 }
@@ -166,16 +165,16 @@ inline T pow(const T &d, double alpha)
  *
  * @param d audi::gdual argument
  * @param n integer exponent
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T pow(const T& d, int n)
+inline T pow(const T &d, int n)
 {
     if (n <= 0) {
         return audi::pow(d, (double)n);
     }
     T retval(d);
     for (auto i = 1; i < n; ++i) {
-        retval*=d;
+        retval *= d;
     }
     return retval;
 }
@@ -191,7 +190,7 @@ inline T pow(const T& d, int n)
  * @param d2 audi::gdual argument
  *
  * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T pow(const T &d1, const T &d2)
 {
@@ -239,23 +238,23 @@ inline T sqrt(const T &d)
  *
  */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T cbrt(const T& d)
+inline T cbrt(const T &d)
 {
-    double alpha = 1/3.;
+    double alpha = 1 / 3.;
     T retval(1.);
     auto p0 = d.constant_cf();
     auto cbrt_p0 = audi::cbrt(p0);
 
     auto phat = d - p0;
-    phat = phat/p0;
+    phat = phat / p0;
     T tmp(phat);
 
-    retval+=alpha * phat;
+    retval += alpha * phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
-        phat*=tmp;
-        retval+=piranha::math::binomial(alpha,i) * phat;
+        phat *= tmp;
+        retval += piranha::math::binomial(alpha, i) * phat;
     }
-    retval*=cbrt_p0;
+    retval *= cbrt_p0;
     return retval;
 }
 
@@ -266,17 +265,17 @@ inline T cbrt(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
- * \f]
+ * T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0
+ * \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
  * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the sine of \p d
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T sin(const T& d)
+inline T sin(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -285,26 +284,26 @@ inline T sin(const T& d)
     auto sin_p0 = audi::sin(p0);
     auto cos_p0 = audi::cos(p0);
 
-    double factorial=1.;
-    double coeff=1.;
+    double factorial = 1.;
+    double coeff = 1.;
     T cos_taylor(1.);
     T tmp(cos_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                             // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial*=i * (i-1.);                   // 2!, 4!, 6!, ...
-        cos_taylor += (coeff/factorial) * tmp;
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
+        cos_taylor += (coeff / factorial) * tmp;
     }
 
-    factorial=1.;
-    coeff=1.;
+    factorial = 1.;
+    coeff = 1.;
     T sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                             // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
-        sin_taylor += (coeff/factorial) * tmp;
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
+        sin_taylor += (coeff / factorial) * tmp;
     }
     return (sin_p0 * cos_taylor + cos_p0 * sin_taylor);
 }
@@ -316,17 +315,17 @@ inline T sin(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)
- * \f]
+ * T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0
+ * \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
  * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the cosine of \p d
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T cos(const T& d)
+inline T cos(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -335,26 +334,26 @@ inline T cos(const T& d)
     auto sin_p0 = audi::sin(p0);
     auto cos_p0 = audi::cos(p0);
 
-    double factorial=1.;
-    double coeff=1.;
+    double factorial = 1.;
+    double coeff = 1.;
     T cos_taylor(1.);
     T tmp(cos_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                              // -1, 1, -1, 1, ...
-        tmp*=phat2;                              // phat^2, phat^4, phat^6 ...
-        factorial*=i * (i-1.);                    // 2!, 4!, 6!, ...
-        cos_taylor += (coeff/factorial) * tmp;
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
+        cos_taylor += (coeff / factorial) * tmp;
     }
 
-    factorial=1.;
-    coeff=1.;
+    factorial = 1.;
+    coeff = 1.;
     T sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                              // -1, 1, -1, 1, ...
-        tmp*=phat2;                              // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                    // 3!, 5!, 7!, ...
-        sin_taylor += (coeff/factorial) * tmp;
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
+        sin_taylor += (coeff / factorial) * tmp;
     }
     return (cos_p0 * cos_taylor - sin_p0 * sin_taylor);
 }
@@ -369,9 +368,9 @@ inline T cos(const T& d)
  *
  * @return an std::array containing the Taylor expansions of sine and the cosine (first element, second element)
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-std::array<T,2> sin_and_cos(const T& d)
+std::array<T, 2> sin_and_cos(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -380,30 +379,30 @@ std::array<T,2> sin_and_cos(const T& d)
     auto sin_p0 = audi::sin(p0);
     auto cos_p0 = audi::cos(p0);
 
-    double factorial=1.;
-    double coeff=1.;
+    double factorial = 1.;
+    double coeff = 1.;
     T cos_taylor(1.);
     T tmp(cos_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                             // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial *= i * (i-1.);                   // 2!, 4!, 6!, ...
-        cos_taylor += (coeff/factorial) * tmp;
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
+        cos_taylor += (coeff / factorial) * tmp;
     }
 
-    factorial=1.;
-    coeff=1.;
+    factorial = 1.;
+    coeff = 1.;
     T sin_taylor(phat);
     tmp = sin_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        coeff*=-1.;                             // -1, 1, -1, 1, ...
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
-        sin_taylor += (coeff/factorial) * tmp;
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        coeff *= -1.;              // -1, 1, -1, 1, ...
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
+        sin_taylor += (coeff / factorial) * tmp;
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
-    return std::array<T,2>{{std::move(sine), std::move(cosine)}};
+    return std::array<T, 2>{{std::move(sine), std::move(cosine)}};
 }
 
 /// Overload for the tangent
@@ -413,8 +412,8 @@ std::array<T,2> sin_and_cos(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} }
- * \f]
+ * T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0
+ * \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} } \f]
  *
  * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
  *
@@ -422,9 +421,9 @@ std::array<T,2> sin_and_cos(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T tan(const T& d)
+inline T tan(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -433,22 +432,21 @@ inline T tan(const T& d)
 
     // Pre-compute Bernoulli numbers.
     std::vector<double> bn;
-    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1, std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
+                                       std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
     T tan_taylor = phat;
     // Factors
-    double factorial=24.;
+    double factorial = 24.;
     double four_k = 16.;
-    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k)
-    {
-        phat*=phat2;
+    for (auto k = 2u; 2 * k - 1 <= d.get_order(); ++k) {
+        phat *= phat2;
         tan_taylor += bn[k] * four_k * (1 - std::abs(four_k)) / factorial * phat;
-        four_k*=-4.;
-        factorial*=(2. * k + 1.) * (2. * k + 2.);
+        four_k *= -4.;
+        factorial *= (2. * k + 1.) * (2. * k + 2.);
     }
     return (tan_p0 + tan_taylor) / (1. - tan_p0 * tan_taylor);
 }
-
 
 /// Overload for the hyperbolic sine
 /**
@@ -457,17 +455,17 @@ inline T tan(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
- * \f]
+ * T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0
+ * \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
  * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic sine of \p d
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T sinh(const T& d)
+inline T sinh(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -476,21 +474,21 @@ inline T sinh(const T& d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    double factorial=1.;
+    double factorial = 1.;
     T cosh_taylor(1.);
     T tmp(cosh_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial*= i * (i-1.);                  // 2!, 4!, 6!, ...
-        cosh_taylor +=  tmp / factorial;
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
+        cosh_taylor += tmp / factorial;
     }
 
-    factorial=1.;
+    factorial = 1.;
     T sinh_taylor(phat);
     tmp = sinh_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
         sinh_taylor += tmp / factorial;
     }
     return (sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor);
@@ -503,17 +501,17 @@ inline T sinh(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0 \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
- * \f]
+ * T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0
+ * \left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \f]
  *
  * where \f$T_f = f_0 + \hat f\f$.
  *
  * @param d audi::gdual argument
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic cosine of \p d
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T cosh(const T& d)
+inline T cosh(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -522,21 +520,21 @@ inline T cosh(const T& d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    double factorial=1.;
+    double factorial = 1.;
     T cosh_taylor(1.);
     T tmp(cosh_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial*= i * (i-1.);                  // 2!, 4!, 6!, ...
-        cosh_taylor +=  tmp / factorial;
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
+        cosh_taylor += tmp / factorial;
     }
 
-    factorial=1.;
+    factorial = 1.;
     T sinh_taylor(phat);
     tmp = sinh_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
         sinh_taylor += tmp / factorial;
     }
     return (cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor);
@@ -552,9 +550,9 @@ inline T cosh(const T& d)
  *
  * @return an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element)
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-std::array<T,2> sinh_and_cosh(const T& d)
+std::array<T, 2> sinh_and_cosh(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -563,26 +561,26 @@ std::array<T,2> sinh_and_cosh(const T& d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    double factorial=1.;
+    double factorial = 1.;
     T cosh_taylor(1.);
     T tmp(cosh_taylor);
-    for (auto i=2u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^2, phat^4, phat^6 ...
-        factorial*=i * (i-1.);                   // 2!, 4!, 6!, ...
+    for (auto i = 2u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
         cosh_taylor += tmp / factorial;
     }
 
-    factorial=1.;
+    factorial = 1.;
     T sinh_taylor(phat);
     tmp = sinh_taylor;
-    for (auto i=3u; i<=d.get_order(); i+=2) {
-        tmp*=phat2;                             // phat^3, phat^5, phat^7 ...
-        factorial*=i * (i-1.);                   // 3!, 5!, 7!, ...
+    for (auto i = 3u; i <= d.get_order(); i += 2) {
+        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
         sinh_taylor += tmp / factorial;
     }
     auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
     auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
-    return std::array<T,2>{{std::move(sineh), std::move(cosineh)}};
+    return std::array<T, 2>{{std::move(sineh), std::move(cosineh)}};
 }
 
 /// Overload for the hyperbolic tangent
@@ -592,8 +590,8 @@ std::array<T,2> sinh_and_cosh(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\tan f)} = \frac{\tanh f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{4^k(4^k-1)}{2k!}x^{2k - 1}}{1 + \tanh f_0 \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} }
- * \f]
+ * T_{(\tan f)} = \frac{\tanh f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{4^k(4^k-1)}{2k!}x^{2k - 1}}{1 + \tanh f_0
+ * \sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} } \f]
  *
  * where \f$T_f = f_0 + \hat f\f$ and \f$ B_{2k}\f$ are the Bernoulli numbers.
  *
@@ -601,9 +599,9 @@ std::array<T,2> sinh_and_cosh(const T& d)
  *
  * @return an audi::gdual containing the Taylor expansion of the hyperbolic tangent of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T tanh(const T& d)
+inline T tanh(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -612,17 +610,18 @@ inline T tanh(const T& d)
 
     // Pre-compute Bernoulli numbers.
     std::vector<double> bn;
-    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1, std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
+                                       std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
     T tanh_taylor = phat;
     // Factors
-    double factorial=24.;
+    double factorial = 24.;
     double four_k = 16.;
-    for (auto k=2u; 2 * k - 1 <= d.get_order(); ++k) {
-        phat*=phat2;
+    for (auto k = 2u; 2 * k - 1 <= d.get_order(); ++k) {
+        phat *= phat2;
         tanh_taylor += bn[k] * four_k * (four_k - 1.) / factorial * phat;
-        four_k*=4.;
-        factorial*=(2 * k + 1.) * (2 * k + 2.);
+        four_k *= 4.;
+        factorial *= (2 * k + 1.) * (2 * k + 2.);
     }
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
 }
@@ -634,17 +633,17 @@ inline T tanh(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{k=1}^m \left(\frac{1}{(1-f_0)^k} + \frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k}
- * \f]
+ * T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{k=1}^m \left(\frac{1}{(1-f_0)^k} +
+ * \frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k} \f]
  *
  *
  * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T atanh(const T& d)
+inline T atanh(const T &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -654,11 +653,11 @@ inline T atanh(const T& d)
     T retval(0.);
     double coeff = 1.;
 
-    for (auto k=1u; k <= d.get_order(); ++k) {
+    for (auto k = 1u; k <= d.get_order(); ++k) {
         auto add = (1. / audi::pow(1. - p0, k) + coeff / audi::pow(1. + p0, k)) / k;
         retval += add * powphat;
-        coeff*=-1;
-        powphat*=phat;
+        coeff *= -1;
+        powphat *= phat;
     }
     return atanh_p0 + 0.5 * retval;
 }
@@ -670,21 +669,24 @@ inline T atanh(const T& d)
  * algebra:
  *
  * \f[
- * T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
- * \f]
+ * T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose
+ * 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m}
+ * \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat
+ * f^{2k}}{2k}(-1)^k \f]
  *
- * This formula derives directly from the formula for audi::atanh noting that: \f$ \mbox{atan}(z) = i \mbox{atanh}(-iz)\f$
+ * This formula derives directly from the formula for audi::atanh noting that: \f$ \mbox{atan}(z) = i
+ * \mbox{atanh}(-iz)\f$
  *
  * @param d audi::gdual argument
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse tangent of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T atan(const T& d)
+inline T atan(const T &d)
 {
     auto p0 = d.constant_cf();
-    auto phat = (d - p0) / (1. + p0*p0);
+    auto phat = (d - p0) / (1. + p0 * p0);
     auto powphat(phat);
 
     auto retval = T(audi::atan(p0));
@@ -692,30 +694,32 @@ inline T atan(const T& d)
     double coeff2 = -1.;
 
     for (auto k = 1u; k <= d.get_order(); ++k) {
-        if (k % 2u) {        // This is for odd powers 1..3..5
+        if (k % 2u) { // This is for odd powers 1..3..5
             T binom(1.);
             auto f0 = p0 * p0;
             double cf_i = -1.;
             for (auto j = 1u; 2 * j <= k; ++j) {
-                binom += T(piranha::math::binomial(k, 2u * j) * cf_i) * f0; // A bug in some old compiler requires the T()
+                binom
+                    += T(piranha::math::binomial(k, 2u * j) * cf_i) * f0; // A bug in some old compiler requires the T()
                 f0 *= p0 * p0;
                 cf_i *= -1.;
             }
             retval += binom * powphat * coeff1 / k;
             coeff1 *= -1.;
-        } else {            //This is for even powers 2..4..6
+        } else { // This is for even powers 2..4..6
             T binom(0.);
             auto f0 = p0;
             double cf_i = 1.;
-            for (auto j = 1u; 2*j - 1 <= k; ++j) {
-                binom += T(piranha::math::binomial(k, 2u * j - 1u)  * cf_i) * f0; // A bug in some old compiler requires the T()
+            for (auto j = 1u; 2 * j - 1 <= k; ++j) {
+                binom += T(piranha::math::binomial(k, 2u * j - 1u) * cf_i)
+                         * f0; // A bug in some old compiler requires the T()
                 f0 *= p0 * p0;
                 cf_i *= -1;
             }
             retval += binom * powphat * coeff2 / k;
             coeff2 *= -1;
         }
-        powphat*=phat;
+        powphat *= phat;
     }
     return retval;
 }
@@ -735,11 +739,11 @@ inline T atan(const T& d)
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T asinh(const T& d)
+inline T asinh(const T &d)
 {
-    return log(d + sqrt(1. + d*d));
+    return log(d + sqrt(1. + d * d));
 }
 
 /// Overload for the inverse hyperbolic cosine
@@ -757,11 +761,11 @@ inline T asinh(const T& d)
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T acosh(const T& d)
+inline T acosh(const T &d)
 {
-    return log(d + sqrt(d*d - 1.));
+    return log(d + sqrt(d * d - 1.));
 }
 
 /// Overload for the inverse sine
@@ -779,11 +783,11 @@ inline T acosh(const T& d)
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse sine of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T asin(const T& d)
+inline T asin(const T &d)
 {
-    return atan(d / sqrt(1. - d*d));
+    return atan(d / sqrt(1. - d * d));
 }
 
 /// Overload for the inverse cosine
@@ -801,11 +805,11 @@ inline T asin(const T& d)
  *
  * @return an audi::gdual containing the Taylor expansion of the inverse cosine of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T acos(const T& d)
+inline T acos(const T &d)
 {
-    return 0.5 * boost::math::constants::pi<double>() - atan(d / sqrt(1. - d*d));
+    return 0.5 * boost::math::constants::pi<double>() - atan(d / sqrt(1. - d * d));
 }
 
 /// Overload for the absolute value
@@ -827,9 +831,9 @@ inline T acos(const T& d)
  *
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
  *
-*/
+ */
 template <typename T, enable_if_t<is_gdual<T>::value && std::is_arithmetic<typename T::cf_type>::value, int> = 0>
-inline T abs(const T& d)
+inline T abs(const T &d)
 {
     auto p0 = d.constant_cf();
     if (p0 >= 0) {
@@ -838,22 +842,20 @@ inline T abs(const T& d)
     return -d;
 }
 // Vectorized abs
-template <typename T, enable_if_t<is_gdual<T>::value && std::is_same<vectorized_double,typename T::cf_type>::value, int> = 0>
-inline T abs(const T& d)
+template <typename T,
+          enable_if_t<is_gdual<T>::value && std::is_same<vectorized_double, typename T::cf_type>::value, int> = 0>
+inline T abs(const T &d)
 {
     T retval(d);
     auto p0 = retval.constant_cf();
-    for (auto it = retval._container().begin(); it != retval._container().end(); ++it)
-    {
+    for (auto it = retval._container().begin(); it != retval._container().end(); ++it) {
         // if the coefficient has one only element copy it over to the whole length of p0
         if (it->m_cf.size() == 1u) {
             it->m_cf.resize(p0.size(), it->m_cf[0]);
         }
-        for (auto i = 0u; i < p0.size(); ++i)
-        {
-            if (p0[i] < 0)
-            {
-                it->m_cf.set_value(i,-it->m_cf[i]);
+        for (auto i = 0u; i < p0.size(); ++i) {
+            if (p0[i] < 0) {
+                it->m_cf.set_value(i, -it->m_cf[i]);
             }
         }
     }

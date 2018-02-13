@@ -1,8 +1,8 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
-#include <type_traits>
 #include "gdual.hpp"
+#include <type_traits>
 
 namespace audi
 {
@@ -12,12 +12,14 @@ namespace audi
  * if T is the type gdual<U> for any U.
  *
  * \tparam T a type to check
-*/
+ */
 
 template <typename T>
-struct is_gdual: std::false_type {};
+struct is_gdual : std::false_type {
+};
 template <typename T>
-struct is_gdual<gdual<T> >: std::true_type {};
+struct is_gdual<gdual<T>> : std::true_type {
+};
 
 /// Type is arithmetic or complex
 /**
@@ -25,10 +27,11 @@ struct is_gdual<gdual<T> >: std::true_type {};
  * that is a type std::complex<U> for any U.
  *
  * \tparam T a type to check
-*/
-template< class T >
-struct is_arithmetic_or_complex : std::integral_constant<bool, std::is_arithmetic<T>::value || boost::is_complex<T>::value> {};
-
+ */
+template <class T>
+struct is_arithmetic_or_complex
+    : std::integral_constant<bool, std::is_arithmetic<T>::value || boost::is_complex<T>::value> {
+};
 }
 
 #endif

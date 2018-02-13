@@ -16,10 +16,12 @@ AuDi is internally powered by the truncated polynomial multiplication algorithm
 of the open source project,  <a href="https://github.com/bluescarni/piranha">Piranha</a>
 details of which are described in:
 
-Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845"> "Parallel sparse polynomial multiplication on modern hardware architectures."</a> Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
+Biscani, Francesco. <a href="http://dl.acm.org/citation.cfm?id=2442845"> "Parallel sparse polynomial multiplication on
+modern hardware architectures."</a> Proceedings of the 37th International Symposium on Symbolic and Algebraic
+Computation. ACM, 2012.
 
-Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and Poisson
-series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).
+Biscani, Francesco. <a href="http://arxiv.org/pdf/1004.4548v1.pdf">"Multiplication of sparse Laurent polynomials and
+Poisson series on modern hardware architectures."</a> arXiv preprint arXiv:1004.4548 (2010).
 
 <b>Piranha headers must be installed and accessible to the compiler for AuDi to function.</b>
 
@@ -35,9 +37,10 @@ up to arbitrary order.
 
 \subsection b Formal definition
 Consider the set \f$ \mathcal P_{n,m}\f$ of all polynomials of order \f$\le m\f$ in \f$n\f$ variables and having
-coefficients in \f$\mathbf K\f$. We indicate with the symbols \f$T_f, T_g, T_h\f$, etc. the generic members of such a set. Such a set is an algebra over the field \f$\mathbf K\f$ if we introduce
-the truncated multiplication as the standard polynomial multiplication truncated at order \f$m\f$.
-When needed, we will indicate such a multiplication with the symbol \f$T_f \cdot T_g\f$.
+coefficients in \f$\mathbf K\f$. We indicate with the symbols \f$T_f, T_g, T_h\f$, etc. the generic members of such a
+set. Such a set is an algebra over the field \f$\mathbf K\f$ if we introduce the truncated multiplication as the
+standard polynomial multiplication truncated at order \f$m\f$. When needed, we will indicate such a multiplication with
+the symbol \f$T_f \cdot T_g\f$.
 
 This algebra is commonly referred to as the algebra of truncated polynomials. A first important
 property of this algebra is that, under the multiplication, all polynomials having a zero constant
@@ -65,13 +68,8 @@ T_f(\mathbf x) = \sum_{|\alpha| = 0}^m  \frac{(\mathbf x-\mathbf a)^\alpha}{\alp
 \f]
 where:
 \f[
-\partial^\alpha f = \frac{\partial^{|\alpha|} f}{\partial^{\alpha_1} x_1\partial^{\alpha_2} x_2\dots\partial^{\alpha_n} x_n}
-\f]
-\f[
-\alpha ! = \prod_{i=j}^n \alpha_j
-\f]
-and
-\f[
+\partial^\alpha f = \frac{\partial^{|\alpha|} f}{\partial^{\alpha_1} x_1\partial^{\alpha_2} x_2\dots\partial^{\alpha_n}
+x_n} \f] \f[ \alpha ! = \prod_{i=j}^n \alpha_j \f] and \f[
 |\alpha| = \sum_{j=0}^n \alpha_j
 \f]
 The summation \f$ \sum_{|\alpha| = 0}^n\f$ must then be taken over all possible
@@ -107,16 +105,9 @@ T_f T_g = \sum_{k=0}^m \frac{(x-a)^k}{k!}(f)^{(k)}\sum_{k=0}^m \frac{(x-a)^k}{k!
 The coefficients \f$c_k\f$ in the last power series are determined as the
 Cauchy product of the two Taylor series (or discrete convolution) and are:
 \f[
-c_k = \sum_{n=0}^k \frac{f^{(n)}}{n!}  \frac{g^{(k-n)}}{(k-n)!}  = \frac{1}{k!}\sum_{n=0}^k {{k}\choose{n}}(f)^{(n)}(g)^{(k-n)}
-\f]
-applying now the general Leibniz rule to the last expression we get:
-\f[
-c_k =  \frac{1}{k!} (fg)^{(k)}
-\f]
-which allows us to conclude:
-\f[
-T_{(fg)} = T_f \cdot T_g.
-\f]
+c_k = \sum_{n=0}^k \frac{f^{(n)}}{n!}  \frac{g^{(k-n)}}{(k-n)!}  = \frac{1}{k!}\sum_{n=0}^k
+{{k}\choose{n}}(f)^{(n)}(g)^{(k-n)} \f] applying now the general Leibniz rule to the last expression we get: \f[ c_k =
+\frac{1}{k!} (fg)^{(k)} \f] which allows us to conclude: \f[ T_{(fg)} = T_f \cdot T_g. \f]
 
 \subsection e Reciprocal
 We here prove that the reciprocal of a truncated Taylor expansion,
@@ -185,8 +176,8 @@ T_{g \circ f} = \exp f_0 T_g \circ T_{\hat f}
 \f]
 and, finally:
 \f[
-T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)
-\f]
+T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ...
+\right) \f]
 
 \subsection h Logarithm
 Let us consider the case of the natural logarithm:
@@ -197,17 +188,11 @@ We want to compute the truncated Taylor expansion of
 \f$\log(f(\mathbf x))\f$ starting from the truncated Taylor expansion
 \f$T_f = f_0 + \hat f\f$. We thus write:
 \f[
-(g \circ f) (\mathbf x) = \log(f(\mathbf x)) =  \log (f_0 + (f(\mathbf x) - f_0)) = \log f_0 + \log(1 + \frac{f(\mathbf x) - f_0}{f_0})
-\f]
-We can now apply the **composition rule** to get:
-\f[
-T_{g \circ f} = \log f_0 + T_{\log(1+x)} \circ \frac{\hat f}{f_0}
-\f]
-and, using the known expression for MacLaurin expansion of \f$\log(1+x)\f$, we get:
-\f[
-T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...
-\f]
-Note that the above expression is only defined if \f$f_0 \ge 0\f$.
+(g \circ f) (\mathbf x) = \log(f(\mathbf x)) =  \log (f_0 + (f(\mathbf x) - f_0)) = \log f_0 + \log(1 + \frac{f(\mathbf
+x) - f_0}{f_0}) \f] We can now apply the **composition rule** to get: \f[ T_{g \circ f} = \log f_0 + T_{\log(1+x)} \circ
+\frac{\hat f}{f_0} \f] and, using the known expression for MacLaurin expansion of \f$\log(1+x)\f$, we get: \f[ T_{(\log
+f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} -
+\frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ... \f] Note that the above expression is only defined if \f$f_0 \ge 0\f$.
 
 \subsection j Sine and cosine
 Let us consider the case of the sine and cosine functions:
@@ -230,10 +215,10 @@ and, applying the **composition rule** to \f$\cos(f(\mathbf x) - f_0)\f$ and
 \f$\sin(f(\mathbf x) - f_0)\f$, we get:
 \f[
 \begin{array}{l}
-T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
-T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)
-\end{array}
-\f]
+T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0
+\left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ T_{(\cos f)} = \cos f_0
+\left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i}
+\frac{\hat f^{2i+1}}{(2i+1)!}\right) \end{array} \f]
 
 \subsection k Exponentiation
 Let us consider the case of the power function.
@@ -244,15 +229,11 @@ We want to compute the truncated Taylor expansion of \f$f(\mathbf x)^\alpha\f$
 assuming to have access to the truncated Taylor expansion of \f$f\f$,
 \f$T_f = f_0 + \hat f\f$. We thus write:
 \f[
-(g \circ f) (\mathbf x) = f(\mathbf x) ^ \alpha =  (f_0 + (f(\mathbf x) - f_0))^\alpha = f_0^\alpha \left( 1+ \frac{f(x) - f_0}{f_0}\right)^\alpha
-\f]
-We can now apply the **composition rule** to get:
-\f[
-T_{f(\mathbf x)^\alpha} = f_0^\alpha \left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) =
-\f]
-\f[
-= f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha - 1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right)
-\f]
+(g \circ f) (\mathbf x) = f(\mathbf x) ^ \alpha =  (f_0 + (f(\mathbf x) - f_0))^\alpha = f_0^\alpha \left( 1+ \frac{f(x)
+- f_0}{f_0}\right)^\alpha \f] We can now apply the **composition rule** to get: \f[ T_{f(\mathbf x)^\alpha} = f_0^\alpha
+\left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) = \f] \f[ = f_0^\alpha \sum_{k=0}^m {\alpha \choose k}
+\left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha -
+1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right) \f]
 
 \section l Simple Examples (can be done by hand)
 In the above sections we derived a number of results that allow operating
@@ -267,20 +248,16 @@ T_{fg} = T_f \cdot T_g\\
 T_{(1/f)} = \frac 1f_0 \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)\\
 T_{(\exp f)} = \exp f_0 \sum_{k=0}^m \frac{\hat f^k}{k!} \\
 T_{(\log f)} = \log f_0 - \sum_{k=1}^m \frac{(-1)^k}k \left(\hat f / f_0\right)^k \\
-T_{(\sin f)} = \sin f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) + \cos f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
-T_{(\cos f)} = \cos f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) - \sin f_0 \left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
-T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k
-\end{array}
-\f]
-It is worth mentioning here that other functions such as the inverse functions,
-the hyperbolic functions etc. can also be treated in this way.
-The above equations can be used to find Taylor expansions of increasingly
-complex functions by simply operating on the algebra \f$\mathcal P_{n,m}\f$.
-Once a Taylor expansion is computed, its coefficients can be extracted to
-obtain the value of any desired derivative. We have thus built an automated
-differentiation system. While the formalism presented can, at first, appear
-complex, the system is rather simple as we hope will appear from the following
-examples.
+T_{(\sin f)} = \sin f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) + \cos f_0
+\left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\
+T_{(\cos f)} = \cos f_0 \left(\sum_{k=0}^{2k\le m} (-1)^{k} \frac{\hat f^{2k}}{(2k)!}\right) - \sin f_0
+\left(\sum_{k=0}^{(2k+1)\le m} (-1)^k \frac{\hat f^{2k+1}}{(2k+1)!}\right) \\ T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m
+{\alpha \choose k} \left(\hat f / f_0\right)^k \end{array} \f] It is worth mentioning here that other functions such as
+the inverse functions, the hyperbolic functions etc. can also be treated in this way. The above equations can be used to
+find Taylor expansions of increasingly complex functions by simply operating on the algebra \f$\mathcal P_{n,m}\f$. Once
+a Taylor expansion is computed, its coefficients can be extracted to obtain the value of any desired derivative. We have
+thus built an automated differentiation system. While the formalism presented can, at first, appear complex, the system
+is rather simple as we hope will appear from the following examples.
 
 \subsection cv Example 1 - A multiplication
 
@@ -292,33 +269,13 @@ Its Taylor expansion \f$T_f \in \mathcal P_{2,2}\f$ can be computed as:
 \f[
 T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y
 \f]
-Let us explicitly compute such an expression at the point \f$x=3\f$, \f$y=7\f$. The exact sequence of computations to be performed is:
-\f[
-T_x = 3 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2
-\f]
-\f[
-T_y = 7 + 0 dx + 1 dy  + 0 dxdy + 0 dx^2 + 0 dy^2
-\f]
-\f[
-T_x \cdot T_y = 21 + 7 d x + 3 d y  + 1 dxdy + 0 dx^2 + 0 dy^2
-\f]
-and
-\f[
-T_y \cdot T_y = 49 + 0 dx + 14 dy  + 0 dxdy + 0 dx^2 + 1 dy^2
-\f]
-We can then derive the final expression:
-\f[
-T_f = 115 + 22 dx + 23 dy +3 dxdy + 0 dx^2 + 1 dy^2
-\f]
-and we may easily extract the derivatives comparing this expression to the generic form of a Taylor expansion:
-\f[
-f = 115,
-\partial_x f = 22,
-\partial_y f = 23,
-\partial_{xy} f = 3,
-\partial_{xx} f = 0,
-\partial_{yy} f = 2,
-\f]
+Let us explicitly compute such an expression at the point \f$x=3\f$, \f$y=7\f$. The exact sequence of computations to be
+performed is: \f[ T_x = 3 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2 \f] \f[ T_y = 7 + 0 dx + 1 dy  + 0 dxdy + 0 dx^2 + 0
+dy^2 \f] \f[ T_x \cdot T_y = 21 + 7 d x + 3 d y  + 1 dxdy + 0 dx^2 + 0 dy^2 \f] and \f[ T_y \cdot T_y = 49 + 0 dx + 14
+dy  + 0 dxdy + 0 dx^2 + 1 dy^2 \f] We can then derive the final expression: \f[ T_f = 115 + 22 dx + 23 dy +3 dxdy + 0
+dx^2 + 1 dy^2 \f] and we may easily extract the derivatives comparing this expression to the generic form of a Taylor
+expansion: \f[ f = 115, \partial_x f = 22, \partial_y f = 23, \partial_{xy} f = 3, \partial_{xx} f = 0, \partial_{yy} f
+= 2, \f]
 
 \subsection x Example 2 - A division
 Consider the simple function of two variables:
