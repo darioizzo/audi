@@ -21,11 +21,11 @@ namespace detail
 taylor_map operator&(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval;
-    auto symbols = A[0].get_symbol_set();
+    auto ss = A[0].get_symbol_set();
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
         auto tmp = A[i];
         for (decltype(B.size()) j = 0u; j < B.size(); ++j) {
-            tmp = tmp.subs("d" + symbols[j], B[j]);
+            tmp = tmp.subs("d" + ss[j], B[j]);
         }
         retval.push_back(tmp);
     }
@@ -175,7 +175,8 @@ taylor_map invert_map(const taylor_map &map_in)
     print("Check at order", 1, ": ", trim((M + N) & retval,1e-12), "\n");
 
     for (decltype(map_order) i = 0u; i < map_order; ++i) {
-        retval = Minv & (I - (N & retval));
+        retval = (I - (N & retval));
+        retval = Minv & retval;
         print("\nInverse at order ", i + 2, ": ", retval, "\n");
         print("Check at order", i + 2, ": ", trim((M + N) & retval, 1e-12), "\n");
     }
