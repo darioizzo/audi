@@ -392,7 +392,8 @@ public:
     /**
      * Substitute the symbol \p sym with the gdual \val
      * The returned gdual has the same order, its symbol set will be
-     * expanded with the symbol set of \val and then trimmed of the substituded symbol
+     * expanded with the symbol set of \val and then trimmed of the substituded symbol and
+     * truncated to the order of the gdual.
      *
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
@@ -403,6 +404,13 @@ public:
         auto new_p2 = new_p.trim();
         auto new_p3 = piranha::math::truncate_degree(new_p2, static_cast<decltype(m_p.degree())>(m_order));
         return gdual(std::move(new_p3), m_order);
+    }
+
+    gdual trim(double epsilon) const
+    {
+        auto new_p
+            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return std::abs(coeff.first) > epsilon; });
+        return gdual(std::move(new_p), m_order);
     }
 
     /// Extracts all terms of some order
@@ -422,7 +430,7 @@ public:
         auto res = m_p.filter([order](const std::pair<Cf, p_type> &coeff) {
             return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order;
         });
-        return gdual(std::move(res), order);
+        return gdual(std::move(res), m_order);
     }
 
     /// Evaluates the Taylor polynomial

@@ -12,10 +12,12 @@ using namespace audi;
 
 BOOST_AUTO_TEST_CASE(computations)
 {
-    gdual_d x(0.1, "x", 2);
-    gdual_d y(0.1, "y", 2);
+    gdual_d x(0.3, "x", 3);
+    gdual_d y(0.3, "y", 3);
     std::vector<gdual_d> map;
-    map.push_back(x/y - audi::sin(x*y));
-    map.push_back(audi::exp(x + y*x));
+    map.push_back(x - y*y);
+    map.push_back(y - x*x);
+    //map.push_back(x + y + x*x*x);
+    //map.push_back(x - y + y*y*y);
     invert_map(map);
 }
