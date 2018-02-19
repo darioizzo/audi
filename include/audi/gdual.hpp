@@ -64,9 +64,6 @@ namespace audi
  * the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
  * and integration are availiable.
  *
- *
- * @author Dario Izzo (dario.izzo@gmail.com)
- * @author Francesco Biscani (bluescarni@gmail.com)
  */
 template <typename Cf>
 class gdual
