@@ -395,8 +395,13 @@ public:
      * expanded with the symbol set of \val and then trimmed of the substituded symbol and
      * truncated to the order of the gdual.
      *
+     * @param sym Symbol to be substituded (i.e. "dx")
+     * @param val The gdual to substitute \sym with.
+     *
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
+     * - piranha::polynomial::trim
+     * - piranha::math::truncate_degree
      */
     gdual subs(const std::string &sym, const gdual &val) const
     {
@@ -406,6 +411,17 @@ public:
         return gdual(std::move(new_p3), m_order);
     }
 
+    /// Trims small coefficients
+    /**
+     * All coefficients smaller than a set magnitude \epsilon are set to zero
+     *
+     * @param epsilon Tolerance used to trim coefficients.
+     *
+     * @return The new trimmed gdual.
+     *
+     * @throws unspecified any exception thrown by:
+     * - piranha::polynomial::filter,
+     */
     gdual trim(double epsilon) const
     {
         auto new_p
@@ -416,6 +432,10 @@ public:
     /// Extracts all terms of some order
     /**
      * Extracts all the terms with the given \order into a new gdual
+     *
+     * @param order Order of the terms to be extracted
+     *
+     * @return A new gdual containing the terms extracted, but preserving the order of the original gdual.
      *
      * @throws std::invalid_argument
      * - if the \order is higher than the gdual order

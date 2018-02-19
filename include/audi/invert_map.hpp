@@ -13,6 +13,7 @@
 
 namespace audi
 {
+// The basic type of a Taylor map, that is a "square" collection of gduals
 using taylor_map = std::vector<gdual_d>;
 
 namespace detail
@@ -63,17 +64,40 @@ taylor_map operator*(const T &c, const taylor_map &A)
     return retval;
 }
 
-taylor_map trim(const taylor_map &A, double epsilon) {
-    taylor_map retval(A.size());    
+taylor_map trim(const taylor_map &A, double epsilon)
+{
+    taylor_map retval(A.size());
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
         retval[i] = A[i].trim(epsilon);
     }
     return retval;
 }
 
+// Eigen stores indexes and sizes as signed types, while audi
+// uses STL containers thus sizes and indexes are unsigned. To
+// make the conversion as painless as possible this template is provided
+// allowing, for example, syntax of the type M[_(i)] to adress an element
+// of a vector when i is an Eigen::DenseIndex
+template <typename I>
+static unsigned _(I n)
+{
+    return static_cast<unsigned>(n);
+}
+
 } // ends detail
 
-// An Introduction to Beam Physics pag. 138-139
+/// Inversion of Taylor maps
+/**
+ * This function inverts a Taylor map \f$ \mathcal M \f$, that is a polynomial map \f$n \rightarrow n\f$
+ * The inverse will have the property:
+ * \f[
+ * \mathcal M^{-1} \circ (M + N) = \mathcal I
+ * \f]
+ *
+ * where we have written the map \f$\mathcal M = C + M + N\f$ as the sum of its constant part, its linear part
+ * and the rest.
+ *
+ */
 taylor_map invert_map(const taylor_map &map_in)
 {
     // To find the overloaded operators
@@ -113,7 +137,8 @@ taylor_map invert_map(const taylor_map &map_in)
     }
     /// ---------------------- Algorithm Start ---------------------------------------///
     // We decompose the map as map = M + N (linear plus non linear part). The inverse of the linear part will be Minv
-    taylor_map M(map_size, gdual_d(0)), Minv(map_size, gdual_d(0)), N(map_size, gdual_d(0)), I(map_size, gdual_d(0));
+    taylor_map M(map_size, gdual_d(0)), Minv(map_size, gdual_d(0)), N(map_size, gdual_d(0)), I(map_size, gdual_d(0)),
+        Minv2(map_size, gdual_d(0));
     taylor_map retval;
 
     // We construct the identity map [p0, p1, p2, ... ]
@@ -142,8 +167,8 @@ taylor_map invert_map(const taylor_map &map_in)
     for (decltype(mat.rows()) i = 0u; i < mat.rows(); ++i) {
         for (decltype(mat.rows()) j = 0u; j < mat.cols(); ++j) {
             std::vector<unsigned> monomial(map_size, 0u);
-            monomial[j] = 1u;
-            mat(i, j) = M[i].find_cf(monomial);
+            monomial[_(j)] = 1u;
+            mat(i, j) = M[_(i)].find_cf(monomial);
         }
     }
     auto det = mat.determinant();
@@ -154,34 +179,28 @@ taylor_map invert_map(const taylor_map &map_in)
     }
     auto invm = mat.inverse();
 
-    // Populate Minv, the inverse of the linear part
+    // Populate Minv and Minv2 the inverse of the linear part (they are the same map, only with different
+    // symbols to avoid mess when subs symbols later)
     for (decltype(invm.rows()) i = 0; i < invm.rows(); ++i) {
         for (decltype(invm.cols()) j = 0; j < invm.cols(); ++j) {
             gdual_d dummy(0., "p" + std::to_string(j), map_order);
+            gdual_d dummy2(0., "pdummy" + std::to_string(j), map_order);
             dummy *= invm(i, j);
-            Minv[i] += dummy;
+            dummy2 *= invm(i, j);
+            // this must have the same symbols of the identity and the final symbols of the onverse map returned
+            Minv[_(i)] += dummy;
+            // this must have different symbols as to avoid mess when calling subs (in the & operator)
+            Minv2[_(i)] += dummy2;
         }
     }
 
-    print("Identity: ", I, " order ", I[0].get_order(), "\n");
-    print("Map: ", map_in, " order ", map_in[0].get_order(), "\n");
-    print("Linear part: ", M, " order ", M[0].get_order(), "\n");
-    print("Nonlinear part: ", N, " order ", N[0].get_order(), "\n");
-    print("Linear inverse: ", Minv, " order ", Minv[0].get_order(), "\n");
-
     retval = Minv;
-    // Picard Iterations
-    print("\nInverse at order ", 1, ": ", retval, "\n");
-    print("Check at order", 1, ": ", trim((M + N) & retval,1e-12), "\n");
-
+    // Picard Iterations (each iteration will increase the order by one)
     for (decltype(map_order) i = 0u; i < map_order; ++i) {
         retval = (I - (N & retval));
-        retval = Minv & retval;
-        print("\nInverse at order ", i + 2, ": ", retval, "\n");
-        print("Check at order", i + 2, ": ", trim((M + N) & retval, 1e-12), "\n");
+        retval = Minv2 & retval;
     }
-    // TEST
-    print("Check at order final: ", trim((M + N) & retval, 1e-12));
+
     return retval;
 }
 
