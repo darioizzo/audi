@@ -18,7 +18,9 @@ using taylor_map = std::vector<gdual_d>;
 
 namespace detail
 {
-// This is the composition operator.
+// This is the composition operator. It substitutes all symbol in A
+// with the gduals in B. Careful that A and B do not share symbols otherwise
+// unexpexted effect may arise
 taylor_map operator&(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval;
@@ -98,7 +100,7 @@ static unsigned _(I n)
  * and the rest.
  *
  */
-taylor_map invert_map(const taylor_map &map_in)
+taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
 {
     // To find the overloaded operators
     using namespace detail;
@@ -131,6 +133,7 @@ taylor_map invert_map(const taylor_map &map_in)
     for (auto &s : ss) {
         s = "d" + s;
     }
+    // We create the symbol set of the inverted map
     std::vector<std::string> ss_inv;
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         ss_inv.push_back("dp" + std::to_string(i));
@@ -141,19 +144,19 @@ taylor_map invert_map(const taylor_map &map_in)
         Minv2(map_size, gdual_d(0));
     taylor_map retval;
 
-    // We construct the identity map [p0, p1, p2, ... ]
+    // We construct the identity map [dp0, dp1, dp2, ... ]
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         I[i] = gdual_d(0., "p" + std::to_string(i), map_order);
         I[i].extend_symbol_set(ss_inv);
     }
 
-    // Populate M, the linear part of the map
+    // Populate M, the linear part of the input map
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         M[i] = map_in[i].extract_terms(1);
         M[i].extend_symbol_set(ss);
     }
 
-    // Populate N, the non linear part of the map
+    // Populate N, the non linear part of the input map
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         for (decltype(map_order) j = 2u; j <= map_order; ++j) {
             N[i] = N[i] + map_in[i].extract_terms(j);
@@ -179,6 +182,10 @@ taylor_map invert_map(const taylor_map &map_in)
     }
     auto invm = mat.inverse();
 
+    if (verbose) {
+        print("\nLinear part inverted successfully, determinant was: " + std::to_string(det), "\n");
+    }
+
     // Populate Minv and Minv2 the inverse of the linear part (they are the same map, only with different
     // symbols to avoid mess when subs symbols later)
     for (decltype(invm.rows()) i = 0; i < invm.rows(); ++i) {
@@ -194,11 +201,19 @@ taylor_map invert_map(const taylor_map &map_in)
         }
     }
 
+    // Here is where the magic happens!!!
+    // Picard Iterations (each iteration will increase the order by one). Beautiful.
+    // See http://bt.pa.msu.edu/pub/papers/AIEP108book/AIEP108book.pdf page 102 for the
+    // formal derivation
     retval = Minv;
-    // Picard Iterations (each iteration will increase the order by one)
-    for (decltype(map_order) i = 0u; i < map_order; ++i) {
-        retval = (I - (N & retval));
-        retval = Minv2 & retval;
+    if (verbose) {
+        print("\nAt Order 1: ", retval, "\n");
+    }
+    for (decltype(map_order) i = 1u; i < map_order; ++i) {
+        retval = Minv2 & (I - (N & retval));
+        if (verbose) {
+            print("\nAt Order " + std::to_string(i+1) + ": ", retval,"\n");
+        }
     }
 
     return retval;

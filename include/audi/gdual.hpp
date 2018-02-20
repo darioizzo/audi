@@ -450,7 +450,7 @@ public:
         auto res = m_p.filter([order](const std::pair<Cf, p_type> &coeff) {
             return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order;
         });
-        return gdual(std::move(res), m_order);
+        return gdual(std::move(res), order);
     }
 
     /// Evaluates the Taylor polynomial
