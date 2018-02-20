@@ -120,8 +120,8 @@ BOOST_PYTHON_MODULE(core)
             +[](const bp::object &map_in, bool verbose) {
                 return pyaudi::v_to_l(invert_map(pyaudi::l_to_v<gdual_d>(map_in), verbose));
             },
-            "invert a Taylor map (gdual_d)");
-            
+            "Inverts a Taylor map (gdual_d)", (bp::arg("map"), bp::arg("verbose") = false));
+
     // Define a cleanup functor to be run when the module is unloaded.
     struct audi_cleanup_functor {
         void operator()() const

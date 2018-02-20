@@ -511,6 +511,13 @@ class test_utilities(_ut.TestCase):
         self.assertAlmostEqual(newf0, f0.constant_cf + 0.01, delta=1e-6)
         self.assertAlmostEqual(newf1, f1.constant_cf - 0.02, delta=1e-6)
 
+        # We test the API
+        g0, g1 = invert_map(map = [f0, f1], verbose = False)
+        g0, g1 = invert_map(map = [f0, f1])
+        g0, g1 = invert_map([f0, f1])
+
+
+
 
 def run_test_suite():
     """Run the full test suite.
