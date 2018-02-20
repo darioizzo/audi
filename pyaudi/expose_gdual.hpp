@@ -111,7 +111,7 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                        }
                        auto ptr = PyBytes_AsString(bp::object(state[0]).ptr());
                        if (!ptr) {
-                           pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize a population");
+                           pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize a gdual");
                        }
                        const auto size = len(state[0]);
                        std::string s(ptr, ptr + size);

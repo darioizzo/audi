@@ -403,9 +403,9 @@ public:
     gdual subs(const std::string &sym, const gdual &val) const
     {
         auto new_p = piranha::math::subs(m_p, sym, val.m_p);
-        auto new_p2 = new_p.trim();
-        auto new_p3 = piranha::math::truncate_degree(new_p2, static_cast<decltype(m_p.degree())>(m_order));
-        return gdual(std::move(new_p3), m_order);
+        auto new_p2 = piranha::math::truncate_degree(new_p, static_cast<decltype(m_p.degree())>(m_order));
+        new_p = new_p2.trim();
+        return gdual(std::move(new_p), m_order);
     }
 
     /// Trims small coefficients
@@ -447,7 +447,7 @@ public:
         auto res = m_p.filter([order](const std::pair<Cf, p_type> &coeff) {
             return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order;
         });
-        return gdual(std::move(res), m_order);
+        return gdual(std::move(res), order);
     }
 
     /// Evaluates the Taylor polynomial

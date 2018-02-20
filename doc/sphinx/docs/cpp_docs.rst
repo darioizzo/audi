@@ -208,3 +208,14 @@ abs: Overload for the absolute value.
 
 .. doxygenfunction:: audi::abs(const gdual&)
    :project: AuDi
+
+----------------------------------------------------------
+
+Utilities
+---------
+
+invert_map: map inversion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfunction:: audi::invert_map(const taylor_map &map_in, bool verbose = false)
+   :project: AuDi

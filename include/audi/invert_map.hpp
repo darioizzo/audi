@@ -18,7 +18,9 @@ using taylor_map = std::vector<gdual_d>;
 
 namespace detail
 {
-// This is the composition operator.
+// This is the composition operator. It substitutes all symbol in A
+// with the gduals in B. Careful that A and B do not share symbols otherwise
+// unexpexted effect may arise
 taylor_map operator&(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval;
@@ -88,17 +90,51 @@ static unsigned _(I n)
 
 /// Inversion of Taylor maps
 /**
- * This function inverts a Taylor map \f$ \mathcal M \f$, that is a polynomial map \f$n \rightarrow n\f$
- * The inverse will have the property:
+ * Consider a system of non linear equations in \f$n\f$ variables:
  * \f[
- * \mathcal M^{-1} \circ (M + N) = \mathcal I
+ * \left\{
+ * \begin{array}{l}
+ * f_1(x_1, x_2, .., x_n) = 0 \\
+ * ...                        \\
+ * f_n(x_1, x_2, .., x_n) = 0 \\
+ * \end{array}
+ * \right.
  * \f]
+ * and represent each of it via a Taylor polynomial truncated at order \f$m\f$ (i.e. \f$\in \mathcal P_m\f$) around
+ * some point \f$\overline {\mathbf x}\f$:
+ * \f[
+ * \left\{
+ * \begin{array}{l}
+ * T_{f_1}(dx_1, dx_2, .., dx_n) = 0 \\
+ * ...                        \\
+ * T_{f_n}(dx_1, dx_2, .., dx_n) = 0 \\
+ * \end{array}
+ * \right.
+ * \f]
+ * The above system of, now, polynomial equations can be written as \f$C + M + N = C + \mathcal M = 0\f$, where we have
+ * explicitly indicated the constant term \f$C\f$, the linear term \f$M\f$ and the rest \f$N\f$. The symbol
+ * \f$\mathcal M\f$ indicates what we call a Taylor map and its inverse is found by this function by performing
+ * some Picard iterations (fixed point) over the following simple formal equalities:
  *
- * where we have written the map \f$\mathcal M = C + M + N\f$ as the sum of its constant part, its linear part
- * and the rest.
+ * \f[
+ * \mathcal M \circ \mathcal M^{-1} = \mathcal I \rightarrow  (M + N) \circ \mathcal M^{-1}  = \mathcal I \rightarrow M
+ * \circ \mathcal M^{-1} + N \circ \mathcal M^{-1} = \mathcal I \f] and hence: \f[ \mathcal M^{-1} = M^{-1} \circ
+ * \left(\mathcal I - N \circ \mathcal M^{-1}\right) \f] which can be used to make a fixed point iterative scheme once
+ * the inverse of the linear part \f$M^{-1}\f$ is found using any linear algebraic tool. Note that the inverse is
+ * guaranteed to exist if the linear part is invertible.
  *
+ * @param map_in The input map represented as an \tt std::vector \tt of \tt gduals \tt. They can have a constant
+ * coefficient which will be neglected
+ * @param verbose when true some output is shown during the Picard iterations
+ *
+ * @return The inverse map \f$\mathcal M^{-1}\f$ represented as an \tt std::vector \tt of \tt gduals \tt with symbol set
+ * [p0, p1, .. pn]
+ *
+ * @throws std::invalid_argument if \p map_in is empty, if its linear part is not invertable, if the symbol set of the
+ * map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
+ * the gduals are not all the same.
  */
-taylor_map invert_map(const taylor_map &map_in)
+taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
 {
     // To find the overloaded operators
     using namespace detail;
@@ -131,6 +167,7 @@ taylor_map invert_map(const taylor_map &map_in)
     for (auto &s : ss) {
         s = "d" + s;
     }
+    // We create the symbol set of the inverted map
     std::vector<std::string> ss_inv;
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         ss_inv.push_back("dp" + std::to_string(i));
@@ -141,19 +178,19 @@ taylor_map invert_map(const taylor_map &map_in)
         Minv2(map_size, gdual_d(0));
     taylor_map retval;
 
-    // We construct the identity map [p0, p1, p2, ... ]
+    // We construct the identity map [dp0, dp1, dp2, ... ]
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         I[i] = gdual_d(0., "p" + std::to_string(i), map_order);
         I[i].extend_symbol_set(ss_inv);
     }
 
-    // Populate M, the linear part of the map
+    // Populate M, the linear part of the input map
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         M[i] = map_in[i].extract_terms(1);
         M[i].extend_symbol_set(ss);
     }
 
-    // Populate N, the non linear part of the map
+    // Populate N, the non linear part of the input map
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
         for (decltype(map_order) j = 2u; j <= map_order; ++j) {
             N[i] = N[i] + map_in[i].extract_terms(j);
@@ -174,10 +211,14 @@ taylor_map invert_map(const taylor_map &map_in)
     auto det = mat.determinant();
     if (std::abs(det) < 1e-10) {
         audi_throw(std::invalid_argument,
-                   "The map you are trying to invert has a non ivertable linear part, its determinant is: "
+                   "The map you are trying to invert has no inverse, the determinant of the linear part is: "
                        + std::to_string(det));
     }
     auto invm = mat.inverse();
+
+    if (verbose) {
+        print("\nLinear part inverted successfully, determinant was: " + std::to_string(det), "\n");
+    }
 
     // Populate Minv and Minv2 the inverse of the linear part (they are the same map, only with different
     // symbols to avoid mess when subs symbols later)
@@ -194,11 +235,18 @@ taylor_map invert_map(const taylor_map &map_in)
         }
     }
 
+    // Here is where the magic happens!!!
+    // Picard Iterations (each iteration will increase the order by one).
+    // See http://bt.pa.msu.edu/pub/papers/AIEP108book/AIEP108book.pdf page 102 for the formal derivation
     retval = Minv;
-    // Picard Iterations (each iteration will increase the order by one)
-    for (decltype(map_order) i = 0u; i < map_order; ++i) {
-        retval = (I - (N & retval));
-        retval = Minv2 & retval;
+    if (verbose) {
+        print("\nAt Order 1: ", retval, "\n");
+    }
+    for (decltype(map_order) i = 1u; i < map_order; ++i) {
+        retval = Minv2 & (I - (N & retval));
+        if (verbose) {
+            print("\nAt Order " + std::to_string(i + 1) + ": ", retval, "\n");
+        }
     }
 
     return retval;
