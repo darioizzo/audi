@@ -486,6 +486,31 @@ class test_gdual_vdouble(_ut.TestCase):
                             self.assertAlmostEqual(f3.get_derivative(
                                 [dx, dy, dz]), fv.get_derivative([dx, dy, dz])[2], delta=1e-12)
 
+class test_utilities(_ut.TestCase):
+
+    def test_map_inversion(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sin, exp, invert_map, cos
+
+        x = gdual(0., "x", 11)
+        f = 1./(1+exp(sin(x)+1./(x+1))) + x
+        g = invert_map([f], False)[0]
+        dx = g.evaluate({"dp0": 0.01})
+        newf = f.evaluate({"dx": dx})
+        self.assertAlmostEqual(newf, f.constant_cf + 0.01, delta=1e-10)
+
+        x = gdual(0, "x", 4)
+        y = gdual(0, "y", 4)
+        f0 = 1./(1+exp(sin(x*y)+1./(x+1))) + x - y
+        f1 = 1./(1+exp(cos(x*y)+1./(y+1))) + x + y
+        g0, g1 = invert_map([f0, f1], False)
+        dx = g0.evaluate({"dp0": 0.01, "dp1":-0.02})
+        dy = g1.evaluate({"dp0": 0.01, "dp1":-0.02})
+        newf0 = f0.evaluate({"dx": dx, "dy": dy}) 
+        newf1 = f1.evaluate({"dx": dx, "dy": dy})
+        self.assertAlmostEqual(newf0, f0.constant_cf + 0.01, delta=1e-6)
+        self.assertAlmostEqual(newf1, f1.constant_cf - 0.02, delta=1e-6)
+
 
 def run_test_suite():
     """Run the full test suite.
@@ -495,9 +520,13 @@ def run_test_suite():
     suite_gdouble = _ut.TestLoader().loadTestsFromTestCase(test_gdual_double)
     suite_function_calls = _ut.TestLoader().loadTestsFromTestCase(test_function_calls)
     suite_gvdouble = _ut.TestLoader().loadTestsFromTestCase(test_gdual_vdouble)
+    suite_utilities = _ut.TestLoader().loadTestsFromTestCase(test_utilities)
+
     print("\nRunning gdual_double tests")
     test_result = _ut.TextTestRunner(verbosity=2).run(suite_gdouble)
     print("\nRunning function calls tests")
     test_result = _ut.TextTestRunner(verbosity=2).run(suite_function_calls)
     print("\nRunning gdual_vdouble tests")
     test_result = _ut.TextTestRunner(verbosity=2).run(suite_gvdouble)
+    print("\nRunning utilities tests")
+    test_result = _ut.TextTestRunner(verbosity=2).run(suite_utilities)

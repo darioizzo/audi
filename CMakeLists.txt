@@ -179,7 +179,7 @@ if(AUDI_BUILD_AUDI)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindGMP.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindMPFR.cmake"
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindPiranha.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"
-            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindEigen3.cmake" DESTINATION "lib/cmake/audi")
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindEigen3.cmake" DESTINATION "lib/cmake/audi")
     install(EXPORT audi_export NAMESPACE Audi:: DESTINATION lib/cmake/audi)
     # Take care of versioning.
     include(CMakePackageConfigHelpers)

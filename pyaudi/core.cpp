@@ -3,8 +3,12 @@
 #include <piranha/thread_pool.hpp>
 #include <vector>
 
-#include "expose_gdual.hpp"
 #include <audi/audi.hpp>
+#include <audi/functions.hpp>
+#include <audi/functions_from_d.hpp>
+#include <audi/invert_map.hpp>
+
+#include "expose_gdual.hpp"
 
 using namespace audi;
 namespace bp = boost::python;
@@ -112,6 +116,12 @@ BOOST_PYTHON_MODULE(core)
     bp::def("erf", +[](double x) { return std::erf(x); }, "Error function (double).");
     bp::def("erf", +[](const gdual_v &d) { return erf(d); }, "Error function (gdual_v).");
 
+    bp::def("invert_map",
+            +[](const bp::object &map_in, bool verbose) {
+                return pyaudi::v_to_l(invert_map(pyaudi::l_to_v<gdual_d>(map_in), verbose));
+            },
+            "invert a Taylor map (gdual_d)");
+            
     // Define a cleanup functor to be run when the module is unloaded.
     struct audi_cleanup_functor {
         void operator()() const
