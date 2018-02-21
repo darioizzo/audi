@@ -45,7 +45,7 @@ curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`ec
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
 sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
-./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python --with-serialization --with-system --with-iostreams --with-regex -j2 install > /dev/null
+./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python--with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system -j2 install # > /dev/null
 cd ..
 
 # Install gmp (before mpfr as its used by it)
@@ -68,7 +68,7 @@ cd ..
 
 # Install CMake
 wget https://github.com/Kitware/CMake/archive/v${CMAKE_VERSION}.tar.gz --no-verbose
-tar xzf v${CMAKE_VERSION}
+tar xzf v${CMAKE_VERSION} > /dev/null 2>&1
 cd CMake-${CMAKE_VERSION}/
 ./configure > /dev/null
 gmake -j2 > /dev/null
@@ -77,7 +77,7 @@ cd ..
 
 # Install Eigen
 wget https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz --no-verbose
-tar xzf ${EIGEN3_VERSION}
+tar xzf ${EIGEN3_VERSION} > /dev/null 2>&1
 cd eigen-${EIGEN3_VERSION}
 mkdir build
 cd build
@@ -88,7 +88,7 @@ cd ..
 
 # Install piranha
 wget https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > /dev/null 2>&1
-tar xvf v0.10
+tar xvf v0.10 > /dev/null 2>&1
 cd piranha-0.10
 mkdir build
 cd build
@@ -107,14 +107,14 @@ cd ..
 # Compile and install pyaudi
 mkdir build
 cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DPAGMO_BUILD_PYGMO=yes -DPAGMO_BUILD_PAGMO=no -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
+make -j2 install
 # The include directory for py3 is X.Xm, while for py2 is X.X
-if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
-    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
-else
-    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
-fi
-make
-make install
+#if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
+#    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+#else
+#    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
+#fi
 
 # Compile wheels
 cd /audi/build/wheel
