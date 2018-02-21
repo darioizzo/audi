@@ -44,7 +44,7 @@ cd install
 curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 > boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
-sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
+sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python --with-libraries=serialization,system,iostreams,regex > /dev/null
 ./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python -j2 install > /dev/null
 cd ..
 
@@ -92,18 +92,21 @@ tar xvf v0.10
 cd piranha-0.10
 mkdir build
 cd build
-cmake ../
+cmake ../ > /dev/null
 make install > /dev/null 2>&1
 cd ..
 
 # Install audi headers
 cd /audi
-mkdir build
-cd build
-
-# Install and compile pyaudi
+mkdir build_audi
+cd build_audi
 cmake -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=no -DCMAKE_BUILD_TYPE=Release ../
 make install
+cd ..
+
+# Compile and install pyaudi
+mkdir build
+cd build
 # The include directory for py3 is X.Xm, while for py2 is X.X
 if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
     cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
@@ -121,7 +124,7 @@ cp -R /audi/local/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
 # fixes the issue (TODO: probably better ways?)
 touch dummy.cpp
 
-# We install required dependncies (do it here, do not let pip install do it)
+# We install required dependencies (do it here, do not let pip install do it)
 ${PATH_TO_PYTHON}/bin/pip install numpy
 ${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
 # Bundle external shared libraries into the wheels (only py35 has auditwheel)
