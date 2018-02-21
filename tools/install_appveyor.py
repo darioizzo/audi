@@ -53,10 +53,14 @@ os.environ['PATH'] = r'C:\\mingw64\\bin;' + os.environ['PATH']
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/gmp_mingw_64.7z', 'gmp.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/mpfr_mingw_64.7z', 'mpfr.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/boost_mingw_64.7z', 'boost.7z')
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.7z')
+
 # Extract them.
 run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
+run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
+
 
 # Download piranha 0.8 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
