@@ -45,7 +45,7 @@ curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`ec
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
 sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
-./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python--with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system -j2 install # > /dev/null
+./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system -j2 install # > /dev/null
 cd ..
 
 # Install gmp (before mpfr as its used by it)
