@@ -191,9 +191,19 @@ if(AUDI_BUILD_AUDI)
     install(DIRECTORY include/ DESTINATION include)
 endif()
 
-if(AUDI_BUILD_PYAUDI)   
+if(AUDI_BUILD_PYAUDI)
     # Add the pyaudi subdirectory.
     add_subdirectory("${CMAKE_SOURCE_DIR}/pyaudi")
+    if(MINGW)
+        message(STATUS "Creating the files for the generation of a binary wheel.")
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/wheel_setup.py" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.py" @ONLY)
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/mingw_wheel_libs_python${PYTHON_VERSION_MAJOR}.txt" "${CMAKE_CURRENT_BINARY_DIR}/wheel/mingw_wheel_libs_python${PYTHON_VERSION_MAJOR}.txt" @ONLY)
+    endif()
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        # NOTE: this is necessary on linux but harmful on mingw.
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/wheel_setup.cfg" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.cfg" @ONLY)
+        configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/wheel_setup.py" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.py" @ONLY)
+    endif()
 endif()
 
 
