@@ -8,7 +8,7 @@ set -e
 
 CMAKE_VERSION="3.10.0"
 EIGEN3_VERSION="3.3.4"
-BOOST_VERSION="1.65.0"
+BOOST_VERSION="1.66.0"
 NLOPT_VERSION="2.4.2"
 
 if [[ ${AUDI_BUILD} == *36 ]]; then
@@ -40,6 +40,14 @@ cd
 mkdir install
 cd install
 
+# Install Boost
+wget https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 --no-verbose --no-check-certificate
+tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
+cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
+sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
+./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python -j2 install > /dev/null
+cd ..
+
 # Install gmp (before mpfr as its used by it)
 curl https://gmplib.org/download/gmp/gmp-6.1.1.tar.bz2 > gmp-6.1.1.tar.bz2
 tar xvf gmp-6.1.1.tar.bz2  > /dev/null 2>&1
@@ -48,7 +56,6 @@ cd gmp-6.1.1 > /dev/null 2>&1
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
 cd ..
-
 
 # Install mpfr
 wget http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > /dev/null 2>&1
@@ -68,32 +75,35 @@ gmake -j2 > /dev/null
 gmake install > /dev/null
 cd ..
 
-# Install Boost
-wget https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 --no-verbose
-tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
-cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
-sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
-./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python -j2 install > /dev/null
+# Eigen
+wget https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz --no-verbose
+tar xzf ${EIGEN3_VERSION}
+cd eigen-${EIGEN3_VERSION}
+mkdir build
+cd build
+cmake ../ > /dev/null
+make install > /dev/null
+cd ..
 cd ..
 
 # Install piranha
-wget https://github.com/bluescarni/piranha/archive/v0.8.tar.gz > /dev/null 2>&1
-tar xvf v0.8
-cd piranha-0.8
+wget https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > /dev/null 2>&1
+tar xvf v0.10
+cd piranha-0.10
 mkdir build
 cd build
 cmake ../
 make install > /dev/null 2>&1
 cd ..
-# Apply patch (TODO: remove and use latest piranha with the accepted PR)
-wget --no-check-certificate https://raw.githubusercontent.com/darioizzo/piranha/22ab56da726df41ef18aa898e551af7415a32c25/src/thread_management.hpp
-rm -f /usr/local/include/piranha/thread_management.hpp
-cp thread_management.hpp /usr/local/include/piranha/
 
-# Install and compile pyaudi
+# Install audi headers
 cd /audi
 mkdir build
 cd build
+
+# Install and compile pyaudi
+cmake -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=no -DCMAKE_BUILD_TYPE=Release ../
+make install
 # The include directory for py3 is X.Xm, while for py2 is X.X
 if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
     cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
