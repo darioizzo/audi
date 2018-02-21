@@ -116,22 +116,16 @@ make -j2 install
 #fi
 
 # Compile wheels
-cd /audi/build/wheel
-cp -R /audi/local/lib/python${PYTHON_VERSION}/site-packages/pyaudi ./
-# The following line is needed as a workaround to the auditwheel problem KeyError = .lib
-# Using and compiling a null extension module (see manylinux_wheel_setup.py)
-# fixes the issue (TODO: probably better ways?)
-touch dummy.cpp
-
-# We install required dependencies (do it here, do not let pip install do it)
-${PATH_TO_PYTHON}/bin/pip install numpy
-${PATH_TO_PYTHON}/bin/pip wheel ./ -w wheelhouse/
-# Bundle external shared libraries into the wheels (only py35 has auditwheel)
-/opt/python/cp35-cp35m/bin/auditwheel repair wheelhouse/pyaudi*.whl -w ./wheelhouse2/
-# Install packages (not sure what --no-index -f does, should also work without, but just in case)
-${PATH_TO_PYTHON}/bin/pip install pyaudi --no-index -f wheelhouse2
-# Test
+cd wheel
+# Copy the installed pyaudi files, wherever they might be in /usr/local,
+# into the current dir.
+cp -a `find /usr/local/lib -type d -iname 'pyaudi'` ./
+# Create the wheel and repair it.
+/opt/python/${PYTHON_DIR}/bin/python setup.py bdist_wheel
+auditwheel repair dist/pyaudi* -w ./dist2
+# Try to install it and run the tests.
 cd /
+/opt/python/${PYTHON_DIR}/bin/pip install /audi/build/wheel/dist2/pyaudi*
 ${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
