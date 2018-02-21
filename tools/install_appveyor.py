@@ -43,6 +43,7 @@ def run_command(raw_command, directory=None, verbose=True):
         raise RuntimeError(output)
     return output
 
+
 # Get mingw and set the path.
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/x86_64-6.2.0-release-posix-seh-rt_v5-rev1.7z', 'mw64.7z')
 run_command(r'7z x -oC:\\ mw64.7z', verbose=False)
@@ -62,7 +63,7 @@ run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 
 
-# Download piranha 0.8 https://github.com/bluescarni/piranha/archive/v0.10.zip
+# Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
 run_command(r'unzip piranhav10.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
@@ -74,7 +75,7 @@ run_command(
     r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
-print("Piranha sucesfully installed .. continuing")
+print("Piranha sucessfully installed .. continuing")
 
 # Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'

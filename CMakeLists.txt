@@ -156,8 +156,9 @@ if(AUDI_BUILD_AUDI)
     target_include_directories(audi INTERFACE ${Piranha_INCLUDE_DIR})
     target_include_directories(audi INTERFACE ${MPFR_INCLUDE_DIR})
     target_include_directories(audi INTERFACE ${GMP_INCLUDE_DIR})
-    target_link_libraries(audi INTERFACE ${GMP_LIBRARIES})
     target_link_libraries(audi INTERFACE ${MPFR_LIBRARIES})
+    target_link_libraries(audi INTERFACE ${GMP_LIBRARIES})
+    
 
     # Builds the main file
     IF(AUDI_BUILD_MAIN)
