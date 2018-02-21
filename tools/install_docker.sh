@@ -41,7 +41,7 @@ mkdir install
 cd install
 
 # Install Boost
-wget --no-check-certificate https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 --no-verbose 
+curl https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 > boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
 sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
