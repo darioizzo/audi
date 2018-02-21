@@ -64,7 +64,6 @@ setup(name=NAME,
       install_requires=INSTALL_REQUIRES,
       packages=['pyaudi'],
       # Include pre-compiled extension
-      # Include pre-compiled extension
       package_data={'pyaudi': ['core.pyd'] + \
                     DLL_LIST if os.name == 'nt' else ['core.so']},
       distclass=BinaryDistribution)

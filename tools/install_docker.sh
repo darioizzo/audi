@@ -126,7 +126,7 @@ auditwheel repair dist/pyaudi* -w ./dist2
 # Try to install it and run the tests.
 cd /
 /opt/python/${PYTHON_DIR}/bin/pip install /audi/build/wheel/dist2/pyaudi*
-${PATH_TO_PYTHON}/bin/python -c "from pyaudi import test; test.run_test_suite()"
+/opt/python/${PYTHON_DIR}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
 # This variable will contain something if this is a tagged build (vx.y.z), otherwise it will be empty.
