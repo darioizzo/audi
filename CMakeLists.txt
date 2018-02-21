@@ -156,6 +156,7 @@ if(AUDI_BUILD_AUDI)
     target_include_directories(audi INTERFACE ${Piranha_INCLUDE_DIR})
     target_include_directories(audi INTERFACE ${MPFR_INCLUDE_DIR})
     target_include_directories(audi INTERFACE ${GMP_INCLUDE_DIR})
+    # First mpfr then gmp otherwise mingw is unhappy
     target_link_libraries(audi INTERFACE ${MPFR_LIBRARIES})
     target_link_libraries(audi INTERFACE ${GMP_LIBRARIES})
     
