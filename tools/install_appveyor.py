@@ -58,11 +58,11 @@ run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 
-# Download piranha 0.8 https://github.com/bluescarni/piranha/archive/v0.8.zip
-wget(r'https://github.com/bluescarni/piranha/archive/v0.8.zip', 'piranhav08.zip')
-run_command(r'unzip piranhav08.zip', verbose=False)
+# Download piranha 0.8 https://github.com/bluescarni/piranha/archive/v0.10.zip
+wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
+run_command(r'unzip piranhav10.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
-os.chdir('piranha-0.8')
+os.chdir('piranha-0.10')
 os.makedirs('build')
 os.chdir('build')
 print("Installing piranha")
@@ -123,7 +123,7 @@ os.makedirs('build')
 os.chdir('build')
 
 # REMEMBER TO PUT THIS TO YES WHEN FINISHED
-common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DBUILD_MAIN=no'
+common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_BUILD_MAIN=no'
 
 # Configuration step.
 if is_python_build:
