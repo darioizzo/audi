@@ -40,8 +40,8 @@ cd
 mkdir install
 cd install
 
-# Install Boost
-curl https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 > boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
+# Install Boost https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+wget https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 --no-verbose
 ls
 tar xvf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
