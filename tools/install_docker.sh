@@ -41,7 +41,7 @@ mkdir install
 cd install
 
 # Install Boost https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
-wget -O boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.gz http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.#gz/download
+wget -O --no-check-certificate boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.gz http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.#gz/download 
 #wget https://downloads.sourceforge.net/project/boost/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 --no-verbose
 tar xvf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.gz
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
