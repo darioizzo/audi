@@ -41,7 +41,7 @@ mkdir install
 cd install
 
 # Install Boost https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
-curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
+curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 > boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
 sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
@@ -75,7 +75,7 @@ gmake -j2 > /dev/null
 gmake install > /dev/null
 cd ..
 
-# Eigen
+# Install Eigen
 wget https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz --no-verbose
 tar xzf ${EIGEN3_VERSION}
 cd eigen-${EIGEN3_VERSION}
