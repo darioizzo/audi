@@ -45,7 +45,7 @@ curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`ec
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
 sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
-./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system -j2 install # > /dev/null
+./bjam --toolset=gcc link=shared threading=multi cxxflags="-std=c++11" variant=release --with-python --with-serialization --with-iostreams --with-regex --with-chrono --with-timer --with-test --with-system -j2 install > /dev/null
 cd ..
 
 # Install gmp (before mpfr as its used by it)
@@ -104,10 +104,9 @@ cmake -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=no -DCMAKE_BUILD_TYPE=Release ../
 make install
 cd ..
 
-# Compile and install pyaudi
-mkdir build
+# Compile and install pyaudi (build directory is created by .travis.yml)
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DPAGMO_BUILD_PYGMO=yes -DPAGMO_BUILD_PAGMO=no -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
+cmake -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DAUDI_BUILD_TESTS=no -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
 # The include directory for py3 is X.Xm, while for py2 is X.X
 #if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
