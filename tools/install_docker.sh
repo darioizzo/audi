@@ -108,12 +108,6 @@ cd ..
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DAUDI_BUILD_TESTS=no -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
-# The include directory for py3 is X.Xm, while for py2 is X.X
-#if [[ "${PYTHON_VERSION}" != "2.7" ]]; then
-#    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}m/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
-#else
-#    cmake -DBUILD_PYAUDI=yes -DBUILD_TESTS=no -DCMAKE_INSTALL_PREFIX=/audi/local -DCMAKE_BUILD_TYPE=Release -DBoost_PYTHON_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIB_NAME} -DPYTHON_INCLUDE_DIR=${PATH_TO_PYTHON}/include/python${PYTHON_VERSION}/ -DPYTHON_EXECUTABLE=${PATH_TO_PYTHON}/bin/python  ../
-#fi
 
 # Compile wheels
 cd wheel
@@ -135,5 +129,5 @@ if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
     cd audi/build/wheel
     echo "Release build detected, uploading to PyPi."
     ${PATH_TO_PYTHON}/bin/pip install twine
-    ${PATH_TO_PYTHON}/bin/twine upload -u darioizzo wheelhouse2/pyaudi*.whl
+    ${PATH_TO_PYTHON}/bin/twine upload -u darioizzo /audi/build/wheel/dist2/pyaudi*
 fi
