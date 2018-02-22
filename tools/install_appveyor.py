@@ -171,6 +171,10 @@ if is_python_build:
         shutil.copy(_, 'pyaudi')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
+    # workaround necessary to be able to call pip via python (next line)
+    run_command("rf -fr pyaudi*")
+    # workaround to avoid path issues when calling pip from win
+    # (https://github.com/pypa/pip/issues/1997)
     run_command(pinterp + r' -m pip install dist\\' + os.listdir('dist')[0])
     run_command(
         pinterp + r' -c "from pyaudi import test; test.run_test_suite()"', directory=r'c:\\')
