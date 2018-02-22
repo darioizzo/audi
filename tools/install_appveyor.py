@@ -131,7 +131,7 @@ if is_python_build:
     os.makedirs('build_audi')
     os.chdir('build_audi')
     run_command(
-        r'cmake -G "MinGW Makefiles" ..  -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_PYAUDI=no' + common_cmake_opts)
+        r'cmake -G "MinGW Makefiles" ..  -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_PYAUDI=no' + ' ' + common_cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     os.chdir('..')
     os.makedirs('build_pyaudi')
