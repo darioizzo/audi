@@ -123,26 +123,32 @@ if is_python_build:
     if is_release_build:
         run_command(pip + ' install twine')
 
-# Proceed to the build.
-os.makedirs('build')
-os.chdir('build')
 
-# REMEMBER TO PUT THIS TO YES WHEN FINISHED
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_BUILD_MAIN=no'
 
 # Configuration step.
 if is_python_build:
+    os.makedirs('build_audi')
+    os.chdir('build_audi')
+    run_command(
+        r'cmake -G "MinGW Makefiles" ..  -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_PYAUDI=no' + common_cmake_opts)
+    run_command(r'mingw32-make install VERBOSE=1 -j2')
+    os.chdir('..')
+    os.makedirs('build_pyaudi')
+    os.chdir('build_pyaudi')
     run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
                 (python_version[0] if python_version[0] == '3' else r'') + r'-mgw62-mt-1_63.dll  -DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll')
+    run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
+    os.makedirs('build_audi')
+    os.chdir('build_audi')
     cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
         r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
+    run_command(r'mingw32-make install VERBOSE=1 -j2')
 else:
     raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
 
-# Build+install step.
-run_command(r'mingw32-make install VERBOSE=1')
 
 # Testing, packaging.
 if is_python_build:
