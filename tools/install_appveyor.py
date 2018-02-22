@@ -171,8 +171,11 @@ if is_python_build:
         shutil.copy(_, 'pyaudi')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
-    # workaround necessary to be able to call pip via python (next line)
-    run_command("rf -fr pyaudi*")
+    # workaround necessary to be able to call pip install via python (next line) and
+    # not find a pyaudi already in the pythonpath
+    os.makedirs('garbage')
+    shutil.move('pyaudi', r'garbage')
+    shutil.move('pyaudi-egg.info', r'garbage')
     # workaround to avoid path issues when calling pip from win
     # (https://github.com/pypa/pip/issues/1997)
     run_command(pinterp + r' -m pip install dist\\' + os.listdir('dist')[0])
