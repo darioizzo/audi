@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(subs)
         auto z = x.subs("dx", y);
         BOOST_CHECK((z - 1. - y).is_zero(1e-14));
         BOOST_CHECK(z.get_order() == 3);
-        BOOST_CHECK(z.get_symbol_set_size() == y.get_symbol_set_size() + 1);
+        BOOST_CHECK(z.get_symbol_set_size() == y.get_symbol_set_size());
     }
     // Function composition works on truncated Taylor series if the constant coefficient is zero
     // and we then take advantage of the nihilpotency property.
