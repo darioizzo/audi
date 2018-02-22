@@ -45,7 +45,7 @@ LIBRARY DESTINATION ${PYAUDI_INSTALL_PATH}
 )
 
 # Add the Python files.
-install(FILES __init__.py test.py DESTINATION ${PYAUDI_INSTALL_PATH})
+install(FILES __init__.py _version.py test.py DESTINATION ${PYAUDI_INSTALL_PATH})
 
 
 
