@@ -129,7 +129,7 @@ if is_python_build:
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
 
 # Proceed to the build.
-common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_BUILD_MAIN=no'
+common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local'
 
 # Configuration step.
 if is_python_build:
@@ -141,7 +141,7 @@ if is_python_build:
     os.chdir('..')
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
-    run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
+    run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
                 (python_version[0] if python_version[0] == '3' else r'') + r'-mgw62-mt-1_63.dll  -DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll')
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
@@ -171,7 +171,6 @@ if is_python_build:
         shutil.copy(_, 'pyaudi')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
-    run_command(r'dir')
     run_command(pip + r' install dist\\' + os.listdir('dist')[0])
 
     #os.chdir('/')
