@@ -151,7 +151,7 @@ else:
     raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
 
 
-# Testing, packaging.
+# Packaging.
 if is_python_build:
     # Run the Python tests.
     run_command(
