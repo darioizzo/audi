@@ -171,7 +171,7 @@ if is_python_build:
         shutil.copy(_, 'pyaudi')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
-    run_command(ls)
+    run_command(r'dir')
     run_command(pip + r' install dist\\' + os.listdir('dist')[0])
 
     #os.chdir('/')
