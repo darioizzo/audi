@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 
 
 def wget(url, out):
@@ -9,6 +10,7 @@ def wget(url, out):
 
 
 def rm_fr(path):
+    import os
     import shutil
     if os.path.isdir(path) and not os.path.islink(path):
         shutil.rmtree(path)
@@ -44,6 +46,16 @@ def run_command(raw_command, directory=None, verbose=True):
     return output
 
 
+# Build type setup.
+BUILD_TYPE = os.environ['BUILD_TYPE']
+is_release_build = (os.environ['APPVEYOR_REPO_TAG'] == 'true') and bool(
+    re.match(r'v[0-9]+\.[0-9]+.*', os.environ['APPVEYOR_REPO_TAG_NAME']))
+if is_release_build:
+    print("Release build detected, tag is '" +
+          os.environ['APPVEYOR_REPO_TAG_NAME'] + "'")
+is_python_build = 'Python' in BUILD_TYPE
+
+
 # Get mingw and set the path.
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/x86_64-6.2.0-release-posix-seh-rt_v5-rev1.7z', 'mw64.7z')
 run_command(r'7z x -oC:\\ mw64.7z', verbose=False)
@@ -77,17 +89,7 @@ run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("Piranha sucessfully installed .. continuing")
 
-# Set the path so that the precompiled libs can be found.
-os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
-
-# Build type setup.
-BUILD_TYPE = os.environ['BUILD_TYPE']
-is_release_build = (os.environ['APPVEYOR_REPO_TAG'] == 'true') and bool(
-    re.match(r'v[0-9]+\.[0-9]+.*', os.environ['APPVEYOR_REPO_TAG_NAME']))
-if is_release_build:
-    print("Release build detected, tag is '" +
-          os.environ['APPVEYOR_REPO_TAG_NAME'] + "'")
-is_python_build = 'Python' in BUILD_TYPE
+# Setup of the dependencies for a Python build.
 if is_python_build:
     if BUILD_TYPE == 'Python34':
         python_version = '34'
@@ -123,7 +125,10 @@ if is_python_build:
     if is_release_build:
         run_command(pip + ' install twine')
 
+# Set the path so that the precompiled libs can be found.
+os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
 
+# Proceed to the build.
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_BUILD_MAIN=no'
 
 # Configuration step.
@@ -146,7 +151,7 @@ elif BUILD_TYPE in ['Release', 'Debug']:
         r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
-    run_command(r'ctest -VV')
+    run_command(r'ctest')
 else:
     raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
 
@@ -166,6 +171,7 @@ if is_python_build:
         shutil.copy(_, 'pyaudi')
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
+    run_command(ls)
     run_command(pip + r' install dist\\' + os.listdir('dist')[0])
 
     #os.chdir('/')
