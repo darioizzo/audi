@@ -175,6 +175,10 @@ if(AUDI_BUILD_AUDI)
         add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
     endif()
 
+    # Configure the doc files.
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/doc/doxygen/Doxyfile.in" "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxygen/Doxyfile" @ONLY)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/doc/sphinx/conf.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/doc/sphinx/conf.py" @ONLY)
+
     # Setup of the export.
     install(TARGETS audi EXPORT audi_export)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/audi-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" @ONLY)
@@ -194,6 +198,8 @@ if(AUDI_BUILD_AUDI)
 endif()
 
 if(AUDI_BUILD_PYAUDI)
+    # Configure version
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)    
     # Add the pyaudi subdirectory.
     add_subdirectory("${CMAKE_SOURCE_DIR}/pyaudi")
     if(MINGW)
