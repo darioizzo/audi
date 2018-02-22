@@ -172,10 +172,8 @@ if is_python_build:
     run_command(pinterp + r' setup.py bdist_wheel')
     os.environ['PATH'] = ORIGINAL_PATH
     run_command(pinterp + r' -m pip install dist\\' + os.listdir('dist')[0])
-
-    os.chdir('/')
     run_command(
-        pinterp + r' -c "from pyaudi import test; test.run_test_suite()"')
+        pinterp + r' -c "from pyaudi import test; test.run_test_suite()"', directory=r'c:\\')
     if is_release_build:
         os.chdir('C:/projects/audi/build/wheel')
         run_command(twine + r' upload -u darioizzo dist\\' +
