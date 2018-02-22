@@ -175,8 +175,8 @@ if is_python_build:
     # not find a pyaudi already in the pythonpath
     os.makedirs('garbage')
     shutil.move('pyaudi', r'garbage')
-    shutil.move('pyaudi-egg.info', r'garbage')
-    # workaround to avoid path issues when calling pip from win
+    shutil.move('pyaudi.egg-info', r'garbage')
+    # call pip via python, workaround to avoid path issues when calling pip from win
     # (https://github.com/pypa/pip/issues/1997)
     run_command(pinterp + r' -m pip install dist\\' + os.listdir('dist')[0])
     run_command(
