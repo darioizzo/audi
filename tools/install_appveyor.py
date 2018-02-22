@@ -89,7 +89,9 @@ if is_release_build:
           os.environ['APPVEYOR_REPO_TAG_NAME'] + "'")
 is_python_build = 'Python' in BUILD_TYPE
 if is_python_build:
-    if BUILD_TYPE == 'Python35':
+    if BUILD_TYPE == 'Python34':
+        python_version = '34'
+    elif BUILD_TYPE == 'Python35':
         python_version = '35'
     elif BUILD_TYPE == 'Python36':
         python_version = '36'
@@ -118,8 +120,6 @@ if is_python_build:
     # Install pip and deps.
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py')
-    #run_command(pip + ' install numpy')
-    #run_command(pip + ' install mpmath')
     if is_release_build:
         run_command(pip + ' install twine')
 
@@ -132,11 +132,11 @@ common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\l
 
 # Configuration step.
 if is_python_build:
-    run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DBUILD_TESTS=no -DBUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
+    run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
                 (python_version[0] if python_version[0] == '3' else r'') + r'-mgw62-mt-1_63.dll  -DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll')
 elif BUILD_TYPE in ['Release', 'Debug']:
     cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
-        r' -DBUILD_TESTS=yes ' + common_cmake_opts
+        r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
 else:
     raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
@@ -148,7 +148,7 @@ run_command(r'mingw32-make install VERBOSE=1')
 if is_python_build:
     # Run the Python tests.
     run_command(
-        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_double(0.12,\"x\",1))"')
+        pinterp + r' -c "from pyaudi import test; test.run_test_suite()"')
     # Build the wheel.
     import shutil
     os.chdir('wheel')
