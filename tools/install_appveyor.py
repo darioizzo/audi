@@ -146,6 +146,7 @@ elif BUILD_TYPE in ['Release', 'Debug']:
         r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
+    run_command(r'ctest -VV')
 else:
     raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
 
@@ -167,16 +168,10 @@ if is_python_build:
     os.environ['PATH'] = ORIGINAL_PATH
     run_command(pip + r' install dist\\' + os.listdir('dist')[0])
 
-    os.chdir('/')
-    run_command(
-        pinterp + r' -c "import pyaudi; print(pyaudi.gdual_double(0.12,\"x\",1))"')
-    if is_release_build:
-        os.chdir('C:/projects/audi/build/wheel')
-        run_command(twine + r' upload -u darioizzo dist\\' +
-                    os.listdir('dist')[0])
-elif BUILD_TYPE == 'Release':
-    run_command(r'ctest -VV')
-elif BUILD_TYPE == 'Debug':
-    run_command(r'ctest -VV')
-else:
-    raise RuntimeError('Unsupported build type: ' + BUILD_TYPE)
+    #os.chdir('/')
+    #run_command(
+    #    pinterp + r' -c "from pyaudi import test; test.run_test_suite()"')
+    #if is_release_build:
+    #    os.chdir('C:/projects/audi/build/wheel')
+    #    run_command(twine + r' upload -u darioizzo dist\\' +
+    #                os.listdir('dist')[0])
