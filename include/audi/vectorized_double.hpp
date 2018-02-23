@@ -281,7 +281,7 @@ template <typename T>
 struct mul3_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
     /// Call operator.
     /**
-     * @param[out] out the output value.
+     * @param out the output value.
      * @param a the first operand.
      * @param b the second operand.
      *
@@ -326,6 +326,12 @@ struct partial_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_
 };
 template <typename T, typename U>
 struct pow_impl<T, U, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
+    /// Call operator.
+    /**
+     * @param c the input
+     * @param exp the exponent
+     * @return the exp operator applied to all elements of the input
+     */
     T operator()(const T &c, const U &exp) const
     {
         auto retval(c);

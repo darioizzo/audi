@@ -7,10 +7,10 @@
 #include <piranha/binomial.hpp>
 #include <stdexcept>
 
-#include "back_compatibility.hpp"
-#include "detail/overloads.hpp"
-#include "gdual.hpp"
-#include "type_traits.hpp"
+#include <audi/back_compatibility.hpp>
+#include <audi/detail/overloads.hpp>
+#include <audi/gdual.hpp>
+#include <audi/type_traits.hpp>
 
 namespace audi
 {

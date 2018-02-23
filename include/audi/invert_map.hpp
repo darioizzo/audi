@@ -7,9 +7,11 @@
 #include <string>
 #include <vector>
 
-#include <audi/audi.hpp>
+#include <audi/gdual.hpp>
 #include <audi/exceptions.hpp>
 #include <audi/io.hpp>
+
+using gdual_d = audi::gdual<double>;
 
 namespace audi
 {
@@ -123,11 +125,11 @@ static unsigned _(I n)
  * the inverse of the linear part \f$M^{-1}\f$ is found using any linear algebraic tool. Note that the inverse is
  * guaranteed to exist if the linear part is invertible.
  *
- * @param map_in The input map represented as an \tt std::vector \tt of \tt gduals \tt. They can have a constant
+ * @param map_in The input map represented as an <tt> std::vector </tt> of <tt> gduals </tt>. They can have a constant
  * coefficient which will be neglected
  * @param verbose when true some output is shown during the Picard iterations
  *
- * @return The inverse map \f$\mathcal M^{-1}\f$ represented as an \tt std::vector \tt of \tt gduals \tt with symbol set
+ * @return The inverse map \f$\mathcal M^{-1}\f$ represented as an <tt> std::vector </tt> of <tt> gduals </tt> with symbol set
  * [p0, p1, .. pn]
  *
  * @throws std::invalid_argument if \p map_in is empty, if its linear part is not invertable, if the symbol set of the

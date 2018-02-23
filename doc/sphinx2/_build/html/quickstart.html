@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick start &mdash; audi 1.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="audi 1.1 documentation" href="index.html"/>
+        <link rel="next" title="Installation guide" href="installation.html"/>
+        <link rel="prev" title="Audi and pyaudi" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> audi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python">Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#notebooks">Notebooks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#c">C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quick start</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quick-start">
+<h1>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>If you have successfully compiled and installed pyaudi following the <a class="reference internal" href="install_p.html#installation-pyaudi"><span class="std std-ref">Installation (pyaudi)</span></a> you will be able to test its use typing the following script.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">cbrt</span>
+
+<span class="c1"># We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3</span>
+<span class="c1"># 1 - Define the generalized dual numbers (7 is the truncation order, i.e.</span>
+<span class="c1"># the maximum order of derivation we will need)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<span class="c1"># 2 - Compute your function as usual</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">cbrt</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">log</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="c1"># 3 - Inspect the results (this does not require any more computations)</span>
+<span class="c1"># This is the Taylor expansion of f (truncated at the 7th order)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Taylor polynomial: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+<span class="c1"># This is the value of the derivative (d / dx)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Derivative value [1,0]: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])))</span>
+<span class="c1"># This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Derivative value [4,3]: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">])))</span>
+
+<span class="c1"># 4 - Using the dictionary interface (note the presence of the &quot;d&quot; before</span>
+<span class="c1"># all variables)</span>
+<span class="c1"># This is the value of the derivative (d / dx)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Derivative value [1,0]: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})))</span>
+<span class="c1"># This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Derivative value [4,3]: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})))</span>
+</pre></div>
+</td></tr></table></div>
+<p>Place it into a getting_started.py text file and run it with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>python getting_started.py
+</pre></div>
+</div>
+<p>We recommend the use of Jupyter or ipython do enjoy pyaudi the most.</p>
+<div class="section" id="notebooks">
+<h3>Notebooks<a class="headerlink" href="#notebooks" title="Permalink to this headline">¶</a></h3>
+<p>Follow the links below to visualize juypiter notebooks on the use of pyaudi.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/darioizzo/audi/blob/master/examples/example00.ipynb">The very basics</a></li>
+<li><a class="reference external" href="https://github.com/darioizzo/audi/blob/master/examples/example01.ipynb">Understanding gduals and floats</a>:</li>
+<li><a class="reference external" href="https://github.com/darioizzo/audi/blob/master/examples/example10.ipynb">Differential Intelligence</a></li>
+<li><a class="reference external" href="https://github.com/darioizzo/audi/blob/master/examples/example11.ipynb">Training an artificial neural network</a></li>
+<li>Tutorial on High Order Taylor Maps &lt;<a class="reference external" href="https://github.com/darioizzo/audi/blob/master/examples/example12.ipynb">https://github.com/darioizzo/audi/blob/master/examples/example12.ipynb</a>&gt;`_</li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="c">
+<h2>C++<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
+<p>After following the <a class="reference internal" href="install_c.html#installation-audi"><span class="std std-ref">Installation (audi header only C++ library)</span></a> you will be able to compile and run your first C++ AuDi program:</p>
+<div class="highlight-c++" id="getting-started"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;audi/gdual.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;audi/functions.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">audi</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3</span>
+    <span class="k">using</span> <span class="n">gdual</span> <span class="o">=</span> <span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="c1">// 1 - Define the generalized dual numbers (over doubles, 7 is the truncation order, i.e. the maximum</span>
+    <span class="c1">// order of derivation we will need)</span>
+    <span class="n">gdual</span> <span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+    <span class="n">gdual</span> <span class="n">y</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>
+
+    <span class="c1">// 2 - Compute your function as usual</span>
+    <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">cbrt</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">log</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">));</span>
+
+    <span class="c1">// 3 - Inspect the results (this has a constant complexity now as all computations have been made already)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Taylor polynomial: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the Taylor expansion of f (truncated at the 7th order)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derivative value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">})</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the derivative (d / dx)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derivative value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">})</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+
+    <span class="c1">// 4 - Using the dictionary interface (note the presence of the &quot;d&quot; before all variables)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derivative value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">&quot;dx&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">}})</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the derivative (d / dx)</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Derivative value: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">&quot;dx&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;dy&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">}})</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p>Place it into a getting_started.cpp text file and compile it with:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++11 getting_started.cpp -lmpfr -lgmp -pthread
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Audi and pyaudi" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

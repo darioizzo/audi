@@ -4,9 +4,9 @@
 #include <boost/math/constants/constants.hpp>
 #include <cmath>
 
-#include "back_compatibility.hpp"
-#include "detail/overloads.hpp"
-#include "gdual.hpp"
+#include <audi/back_compatibility.hpp>
+#include <audi/detail/overloads.hpp>
+#include <audi/gdual.hpp>
 
 namespace audi
 {
@@ -176,7 +176,7 @@ inline T acosh_d(const T &f)
  * makes use of the fact that \f$ \frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\f$
  * to then use audi::_compose_from_derivative
  *
- * @param f audi::gdual argument
+ * @param d audi::gdual type
  *
  * @return an audi:gdual containing the Taylor expansion of the error function of \p d
  *

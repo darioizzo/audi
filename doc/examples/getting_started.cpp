@@ -1,4 +1,5 @@
-#include <audi/audi.hpp>
+#include <audi/gdual.hpp>
+#include <audi/functions.hpp>
 #include <iostream>
 
 using namespace audi;

@@ -16,6 +16,8 @@ AuDi is a header only library which has the following third party dependencies
 * `piranha <http://bluescarni.github.io/piranha/index.html>`_: piranha headers must be found in the system
 * `GNU MPFR library <http://www.mpfr.org/>`_: needed by piranha
 * `The GMP multiprecision library <https://gmplib.org/>`_: needed by piranha
+* `The GMP multiprecision library <https://gmplib.org/>`_: needed by piranha
+* `Eigen linear algebra library <https://eigen.tuxfamily.org/>`_
 
 After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest AuDi version via git:
 

@@ -24,8 +24,8 @@
 #include <utility>
 #include <vector>
 
-#include "back_compatibility.hpp"
-#include "detail/overloads.hpp" //for audi::abs
+#include <audi/back_compatibility.hpp>
+#include <audi/detail/overloads.hpp> //for audi::abs
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -238,7 +238,7 @@ public:
     /// Defaulted move constructor.
     gdual(gdual &&) = default;
     /// Default constuctor
-    gdual() : m_order(0u) {}
+    gdual() : m_p(0.), m_order(0u) {}
     /// Destructor (contains a sanity check)
     ~gdual()
     {
@@ -252,7 +252,7 @@ public:
     }
 
     template <typename T, generic_ctor_enabler<T> = 0>
-    explicit gdual(const T &value, const std::string &symbol, unsigned int order) : m_p(), m_order(order)
+    explicit gdual(const T &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
     {
         check_order();
         check_var_name(symbol);
@@ -280,7 +280,7 @@ public:
         return m_p.get_symbol_set().size();
     }
 
-    /// Returns the symbol set size
+    /// Returns the symbol set
     /**
      * Returns the symbol set (not the differentials)
      *
@@ -387,13 +387,13 @@ public:
 
     /// Substitute a symbol with a gdual
     /**
-     * Substitute the symbol \p sym with the gdual \val
+     * Substitute the symbol \p sym with the gdual \p val
      * The returned gdual has the same order, its symbol set will be
-     * expanded with the symbol set of \val and then trimmed of the substituded symbol and
+     * expanded with the symbol set of \p val and then trimmed of the substituded symbol and
      * truncated to the order of the gdual.
      *
      * @param sym Symbol to be substituded (i.e. "dx")
-     * @param val The gdual to substitute \sym with.
+     * @param val The gdual to substitute \p sym with.
      *
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
@@ -410,7 +410,7 @@ public:
 
     /// Trims small coefficients
     /**
-     * All coefficients smaller than a set magnitude \epsilon are set to zero
+     * All coefficients smaller than a set magnitude \p epsilon are set to zero
      *
      * @param epsilon Tolerance used to trim coefficients.
      *
@@ -428,14 +428,14 @@ public:
 
     /// Extracts all terms of some order
     /**
-     * Extracts all the terms with the given \order into a new gdual
+     * Extracts all the terms with the given \p order into a new gdual
      *
      * @param order Order of the terms to be extracted
      *
      * @return A new gdual containing the terms extracted, but preserving the order of the original gdual.
      *
      * @throws std::invalid_argument
-     * - if the \order is higher than the gdual order
+     * - if the \p order is higher than the gdual order
      * @throws unspecified any exception thrown by:
      * - piranha::math::subs,
      */

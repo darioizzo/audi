@@ -1,7 +1,7 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
-#include "gdual.hpp"
+#include <audi/gdual.hpp>
 #include <type_traits>
 
 namespace audi
