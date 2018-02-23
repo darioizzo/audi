@@ -3,7 +3,7 @@ Documentation (C++ header only library)
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    gdual.rst
    functions.rst

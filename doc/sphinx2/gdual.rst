@@ -17,7 +17,7 @@ Using the multi-index notation, a generalized dual number (over the field :math:
 
 .. note::
 
-   A generalized dual number is defined by its order :math:`m` as well as by its expansion point :math:`\mathbf a`. 
+   A generalized dual number is defined by its truncation order :math:`m` as well as by its expansion point :math:`\mathbf a`. 
    All arithmetic operators +,*,/,- are overloaded so that computing with the type audi::gdual correspond to compute the
    Taylor expansion of the arithmetic computations.
 
@@ -42,6 +42,7 @@ resulting in the output:
   the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
   and integration are also availiable and the resulting algebra is a differential algebra.
 
+------------------------------------------------------
 
 Constructors and destructors
 ------------------------------------------------------
@@ -168,7 +169,7 @@ Differential algebra operations
 
 ------------------------------------------------------
 
-gdual manipulations
+gdual manipulation
 ^^^^^^^^^^^^^^^^^^^
 
 .. cpp:function:: template <typename T> gdual subs(const std::string &sym, const T &val) const
@@ -208,3 +209,90 @@ gdual manipulations
    :return:  A new gdual containing only the terms extracted, but preserving the truncation order of the original gdual.
 
    :exception: std::invalid_argument if the *degree* is higher than the gdual truncation order.
+
+------------------------------------------------------
+
+gdual inspection
+^^^^^^^^^^^^^^^^^
+
+.. cpp:function:: auto evaluate(const std::unordered_map<std::string, double> &dict) const
+
+   Evaluates the Taylor polynomial using the values in *dict* for the differentials (variables variations)
+
+   :param dict: a dictionary (unordered map) containing the values for the differentials.
+   :return: the value of the Taylor polynomial.
+
+   .. code::
+
+      gdual<double> x1(1., "x1", 2);
+      gdual<double> x2(1., "x2", 2);
+      auto f = x1*x1 + x2;
+      std::cout << f.evaluate({{"dx1", 1.}, {"dx2", 1.}}) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: auto degree() const
+
+   Returns the degree of the polynomial. This is necessarily smaller or equal the truncation order.
+
+   :return: the polynomial degree.
+
+------------------------------------------------------
+
+.. cpp:function:: unsigned int get_order() const
+
+   Returns the truncation order of the polynomial.
+
+   :return: the polynomial truncation order.
+
+------------------------------------------------------
+
+.. cpp:function:: template <typename T> auto find_cf(const T &c) const
+
+   Returns the coefficient of the monomial specified by the container *c*.
+   The container contains the exponents of the requested monomial. In a three
+   variable Taylor expansion with :math:`x, y, z` as symbols, [1, 3, 2] would denote
+   the monomial :math:`dx dy^3 dz^2`.
+
+   .. note::
+   
+      Alphabetical order is used to order the symbol set and thus specify
+      the coefficients.
+
+   .. warning::
+     
+     If the monomial requested is not found in the polynomial a zero coefficient will be returned.
+
+   :return: the coefficient of the monomial, if present, zero otherwise.
+
+   :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
+   
+   .. code::
+
+      gdual<double> x1(1.2, "x1", 2);
+      gdual<double> x2(-0.2, "x2", 2);
+      auto f = sin(x1*x1 + x2);
+      std::cout << f.find_cf(std::vector<double>({1,1})) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: template <typename T> auto find_cf(std::initializer_list<T> l) const
+
+   Returns the coefficient of the monomial specified by the initializer list *l*.
+
+   .. note::
+   
+      This method overloads the one above and is provided for convenience.
+
+   :return: the coefficient of the monomial, if present, zero otherwise.
+
+   :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
+   
+   .. code::
+
+      gdual<double> x1(1.2, "x1", 2);
+      gdual<double> x2(-0.2, "x2", 2);
+      auto f = sin(x1*x1 + x2);
+      std::cout << f.find_cf({1,1}) << "\n";
+
+
