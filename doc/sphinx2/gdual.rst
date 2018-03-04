@@ -201,6 +201,18 @@ gdual manipulation
 gdual inspection
 ^^^^^^^^^^^^^^^^^
 
+.. cpp:function:: auto get_symbol_set_size() const
+
+   Returns the size of the symbol set of the piranha::polynomial
+
+------------------------------------------------------
+
+.. cpp:function:: std::vector<std::string> get_symbol_set() const
+
+   Returns the symbol set of the piranha::polynomial stripping the differentials (i.e. "dx" becomes "x")
+
+------------------------------------------------------
+
 .. cpp:function:: auto evaluate(const std::unordered_map<std::string, double> &dict) const
 
    Evaluates the Taylor polynomial using the values in *dict* for the differentials (variables variations)
@@ -283,16 +295,149 @@ gdual inspection
 
 ------------------------------------------------------
 
-.. cpp:function:: auto get_symbol_set_size() const
+.. cpp:function:: Cf constant_cf()
 
-   Returns the size of the symbol set of the piranha::polynomial
+   Finds the constant coefficient of the Taylor polynomial. So that if :math:`T_{f} = f_0 + \hat f`, :math:`f_0` is returned
+
+   :return: the constant coefficient.
 
 ------------------------------------------------------
 
-.. cpp:function:: std::vector<std::string> get_symbol_set() const
+.. cpp:function:: template <typename T> auto get_derivative(const T &c) const
 
-   Returns the symbol set stripping the differentials.
+   Returns the (mixed) derivative value of order specified by the container *c*
 
+   .. note:: 
+   
+      The container describes the derivative requested. In a three
+      variable polynomial with :math:`x, y, z` as symbols, [1, 3, 2] would denote
+      the sixth order derivative :math:`\frac{d^6}{dxdy^3dz^2}`.
 
+   .. note::
 
+      No computations are made at this points as all derivatives are already
+      contained in the Taylor expansion
+
+   :return: the value of the derivative
+
+   :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
+
+   .. code::
+
+      gdual<double> x1(1.2, "x1", 2);
+      gdual<double> x2(-0.2, "x2", 2);
+      auto f = sin(x1*x1 + x2);
+      // This streams the value of df^2/dx1/dx2 in x1=1.2, x2 = -0.2
+      std::cout << f.get_derivative(std::vector<double>({1,1})) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: template <typename T> auto get_derivative(std::initializer_list<T> l) const
+
+   Returns the (mixed) derivative value of order specified by the initializer list *l*.
+
+   .. note::
+   
+      This method overloads the one above and is provided for convenience.
+
+   :return: the value of the derivative
+
+   :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
+
+   .. code::
+
+      gdual<double> x1(1.2, "x1", 2);
+      gdual<double> x2(-0.2, "x2", 2);
+      auto f = sin(x1*x1 + x2);
+      // This streams the value of df^2/dx1/dx2 in x1=1.2, x2 = -0.2
+      std::cout << f.get_derivative({1,1}) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: template <typename T> auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const
+
+   Returns the (mixed) derivative value of the order specified in *dict*.
+
+   :param dict: a dictionary (unordered map) containing the derivation order (assumes zero for symbols not present).
+
+   :return: the value of the derivative
+
+   :exception: std::invalid_argument if the requested derivative degree is beyond the truncation order
+
+   .. code::
+
+      gdual<double> x1(1.2, "x1", 2);
+      gdual<double> x2(-0.2, "x2", 2);
+      auto f = sin(x1*x1 + x2);
+      // This streams the value of df^2/dx1/dx2 in x1=1.2, x2 = -0.2
+      std::cout << f.get_derivative({{"dx1", 1u}, {"dx2", 1u}}) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: bool is_zero(double tol) const
+
+   Checks all coefficients of the gdual and returns true if all their absolute values are smaller
+   than the defined tolerance *tol*.
+
+   :return: whether the gdual is zero within a tolerance.
+
+   .. code::
+
+      gdual<double> x(0.1, "x", 6);
+      auto f = 1 - sin(x)*sin(x) - cos(x)*cos(x);
+      if (f.is_zero(1e-13)) {
+        std::cout << "The trigonomoetric identity holds!!" << std::endl;
+      }
+
+------------------------------------------------------
+
+Operators
+---------
+
+.. cpp:function:: friend std::ostream &operator<<(std::ostream &os, const gdual &d)
+
+   Will direct to stream a human-readable representation of the generalized dual number.
+
+   .. note::
+      
+      The print order of the terms will be undefined. At most piranha::settings::get_max_term_output() terms
+      are printed, and terms in excess are represented with ellipsis "..."
+      at the end of the output; if piranha::settings::get_max_term_output()
+      is zero, all the terms will be printed. piranha::settings::set_max_term_output()
+      is used to set this parameter.
+
+   :param os: target stream.
+   :param d: gdual argument.
+
+   :return: reference to *os*
+
+------------------------------------------------------
+
+.. cpp:function:: friend bool operator==(const gdual &d1, const gdual &d2)
+
+   Equality operator. Two gduals are considered equal if all their coefficients are equal.
+
+   .. note:: 
+   
+      The truncation order of *d1* and *d2* may be different
+
+   :param d1: first argument.
+   :param d2: second argument.
+
+   :return: The result of the comparison.
+
+------------------------------------------------------
+
+.. cpp:function:: friend bool operator!=(const gdual &d1, const gdual &d2)
+
+   Non equality operator.
+
+   .. note:: 
+   
+      The truncation order of *d1* and *d2* may be different
+
+   :param d1: first argument.
+   :param d2: second argument.
+
+   :return: The result of the comparison.
 

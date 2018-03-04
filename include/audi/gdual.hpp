@@ -636,9 +636,8 @@ public:
     /// Finds the constant coefficient
     /**
      * Returns the coefficient of the of the constant part of the polynomial
-     * so that if \f$T_{f} = f_0 + \hat f\f$,m \f$f_0\f$ is returned
+     * so that if \f$T_{f} = f_0 + \hat f\f$, \f$f_0\f$ is returned.
      *
-     * \note This method is identical to the other overload with the same name, and it is provided for convenience.
      * @return the coefficient
      */
     Cf constant_cf() const
@@ -649,11 +648,10 @@ public:
 
     /// Determines if a gdual is zero within tolerance
     /**
-     * Returns true if all coefficients of the gdual are zero within a tolerance \p tol
      *
-     * @return
+     * @return true if all coefficients of the gdual are zero within a tolerance \p tol
      */
-    bool is_zero(double tol)
+    bool is_zero(double tol) const
     {
         for (auto it = _container().begin(); it != _container().end(); ++it) {
             if (abs(it->m_cf) > tol) // call to audi abs has precedence
@@ -699,7 +697,7 @@ public:
      * @param d1 first audi::gdual argument
      * @param d2 second audi::gdual argument
      *
-     * @return The result of the cmparison
+     * @return The result of the comparison
      */
     friend bool operator==(const gdual &d1, const gdual &d2)
     {
@@ -708,13 +706,13 @@ public:
 
     /// Overloaded Non equality operator.
     /**
-     * Compares the truncation order and the single polynomial coefficients of
+     * Compares the single polynomial coefficients of
      * two audi::gdual objects and returns false if equal.
      *
      * @param d1 first audi::gdual argument
      * @param d2 second audi::gdual argument
      *
-     * @return The result of the cmparison
+     * @return The result of the comparison
      */
     friend bool operator!=(const gdual &d1, const gdual &d2)
     {
