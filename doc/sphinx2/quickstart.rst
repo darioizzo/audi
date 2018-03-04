@@ -7,6 +7,9 @@ Quick start
 Python
 ------
 
+My first program
+^^^^^^^^^^^^^^^^^^
+
 If you have successfully compiled and installed pyaudi following the :ref:`installation_pyaudi` you will be able to test its use typing the following script.
 
 .. literalinclude:: ../../doc/examples/getting_started.py
@@ -41,6 +44,9 @@ Follow the links below to visualize juypiter notebooks on the use of pyaudi.
 
 C++
 ---
+
+My first program
+^^^^^^^^^^^^^^^^^^
 
 After following the :ref:`installation_audi` you will be able to compile and run your first C++ AuDi program:
 

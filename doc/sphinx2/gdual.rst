@@ -7,9 +7,10 @@ Generalized Dual Number
 
 This class represents an element of the algebra :math:`\mathcal P_{n,m}`, (see :ref:`formal_definition`) defined
 over the field :math:`\mathbf K` (the field is represented by the template argument *Cf*). We call elements of this algebra
-generalized dual numbers as, among other things, they generalize the dual numbers used for forward automatic differentiation.
+generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`), they generalize the dual numbers used for forward automatic differentiation.
 
-Using the multi-index notation, a generalized dual number (over the field :math:`\mathbb R` represented by doubles) may be written as:
+Using the multi-index notation, a generalized dual number (over the field :math:`\mathbb R` represented by doubles, i.e. :code:`gdual<double>`) 
+may be written as:
 
 .. math::
 
@@ -103,36 +104,6 @@ Constructors and destructors
 Methods
 -------
 
-Symbol set manipulation
-^^^^^^^^^^^^^^^^^^^^^^^
-
-.. cpp:function:: auto get_symbol_set_size() const
-
-   Returns the size of the symbol set of the piranha::polynomial
-
-------------------------------------------------------
-
-.. cpp:function:: std::vector<std::string> get_symbol_set() const
-
-   Returns the symbol set stripping the differentials.
-
-------------------------------------------------------
-
-.. cpp:function:: void extend_symbol_set(const std::vector<std::string> &sym_vars)
-
-   Adds some symbolic variables to the current piranha::polynomial
-   This is useful in situations where some differential :math:`dx` does not
-   appear as its coefficient is zero but we still want to treat the gdual as a function of 
-   :math:`x` too (for example when extracting the relative coefficient)
-
-   :param sym_vars: list of symbolic names. It must contain all symbolic names of
-     the current piranha::polynomial. It may contain more. All symbols must start with the letter "d".
-
-   :exception: std::invalid_argument if any symbol in *sym_vars* does not start with the letter "d"
-     or if *sym_vars* does not contain all current symbols too.
-
-------------------------------------------------------
-
 Differential algebra operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -209,6 +180,21 @@ gdual manipulation
    :return:  A new gdual containing only the terms extracted, but preserving the truncation order of the original gdual.
 
    :exception: std::invalid_argument if the *degree* is higher than the gdual truncation order.
+
+------------------------------------------------------
+
+.. cpp:function:: void extend_symbol_set(const std::vector<std::string> &sym_vars)
+
+   Adds some symbolic variables to the current piranha::polynomial
+   This is useful in situations where some differential :math:`dx` does not
+   appear as its coefficient is zero but we still want to treat the gdual as a function of 
+   :math:`x` too (for example when extracting the relative coefficient)
+
+   :param sym_vars: list of symbolic names. It must contain all symbolic names of
+     the current piranha::polynomial. It may contain more. All symbols must start with the letter "d".
+
+   :exception: std::invalid_argument if any symbol in *sym_vars* does not start with the letter "d"
+     or if *sym_vars* does not contain all current symbols too.
 
 ------------------------------------------------------
 
@@ -294,5 +280,19 @@ gdual inspection
       gdual<double> x2(-0.2, "x2", 2);
       auto f = sin(x1*x1 + x2);
       std::cout << f.find_cf({1,1}) << "\n";
+
+------------------------------------------------------
+
+.. cpp:function:: auto get_symbol_set_size() const
+
+   Returns the size of the symbol set of the piranha::polynomial
+
+------------------------------------------------------
+
+.. cpp:function:: std::vector<std::string> get_symbol_set() const
+
+   Returns the symbol set stripping the differentials.
+
+
 
 
