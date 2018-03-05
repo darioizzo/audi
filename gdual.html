@@ -1,0 +1,891 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Generalized Dual Number &mdash; audi 1.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="audi 1.1 documentation" href="index.html"/>
+        <link rel="up" title="Documentation (C++ header only library)" href="doc_c++.html"/>
+        <link rel="next" title="Mathematical functions" href="functions.html"/>
+        <link rel="prev" title="Documentation (C++ header only library)" href="doc_c++.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> audi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Generalized Dual Number</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#constructors-and-destructors">Constructors and destructors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operators">Operators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="documentation.html">Documentation</a> &raquo;</li>
+        
+          <li><a href="doc_c++.html">Documentation (C++ header only library)</a> &raquo;</li>
+        
+      <li>Generalized Dual Number</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gdual.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generalized-dual-number">
+<h1>Generalized Dual Number<a class="headerlink" href="#generalized-dual-number" title="Permalink to this headline">¶</a></h1>
+<p><em>#include &lt;audi/gdual.hpp&gt;</em></p>
+<dl class="class">
+<dt id="_CPPv3I0E5gdual">
+<span id="_CPPv2I0E5gdual"></span>template&lt;typename <code class="descname">Cf</code>&gt;<br /><em class="property">class </em><code class="descname">gdual</code><a class="headerlink" href="#_CPPv3I0E5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p>This class represents an element of the algebra <span class="math notranslate">\(\mathcal P_{n,m}\)</span>, (see <a class="reference internal" href="theory_algebra.html#formal-definition"><span class="std std-ref">Formal definition</span></a>) defined
+over the field <span class="math notranslate">\(\mathbf K\)</span> (the field is represented by the template argument <em>Cf</em>). We call elements of this algebra
+generalized dual numbers as, among other things and when <span class="math notranslate">\(\mathbf K\)</span> is <span class="math notranslate">\(\mathbb R\)</span>), they generalize the dual numbers used for forward automatic differentiation.</p>
+<p>Using the multi-index notation, a generalized dual number (for example over the field <span class="math notranslate">\(\mathbb R\)</span> represented by doubles, i.e. <code class="code docutils literal notranslate"><span class="pre">gdual&lt;double&gt;</span></code>)
+may be written as:</p>
+<div class="math notranslate">
+\[T_f(\mathbf x) = \sum_{|\alpha| = 0}^m  \frac{(\mathbf x-\mathbf a)^\alpha}{\alpha!}(\partial^\alpha f)(\mathbf a)\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A generalized dual number is defined by its truncation order <span class="math notranslate">\(m\)</span> as well as by its expansion point <span class="math notranslate">\(\mathbf a\)</span>.
+All arithmetic operators +,*,/,- are overloaded so that computing with the type audi::gdual correspond to compute the
+Taylor expansion of the arithmetic computations.</p>
+</div>
+<p>A basic use case, where <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [1.2, -0.1]\)</span> and <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span> is thus:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>resulting in the output:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.118343</span><span class="o">*</span><span class="n">dx1</span><span class="o">+</span><span class="mf">0.846154</span><span class="o">+</span><span class="mf">1.42012</span><span class="o">*</span><span class="n">dx2</span><span class="o">+</span><span class="mf">1.0924</span><span class="o">*</span><span class="n">dx2</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mf">0.0910332</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mf">1.00137</span><span class="o">*</span><span class="n">dx1</span><span class="o">*</span><span class="n">dx2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
+piranha::is_cf&lt;Cf&gt;::value must be true). Classical examples would be double, float, std::complex&lt;double&gt;, and
+the audi::vectorized_double type. If piranha::is_differentiable&lt;Cf&gt;::value is also true then derivation
+and integration are also availiable and the resulting algebra is a differential algebra.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="constructors-and-destructors">
+<h2>Constructors and destructors<a class="headerlink" href="#constructors-and-destructors" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="_CPPv3I0E5gdualRK1T">
+<span id="_CPPv2I0E5gdualRK1T"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1T" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
+</div>
+<p>Constructs a gdual of order <span class="math notranslate">\(m = 0\)</span> with only a constant term <span class="math notranslate">\(c\)</span>. Essentially <span class="math notranslate">\(T_f = c\)</span> in <span class="math notranslate">\(\mathcal P_{0,0}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> – The constant term <span class="math notranslate">\(c\)</span>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0E5gdualRK1TRKNSt6stringEj">
+<span id="_CPPv2I0E5gdualRK1TRKNSt6stringEj"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1TRKNSt6stringEj" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
+</div>
+<p>Constructs a gdual of order <span class="math notranslate">\(m\)</span> representing a variable. Essentially <span class="math notranslate">\(T_f = c + dx\)</span> in <span class="math notranslate">\(\mathcal P_{1,m}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c</strong> – The constant term <span class="math notranslate">\(c\)</span>.</li>
+<li><strong>symbol</strong> – The symbol that will represent the variable (e.g. <span class="math notranslate">\(x\)</span>).</li>
+<li><strong>m</strong> – The truncation order of the algebra.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body"><p class="first last">std::invalid_argument if the symbol names starts already with “d” a differential. This avoids symbols like ddx in the piranha::polynomial.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv35gdualv">
+<span id="_CPPv25gdualv"></span><span id="gdual"></span><code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv35gdualv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. Constructs a gdual of order <span class="math notranslate">\(m = 0\)</span> with only a zero constant term <span class="math notranslate">\(c\)</span>. Essentially <span class="math notranslate">\(T_f = 0\)</span> in <span class="math notranslate">\(\mathcal P_{0,0}\)</span></p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv35gdualRK5gdual">
+<span id="_CPPv25gdualRK5gdual"></span><span id="gdual__gdualCR"></span><code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv35gdualv" title="gdual">gdual</a>&amp;<span class="sig-paren">)</span> = default<a class="headerlink" href="#_CPPv35gdualRK5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defaulted copy constructor.</p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv35gdualRR5gdual">
+<span id="_CPPv25gdualRR5gdual"></span><span id="gdual__gdualRR"></span><code class="descname">gdual</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv35gdualv" title="gdual">gdual</a>&amp;&amp;<span class="sig-paren">)</span> = default<a class="headerlink" href="#_CPPv35gdualRR5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defaulted move constructor.</p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3D0v">
+<span id="_CPPv2D0v"></span><span id="~gdual"></span><code class="descname">~gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3D0v" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destructor. Performs a sanity check on the truncation order and degree of the gdual.</p>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="differential-algebra-operations">
+<h3>Differential algebra operations<a class="headerlink" href="#differential-algebra-operations" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv3IE9integrateRKNSt6stringE">
+<span id="_CPPv2IE9integrateRKNSt6stringE"></span>template&lt;&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">integrate</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3IE9integrateRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This template is only enabled if <em>Cf</em> satisfies piranha::is_differentiable, which is
+the case for float, double, std::complex and vectorized_double types.</p>
+</div>
+<p>Performs the integration of the gdual with respect to <em>var_name</em>. If the <em>var_name</em> differential is not in the symbol set
+of the piranha::polynomial it is added.
+Note that Information may be lost as the truncation order is preserved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>var_name</strong> – Symbol name (cannot start with “d”).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if <em>var_name</em> starts with the letter “d”.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3IE7partialRKNSt6stringE">
+<span id="_CPPv2IE7partialRKNSt6stringE"></span>template&lt;&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">partial</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>var_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3IE7partialRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This template is only enabled if <em>Cf</em> satisfies piranha::is_differentiable, which is
+the case for float, double, std::complex and vectorized_double types.</p>
+</div>
+<p>Performs the partial derivative of the gdual with respect to <em>var_name</em>. If the <em>var_name</em> differential is not in the symbol set
+of the piranha::polynomial it is added.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>var_name</strong> – Symbol name (cannot start with “d”).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if <em>var_name</em> starts with the letter “d”.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="gdual-manipulation">
+<h3>gdual manipulation<a class="headerlink" href="#gdual-manipulation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv3I0ENK4subsERKNSt6stringERK1T">
+<span id="_CPPv2I0ENK4subsERKNSt6stringERK1T"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Substitute the differential <em>sym</em> with <em>val</em>. The <em>Cf</em> type must be constructable from <em>val</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sym</strong> – The name of the differential to be substituted.</li>
+<li><strong>val</strong> – The value to substitute <em>sym</em> with.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new gdual with the substitution made.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK4subsERKNSt6stringERK5gdual">
+<span id="_CPPv2NK4subsERKNSt6stringERK5gdual"></span><span id="subs__ssCR.gdualCRC"></span><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK4subsERKNSt6stringERK5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Substitute the differential <em>sym</em> with the gdual <em>val</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sym</strong> – The name of the differential to be substituted.</li>
+<li><strong>val</strong> – The value to substitute <em>sym</em> with.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new gdual with the substitution made.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK4trimEd">
+<span id="_CPPv2NK4trimEd"></span><span id="trim__doubleC"></span><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">trim</code><span class="sig-paren">(</span>double <em>epsilon</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK4trimEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets to zero all coefficients of the gdual with absolute value smaller than <em>epsilon</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epsilon</strong> – Tolerance for the trim.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new gdual without the trimmed coefficients.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK13extract_termsEj">
+<span id="_CPPv2NK13extract_termsEj"></span><span id="extract_terms__unsignedC"></span><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">extract_terms</code><span class="sig-paren">(</span>unsigned <em>degree</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK13extract_termsEj" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Extracts all the monomials of a given <em>degree</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>order</strong> – The monomials degree.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new gdual containing only the terms extracted, but preserving the truncation order of the original gdual.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the <em>degree</em> is higher than the gdual truncation order.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv317extend_symbol_setRKNSt6vectorINSt6stringEEE">
+<span id="_CPPv217extend_symbol_setRKNSt6vectorINSt6stringEEE"></span><span id="extend_symbol_set__std::vector:ss:CR"></span>void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv317extend_symbol_setRKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Adds some symbolic variables to the current piranha::polynomial
+This is useful in situations where some differential <span class="math notranslate">\(dx\)</span> does not
+appear as its coefficient is zero but we still want to treat the gdual as a function of
+<span class="math notranslate">\(x\)</span> too (for example when extracting the relative coefficient)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sym_vars</strong> – list of symbolic names. It must contain all symbolic names of
+the current piranha::polynomial. It may contain more. All symbols must start with the letter “d”.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if any symbol in <em>sym_vars</em> does not start with the letter “d”
+or if <em>sym_vars</em> does not contain all current symbols too.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="gdual-inspection">
+<h3>gdual inspection<a class="headerlink" href="#gdual-inspection" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="_CPPv3NK19get_symbol_set_sizeEv">
+<span id="_CPPv2NK19get_symbol_set_sizeEv"></span><span id="get_symbol_set_sizeC"></span>auto <code class="descname">get_symbol_set_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK19get_symbol_set_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the size of the symbol set of the piranha::polynomial</p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK14get_symbol_setEv">
+<span id="_CPPv2NK14get_symbol_setEv"></span><span id="get_symbol_setC"></span>std::vector&lt;std::string&gt; <code class="descname">get_symbol_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK14get_symbol_setEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the symbol set of the piranha::polynomial stripping the differentials (i.e. “dx” becomes “x”)</p>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK8evaluateERKNSt13unordered_mapINSt6stringEdEE">
+<span id="_CPPv2NK8evaluateERKNSt13unordered_mapINSt6stringEdEE"></span><span id="evaluate__std::unordered_map:ss.double:CRC"></span>auto <code class="descname">evaluate</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, double&gt; &amp;<em>dict</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK8evaluateERKNSt13unordered_mapINSt6stringEdEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Evaluates the Taylor polynomial using the values in <em>dict</em> for the differentials (variables variations)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict</strong> – a dictionary (unordered map) containing the values for the differentials.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the value of the Taylor polynomial.</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">;</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({{</span><span class="s2">&quot;dx1&quot;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;dx2&quot;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">}})</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK6degreeEv">
+<span id="_CPPv2NK6degreeEv"></span><span id="degreeC"></span>auto <code class="descname">degree</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK6degreeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the degree of the polynomial. This is necessarily smaller or equal the truncation order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the polynomial degree.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK9get_orderEv">
+<span id="_CPPv2NK9get_orderEv"></span><span id="get_orderC"></span>unsigned int <code class="descname">get_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK9get_orderEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the truncation order of the polynomial.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the polynomial truncation order.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0ENK7find_cfERK1T">
+<span id="_CPPv2I0ENK7find_cfERK1T"></span>template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfERK1T" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the coefficient of the monomial specified by the container <em>c</em>.
+The container contains the exponents of the requested monomial. In a three
+variable Taylor expansion with <span class="math notranslate">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
+the monomial <span class="math notranslate">\(dx dy^3 dz^2\)</span>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alphabetical order is used to order the symbol set and thus specify
+the coefficients.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If the monomial requested is not found in the polynomial a zero coefficient will be returned.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the coefficient of the monomial, if present, zero otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the requested coefficient is beyond the truncation order</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">find_cf</span><span class="p">(</span><span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">}))</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE">
+<span id="_CPPv2I0ENK7find_cfENSt16initializer_listI1TEE"></span>template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the coefficient of the monomial specified by the initializer list <em>l</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method overloads the one above and is provided for convenience.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the coefficient of the monomial, if present, zero otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the requested coefficient is beyond the truncation order</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">);</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">find_cf</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">})</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv311constant_cfv">
+<span id="_CPPv211constant_cfv"></span><span id="constant_cf"></span>Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv311constant_cfv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Finds the constant coefficient of the Taylor polynomial. So that if <span class="math notranslate">\(T_{f} = f_0 + \hat f\)</span>, <span class="math notranslate">\(f_0\)</span> is returned</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the constant coefficient.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0ENK14get_derivativeERK1T">
+<span id="_CPPv2I0ENK14get_derivativeERK1T"></span>template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERK1T" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the (mixed) derivative value of order specified by the container <em>c</em></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The container describes the derivative requested. In a three
+variable polynomial with <span class="math notranslate">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
+the sixth order derivative <span class="math notranslate">\(\frac{d^6}{dxdy^3dz^2}\)</span>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No computations are made at this points as all derivatives are already
+contained in the Taylor expansion</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the value of the derivative</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the requested coefficient is beyond the truncation order</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">);</span>
+<span class="o">//</span> <span class="n">This</span> <span class="n">streams</span> <span class="n">the</span> <span class="n">value</span> <span class="n">of</span> <span class="n">df</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="n">dx1</span><span class="o">/</span><span class="n">dx2</span> <span class="ow">in</span> <span class="n">x1</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">(</span><span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">}))</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE">
+<span id="_CPPv2I0ENK14get_derivativeENSt16initializer_listI1TEE"></span>template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the (mixed) derivative value of order specified by the initializer list <em>l</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method overloads the one above and is provided for convenience.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the value of the derivative</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the requested coefficient is beyond the truncation order</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">);</span>
+<span class="o">//</span> <span class="n">This</span> <span class="n">streams</span> <span class="n">the</span> <span class="n">value</span> <span class="n">of</span> <span class="n">df</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="n">dx1</span><span class="o">/</span><span class="n">dx2</span> <span class="ow">in</span> <span class="n">x1</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">})</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3I0ENK14get_derivativeERKNSt13unordered_mapINSt6stringEjEE">
+<span id="_CPPv2I0ENK14get_derivativeERKNSt13unordered_mapINSt6stringEjEE"></span>template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> std::unordered_map&lt;std::string, unsigned int&gt; &amp;<em>dict</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERKNSt13unordered_mapINSt6stringEjEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the (mixed) derivative value of the order specified in <em>dict</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict</strong> – a dictionary (unordered map) containing the derivation order (assumes zero for symbols not present).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the value of the derivative</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Exception:</th><td class="field-body">std::invalid_argument if the requested derivative degree is beyond the truncation order</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">);</span>
+<span class="o">//</span> <span class="n">This</span> <span class="n">streams</span> <span class="n">the</span> <span class="n">value</span> <span class="n">of</span> <span class="n">df</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="n">dx1</span><span class="o">/</span><span class="n">dx2</span> <span class="ow">in</span> <span class="n">x1</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">f</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s2">&quot;dx1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="n">u</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;dx2&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="n">u</span><span class="p">}})</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3NK7is_zeroEd">
+<span id="_CPPv2NK7is_zeroEd"></span><span id="is_zero__doubleC"></span>bool <code class="descname">is_zero</code><span class="sig-paren">(</span>double <em>tol</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK7is_zeroEd" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Checks all coefficients of the gdual and returns true if all their absolute values are smaller
+than the defined tolerance <em>tol</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether the gdual is zero within a tolerance.</td>
+</tr>
+</tbody>
+</table>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+<span class="n">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">is_zero</span><span class="p">(</span><span class="mf">1e-13</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;The trigonomoetric identity holds!!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="operators">
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h2>
+<p>The following operators are implemented:</p>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;&lt;, streaming</li>
+<li>==, equal to</li>
+<li>=,  assignement</li>
+<li>!=, not equal to</li>
+<li>+=, addition assignment</li>
+<li>-=, subtraction assignment</li>
+<li>*=, multiplication assignment</li>
+<li>/=, division assignment</li>
+<li>-, unary minus</li>
+<li>+, unary plus</li>
+<li>+, addition</li>
+<li>-, subtraction</li>
+<li>*, multiplication</li>
+<li>/, division</li>
+</ul>
+</div></blockquote>
+<p>They allow to compute with the type gdual as you would operate with a basic type.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When relevant, the operators implement order promotion so that, for example, if a gdual of order 2 is added to a
+gdual of order 3 the resulting gdual will have order three.</p>
+</div>
+<p>We specify the documentation of a few operators with non trivial meaning.</p>
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3lsRNSt7ostreamERK5gdual">
+<span id="_CPPv2lsRNSt7ostreamERK5gdual"></span><span id="lshift-operator__osR.gdualCR"></span><em class="property">friend</em> std::ostream &amp;<code class="descname">operator&lt;&lt;</code><span class="sig-paren">(</span>std::ostream &amp;<em>os</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3lsRNSt7ostreamERK5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Will direct to stream a human-readable representation of the generalized dual number.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The print order of the terms will be undefined. At most piranha::settings::get_max_term_output() terms
+are printed, and terms in excess are represented with ellipsis “…”
+at the end of the output; if piranha::settings::get_max_term_output()
+is zero, all the terms will be printed. piranha::settings::set_max_term_output()
+is used to set this parameter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>os</strong> – target stream.</li>
+<li><strong>d</strong> – gdual argument.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">reference to <em>os</em></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3eqRK5gdualRK5gdual">
+<span id="_CPPv2eqRK5gdualRK5gdual"></span><span id="eq-operator__gdualCR.gdualCR"></span><em class="property">friend</em> bool <code class="descname">operator==</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>d1</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3eqRK5gdualRK5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Equality operator. Two gduals are considered equal if all their coefficients are equal.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The truncation order of <em>d1</em> and <em>d2</em> may be different</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d1</strong> – first argument.</li>
+<li><strong>d2</strong> – second argument.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The result of the comparison.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="function">
+<dt id="_CPPv3neRK5gdualRK5gdual">
+<span id="_CPPv2neRK5gdualRK5gdual"></span><span id="neq-operator__gdualCR.gdualCR"></span><em class="property">friend</em> bool <code class="descname">operator!=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>d1</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3neRK5gdualRK5gdual" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Non equality operator.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The truncation order of <em>d1</em> and <em>d2</em> may be different</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d1</strong> – first argument.</li>
+<li><strong>d2</strong> – second argument.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The result of the comparison.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="functions.html" class="btn btn-neutral float-right" title="Mathematical functions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="doc_c++.html" class="btn btn-neutral" title="Documentation (C++ header only library)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
