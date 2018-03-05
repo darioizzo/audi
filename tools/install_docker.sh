@@ -67,7 +67,7 @@ make install > /dev/null 2>&1
 cd ..
 
 # Install CMake
-curl https://github.com/Kitware/CMake/archive/v${CMAKE_VERSION}.tar.gz > v${CMAKE_VERSION}
+curl -L https://github.com/Kitware/CMake/archive/v${CMAKE_VERSION}.tar.gz > v${CMAKE_VERSION}
 tar xzf v${CMAKE_VERSION} > /dev/null 2>&1
 cd CMake-${CMAKE_VERSION}/
 ./configure > /dev/null
@@ -76,7 +76,7 @@ gmake install > /dev/null
 cd ..
 
 # Install Eigen
-curl https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz > ${EIGEN3_VERSION}
+curl -L https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz > ${EIGEN3_VERSION}
 tar xzf ${EIGEN3_VERSION} > /dev/null 2>&1
 cd eigen-${EIGEN3_VERSION}
 mkdir build
@@ -87,7 +87,7 @@ cd ..
 cd ..
 
 # Install piranha
-curl https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > v0.10
+curl -L https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > v0.10
 tar xvf v0.10 > /dev/null 2>&1
 cd piranha-0.10
 mkdir build
