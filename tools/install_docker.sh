@@ -58,7 +58,7 @@ make install > /dev/null 2>&1
 cd ..
 
 # Install mpfr
-wget http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > /dev/null 2>&1
+curl http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > mpfr-3.1.6.tar.gz
 tar xvf mpfr-3.1.6.tar.gz > /dev/null 2>&1
 cd mpfr-3.1.6
 ./configure > /dev/null 2>&1
@@ -67,7 +67,7 @@ make install > /dev/null 2>&1
 cd ..
 
 # Install CMake
-wget https://github.com/Kitware/CMake/archive/v${CMAKE_VERSION}.tar.gz --no-verbose
+curl https://github.com/Kitware/CMake/archive/v${CMAKE_VERSION}.tar.gz > v${CMAKE_VERSION}
 tar xzf v${CMAKE_VERSION} > /dev/null 2>&1
 cd CMake-${CMAKE_VERSION}/
 ./configure > /dev/null
@@ -76,7 +76,7 @@ gmake install > /dev/null
 cd ..
 
 # Install Eigen
-wget https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz --no-verbose
+curl https://github.com/RLovelett/eigen/archive/${EIGEN3_VERSION}.tar.gz > ${EIGEN3_VERSION}
 tar xzf ${EIGEN3_VERSION} > /dev/null 2>&1
 cd eigen-${EIGEN3_VERSION}
 mkdir build
@@ -87,7 +87,7 @@ cd ..
 cd ..
 
 # Install piranha
-wget https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > /dev/null 2>&1
+curl https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > v0.10
 tar xvf v0.10 > /dev/null 2>&1
 cd piranha-0.10
 mkdir build

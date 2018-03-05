@@ -9,7 +9,7 @@ This class represents an element of the algebra :math:`\mathcal P_{n,m}`, (see :
 over the field :math:`\mathbf K` (the field is represented by the template argument *Cf*). We call elements of this algebra
 generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`), they generalize the dual numbers used for forward automatic differentiation.
 
-Using the multi-index notation, a generalized dual number (over the field :math:`\mathbb R` represented by doubles, i.e. :code:`gdual<double>`) 
+Using the multi-index notation, a generalized dual number (for example over the field :math:`\mathbb R` represented by doubles, i.e. :code:`gdual<double>`) 
 may be written as:
 
 .. math::
@@ -393,6 +393,34 @@ gdual inspection
 
 Operators
 ---------
+
+The following operators are implemented: 
+
+  * <<, streaming 
+  * ==, equal to 
+  * =,  assignement
+  * !=, not equal to 
+  * +=, addition assignment
+  * -=, subtraction assignment
+  * \*=, multiplication assignment
+  * /=, division assignment
+  * -, unary minus
+  * +, unary plus
+  * +, addition
+  * -, subtraction
+  * \*, multiplication
+  * /, division
+
+They allow to compute with the type gdual as you would operate with a basic type.
+
+.. note:: 
+
+   When relevant, the operators implement order promotion so that, for example, if a gdual of order 2 is added to a
+   gdual of order 3 the resulting gdual will have order three.
+
+We specify the documentation of a few operators with non trivial meaning.
+
+------------------------------------------------------
 
 .. cpp:function:: friend std::ostream &operator<<(std::ostream &os, const gdual &d)
 
