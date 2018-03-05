@@ -6,8 +6,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../src/audi.hpp"
 #include "helpers.hpp"
+#include <audi/audi.hpp>
+#include <audi/functions.hpp>
+
 
 using namespace audi;
 
@@ -252,7 +254,7 @@ BOOST_AUTO_TEST_CASE(subs)
         auto z = x.subs("dx", y);
         BOOST_CHECK((z - 1. - y).is_zero(1e-14));
         BOOST_CHECK(z.get_order() == 3);
-        BOOST_CHECK(z.get_symbol_set_size() == y.get_symbol_set_size() + 1);
+        BOOST_CHECK(z.get_symbol_set_size() == y.get_symbol_set_size());
     }
     // Function composition works on truncated Taylor series if the constant coefficient is zero
     // and we then take advantage of the nihilpotency property.
@@ -280,23 +282,23 @@ BOOST_AUTO_TEST_CASE(extract_order)
     unsigned int order = 8u;
     gdual_d x(0.123, "x", order);
     gdual_d y(0.456, "y", order);
-    auto f = audi::sin(x*y);
+    auto f = audi::sin(x * y);
     // We test that the extracted gduals have the requested order
-    for (auto i = 0u; i<=order; ++i) {
+    for (auto i = 0u; i <= order; ++i) {
         auto fi = f.extract_terms(i);
-        BOOST_CHECK_EQUAL(fi.degree(),fi.get_order());
-        BOOST_CHECK_EQUAL(fi.get_order(), i);        
+        BOOST_CHECK_EQUAL(fi.degree(), fi.get_order());
+        BOOST_CHECK_EQUAL(fi.get_order(), i);
     }
     // We test that f = f0+f1+f2+...+fn
     std::vector<gdual_d> terms;
-    for (auto i = 0u; i<=order; ++i) {
+    for (auto i = 0u; i <= order; ++i) {
         auto f2 = f.extract_terms(i);
-        terms.push_back(f2);       
+        terms.push_back(f2);
     }
     auto sum = std::accumulate(terms.begin(), terms.end(), gdual_d(0.));
     BOOST_CHECK((sum - f).is_zero(0.));
     // And we test the throw
-    BOOST_CHECK_THROW(f.extract_terms(order+1), std::invalid_argument);
+    BOOST_CHECK_THROW(f.extract_terms(order + 1), std::invalid_argument);
     BOOST_CHECK_NO_THROW(f.extract_terms(order));
 }
 

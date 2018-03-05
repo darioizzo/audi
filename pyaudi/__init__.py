@@ -1,4 +1,8 @@
-__all__ = ['test']
-from ._core import *
+# for python 2.0 compatibility
+from __future__ import absolute_import as _ai
 
-__version__ = {'major': 1, 'minor': 0, 'bugfix': 3}
+# Version setup.
+from ._version import __version__
+
+__all__ = ['test']
+from .core import *

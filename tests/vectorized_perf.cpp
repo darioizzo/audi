@@ -1,14 +1,13 @@
+#include <algorithm>
+#include <boost/timer/timer.hpp>
+#include <functional>
 #include <iomanip>
 #include <piranha/polynomial.hpp>
 #include <piranha/type_traits.hpp>
-#include <vector>
-#include <algorithm>
-#include <functional>
 #include <random>
-#include <boost/timer/timer.hpp>
+#include <vector>
 
-#include "../src/audi.hpp"
-
+#include <audi/audi.hpp>
 
 std::vector<double> random_vector_double(unsigned int N, double lb, double ub)
 {
@@ -34,7 +33,8 @@ void measure_speedup(int points, unsigned int order)
     auto coeff_v = audi::gdual_v(coeff);
 
     boost::timer::cpu_timer t1;
-    audi::gdual_v x{xcoeff, "x",order}, y{ycoeff, "y",order}, z{zcoeff, "z",order}, w{zcoeff, "w",order}, q{zcoeff, "q",order}, r{zcoeff, "r",order}, s{zcoeff, "s",order} ;
+    audi::gdual_v x{xcoeff, "x", order}, y{ycoeff, "y", order}, z{zcoeff, "z", order}, w{zcoeff, "w", order},
+        q{zcoeff, "q", order}, r{zcoeff, "r", order}, s{zcoeff, "s", order};
     auto foo = coeff_v + x + y + z - w + q + r + s;
     for (int i = 1; i < 20; ++i) {
         foo *= coeff_v + x + y + z - w + q + r + s;
@@ -44,7 +44,8 @@ void measure_speedup(int points, unsigned int order)
 
     boost::timer::cpu_timer t2;
     for (auto i = 0u; i < points; ++i) {
-        audi::gdual_d x{xcoeff[i], "x",order}, y{ycoeff[i], "y",order}, z{zcoeff[i], "z",order}, w{zcoeff[i], "w",order}, q{zcoeff[i], "q",order}, r{zcoeff[i], "r",order}, s{zcoeff[i], "s",order} ;
+        audi::gdual_d x{xcoeff[i], "x", order}, y{ycoeff[i], "y", order}, z{zcoeff[i], "z", order},
+            w{zcoeff[i], "w", order}, q{zcoeff[i], "q", order}, r{zcoeff[i], "r", order}, s{zcoeff[i], "s", order};
         auto foo = coeff[i] + x + y + z - w + q + r + s;
         for (int j = 1; j < 20; ++j) {
             foo *= coeff[i] + x + y + z - w + q + r + s;
@@ -52,13 +53,15 @@ void measure_speedup(int points, unsigned int order)
         foo *= foo;
     }
     auto wall2 = t2.elapsed().wall;
-    std::cout << "Number of points in vector: " << std::setw(10) << points << "\t\tOrder: " << std::setw(3) << order << "\tSpeedup: " << std::setw(4) << (1.*wall2) / wall1 << "\n";
+    std::cout << "Number of points in vector: " << std::setw(10) << points << "\t\tOrder: " << std::setw(3) << order
+              << "\tSpeedup: " << std::setw(4) << (1. * wall2) / wall1 << "\n";
 }
 
-int main() {
+int main()
+{
     for (auto j = 1u; j < 6; ++j) {
         for (auto i = 1u; i < 4; ++i) {
-            measure_speedup(pow(10,i), j);
+            measure_speedup(pow(10, i), j);
         }
     }
 }

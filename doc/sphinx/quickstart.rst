@@ -48,11 +48,13 @@ Notebooks
 
 Follow the links below to visualize juypiter notebooks on the use of pyaudi.
 
-- `The very basics <https://github.com/darioizzo/audi/blob/master/examples/example00.ipynb>`_: (by Francesco Biscani and Dario Izzo)
+- `The very basics <https://github.com/darioizzo/audi/blob/master/examples/example00.ipynb>`_
 
-- `Understanding gduals and floats <https://github.com/darioizzo/audi/blob/master/examples/example01.ipynb>`_: (Dario Izzo)
+- `Understanding gduals and floats <https://github.com/darioizzo/audi/blob/master/examples/example01.ipynb>`_:
 
-- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/master/examples/example11.ipynb>`_: (by Carlos Sanchez)
+- `Differential Intelligence <https://github.com/darioizzo/audi/blob/master/examples/example10.ipynb>`_
 
-- `Differential Intelligence <https://github.com/darioizzo/audi/blob/master/examples/example10.ipynb>`_: (by Dario Izzo)
+- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/master/examples/example11.ipynb>`_
+
+- Tutorial on High Order Taylor Maps <https://github.com/darioizzo/audi/blob/master/examples/example12.ipynb>`_
 
