@@ -1,13 +1,13 @@
-Generalized Dual Number
-========================
+Generalized Dual numbers
+=========================
 
 *#include <audi/gdual.hpp>*
 
 .. cpp:class:: template <typename Cf> gdual
 
 This class represents an element of the algebra :math:`\mathcal P_{n,m}`, (see :ref:`formal_definition`) defined
-over the field :math:`\mathbf K` (the field is represented by the template argument *Cf*). We call elements of this algebra
-generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`), they generalize the dual numbers used for forward automatic differentiation.
+over the field :math:`\mathbf K` (the field is represented by the template argument **Cf**). We call elements of this algebra
+generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`, they generalize the dual numbers used for forward automatic differentiation.
 
 Using the multi-index notation, a generalized dual number (for example over the field :math:`\mathbb R` represented by doubles, i.e. :code:`gdual<double>`) 
 may be written as:
@@ -19,7 +19,7 @@ may be written as:
 .. note::
 
    A generalized dual number is defined by its truncation order :math:`m` as well as by its expansion point :math:`\mathbf a`. 
-   All arithmetic operators +,*,/,- are overloaded so that computing with the type audi::gdual correspond to compute the
+   All arithmetic operators +,*,/,- are overloaded so that computing with the type :cpp:class:`gdual` correspond to compute the
    Taylor expansion of the arithmetic computations.
 
 A basic use case, where :math:`m = 2`, :math:`\mathbf a = [1.2, -0.1]` and :math:`f = \frac{x1+x2}{x1-x2}` is thus:
