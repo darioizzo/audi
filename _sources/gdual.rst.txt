@@ -24,7 +24,7 @@ may be written as:
 
 A basic use case, where :math:`m = 2`, :math:`\mathbf a = [1.2, -0.1]` and :math:`f = \frac{x1+x2}{x1-x2}` is thus:
 
-.. code::
+.. code-block:: c++
 
    gdual<double> x1(1.2, "x1", 2);
    gdual<double> x2(-0.1, "x2", 2);
@@ -32,7 +32,7 @@ A basic use case, where :math:`m = 2`, :math:`\mathbf a = [1.2, -0.1]` and :math
 
 resulting in the output:
 
-.. code::
+.. code-block:: c++
 
    0.118343*dx1+0.846154+1.42012*dx2+1.0924*dx2**2-0.0910332*dx1**2-1.00137*dx1*dx2
 
@@ -220,7 +220,7 @@ gdual inspection
    :param dict: a dictionary (unordered map) containing the values for the differentials.
    :return: the value of the Taylor polynomial.
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1., "x1", 2);
       gdual<double> x2(1., "x2", 2);
@@ -265,7 +265,7 @@ gdual inspection
 
    :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
    
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1.2, "x1", 2);
       gdual<double> x2(-0.2, "x2", 2);
@@ -286,7 +286,7 @@ gdual inspection
 
    :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
    
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1.2, "x1", 2);
       gdual<double> x2(-0.2, "x2", 2);
@@ -322,7 +322,7 @@ gdual inspection
 
    :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1.2, "x1", 2);
       gdual<double> x2(-0.2, "x2", 2);
@@ -344,7 +344,7 @@ gdual inspection
 
    :exception: std::invalid_argument if the requested coefficient is beyond the truncation order
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1.2, "x1", 2);
       gdual<double> x2(-0.2, "x2", 2);
@@ -364,7 +364,7 @@ gdual inspection
 
    :exception: std::invalid_argument if the requested derivative degree is beyond the truncation order
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x1(1.2, "x1", 2);
       gdual<double> x2(-0.2, "x2", 2);
@@ -381,7 +381,7 @@ gdual inspection
 
    :return: whether the gdual is zero within a tolerance.
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x(0.1, "x", 6);
       auto f = 1 - sin(x)*sin(x) - cos(x)*cos(x);

@@ -61,7 +61,7 @@ Utilities
       map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
       the gduals are not all the same.
 
-   .. code::
+   .. code-block:: c++
 
       gdual<double> x(0., "x1", 9);
       auto sinx = sin(x);
@@ -73,7 +73,7 @@ Utilities
 
    The code above will produce the output
 
-   .. code::
+   .. code-block:: c++
 
       sin x:        dx1+2.75573e-06*dx1**9-0.166667*dx1**3+0.00833333*dx1**5-0.000198413*dx1**7
       asin x:       dx1+0.0303819*dx1**9+0.166667*dx1**3+0.075*dx1**5+0.0446429*dx1**7

@@ -24,23 +24,7 @@ Place it into a getting_started.py text file and run it with
 
 We recommend the use of Jupyter or ipython do enjoy pyaudi the most. 
 
-Notebooks
-^^^^^^^^^
-
-Follow the links below to visualize juypiter notebooks on the use of pyaudi.
-
-- `The very basics <https://github.com/darioizzo/audi/blob/master/examples/example00.ipynb>`_
-
-- `Understanding gduals and floats <https://github.com/darioizzo/audi/blob/master/examples/example01.ipynb>`_:
-
-- `Differential Intelligence <https://github.com/darioizzo/audi/blob/master/examples/example10.ipynb>`_
-
-- `Training an artificial neural network <https://github.com/darioizzo/audi/blob/master/examples/example11.ipynb>`_
-
-- Tutorial on High Order Taylor Maps <https://github.com/darioizzo/audi/blob/master/examples/example12.ipynb>`_
-
------------------------------------------------------------------------
-
+------------------------------------------------------------------------------------
 
 C++
 ---

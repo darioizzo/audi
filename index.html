@@ -88,8 +88,17 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials (in python notebooks):</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Gradient descent to train a neural network:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 </ul>
 
             
@@ -157,9 +166,8 @@
 <h1>Audi and pyaudi<a class="headerlink" href="#audi-and-pyaudi" title="Permalink to this headline">¶</a></h1>
 <p>Audi (not the car, rather from latin: “listen!”) is an open source, header only, C++ library
 (exposed to python in the pyaudi package) that implements the algebra of Taylor truncated polynomials and
-a few algorithms useful for its applications (Differential Intelligence, Taylor Models, etc.)</p>
-<p>It was created with the aim to offer a solution to the user in need of a generic automated
-differentiation system. While other automated differentiation codes may be more
+a few algorithms useful for its applications (Differential Intelligence, automatic differentiation, Taylor Models, etc.)</p>
+<p>When used for automated differentiation only, other automated differentiation codes may be more
 efficient on some targeted application, Audi was built to be fast and efficient
 across all application ranges (low/high order of derivation, one variable,
 many variables, sparse/dense cases).</p>
@@ -172,7 +180,7 @@ of the open source project <a class="reference external" href="https://github.co
 <p class="last">Audi is thread-safe and, when possible, makes use of Piranha fine-grained parallelization of the truncated polynomial multiplication.
 The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.</p>
 </div>
-<p>Audi is open source (GPL3) and available in github &lt;<a class="reference external" href="https://github.com/darioizzo/audi">https://github.com/darioizzo/audi</a>&gt;`_</p>
+<p>Audi is open source (GPL3) and its code available in github &lt;<a class="reference external" href="https://github.com/darioizzo/audi">https://github.com/darioizzo/audi</a>&gt;`_</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -186,6 +194,11 @@ The benefits of this fine grained parallelization are well visible for many vari
 <li class="toctree-l2"><a class="reference internal" href="install_c.html">Installation (audi header only C++ library)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python library)</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="theory_algebra.html">The algebra of truncated polynomials</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory_algebra.html#elementary-functions">Elementary functions</a></li>
@@ -193,8 +206,54 @@ The benefits of this fine grained parallelization are well visible for many vari
 <li class="toctree-l2"><a class="reference internal" href="theory_algebra.html#practical-examples-to-be-done-by-hand">Practical Examples (to be done by hand)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Tutorials (in python notebooks):</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Importing-stuff">Importing stuff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Define-some-variables-(gduals)">Define some variables (gduals)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Create-a-function-of-these-variables">Create a function of these variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Extracting-the-derivatives">Extracting the derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Changing-the-point">Changing the point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example00.html#Encapsulating-f-in-a-function-call">Encapsulating f in a function call</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example01.html#Importing-stuff">Importing stuff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example01.html#Arithmetic-between-floats-and-gduals">Arithmetic between floats and gduals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example01.html#Promoting-a-gdual">Promoting a gdual</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example10.html#Importing-stuff">Importing stuff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example10.html#Controller-representation-and-“simulator”">Controller representation and “simulator”</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example10.html#The-Euler-Propagation">The Euler Propagation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example10.html#Studying-the-effects-of-the-weights-on-the-behavior">Studying the effects of the weights on the behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example10.html#Check-that-we-learned-the-correct-map">Check that we learned the correct map</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Gradient descent to train a neural network:</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example11.html#Definition-of-parameters">Definition of parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example11.html#Neural-network-as-a-gdual-expression">Neural network as a gdual expression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example11.html#Loss-function">Loss function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example11.html#Training-(Gradient-descent)">Training (Gradient descent)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example12.html#We-perform-the-numerical-integration-using-floats-(the-standard-way)">We perform the numerical integration using floats (the standard way)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example12.html#We-perform-the-numerical-integration-using-gduals-(to-get-a-HOTM)">We perform the numerical integration using gduals (to get a HOTM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example12.html#We-visualize-the-HOTM">We visualize the HOTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example12.html#How-much-faster-is-now-to-evaluate-the-Map-rather-than-perform-a-new-numerical-integration?">How much faster is now to evaluate the Map rather than perform a new numerical integration?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example13.html#We-perform-the-numerical-integration-using-floats-(the-standard-way)">We perform the numerical integration using floats (the standard way)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example13.html#We-perform-the-numerical-integration-using-gduals-(to-get-a-HOTM)">We perform the numerical integration using gduals (to get a HOTM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example13.html#We-visualize-the-HOTM">We visualize the HOTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/example13.html#How-much-faster-is-now-to-evaluate-the-Map-rather-than-perform-a-new-numerical-integration?">How much faster is now to evaluate the Map rather than perform a new numerical integration?</a></li>
 </ul>
 </li>
 </ul>

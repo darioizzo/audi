@@ -35,6 +35,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="audi 1.1 documentation" href="index.html"/>
         <link rel="up" title="Documentation (C++ header only library)" href="doc_c++.html"/>
+        <link rel="next" title="Documentation (Python library)" href="doc_python.html"/>
         <link rel="prev" title="Mathematical functions" href="functions.html"/> 
 
   
@@ -89,7 +90,6 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
@@ -97,8 +97,19 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Utilities</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python library)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials (in python notebooks):</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Gradient descent to train a neural network:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 </ul>
 
             
@@ -171,7 +182,7 @@
 <p><em>#include &lt;audi/invert_map.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb">
-<span id="_CPPv210invert_mapRKNSt6vectorI7gdual_dEEb"></span><span id="invert_map__std::vector:gdual_d:CR.b"></span>std::vector&lt;gdual_d&gt; <code class="descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
+std::vector&lt;gdual_d&gt; <code class="descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Inversion of Taylor series.</p>
 <p>Consider a system of non linear equations in <span class="math notranslate">\(n\)</span> variables:</p>
 <div class="math notranslate">
@@ -225,19 +236,19 @@ the gduals are not all the same.</p>
 </tr>
 </tbody>
 </table>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
-<span class="n">auto</span> <span class="n">sinx</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
-<span class="n">auto</span> <span class="n">asinx</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
-<span class="n">auto</span> <span class="n">inv_sinx</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">({</span><span class="n">sinx</span><span class="p">});</span>
-<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;sin x:</span><span class="se">\t\t</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;asin x:</span><span class="se">\t\t</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">asinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;inv sinx:</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inv_sinx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="s">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">sinx</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">asinx</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">auto</span> <span class="n">inv_sinx</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">({</span><span class="n">sinx</span><span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;sin x:</span><span class="se">\t\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;asin x:</span><span class="se">\t\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">asinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;inv sinx:</span><span class="se">\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inv_sinx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>The code above will produce the output</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sin</span> <span class="n">x</span><span class="p">:</span>        <span class="n">dx1</span><span class="o">+</span><span class="mf">2.75573e-06</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">-</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.00833333</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">-</span><span class="mf">0.000198413</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
-<span class="n">asin</span> <span class="n">x</span><span class="p">:</span>       <span class="n">dx1</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
-<span class="n">inv</span> <span class="n">sinx</span><span class="p">:</span>     <span class="n">dp0</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">7</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">sin</span> <span class="nl">x</span><span class="p">:</span>        <span class="n">dx1</span><span class="o">+</span><span class="mf">2.75573e-06</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">-</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.00833333</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">-</span><span class="mf">0.000198413</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
+<span class="n">asin</span> <span class="nl">x</span><span class="p">:</span>       <span class="n">dx1</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
+<span class="n">inv</span> <span class="nl">sinx</span><span class="p">:</span>     <span class="n">dp0</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">7</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -250,6 +261,8 @@ the gduals are not all the same.</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="doc_python.html" class="btn btn-neutral float-right" title="Documentation (Python library)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="functions.html" class="btn btn-neutral" title="Mathematical functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
