@@ -11,8 +11,6 @@ The following functions are implemented computing the truncated Taylor series of
  * :cpp:func:`abs`
 
 
-
-
 The following functions are implemented using the definition of their derivative:
 
  * :cpp:func:`erf`: error function
