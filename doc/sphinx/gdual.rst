@@ -7,7 +7,7 @@ Generalized Dual numbers
 
 This class represents an element of the algebra :math:`\mathcal P_{n,m}`, (see :ref:`formal_definition`) defined
 over the field :math:`\mathbf K` (the field is represented by the template argument **Cf**). We call elements of this algebra
-generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`), they generalize the dual numbers used for forward automatic differentiation.
+generalized dual numbers as, among other things and when :math:`\mathbf K` is :math:`\mathbb R`, they generalize the dual numbers used for forward automatic differentiation.
 
 Using the multi-index notation, a generalized dual number (for example over the field :math:`\mathbb R` represented by doubles, i.e. :code:`gdual<double>`) 
 may be written as:
