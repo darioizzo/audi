@@ -38,10 +38,15 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
 
 .. toctree::
    :maxdepth: 2
-   :caption: Python Tutorials:
+   :caption: Basic Python Tutorials:
 
    notebooks/example00.ipynb
    notebooks/example01.ipynb
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Advanced Python Tutorials:
+
    notebooks/example10.ipynb
    notebooks/example11.ipynb
    notebooks/example12.ipynb
