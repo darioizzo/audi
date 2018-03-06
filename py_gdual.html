@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Generalized Dual numbers &mdash; audi 1.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="audi 1.1 documentation" href="index.html"/>
+        <link rel="up" title="Documentation (Python library)" href="doc_python.html"/>
+        <link rel="next" title="Theory" href="theory.html"/>
+        <link rel="prev" title="Documentation (Python library)" href="doc_python.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> audi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="doc_python.html">Documentation (Python library)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Generalized Dual numbers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials (in python notebooks):</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Gradient descent to train a neural network:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="documentation.html">Documentation</a> &raquo;</li>
+        
+          <li><a href="doc_python.html">Documentation (Python library)</a> &raquo;</li>
+        
+      <li>Generalized Dual numbers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/py_gdual.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generalized-dual-numbers">
+<h1>Generalized Dual numbers<a class="headerlink" href="#generalized-dual-numbers" title="Permalink to this headline">¶</a></h1>
+<p>The following generalized dual numbers (and thus the corresponding algebra) are made available
+in the python module pyaudi:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#pyaudi.gdual_double" title="pyaudi.gdual_double"><code class="xref py py-class docutils literal notranslate"><span class="pre">gdual_double</span></code></a>: basic type for computing on real numbers</li>
+<li><a class="reference internal" href="#pyaudi.gdual_vdouble" title="pyaudi.gdual_vdouble"><code class="xref py py-class docutils literal notranslate"><span class="pre">gdual_vdouble</span></code></a>: basic type for computing on vectors of real numbers</li>
+</ul>
+</div></blockquote>
+<hr class="docutils" />
+<dl class="class">
+<dt id="pyaudi.gdual_double">
+<em class="property">class </em><code class="descclassname">pyaudi.</code><code class="descname">gdual_double</code><a class="headerlink" href="#pyaudi.gdual_double" title="Permalink to this definition">¶</a></dt>
+<dd><p>The generalized dual number class</p>
+<p>This class represents a generalized dual number, in a nutshell, a truncated multivariate Taylor polynomial.
+A gdual is defined by its truncation order <span class="math notranslate">\(m\)</span> as well as on its expansion point <span class="math notranslate">\(\mathbf a\)</span>. All arithmetic
+operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic computations is obtained.</p>
+<p>A basic example is:</p>
+<p>gdual_double: <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [1.2, -0.1]\)</span>, <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> 
+<span class="go">1.42012*dx2+0.118343*dx1+1.0924*dx2**2+0.846154-1.00137*dx1*dx2-0.0910332*dx1**2</span>
+</pre></div>
+</div>
+<p>gdual_vdouble: <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [[1.2, 1.1], [-0.1, -0.2]]\)</span>, <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_vdouble</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">],</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> 
+<span class="go">[1.42012, 1.30178]*dx2+[0.118343, 0.236686]*dx1+[1.0924, 1.00137]*dx2**2+[0.846154, 0.692308]+[-1.00137, -0.819299]*dx1*dx2+[-0.0910332, -0.182066]*dx1**2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A gdual can operate on doubles (gdual_double) or on vectorized doubles (gdual_vdouble). The second case is
+immensely more efficient when applicable.</p>
+</div>
+<p>See also the docs of the C++ class <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.</p>
+<dl class="attribute">
+<dt id="pyaudi.gdual_double.constant_cf">
+<code class="descname">constant_cf</code><a class="headerlink" href="#pyaudi.gdual_double.constant_cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant term of the polynomial</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyaudi.gdual_double.degree">
+<code class="descname">degree</code><a class="headerlink" href="#pyaudi.gdual_double.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>The degree of the generalized dual number</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The degree and the order of a gdual can be different, the degree is always smaller or equal ot the order.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The degree of the underlying Taylor polynomial</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>See also the docs of the C++ class <a class="reference internal" href="gdual.html#_CPPv3NK6degreeEv" title="degree"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">degree()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(dict)arg2</em><span class="sig-paren">)</span> &#x2192; float :<a class="headerlink" href="#pyaudi.gdual_double.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Taylor polynomial</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>double evaluate(audi::gdual&lt;double&gt;,boost::python::dict)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.extend_symbol_set">
+<code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; None :<a class="headerlink" href="#pyaudi.gdual_double.extend_symbol_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends the symbol set</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>void extend_symbol_set(audi::gdual&lt;double&gt; {lvalue},boost::python::api::object)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.find_cf">
+<code class="descname">find_cf</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; float :<a class="headerlink" href="#pyaudi.gdual_double.find_cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the coefficient of the Taylor expansion</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>double find_cf(audi::gdual&lt;double&gt;,boost::python::api::object)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.get_derivative">
+<code class="descname">get_derivative</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; float :<a class="headerlink" href="#pyaudi.gdual_double.get_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>double get_derivative(audi::gdual&lt;double&gt;,boost::python::api::object)</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>get_derivative( (gdual_double)arg1, (dict)arg2) -&gt; float :</dt>
+<dd><p class="first">Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor</p>
+<dl class="last docutils">
+<dt>C++ signature :</dt>
+<dd>double get_derivative(audi::gdual&lt;double&gt;,boost::python::dict)</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.integrate">
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &#x2192; gdual_double :<a class="headerlink" href="#pyaudi.gdual_double.integrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate with respect to argument</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;double&gt; integrate(audi::gdual&lt;double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.is_zero">
+<code class="descname">is_zero</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &#x2192; bool :<a class="headerlink" href="#pyaudi.gdual_double.is_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if all coefficients of the gdual are zero within a tolerance</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>bool is_zero(audi::gdual&lt;double&gt; {lvalue},double)</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyaudi.gdual_double.order">
+<code class="descname">order</code><a class="headerlink" href="#pyaudi.gdual_double.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>truncation order (&gt;= degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.partial">
+<code class="descname">partial</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &#x2192; gdual_double :<a class="headerlink" href="#pyaudi.gdual_double.partial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partial derivative with respect to argument</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;double&gt; partial(audi::gdual&lt;double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_double.subs">
+<code class="descname">subs</code><span class="sig-paren">(</span><em>(gdual_double)arg1</em>, <em>(str)arg2</em>, <em>(float)arg3</em><span class="sig-paren">)</span> &#x2192; gdual_double :<a class="headerlink" href="#pyaudi.gdual_double.subs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes a symbol with a value (does not remove symbol from symbol set)</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;double&gt; subs(audi::gdual&lt;double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;,double)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="class">
+<dt id="pyaudi.gdual_vdouble">
+<em class="property">class </em><code class="descclassname">pyaudi.</code><code class="descname">gdual_vdouble</code><a class="headerlink" href="#pyaudi.gdual_vdouble" title="Permalink to this definition">¶</a></dt>
+<dd><p>The generalized dual number class</p>
+<p>This class represents a generalized dual number, in a nutshell, a truncated multivariate Taylor polynomial.
+A gdual is defined by its truncation order <span class="math notranslate">\(m\)</span> as well as on its expansion point <span class="math notranslate">\(\mathbf a\)</span>. All arithmetic
+operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic computations is obtained.</p>
+<p>A basic example is:</p>
+<p>gdual_double: <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [1.2, -0.1]\)</span>, <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> 
+<span class="go">1.42012*dx2+0.118343*dx1+1.0924*dx2**2+0.846154-1.00137*dx1*dx2-0.0910332*dx1**2</span>
+</pre></div>
+</div>
+<p>gdual_vdouble: <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [[1.2, 1.1], [-0.1, -0.2]]\)</span>, <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_vdouble</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">([</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">],</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">],</span> <span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> 
+<span class="go">[1.42012, 1.30178]*dx2+[0.118343, 0.236686]*dx1+[1.0924, 1.00137]*dx2**2+[0.846154, 0.692308]+[-1.00137, -0.819299]*dx1*dx2+[-0.0910332, -0.182066]*dx1**2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A gdual can operate on doubles (gdual_double) or on vectorized doubles (gdual_vdouble). The second case is
+immensely more efficient when applicable.</p>
+</div>
+<p>See also the docs of the C++ class <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.</p>
+<dl class="attribute">
+<dt id="pyaudi.gdual_vdouble.constant_cf">
+<code class="descname">constant_cf</code><a class="headerlink" href="#pyaudi.gdual_vdouble.constant_cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant term of the polynomial</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyaudi.gdual_vdouble.degree">
+<code class="descname">degree</code><a class="headerlink" href="#pyaudi.gdual_vdouble.degree" title="Permalink to this definition">¶</a></dt>
+<dd><p>The degree of the generalized dual number</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The degree and the order of a gdual can be different, the degree is always smaller or equal ot the order.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The degree of the underlying Taylor polynomial</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="k">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>See also the docs of the C++ class <a class="reference internal" href="gdual.html#_CPPv3NK6degreeEv" title="degree"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">degree()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(dict)arg2</em><span class="sig-paren">)</span> &#x2192; object :<a class="headerlink" href="#pyaudi.gdual_vdouble.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the Taylor polynomial</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::vectorized_double evaluate(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::dict)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.extend_symbol_set">
+<code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; None :<a class="headerlink" href="#pyaudi.gdual_vdouble.extend_symbol_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extends the symbol set</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>void extend_symbol_set(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},boost::python::api::object)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.find_cf">
+<code class="descname">find_cf</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; object :<a class="headerlink" href="#pyaudi.gdual_vdouble.find_cf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the coefficient of the Taylor expansion</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::vectorized_double find_cf(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::api::object)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.get_derivative">
+<code class="descname">get_derivative</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(object)arg2</em><span class="sig-paren">)</span> &#x2192; object :<a class="headerlink" href="#pyaudi.gdual_vdouble.get_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::vectorized_double get_derivative(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::api::object)</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>get_derivative( (gdual_vdouble)arg1, (dict)arg2) -&gt; object :</dt>
+<dd><p class="first">Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor</p>
+<dl class="last docutils">
+<dt>C++ signature :</dt>
+<dd>audi::vectorized_double get_derivative(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::dict)</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.integrate">
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &#x2192; gdual_vdouble :<a class="headerlink" href="#pyaudi.gdual_vdouble.integrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate with respect to argument</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;audi::vectorized_double&gt; integrate(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.is_zero">
+<code class="descname">is_zero</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(float)arg2</em><span class="sig-paren">)</span> &#x2192; bool :<a class="headerlink" href="#pyaudi.gdual_vdouble.is_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if all coefficients of the gdual are zero within a tolerance</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>bool is_zero(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},double)</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyaudi.gdual_vdouble.order">
+<code class="descname">order</code><a class="headerlink" href="#pyaudi.gdual_vdouble.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>truncation order (&gt;= degree)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.partial">
+<code class="descname">partial</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &#x2192; gdual_vdouble :<a class="headerlink" href="#pyaudi.gdual_vdouble.partial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partial derivative with respect to argument</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;audi::vectorized_double&gt; partial(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyaudi.gdual_vdouble.subs">
+<code class="descname">subs</code><span class="sig-paren">(</span><em>(gdual_vdouble)arg1</em>, <em>(str)arg2</em>, <em>(object)arg3</em><span class="sig-paren">)</span> &#x2192; gdual_vdouble :<a class="headerlink" href="#pyaudi.gdual_vdouble.subs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes a symbol with a value (does not remove symbol from symbol set)</p>
+<dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>audi::gdual&lt;audi::vectorized_double&gt; subs(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;,boost::python::api::object)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="doc_python.html" class="btn btn-neutral" title="Documentation (Python library)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
