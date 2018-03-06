@@ -3,7 +3,7 @@ Audi and pyaudi
 
 Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library 
 (exposed to python in the pyaudi package) that implements the algebra of Taylor truncated polynomials and
-a few algorithms useful for its applications.
+a few algorithms useful for its applications (Differential Intelligence, Taylor Models, etc.)
 
 It was created with the aim to offer a solution to the user in need of a generic automated
 differentiation system. While other automated differentiation codes may be more
@@ -19,6 +19,7 @@ Biscani, Francesco. `Parallel sparse polynomial multiplication on modern hardwar
 Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures. <http://arxiv.org/pdf/1004.4548v1.pdf>`_ arXiv preprint arXiv:1004.4548 (2010).
 
 .. note::
+
    Audi is thread-safe and, when possible, makes use of Piranha fine-grained parallelization of the truncated polynomial multiplication.
    The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.
 
