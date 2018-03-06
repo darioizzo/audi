@@ -17,6 +17,8 @@
 #include <audi/audi.hpp>
 #include <audi/back_compatibility.hpp>
 
+#include "docstrings.hpp"
+
 namespace bp = boost::python;
 using namespace audi;
 
@@ -60,7 +62,7 @@ struct gdual_pickle_suite : bp::pickle_suite {
     }
 };
 
-// For non vectorized_double we do not perform any converion on in-out types
+// For non vectorized_double we do not perform any conversion on in-out types
 template <typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int> = 0>
 inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 {
@@ -83,7 +85,7 @@ template <typename T>
 bp::class_<gdual<T>> expose_gdual(std::string type)
 {
     auto th
-        = bp::class_<gdual<T>>(("gdual_" + type).c_str())
+        = bp::class_<gdual<T>>(("gdual_" + type).c_str(), gdual_docstring().c_str())
               .def(bp::init<>())
               .def(bp::init<const gdual<T> &>())
               .def(bp::init<T>())
@@ -122,7 +124,7 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                    })
               .add_property("symbol_set", +[](const gdual<T> &gd) { return pyaudi::v_to_l(gd.get_symbol_set()); })
               .add_property("symbol_set_size", &gdual<T>::get_symbol_set_size)
-              .add_property("degree", &gdual<T>::degree, "polynomial degree (<= order)")
+              .add_property("degree", &gdual<T>::degree, gdual_degree_docstring().c_str())
               .add_property("order", &gdual<T>::get_order, "truncation order (>= degree)")
               .def("extend_symbol_set",
                    +[](gdual<T> &gd, const bp::object &in) {

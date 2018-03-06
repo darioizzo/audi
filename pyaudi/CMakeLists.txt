@@ -30,7 +30,7 @@ target_include_directories(pyaudi INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SO
 $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFACE:include>)
 
 # Setup of the pyaudi core module.
-YACMA_PYTHON_MODULE(core core.cpp)
+YACMA_PYTHON_MODULE(core core.cpp docstrings.cpp)
 target_link_libraries(core PRIVATE ${PYAUDI_BP_TARGET} pyaudi ${MPFR_LIBRARIES})
 target_compile_options(core PRIVATE "$<$<CONFIG:DEBUG>:${AUDI_CXX_FLAGS_DEBUG}>" "$<$<CONFIG:RELEASE>:${AUDI_CXX_FLAGS_RELEASE}>")
 set_property(TARGET core PROPERTY CXX_STANDARD 11)
