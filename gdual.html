@@ -229,7 +229,7 @@ and integration are also availiable and the resulting algebra is a differential 
 <h2>Constructors and destructors<a class="headerlink" href="#constructors-and-destructors" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3I0E5gdualRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdualRK1T" title="gdual::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
@@ -248,7 +248,7 @@ template&lt;typename <code class="descname">T</code>&gt;<br /><em class="propert
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E5gdualRK1TRKNSt6stringEj">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdualRK1T" title="gdual::T">T</a> &amp;<em>c</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1TRKNSt6stringEj" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1TRKNSt6stringEj" title="Permalink to this definition">¶</a><br /></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
@@ -358,7 +358,7 @@ of the piranha::polynomial it is added.</p>
 <h3>gdual manipulation<a class="headerlink" href="#gdual-manipulation" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv3I0ENK4subsERKNSt6stringERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="subs::T">T</a> &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Substitute the differential <em>sym</em> with <em>val</em>. The <em>Cf</em> type must be constructable from <em>val</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -530,7 +530,7 @@ unsigned int <code class="descname">get_order</code><span class="sig-paren">(</s
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK7find_cfERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK7find_cfERK1T" title="find_cf::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the coefficient of the monomial specified by the container <em>c</em>.
 The container contains the exponents of the requested monomial. In a three
 variable Taylor expansion with <span class="math notranslate">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
@@ -565,7 +565,7 @@ the coefficients.</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;<a class="reference internal" href="#_CPPv3I0ENK7find_cfERK1T" title="find_cf::T">T</a>&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the coefficient of the monomial specified by the initializer list <em>l</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -607,7 +607,7 @@ Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><spa
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK14get_derivativeERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK14get_derivativeERK1T" title="get_derivative::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the (mixed) derivative value of order specified by the container <em>c</em></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -642,7 +642,7 @@ contained in the Taylor expansion</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;<a class="reference internal" href="#_CPPv3I0ENK14get_derivativeERK1T" title="get_derivative::T">T</a>&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the (mixed) derivative value of order specified by the initializer list <em>l</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

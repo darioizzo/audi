@@ -1,23 +1,23 @@
 {
  "cells": [
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Training Artificial Neural Networks:"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": 1,
    "metadata": {},
    "outputs": [],
    "source": [
-    "from pyaudi import gdual\n",
+    "from pyaudi import gdual_double as gdual\n",
     "from pyaudi import sin, cos, tanh\n",
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
     "%matplotlib inline"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Training Artificial Neural Networks:"
    ]
   },
   {
