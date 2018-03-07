@@ -122,8 +122,10 @@ if is_python_build:
     # Install pip and deps.
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py')
-    # if is_release_build:
-    run_command(pip + ' install twine')
+    if is_release_build:
+        # call pip via python, workaround to avoid path issues when calling pip from win
+        # (https://github.com/pypa/pip/issues/1997)
+        run_command(pinterp + r' -m pip install twine')
 
 # Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
