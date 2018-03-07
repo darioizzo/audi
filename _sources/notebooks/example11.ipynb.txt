@@ -3,9 +3,7 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "from pyaudi import gdual\n",
@@ -19,7 +17,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Gradient descent to train a neural network:"
+    "## Training Artificial Neural Networks:"
    ]
   },
   {
@@ -64,9 +62,7 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "def initialize_weights(n_units, order):\n",
@@ -97,9 +93,7 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "def initialize_biases(n_units, order):\n",
@@ -135,9 +129,7 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "def N_f(inputs, w, b):\n",
@@ -178,7 +170,6 @@
    "cell_type": "code",
    "execution_count": 6,
    "metadata": {
-    "collapsed": false,
     "scrolled": true
    },
    "outputs": [
@@ -217,9 +208,7 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -247,9 +236,7 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -278,9 +265,7 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -321,9 +306,7 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
     "def GD_update(loss, w, b, lr):\n",
@@ -367,9 +350,7 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "metadata": {
-    "collapsed": false
-   },
+   "metadata": {},
    "outputs": [
     {
      "name": "stdout",
@@ -409,7 +390,6 @@
    "cell_type": "code",
    "execution_count": 13,
    "metadata": {
-    "collapsed": false,
     "scrolled": true
    },
    "outputs": [
@@ -490,9 +470,9 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.5.1"
+   "version": "3.6.4"
   }
  },
  "nbformat": 4,
- "nbformat_minor": 0
+ "nbformat_minor": 1
 }

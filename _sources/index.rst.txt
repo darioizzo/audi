@@ -24,6 +24,8 @@ Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson se
 
 Audi is open source (GPL3) and its code available in github <https://github.com/darioizzo/audi>`_
 
+-----------------------------------------------
+
 
 .. toctree::
    :maxdepth: 2
@@ -38,14 +40,21 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
 
 .. toctree::
    :maxdepth: 2
-   :caption: Python Tutorials:
+   :caption: Basic Python Tutorials:
 
    notebooks/example00.ipynb
    notebooks/example01.ipynb
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Advanced Python Tutorials:
+
    notebooks/example10.ipynb
    notebooks/example11.ipynb
    notebooks/example12.ipynb
    notebooks/example13.ipynb
+   notebooks/map_inversion.ipynb
+
 
 
 Indices and tables

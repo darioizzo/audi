@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gradient descent to train a neural network: &mdash; audi 1.1 documentation</title>
+  <title>Training Artificial Neural Networks: &mdash; audi 1.1 documentation</title>
   
 
   
@@ -92,12 +92,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Python Tutorials:</span></p>
-<ul class="current">
+<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example10.html">Differential Intelligence</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Gradient descent to train a neural network:</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training Artificial Neural Networks:</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Definition-of-parameters">Definition of parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Neural-network-as-a-gdual-expression">Neural network as a gdual expression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Loss-function">Loss function</a></li>
@@ -106,6 +109,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example12.html">High Order Taylor Maps I</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="map_inversion.html">Map (series) inversion</a></li>
 </ul>
 
             
@@ -150,7 +154,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Gradient descent to train a neural network:</li>
+      <li>Training Artificial Neural Networks:</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -349,8 +353,8 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Gradient-descent-to-train-a-neural-network:">
-<h1>Gradient descent to train a neural network:<a class="headerlink" href="#Gradient-descent-to-train-a-neural-network:" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Training-Artificial-Neural-Networks:">
+<h1>Training Artificial Neural Networks:<a class="headerlink" href="#Training-Artificial-Neural-Networks:" title="Permalink to this headline">¶</a></h1>
 <p>We define the architecture of the network:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Inputs</span><span class="p">:</span> <span class="mi">3</span>
 <span class="n">Hidden</span> <span class="n">layers</span><span class="p">:</span> <span class="mi">2</span> <span class="k">with</span> <span class="mi">5</span> <span class="n">units</span><span class="o">/</span><span class="n">layer</span>

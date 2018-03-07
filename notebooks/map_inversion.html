@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Map (series) inversion &mdash; audi 1.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="audi 1.1 documentation" href="../index.html"/>
+        <link rel="prev" title="High Order Taylor Maps II" href="example13.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> audi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example11.html">Training Artificial Neural Networks:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Map (series) inversion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Importing-stuff">Importing stuff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Double-Pendulum-end-point">The Double Pendulum end-point</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute-the-inverse-map">Compute the inverse map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate">\(\theta\)</span> from <span class="math notranslate">\(x\)</span></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#The-Kepler’s-Equation">The Kepler’s Equation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Invert-the-map">Invert the map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate">\(E\)</span> from <span class="math notranslate">\(M\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">audi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Map (series) inversion</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/notebooks/map_inversion.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 9ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="section" id="Map-(series)-inversion">
+<h1>Map (series) inversion<a class="headerlink" href="#Map-(series)-inversion" title="Permalink to this headline">¶</a></h1>
+<p>(by Dario Izzo)</p>
+<p>In this notebook we show how to use the map inversion algorithm to
+locally invert systems of non linear equations.</p>
+<div class="section" id="Importing-stuff">
+<h2>Importing stuff<a class="headerlink" href="#Importing-stuff" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">invert_map</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="The-Double-Pendulum-end-point">
+<h2>The Double Pendulum end-point<a class="headerlink" href="#The-Double-Pendulum-end-point" title="Permalink to this headline">¶</a></h2>
+<p>Let us consider, in 2D, the end point position of a double pendulum.</p>
+<div class="math notranslate">
+\[\begin{split}x = l_1 sin(\theta_1) + l_2 sin(\theta_2) \\
+y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
+<p>We will develop a model for the inversion of this system of equations,
+so that <span class="math notranslate">\(\theta_1\)</span> and <span class="math notranslate">\(\theta_2\)</span> can be expressed as a
+function of <span class="math notranslate">\(x\)</span> and <span class="math notranslate">\(y\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We show an image for clarity</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span> <span class="s2">&quot;http://www.physicsandbox.com/assets/images/pendulum.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img src="http://www.physicsandbox.com/assets/images/pendulum.jpg"/></div>
+</div>
+<div class="section" id="Define-our-variables">
+<h3>Define our variables<a class="headerlink" href="#Define-our-variables" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lengths for the pendulum arms</span>
+<span class="n">L1</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="n">L2</span> <span class="o">=</span> <span class="mf">1.3</span>
+<span class="c1"># Nominal values for thetas</span>
+<span class="n">th1n</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">th2n</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="c1"># Gduals (high order)</span>
+<span class="n">th1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th1n</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">theta_1&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">th2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th2n</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">theta_2&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="c1"># Equations</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">L1</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th1</span><span class="p">)</span><span class="o">+</span><span class="n">L2</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">L1</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th1</span><span class="p">)</span><span class="o">-</span><span class="n">L2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for x</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ 1.27409{d\theta_2}+2.63265e-06{d\theta_1}^{9}-0.000410445{d\theta_1}^{6}+3.51104e-06{d\theta_2}^{9}-0.159223{d\theta_1}^{3}+0.0372501+0.000358709{d\theta_2}^{6}-0.000252795{d\theta_2}^{7}-0.212348{d\theta_2}^{3}-2.39332e-08{d\theta_1}^{11}+7.32937e-06{d\theta_1}^{8}+0.00796114{d\theta_1}^{5}-0.0107613{d\theta_2}^{4}-0.14776{d\theta_1}^{2}+0.0106174{d\theta_2}^{5}-8.14374e-08{d\theta_1}^{10}-6.40551e-06{d\theta_2}^{8}-0.000189551{d\theta_1}^{7}+0.0123133{d\theta_1}^{4}+0.955336{d\theta_1}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for y</span>
+<span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ -0.25827{d\theta_2}+8.14374e-07{d\theta_1}^{9}+0.00132686{d\theta_1}^{6}-7.11723e-07{d\theta_2}^{9}-0.0492534{d\theta_1}^{3}-2.22942+0.00176956{d\theta_2}^{6}+5.12441e-05{d\theta_2}^{7}+0.043045{d\theta_2}^{3}-7.4034e-09{d\theta_1}^{11}-2.36939e-05{d\theta_1}^{8}+0.00246267{d\theta_1}^{5}-0.0530869{d\theta_2}^{4}+0.477668{d\theta_1}^{2}-0.00215225{d\theta_2}^{5}+2.63265e-07{d\theta_1}^{10}-3.15994e-05{d\theta_2}^{8}-5.8635e-05{d\theta_1}^{7}-0.0398057{d\theta_1}^{4}+0.29552{d\theta_1}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+</div>
+<div class="section" id="Compute-the-inverse-map">
+<h3>Compute the inverse map<a class="headerlink" href="#Compute-the-inverse-map" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># And let us invert the relationship</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">])</span>
+<span class="n">th1_map</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">th2_map</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for th1</span>
+<span class="n">th1_map</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ -33.3889{dp0}^{2}{dp1}^{2}+2.97638{dp0}^{2}{dp1}-1.53985e+08{dp0}^{2}{dp1}^{8}+7.49742{dp0}^{4}{dp1}-1.18854{dp0}^{8}-450.043{dp1}^{4}-0.461981{dp0}^{2}-60579.9{dp0}{dp1}^{6}+13499.7{dp0}^{7}{dp1}^{3}-19.2519{dp0}^{3}{dp1}^{2}+4.30881e+06{dp0}^{6}{dp1}^{5}+1.03732{dp0}^{3}{dp1}-2.89428e+08{dp0}^{3}{dp1}^{8}+4.30674{dp0}^{5}{dp1}-0.913559{dp0}^{9}+7.34785e+07{dp1}^{9}-5141.9{dp0}^{3}{dp1}^{4}-0.0793933{dp0}^{3}-45079.9{dp0}^{5}{dp1}^{4}-47904.3{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for th2</span>
+<span class="n">th2_map</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ 25.7695{dp0}^{2}{dp1}^{2}-2.34715{dp0}^{2}{dp1}+1.18575e+08{dp0}^{2}{dp1}^{8}-5.78329{dp0}^{4}{dp1}+0.917051{dp0}^{8}+347.27{dp1}^{4}+0.343531{dp0}^{2}+46667.1{dp0}{dp1}^{6}-10399{dp0}^{7}{dp1}^{3}+14.7909{dp0}^{3}{dp1}^{2}-3.3184e+06{dp0}^{6}{dp1}^{5}-0.872053{dp0}^{3}{dp1}+2.22845e+08{dp0}^{3}{dp1}^{8}-3.30875{dp0}^{5}{dp1}+0.704389{dp0}^{9}-5.65823e+07{dp1}^{9}+3962.12{dp0}^{3}{dp1}^{4}+0.00876767{dp0}^{3}+34726{dp0}^{5}{dp1}^{4}+36914.5{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+</div>
+<div class="section" id="Compute--from-">
+<h3>Compute <span class="math notranslate">\(\theta\)</span> from <span class="math notranslate">\(x\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># First we extract the x,y position around the nominal thetas</span>
+<span class="n">xn</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">constant_cf</span>
+<span class="n">yn</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">constant_cf</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;x nominal is: &quot;</span><span class="p">,</span> <span class="n">xn</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;y nominal is: &quot;</span><span class="p">,</span> <span class="n">yn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+x nominal is:  0.037250076627759976
+y nominal is:  -2.22942304031922
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets assume some desired (close to nominal) values for the end point</span>
+<span class="n">xd</span> <span class="o">=</span> <span class="mf">0.04</span>
+<span class="n">yd</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.21</span>
+<span class="c1"># And compute the change with respect to the nominal position</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">-</span> <span class="n">xn</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">yd</span> <span class="o">-</span> <span class="n">yn</span>
+<span class="c1"># We now compute the thetas</span>
+<span class="n">th1d</span> <span class="o">=</span> <span class="n">th1n</span> <span class="o">+</span> <span class="n">th1_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
+<span class="n">th2d</span> <span class="o">=</span> <span class="n">th2n</span> <span class="o">+</span> <span class="n">th2_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
+<span class="c1"># Let us check that indeed they are producing the desired end point position</span>
+<span class="n">xdi</span> <span class="o">=</span> <span class="n">L1</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th1d</span><span class="p">)</span><span class="o">+</span><span class="n">L2</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th2d</span><span class="p">)</span>
+<span class="n">ydi</span> <span class="o">=</span> <span class="o">-</span><span class="n">L1</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th1d</span><span class="p">)</span><span class="o">-</span><span class="n">L2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th2d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error in x: &quot;</span><span class="p">,</span> <span class="n">xdi</span><span class="o">-</span><span class="n">xd</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error in y: &quot;</span><span class="p">,</span> <span class="n">ydi</span><span class="o">-</span><span class="n">yd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Error in x:  -9.838373171699999e-12
+Error in y:  1.7152856912616699e-10
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ydi</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[13]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>-2.2099999998284714
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="The-Kepler’s-Equation">
+<h2>The Kepler’s Equation<a class="headerlink" href="#The-Kepler’s-Equation" title="Permalink to this headline">¶</a></h2>
+<p>Let’s consider the long standing problem of inverting Kepler’s equation:</p>
+<div class="math notranslate">
+\[M = E - e sin(E)\]</div>
+<p>and face it using the map inversion functionality of pyaudi</p>
+<div class="section" id="Define-our-variables">
+<h3>Define our variables<a class="headerlink" href="#Define-our-variables" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Nominal values (expansion points) for eccentric anomaly and eccentricity</span>
+<span class="n">En</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">en</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># gduals</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">En</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="c1"># The equation</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">E</span> <span class="o">-</span> <span class="n">e</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for M (mean anomaly)</span>
+<span class="n">M</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ {dE}-0.00833333{dE}^{5}{de}+0.000198413{dE}^{7}{de}-{dE}{de}-2.75573e-06{dE}^{9}{de}+0.166667{dE}^{3}{de}+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+</div>
+<div class="section" id="Invert-the-map">
+<h3>Invert the map<a class="headerlink" href="#Invert-the-map" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We need to have the same symbol set in the variables</span>
+<span class="n">e</span><span class="o">.</span><span class="n">extend_symbol_set</span><span class="p">([</span><span class="s2">&quot;de&quot;</span><span class="p">,</span> <span class="s2">&quot;dE&quot;</span><span class="p">])</span>
+<span class="c1"># We may now create the inverse map</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">([</span><span class="n">M</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
+<span class="n">E_map</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">e_map</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Lets visualize the Taylor polinomial expansion for E as a function of M (p0) and e (p1)</span>
+<span class="n">E_map</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate">
+\[ -20{dp0}^{3}{dp1}^{8}+0.00833333{dp0}^{5}{dp1}-3.33333{dp0}^{3}{dp1}^{4}+2.8{dp0}^{5}{dp1}^{4}+0.133333{dp0}^{5}{dp1}^{2}+{dp0}{dp1}^{10}-1.66667{dp0}^{3}{dp1}^{3}+0.758333{dp0}^{5}{dp1}^{3}+0.000705467{dp0}^{9}{dp1}^{2}+{dp0}{dp1}^{8}-0.000198413{dp0}^{7}{dp1}+2.75573e-06{dp0}^{9}{dp1}-1.07937{dp0}^{7}{dp1}^{4}-0.0126984{dp0}^{7}{dp1}^{2}+{dp0}{dp1}^{6}+{dp0}{dp1}^{2}-14{dp0}^{3}{dp1}^{7}+8.05{dp0}^{5}{dp1}^{5}-0.162698{dp0}^{7}{dp1}^{3}-5.83333{dp0}^{3}{dp1}^{5}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
+</div>
+</div>
+<div class="section" id="Compute--from-">
+<h3>Compute <span class="math notranslate">\(E\)</span> from <span class="math notranslate">\(M\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We now investigate how accurate this map is around the nominal point</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">LinearLocator</span><span class="p">,</span> <span class="n">FormatStrFormatter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">M_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+<span class="n">e_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+<span class="c1"># Make data.</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">M_grid</span><span class="p">,</span> <span class="n">e_grid</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+         <span class="n">res</span> <span class="o">=</span> <span class="n">E_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]})</span> <span class="o">+</span> <span class="n">En</span>
+         <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">res</span> <span class="o">+</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">res</span><span class="p">))</span> <span class="o">+</span> <span class="mf">1e-14</span><span class="p">)</span>
+
+<span class="c1"># Prepare the plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the surface.</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
+                       <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Error (log)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_map_inversion_28_0.png" src="../_images/notebooks_map_inversion_28_0.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="example13.html" class="btn btn-neutral" title="High Order Taylor Maps II" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
