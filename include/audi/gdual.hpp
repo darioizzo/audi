@@ -75,7 +75,7 @@ class gdual
 
 public:
     using cf_type = Cf;
-    using p_type = piranha::polynomial<Cf, piranha::monomial<char>>;
+    using p_type = piranha::polynomial<Cf, piranha::monomial<unsigned short>>;
 
 private:
     // We enable the overloads of the +,-,*,/ operators only in the following cases:

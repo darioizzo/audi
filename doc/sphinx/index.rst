@@ -53,6 +53,8 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
    notebooks/example11.ipynb
    notebooks/example12.ipynb
    notebooks/example13.ipynb
+   notebooks/map_inversion.ipynb
+
 
 
 Indices and tables
