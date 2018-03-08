@@ -43,7 +43,7 @@ void measure_speedup(int points, unsigned int order, unsigned int size)
     auto foo = (coeff_v + x + y + z + w + q + r + s) / (coeff_v - x - y - z - w - q - r - s);
     for (int i = 1; i < size; ++i) {
         foo *= (coeff_v + x + y + z + w + q + r + s) / (coeff_v - x - y - z - w - q - r - s);
-    }
+    } 
     foo *= foo;
     auto wall1 = t1.elapsed().wall;
 
