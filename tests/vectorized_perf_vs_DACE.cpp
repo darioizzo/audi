@@ -3,15 +3,14 @@
 #include <boost/timer/timer.hpp>
 #include <functional>
 #include <iomanip>
-#include <piranha/polynomial.hpp>
-#include <piranha/type_traits.hpp>
+//#include <piranha/polynomial.hpp>
+//#include <piranha/type_traits.hpp>
 #include <random>
 #include <vector>
 
 #include <audi/audi.hpp>
 
-// compile with g++ multiplication_perf_DACE.cpp -std=c++14 -I/usr/local/include -ldace -lboost_system
-// -lboost_unit_test_framework -lboost_timer -lpthread -lgmp -lmpfr -O3 -DNDEBUG
+// compile with g++ multiplication_perf_DACE.cpp -std=c++14 -I/usr/local/include -ldace -lboost_system -lboost_unit_test_framework -lboost_timer -lpthread -lgmp -lmpfr -O3 -DNDEBUG
 //
 using namespace DACE;
 

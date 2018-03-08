@@ -44,6 +44,7 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
 
    notebooks/example00.ipynb
    notebooks/example01.ipynb
+   notebooks/vectorized_double.ipynb
 
 .. toctree::
    :maxdepth: 2
