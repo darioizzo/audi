@@ -28,7 +28,7 @@ if((NOT AUDI_BUILD_AUDI) AND (NOT AUDI_BUILD_PYAUDI))
 endif()
 
 # Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.1)
+set(AUDI_PROJECT_VERSION 1.3)
 
 if(AUDI_BUILD_AUDI)
     # Initial setup of a audi build.
