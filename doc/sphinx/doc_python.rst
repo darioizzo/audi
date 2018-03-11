@@ -1,4 +1,4 @@
-Documentation (Python library)
+Documentation (Python package)
 =======================================
 
 
