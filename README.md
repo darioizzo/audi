@@ -28,8 +28,11 @@ NEW: Audi also allows for making computations using complex numbers and a vector
 Izzo, Dario, Francesco Biscani, and Alessio Mereta. "Differentiable Genetic Programming." arXiv preprint arXiv:1611.04766 (2016).
 
 # pyaudi
-The python bindings are now available. You can build them activating the BUILD_PYAUDI option in CMake, or install the precompiled binaries (for the last release) typing:
+Pre-compiled pyaudi binaries are available both from the Pyhton Package Index (PyPi) and from conda-forge. Not all architectures are supported, namely only win64 (PyPi), linux 64 (PyPi and conda) and osx (only conda). The best is to try the following:
 
- ```pip install pyaudi```
+conda config --add channels conda-forge
+conda install pyaudi
 
-Only Windows 32 bits and OSX are not provided
+or
+
+pip install pyaudi --user
