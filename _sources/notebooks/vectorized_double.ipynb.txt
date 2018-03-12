@@ -125,7 +125,7 @@
     "\n",
     " * Most of the speedup is due to inefficiencies in the gdual_double rather than tricks in the gdual_vdouble\n",
     " * The gdual_vdouble is able to exploit more efficiently the underlying CPU architecture and thus the results may vary greatly between architectures.\n",
-    " * When operating with gdual_double the python overhead (i.e the interface between c++ code and python) is paid multiple times. Using gdual_vdouble this overhead is paid only once. As a limit case, there are situation where gdual_vdouble (at order 0) are more efficient than double (yes double, not gdual_double).\n",
+    " * When operating with gdual_double the python overhead (i.e the interface between c++ code and python) is paid multiple times. Using gdual_vdouble this overhead is paid only once. As a limit case, there are situations where gdual_vdouble (at order 0) are more efficient than double (yes double, not gdual_double).\n",
     "\n",
     "Lets build a better picture of the speedup one can obtain varying the order and the number of points"
    ]

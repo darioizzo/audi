@@ -8,5 +8,5 @@ Installation guide
    :maxdepth: 2
    :caption: Contents:
 
-   install_p
    install_c
+   install_p

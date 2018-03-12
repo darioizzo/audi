@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation (pyaudi) &mdash; audi 1.3 documentation</title>
+  <title>Installation (Python package) &mdash; audi 1.3 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="audi 1.3 documentation" href="index.html"/>
         <link rel="up" title="Installation guide" href="installation.html"/>
-        <link rel="next" title="Installation (audi header only C++ library)" href="install_c.html"/>
-        <link rel="prev" title="Installation guide" href="installation.html"/> 
+        <link rel="next" title="Documentation" href="documentation.html"/>
+        <link rel="prev" title="Installation (C++ header only library)" href="install_c.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -90,11 +90,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="installation.html">Installation guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation (pyaudi)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#binaries">Binaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_c.html">Installation (C++ header only library)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation (Python package)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-pyaudi">Compiling (pyaudi)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="install_c.html">Installation (audi header only C++ library)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
@@ -159,7 +159,7 @@
         
           <li><a href="installation.html">Installation guide</a> &raquo;</li>
         
-      <li>Installation (pyaudi)</li>
+      <li>Installation (Python package)</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,25 +178,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation-pyaudi">
-<span id="id1"></span><h1>Installation (pyaudi)<a class="headerlink" href="#installation-pyaudi" title="Permalink to this headline">¶</a></h1>
-<p>The main functionalities of AuDi are exposed into a python module called pyaudi. To create the module you need to have
-the boost python libraries installed and activate the BUILD_PYAUDI option from within cmake.</p>
-<p>Check carefully what python version is detected and what libraries are linked to. In particular select the correct boost_python
-according to the python version (2 or 3) you want to compile the module for.</p>
+  <div class="section" id="installation-python-package">
+<span id="installation-pyaudi"></span><h1>Installation (Python package)<a class="headerlink" href="#installation-python-package" title="Permalink to this headline">¶</a></h1>
+<p>Pre-compiled pyaudi binaries are available both from the Pyhton Package Index (<a class="reference external" href="https://pypi.python.org/pypi/">PyPi</a>)
+and from <a class="reference external" href="https://conda-forge.org/">conda-forge</a>. Not all architectures are supported, namely only win64 (PyPi),
+linux 64 (PyPi and conda) and osx (only conda). The best is to try the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
+conda install pyaudi
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pyaudi --user
+</pre></div>
+</div>
+<p>if none work, then, I am afraid you will need to compile pyaudi.</p>
+<div class="section" id="compiling-pyaudi">
+<h2>Compiling (pyaudi)<a class="headerlink" href="#compiling-pyaudi" title="Permalink to this headline">¶</a></h2>
+<p>The main functionalities of AuDi are exposed into a python module called pyaudi. To compile the module you need to have
+the following dependencies installed in your system</p>
+<ul class="simple">
+<li>The <a class="reference external" href="http://www.boost.org/">boost</a> C++ libraries: the following boost libraries are necessary: boost_python, boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system</li>
+<li><a class="reference external" href="http://bluescarni.github.io/piranha/index.html">piranha</a>: piranha headers must be found in the system</li>
+<li><a class="reference external" href="https://github.com/darioizzo/audi">audi</a>: audi headers must be found in the system</li>
+<li><a class="reference external" href="http://www.mpfr.org/">GNU MPFR library</a>: needed by piranha/audi</li>
+<li><a class="reference external" href="https://gmplib.org/">The GMP multiprecision library</a>: needed by piranha/audi</li>
+<li><a class="reference external" href="https://eigen.tuxfamily.org/">Eigen linear algebra library</a>: The Eigen headers must be found in the system</li>
+</ul>
+<p>You can then clone the <a class="reference external" href="https://github.com/darioizzo/audi">audi github repository</a>  and configure it using cmake.
+Make sure to activate the AUDI_BUILD_PYAUDI option (you will also need to install the audi c++ headers first, so AUDI_BUILD_AUDI option
+will likely have to be used first).</p>
+<p>Check carefully what python version is detected and what libraries are linked to. In particular select the
+correct boost_python according to the python version (2 or 3) you want to compile the module for.</p>
 <p>The CMAKE_INSTALL_PREFIX will be used to construct the final location of headers and python module after install.</p>
 <p>When done, type (in your build directory):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make install
 </pre></div>
 </div>
 <p>To check that all went well fire-up your python console and try the example in <a class="reference internal" href="quickstart.html#getting-started"><span class="std std-ref">quick-start example</span></a>.</p>
-<div class="section" id="binaries">
-<h2>Binaries<a class="headerlink" href="#binaries" title="Permalink to this headline">¶</a></h2>
-<p>For some architectures (i.e. windows with 64 bit python 27, 34 and 35), we provide pre-built binaries for pyaudi via PyPi. If you have
-a system compatible with those requirements, you can just type:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install pyaudi
-</pre></div>
-</div>
 </div>
 </div>
 
@@ -207,10 +225,10 @@ a system compatible with those requirements, you can just type:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="install_c.html" class="btn btn-neutral float-right" title="Installation (audi header only C++ library)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installation guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="install_c.html" class="btn btn-neutral" title="Installation (C++ header only library)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
