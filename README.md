@@ -30,9 +30,13 @@ Izzo, Dario, Francesco Biscani, and Alessio Mereta. "Differentiable Genetic Prog
 # pyaudi
 Pre-compiled pyaudi binaries are available both from the Pyhton Package Index (PyPi) and from conda-forge. Not all architectures are supported, namely only win64 (PyPi), linux 64 (PyPi and conda) and osx (only conda). The best is to try the following:
 
-conda config --add channels conda-forge
-conda install pyaudi
+```
+ conda config --add channels conda-forge
+ conda install pyaudi
+```
 
 or
 
-pip install pyaudi --user
+```
+ pip install pyaudi --user
+```
