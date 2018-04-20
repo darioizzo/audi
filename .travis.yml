@@ -2,6 +2,11 @@ language: cpp
 sudo: required
 branches:
   except: "/pr\\/.*/"
+
+-env:
+-  global:
+-    secure: "FuOCz1cdylY0Gi0OdbbeTPLp6JAzn+IvK0U0QaQccUgmiGVfg8qPBoKuDoerhgoS+cL0aiSP1RF1ku9l+Eig7VVC0sLALh1oCsNLnnoF1wbeoBI2lSJbb/W5xQqyHPcfi9luQaENL8Srf65n/fU4ivy8lEPUQzMgUseLN09oHNFres3KGJVa2h5ouj2a/q47tzpNn0BdUACA2VsjlKqxIEYNuQ/0o3GMwRKiOPOyrI8acLclWBvtZ1USt1ymZv/EU4jq5EPXIsWnW02i+J+oxIG8j7M95NXpMEiQugEnW3M4SjLfMKg5OzB+/cLHvypGBus/B8cz6nw3zMBI2OR7JwOkSKUMrsSaBXw6kob/YKxA36aPMPyyT74FvleLo7rfAcnvAXkPgWBP55WOVnGgZ2tJkyA80W98hc5nW7Py8mQtCQR01nZ1nXrAYID/nODCAE8qbPihPRMhliVPSIkABkj6mEQ1bBEGob3ybK4ogY0i5KgwlILu1v6tZz8J+iCzbQbL8DtAlVs32S6839EyVc+ocuzMKiapvdcov2hLxcR+JporCyw92PVhehrDUFfhqXanVVjWRePqLNUXHojT4RUxx5wI61jLnpRigB2R23tqJykxZozVfGse+st2Av+OgH9yUi3Eh8umahPY3NZcS984nC3ifd7XZrefQXFn3gs="
+  
 matrix:
   include:
   - env: AUDI_BUILD="manylinux64Py36" DOCKER_IMAGE="quay.io/pypa/manylinux1_x86_64"
@@ -28,6 +33,6 @@ script:
 - bash ../tools/install_travis.sh
 notifications:
   email: false
-env:
-  matrix:
-    secure: VcnxeJY38v4btAXgVbP/YsF6acCb8qIu4HhSnm/YfYXKj7+mvqTK1JGXnrdjs6pkXRRqiLxeAPV2A04nZMq8TC8iigDhoogWwBCxsiTBNyxe94QfsJA5C9FXbeu/PjQ6xOxFekdXHsOsEw9xkxKJLY/oKs72yivq/CiS7BXJUejwF9n4kEBaGndzb/gmblJjye3gv43s9xwOa7vc4LFe9a3pRUbKwi649f++ZwObHXgaP49P6ReGByFjdFeqfXS0GWrj9zc449glzMbp3rtGSb9RWmMyRpdRhKhXpTtOLnMm3BI5miCmmDsLvlO8kecxDuxkNlv4Q0BmiglILrMX6R0UpK5+ReEhje/XrIva4Y3jEfJ/uA4i8ltVpEStNZQvmMELBj1ySEcvjuF899rcdsHgzncav+xIJI0DNtds60LkEL1BehV3Wb5LEkC3q3B+gUtAZbxOb+bJU1NggAkyHs7zf9EDHV7bn5rff7liW5/dLPM7kOGIe0W28FS5N2cJKc1nqWSlawmDtv3qzG78R2npzOboPeDxMPis3nzN1chGS5OFFtWOINgBgzn8niK+4YrEvI21n3p87beC1os7ESvA4RlFKqVIT3jjyrbWarTvfFSALFr7YtZDFGZ79tWMa+c1maPGM/IHlx638o7KMH+uEVRtzNPuaU3rHU//S4s=
+
+    
+
