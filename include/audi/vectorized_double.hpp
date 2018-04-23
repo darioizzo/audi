@@ -33,20 +33,20 @@ public:
     explicit vectorized_double(const std::vector<double> &c) : m_c(c)
     {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coefficient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v (lvalue)");
         }
     };
     // Constructor from an std::vector r value
     explicit vectorized_double(std::vector<double> &&c) : m_c(c)
     {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coefficient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v (rvalue)");
         }
     };
     explicit vectorized_double(std::initializer_list<double> c) : m_c(c)
     {
         if (m_c.size() == 0) {
-            throw std::invalid_argument("Cannot build an empty coefficient_v");
+            throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
     };
     // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
@@ -179,9 +179,20 @@ public:
         if (d1.size() == d2.size()) {
             return d1.m_c > d2.m_c;
         } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return x > d1[0]; });
+            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return d1[0] > x; });
         } else if (d2.size() == 1u) {
             return std::all_of(d1.begin(), d1.end(), [d2](double x) { return x > d2[0]; });
+        }
+        return false;
+    }
+    friend bool operator<(const vectorized_double &d1, const vectorized_double &d2)
+    {
+        if (d1.size() == d2.size()) {
+            return d1.m_c < d2.m_c;
+        } else if (d1.size() == 1u) {
+            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return d1[0] < x; });
+        } else if (d2.size() == 1u) {
+            return std::all_of(d1.begin(), d1.end(), [d2](double x) { return x < d2[0]; });
         }
         return false;
     }

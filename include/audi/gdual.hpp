@@ -422,7 +422,7 @@ public:
     gdual trim(double epsilon) const
     {
         auto new_p
-            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return std::abs(coeff.first) > epsilon; });
+            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return abs(coeff.first) > epsilon; });
         return gdual(std::move(new_p), m_order);
     }
 

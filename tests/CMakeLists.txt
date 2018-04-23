@@ -29,6 +29,7 @@ ENDMACRO(ADD_AUDI_PERFORMANCE_TESTCASE)
 
 ADD_AUDI_TESTCASE(gdual_d)
 ADD_AUDI_TESTCASE(gdual_v)
+ADD_AUDI_TESTCASE(vectorized_double)
 ADD_AUDI_TESTCASE(functions)
 ADD_AUDI_TESTCASE(functions_from_d)
 ADD_AUDI_TESTCASE(functions_floating_precision)

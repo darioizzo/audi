@@ -257,3 +257,10 @@ BOOST_AUTO_TEST_CASE(is_zero)
         BOOST_CHECK(!f.is_zero(1e-12));
     }
 }
+
+BOOST_AUTO_TEST_CASE(trim)
+{
+    vectorized_double x{1, -2, -3, 4, 0.123, -21.211};
+    // gdual_v x(std::vector<double>{{1, -2, -3, 4, 0.123, -21.211}}, "x", 4);
+    print(30 > x);
+}
