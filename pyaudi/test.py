@@ -202,6 +202,20 @@ class test_gdual_double(_ut.TestCase):
         self.assertEqual(res3.get_derivative({"dx": 1}), -0.75)
         self.assertEqual(res3.get_derivative({"dy": 1}), 0.)
 
+    def test_trim(self):
+        from pyaudi import gdual_double as gdual
+        x = gdual(1e-4, "x", 1)
+        self.assertEqual(x, x.trim(1e-5))
+        self.assertEqual(x.trim(1e-3), gdual(0,"x",1))
+
+    def test_extract_terms(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import sin
+        x = gdual(1e-4, "x", 3)
+        sinx = sin(x)
+        self.assertEqual(sinx, sinx.extract_terms(0) + sinx.extract_terms(1)+ sinx.extract_terms(2)+ sinx.extract_terms(3))
+        self.assertEqual(x.trim(1e-3), gdual(0,"x",1))
+
     def test_serialization(self):
         from pyaudi import gdual_double as gdual
         import pickle as pk
@@ -485,6 +499,20 @@ class test_gdual_vdouble(_ut.TestCase):
                         else:
                             self.assertAlmostEqual(f3.get_derivative(
                                 [dx, dy, dz]), fv.get_derivative([dx, dy, dz])[2], delta=1e-12)
+
+    def test_trim(self):
+        from pyaudi import gdual_vdouble as gdual
+        x = gdual([1e-4, -1e-4], "x", 1)
+        self.assertTrue(x == x.trim(1e-5))
+        self.assertTrue(x.trim(1e-3) == gdual([0, 0],"x",1))
+
+    def test_extract_terms(self):
+        from pyaudi import gdual_vdouble as gdual
+        from pyaudi import sin
+        x = gdual([1e-4, -1e-4], "x", 3)
+        sinx = sin(x)
+        self.assertTrue(sinx == sinx.extract_terms(0) + sinx.extract_terms(1)+ sinx.extract_terms(2)+ sinx.extract_terms(3))
+        self.assertTrue(x.trim(1e-3) == gdual([0, 0],"x",1))
 
 class test_utilities(_ut.TestCase):
 
