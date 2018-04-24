@@ -62,4 +62,10 @@ BOOST_AUTO_TEST_CASE(math)
     BOOST_CHECK(-100 < x1);
     BOOST_CHECK(100. > x1);
     BOOST_CHECK(x1 > -100);
+    BOOST_CHECK(x1 != x2);
+    BOOST_CHECK(x1 == x1);
+    BOOST_CHECK(x3 == -100);
+    BOOST_CHECK(x4 == 100);
+    BOOST_CHECK(x3 != 32);
+    BOOST_CHECK(x4 != 32);
 }
