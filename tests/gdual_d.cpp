@@ -334,3 +334,13 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     BOOST_CHECK(newf == f);
     BOOST_CHECK(newf.get_order() == f.get_order());
 }
+
+BOOST_AUTO_TEST_CASE(trim)
+{
+    gdual_d x(1e-5, "x", 4);
+    gdual_d y(1e-3, "x", 4);
+    BOOST_CHECK(x.trim(1e-6) == x);
+    BOOST_CHECK(y.trim(1e-2) == gdual_d(0., "x", 1));
+    BOOST_CHECK(y.trim(100) == gdual_d(0., "x", 0));
+    BOOST_CHECK_THROW(x.trim(-1e-3), std::invalid_argument);
+}

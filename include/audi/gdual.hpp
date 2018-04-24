@@ -251,8 +251,26 @@ public:
     {
     }
 
+    template <typename T>
+    explicit gdual(const std::initializer_list<T> &value) : m_p(value), m_order(0u)
+    {
+    }
+
     template <typename T, generic_ctor_enabler<T> = 0>
     explicit gdual(const T &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
+    {
+        check_order();
+        check_var_name(symbol);
+        if (order == 0) {
+            extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
+        } else {
+            m_p = p_type(std::string("d") + symbol);
+        }
+        m_p += Cf(value);
+    }
+
+    template <typename T>
+    explicit gdual(const std::initializer_list<T> &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
     {
         check_order();
         check_var_name(symbol);
@@ -421,8 +439,10 @@ public:
      */
     gdual trim(double epsilon) const
     {
-        auto new_p
-            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return abs(coeff.first) > epsilon; });
+        if (epsilon < 0) {
+            throw std::invalid_argument("When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: " + std::to_string(epsilon) );
+        }
+        auto new_p = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(abs(coeff.first) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 

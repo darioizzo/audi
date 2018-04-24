@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(construction)
 }
 BOOST_AUTO_TEST_CASE(math)
 {
-    vectorized_double x1{-1., 1., 2., -3., 4.};
+    vectorized_double x1{1., 1., 2., -3., 4.};
     vectorized_double x2{1., 1., 2., 3., 4.};
     vectorized_double x3{-100., -100., -100., -100., -100.};
     vectorized_double x4{100., 100., 100., 100., 100.};
@@ -68,4 +68,6 @@ BOOST_AUTO_TEST_CASE(math)
     BOOST_CHECK(x4 == 100);
     BOOST_CHECK(x3 != 32);
     BOOST_CHECK(x4 != 32);
+    BOOST_CHECK(abs(x1) == x2);
+    BOOST_CHECK(abs(x2) != x1);
 }

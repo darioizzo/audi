@@ -258,9 +258,36 @@ BOOST_AUTO_TEST_CASE(is_zero)
     }
 }
 
+BOOST_AUTO_TEST_CASE(extract_order)
+{
+    unsigned int order = 8u;
+    gdual_v x({0.123, 0.222}, "x", order);
+    gdual_v y({0.456, -0.12}, "y", order);
+    auto f = audi::sin(x * y);
+    // We test that the extracted gduals have the requested order
+    for (auto i = 0u; i <= order; ++i) {
+        auto fi = f.extract_terms(i);
+        BOOST_CHECK_EQUAL(fi.degree(), fi.get_order());
+        BOOST_CHECK_EQUAL(fi.get_order(), i);
+    }
+    // We test that f = f0+f1+f2+...+fn
+    std::vector<gdual_v> terms;
+    for (auto i = 0u; i <= order; ++i) {
+        auto f2 = f.extract_terms(i);
+        terms.push_back(f2);
+    }
+    auto sum = std::accumulate(terms.begin(), terms.end(), gdual_v({0.,0.}));
+    BOOST_CHECK((sum - f).is_zero(0.));
+    // And we test the throw
+    BOOST_CHECK_THROW(f.extract_terms(order + 1), std::invalid_argument);
+    BOOST_CHECK_NO_THROW(f.extract_terms(order));
+}
+
 BOOST_AUTO_TEST_CASE(trim)
 {
-    vectorized_double x{1, -2, -3, 4, 0.123, -21.211};
-    // gdual_v x(std::vector<double>{{1, -2, -3, 4, 0.123, -21.211}}, "x", 4);
-    print(30 > x);
+    gdual_v x({10., -1e-4, 10., -10.}, "x", 4);
+    gdual_v y({1e-3, -1e-4, 1e-9, 1e-5}, "x", 4);
+    BOOST_CHECK(x.trim(1e-1) == x);
+    BOOST_CHECK(y.trim(1e-2) == gdual_v({0.,0.,0.,0.}, "x", 4));
+    BOOST_CHECK_THROW(x.trim(-1e-3), std::invalid_argument);
 }

@@ -198,7 +198,7 @@ public:
     }
     friend vectorized_double abs(vectorized_double in)
     {
-        std::transform(in.m_c.begin(), in.m_c.end(), in.m_c.begin(), [](double x) { return std::abs(x); });
+        std::transform(in.m_c.begin(), in.m_c.end(), in.m_c.begin(), [](const double &x) { return std::abs(x); });
         return in;
     }
     friend std::ostream &operator<<(std::ostream &os, const vectorized_double &d)
