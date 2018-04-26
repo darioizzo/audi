@@ -10,6 +10,8 @@
 #include <piranha/pow.hpp>
 #include <piranha/s11n.hpp>
 
+#include <audi/back_compatibility.hpp>
+
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
 
@@ -23,12 +25,16 @@ namespace audi
 class vectorized_double
 {
 public:
+    template <typename T>
+    using operator_enabler
+        = enable_if_t<(std::is_same<T, vectorized_double>::value || std::is_arithmetic<T>::value), int>;
     // Default constructor. Constructs [0.]
     vectorized_double() : m_c({0.}){};
     // Constructor from int. Its mandatory for piranha::polynomial coefficient
     explicit vectorized_double(int a) : m_c({static_cast<double>(a)}){};
-    // Constructor from double value a. Construct [a] TODO: should we make this explicit?
-    vectorized_double(double a) : m_c({a}){};
+
+    // Constructor from double value a. Construct [a]
+    explicit vectorized_double(double a) : m_c({a}){};
     // Constructor from an std::vector
     explicit vectorized_double(const std::vector<double> &c) : m_c(c)
     {
@@ -49,37 +55,39 @@ public:
             throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
     };
-    // ------------------- Binary arithmetic operators implemented using +=,-=, etc.
-    friend vectorized_double operator+(const vectorized_double &d1, const vectorized_double &d2)
+    // ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend vectorized_double operator+(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double retval(d1);
-        retval += d2;
-        return retval;
-    };
-    friend vectorized_double operator-(const vectorized_double &d1, const vectorized_double &d2)
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
+        d1 += d2;
+        return d1;
+    }
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend vectorized_double operator-(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double retval(d1);
-        retval -= d2;
-        return retval;
-    };
-    friend vectorized_double operator*(const vectorized_double &d1, const vectorized_double &d2)
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
+        d1 -= d2;
+        return d1;
+    }
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend vectorized_double operator*(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double retval(d1);
-        retval *= d2;
-        return retval;
-    };
-    friend vectorized_double operator*(int d1, const vectorized_double &d2)
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
+        d1 *= d2;
+        return d1;
+    }
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend vectorized_double operator/(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double retval(d1);
-        retval *= d2;
-        return retval;
-    };
-    friend vectorized_double operator/(const vectorized_double &d1, const vectorized_double &d2)
-    {
-        vectorized_double retval(d1);
-        retval /= d2;
-        return retval;
-    };
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
+        d1 /= d2;
+        return d1;
+    }
 
     // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
     // take care of scalar multiplication/division etc.
@@ -159,8 +167,11 @@ public:
         transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<double>());
         return retval;
     }
-    friend bool operator==(const vectorized_double &d1, const vectorized_double &d2)
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend bool operator==(const T1 &d1v, const T2 &d2v)
     {
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c == d2.m_c;
         } else if (d1.size() == 1u) {
@@ -170,12 +181,16 @@ public:
         }
         return false;
     }
-    friend bool operator!=(const vectorized_double &d1, const vectorized_double &d2)
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend bool operator!=(const T1 &d1, const T2 &d2)
     {
         return !(d1 == d2);
     }
-    friend bool operator>(const vectorized_double &d1, const vectorized_double &d2)
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend bool operator>(const T1 &d1v, const T2 &d2v)
     {
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c > d2.m_c;
         } else if (d1.size() == 1u) {
@@ -185,8 +200,12 @@ public:
         }
         return false;
     }
-    friend bool operator<(const vectorized_double &d1, const vectorized_double &d2)
+
+    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
+    friend bool operator<(const T1 &d1v, const T2 &d2v)
     {
+        vectorized_double d1(d1v);
+        vectorized_double d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c < d2.m_c;
         } else if (d1.size() == 1u) {
@@ -272,7 +291,7 @@ private:
     std::vector<double> m_c;
 };
 
-} // end of audi namespace
+} // namespace audi
 
 namespace piranha
 {
@@ -352,7 +371,7 @@ struct pow_impl<T, U, typename std::enable_if<std::is_same<T, audi::vectorized_d
     };
 };
 
-} // end of math namespace
+} // namespace math
 
 template <typename Archive>
 struct boost_save_impl<Archive, audi::vectorized_double> : boost_save_via_boost_api<Archive, audi::vectorized_double> {
@@ -366,7 +385,7 @@ template <>
 struct zero_is_absorbing<audi::vectorized_double> : std::false_type {
 };
 
-} // end of piranha namespace
+} // namespace piranha
 
 #undef MAX_STREAMED_COMPONENTS
 #endif

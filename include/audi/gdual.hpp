@@ -125,8 +125,9 @@ private:
     // A private constructor to move-initialise a gdual from a polynomial. Used
     // in the implementation of the operators.
     explicit gdual(p_type &&p, unsigned int order) : m_p(std::move(p)), m_order(order) {}
-    // A private constructor used in the implementation of the operators (is it necessary?)
-    explicit gdual(Cf value, unsigned int order) : m_p(value), m_order(order) {}
+    // A private constructor used in the implementation of the operators.
+    template<typename T>
+    explicit gdual(T value, unsigned int order) : m_p(Cf(value)), m_order(order) {}
 
     // Basic overloads for the addition
     static gdual add(const gdual &d1, const gdual &d2)

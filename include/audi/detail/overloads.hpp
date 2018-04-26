@@ -1,8 +1,8 @@
 #ifndef AUDI_OVERLOADS_HPP
 #define AUDI_OVERLOADS_HPP
 
-#include "../back_compatibility.hpp"
-#include "../vectorized_double.hpp"
+#include <audi/back_compatibility.hpp>
+#include <audi/vectorized_double.hpp>
 #include <boost/type_traits/is_complex.hpp>
 
 // This is repeated here instead of including type_traits as to avoid a circular dependency

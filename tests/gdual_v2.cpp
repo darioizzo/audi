@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE audi_gdual_test
+#define BOOST_TEST_MODULE audi_gdualv2_test
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/test/unit_test.hpp>

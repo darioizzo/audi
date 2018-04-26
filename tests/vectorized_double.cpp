@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(math)
     vectorized_double x2{1., 1., 2., 3., 4.};
     vectorized_double x3{-100., -100., -100., -100., -100.};
     vectorized_double x4{100., 100., 100., 100., 100.};
-    BOOST_CHECK(abs(x1)==x2);
+    BOOST_CHECK(abs(x1) == x2);
     BOOST_CHECK(x3 < x1);
     BOOST_CHECK(x1 > x3);
     BOOST_CHECK(x2 < x4);
@@ -70,4 +70,37 @@ BOOST_AUTO_TEST_CASE(math)
     BOOST_CHECK(x4 != 32);
     BOOST_CHECK(abs(x1) == x2);
     BOOST_CHECK(abs(x2) != x1);
+    BOOST_CHECK(x1 - 1. == (vectorized_double{0., 0., 1., -4., 3.}));
+}
+
+BOOST_AUTO_TEST_CASE(more_math)
+{
+    vectorized_double x1{1., 2.};
+    vectorized_double x2{3., 3.};
+    // Interoperability against arith types
+    BOOST_CHECK(x1 * 2. == (vectorized_double{2., 4.}));
+    BOOST_CHECK(x1 / 2. == (vectorized_double{0.5, 1.}));
+    BOOST_CHECK(x1 + 2. == (vectorized_double{3., 4.}));
+    BOOST_CHECK(x1 - 2. == (vectorized_double{-1., 0.}));
+    BOOST_CHECK(x1 * 2 == (vectorized_double{2., 4.}));
+    BOOST_CHECK(x1 / 2 == (vectorized_double{0.5, 1.}));
+    BOOST_CHECK(x1 + 2 == (vectorized_double{3., 4.}));
+    BOOST_CHECK(x1 - 2 == (vectorized_double{-1., 0.}));
+    BOOST_CHECK(2 * x1 == (vectorized_double{2., 4.}));
+    BOOST_CHECK(2 / x1 == (vectorized_double{2., 1.}));
+    BOOST_CHECK(2 + x1 == (vectorized_double{3., 4.}));
+    BOOST_CHECK(2 - x1 == (vectorized_double{1., 0.}));
+    BOOST_CHECK(2 * x1 == (vectorized_double{2., 4.}));
+    BOOST_CHECK(2 / x1 == (vectorized_double{2., 1.}));
+    BOOST_CHECK(2 + x1 == (vectorized_double{3., 4.}));
+    BOOST_CHECK(2 - x1 == (vectorized_double{1., 0.}));
+    BOOST_CHECK(x1 != 1.);
+    BOOST_CHECK(x2 == 2.);
+    BOOST_CHECK(x1 > -1.);
+    BOOST_CHECK(x1 < 3.);
+    // operators with vectorized-vectorized
+    BOOST_CHECK(x1 + x2 == (vectorized_double{4., 5.}));
+    BOOST_CHECK(x1 - x2 == (vectorized_double{4., 5.}));
+    BOOST_CHECK(x1 / x2 == (vectorized_double{4., 5.}));
+    BOOST_CHECK(x1 * x2 == (vectorized_double{4., 5.}));
 }
