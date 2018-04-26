@@ -161,6 +161,14 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
     }
+    template <typename T>
+    vectorized_double &operator/=(const T &d1)
+    {
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
+                           [&d1](double x) { return x / d1; });
+            return *this;
+       
+    }
     vectorized_double operator-() const
     {
         vectorized_double retval(m_c);
