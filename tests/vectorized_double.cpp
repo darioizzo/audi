@@ -95,12 +95,12 @@ BOOST_AUTO_TEST_CASE(more_math)
     BOOST_CHECK(2 + x1 == (vectorized_double{3., 4.}));
     BOOST_CHECK(2 - x1 == (vectorized_double{1., 0.}));
     BOOST_CHECK(x1 != 1.);
-    BOOST_CHECK(x2 == 2.);
+    BOOST_CHECK(x2 == 3.);
     BOOST_CHECK(x1 > -1.);
     BOOST_CHECK(x1 < 3.);
     // operators with vectorized-vectorized
     BOOST_CHECK(x1 + x2 == (vectorized_double{4., 5.}));
-    BOOST_CHECK(x1 - x2 == (vectorized_double{4., 5.}));
-    BOOST_CHECK(x1 / x2 == (vectorized_double{4., 5.}));
-    BOOST_CHECK(x1 * x2 == (vectorized_double{4., 5.}));
+    BOOST_CHECK(x1 - x2 == (vectorized_double{-2., -1.}));
+    BOOST_CHECK(x1 / x2 == (vectorized_double{1./3., 2./3.}));
+    BOOST_CHECK(x1 * x2 == (vectorized_double{3., 6.}));
 }

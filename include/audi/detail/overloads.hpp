@@ -3,6 +3,7 @@
 
 #include <audi/back_compatibility.hpp>
 #include <audi/vectorized_double.hpp>
+#include <audi/real128.hpp>
 #include <boost/type_traits/is_complex.hpp>
 
 // This is repeated here instead of including type_traits as to avoid a circular dependency
@@ -30,55 +31,95 @@ struct is_arithmetic_or_complex
         return std::fun_name(in);                                                                                      \
     }
 
+// This macro writes the overload for std::fun_name af a mppp::real128. It simply calls mppp::fun_name
+// It is used to allow calls such as audi::cos(T) [T = double] in templated functions.
+#define REAL128_OVERLOAD(fun_name)                                                                                     \
+    inline mppp::real128 fun_name(mppp::real128 in)                                                                    \
+    {                                                                                                                  \
+        return mppp::fun_name(in);                                                                                     \
+    }
+
 namespace audi
 {
-
 VECTORIZED_OVERLOAD(exp)
 ARITH_OR_COMPLEX_OVERLOAD(exp)
+REAL128_OVERLOAD(exp)
 
 VECTORIZED_OVERLOAD(erf)
 ARITH_OR_COMPLEX_OVERLOAD(erf)
+REAL128_OVERLOAD(erf)
 
 VECTORIZED_OVERLOAD(log)
 ARITH_OR_COMPLEX_OVERLOAD(log)
+REAL128_OVERLOAD(log)
 
 VECTORIZED_OVERLOAD(sin)
 ARITH_OR_COMPLEX_OVERLOAD(sin)
+REAL128_OVERLOAD(sin)
 
 VECTORIZED_OVERLOAD(cos)
 ARITH_OR_COMPLEX_OVERLOAD(cos)
+REAL128_OVERLOAD(cos)
 
 VECTORIZED_OVERLOAD(tan)
 ARITH_OR_COMPLEX_OVERLOAD(tan)
+REAL128_OVERLOAD(tan)
 
 VECTORIZED_OVERLOAD(sinh)
 ARITH_OR_COMPLEX_OVERLOAD(sinh)
+REAL128_OVERLOAD(sinh)
 
 VECTORIZED_OVERLOAD(cosh)
 ARITH_OR_COMPLEX_OVERLOAD(cosh)
+REAL128_OVERLOAD(cosh)
 
 VECTORIZED_OVERLOAD(tanh)
 ARITH_OR_COMPLEX_OVERLOAD(tanh)
+REAL128_OVERLOAD(tanh)
 
 VECTORIZED_OVERLOAD(asin)
 ARITH_OR_COMPLEX_OVERLOAD(asin)
+REAL128_OVERLOAD(asin)
 
 VECTORIZED_OVERLOAD(acos)
 ARITH_OR_COMPLEX_OVERLOAD(acos)
+REAL128_OVERLOAD(acos)
 
 VECTORIZED_OVERLOAD(atan)
 ARITH_OR_COMPLEX_OVERLOAD(atan)
+REAL128_OVERLOAD(atan)
 
 VECTORIZED_OVERLOAD(asinh)
 ARITH_OR_COMPLEX_OVERLOAD(asinh)
+REAL128_OVERLOAD(asinh)
 
 VECTORIZED_OVERLOAD(acosh)
 ARITH_OR_COMPLEX_OVERLOAD(acosh)
+REAL128_OVERLOAD(acosh)
 
 VECTORIZED_OVERLOAD(atanh)
 ARITH_OR_COMPLEX_OVERLOAD(atanh)
+REAL128_OVERLOAD(atanh)
 
 VECTORIZED_OVERLOAD(cbrt)
+REAL128_OVERLOAD(cbrt)
+
+template <typename T, enable_if_t<std::is_arithmetic<T>::value, int> = 0>
+inline T cbrt(T in)
+{
+    return std::cbrt(in);
+}
+template <typename T, enable_if_t<boost::is_complex<T>::value, int> = 0>
+inline T cbrt(T in)
+{
+    return std::pow(in, 1. / 3.); // needs a separate template as cbrt does not exist for complex types
+}
+
+template <typename T, typename U, enable_if_t<std::is_same<U, mppp::real128>::value, int> = 0>
+inline U pow(const U &base, const T &d)
+{
+    return mppp::pow(base, d);
+}
 
 template <typename T, typename U, enable_if_t<std::is_arithmetic<U>::value && std::is_arithmetic<T>::value, int> = 0>
 inline double pow(const U &base, const T &d)
@@ -114,17 +155,7 @@ inline vectorized_double pow(vectorized_double in, double exponent)
     return in;
 }
 
-template <typename T, enable_if_t<std::is_arithmetic<T>::value, int> = 0>
-inline T cbrt(T in)
-{
-    return std::cbrt(in);
-}
-template <typename T, enable_if_t<boost::is_complex<T>::value, int> = 0>
-inline T cbrt(T in)
-{
-    return std::pow(in, 1. / 3.); // needs a separate template as cbrt does not exist for complex types
-}
-
 ARITH_OR_COMPLEX_OVERLOAD(abs)
+
 }
 #endif

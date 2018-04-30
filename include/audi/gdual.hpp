@@ -188,7 +188,7 @@ private:
     static gdual div(const gdual &d1, const gdual &d2)
     {
         gdual retval(1);
-        double fatt = -1.;
+        Cf fatt(-1);
         auto p0 = d2.constant_cf();
         auto phat = (d2 - p0);
         phat = phat / p0;
@@ -208,7 +208,7 @@ private:
     static gdual div(const T &d1, const gdual &d2)
     {
         gdual retval(1.);
-        double fatt = -1.;
+        Cf fatt(-1.);
         auto p0 = d2.constant_cf();
 
         auto phat = (d2 - p0);
@@ -227,7 +227,8 @@ private:
     template <typename T>
     static gdual div(const gdual &d1, const T &d2)
     {
-        return d1 * (1. / d2);
+        // Note: we create the reciprocal of d2 constructing a Cf otherwise we could loose precision, e.g. when T is double and Cf is real128
+        return d1 * (1. / Cf(d2));
     }
 
     p_type m_p;

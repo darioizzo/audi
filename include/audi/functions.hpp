@@ -34,7 +34,7 @@ template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T exp(const T &d)
 {
     T retval(1.);
-    double fact = 1;
+    T fact(1.);
     auto p0 = d.constant_cf();
     auto phat = d - p0;
     T tmp(phat);
@@ -69,7 +69,7 @@ template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
 inline T log(const T &d)
 {
     T retval(0.);
-    double fatt = 1;
+    T fatt(1.);
     auto p0 = d.constant_cf();
     auto log_p0 = audi::log(p0);
 
@@ -79,7 +79,7 @@ inline T log(const T &d)
 
     retval = log_p0 + phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
-        fatt *= -1;
+        fatt *= -1.;
         phat *= tmp;
         retval = retval + fatt * phat / i;
     }
@@ -135,8 +135,8 @@ inline T pow(const T &d, double alpha)
     // This is also a workaround to the issue (https://github.com/darioizzo/audi/issues/6)
     // TODO: is there a better way to do this? Calling the pow (gdual, int) overload is not possible as it
     // cannot be moved upfront.
-    double n;
-    if (std::modf(alpha, &n) == 0.0 && n > 0) {
+    int n = (alpha*10.);
+    if (n % 10 == 0 && alpha > 0) {
         T retval(d);
         for (auto i = 1; i < (int)n; ++i) {
             retval *= d;
@@ -292,7 +292,7 @@ inline T sin(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
-        cos_taylor += (coeff / factorial) * tmp;
+        cos_taylor += (coeff * tmp) / factorial;
     }
 
     factorial = 1.;
@@ -303,7 +303,7 @@ inline T sin(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
-        sin_taylor += (coeff / factorial) * tmp;
+        sin_taylor += (coeff * tmp) / factorial;
     }
     return (sin_p0 * cos_taylor + cos_p0 * sin_taylor);
 }
@@ -342,7 +342,7 @@ inline T cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
-        cos_taylor += (coeff / factorial) * tmp;
+        cos_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
 
     factorial = 1.;
@@ -353,7 +353,7 @@ inline T cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
-        sin_taylor += (coeff / factorial) * tmp;
+        sin_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
     return (cos_p0 * cos_taylor - sin_p0 * sin_taylor);
 }
@@ -387,7 +387,7 @@ std::array<T, 2> sin_and_cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
-        cos_taylor += (coeff / factorial) * tmp;
+        cos_taylor += (coeff / factorial) * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
 
     factorial = 1.;
@@ -398,7 +398,7 @@ std::array<T, 2> sin_and_cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
-        sin_taylor += (coeff / factorial) * tmp;
+        sin_taylor += (coeff / factorial) * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
@@ -654,7 +654,7 @@ inline T atanh(const T &d)
     double coeff = 1.;
 
     for (auto k = 1u; k <= d.get_order(); ++k) {
-        auto add = (1. / audi::pow(1. - p0, k) + coeff / audi::pow(1. + p0, k)) / k;
+        auto add = (1. / audi::pow(1. - p0, k) + coeff / audi::pow(1. + p0, k)) / static_cast<double>(k);
         retval += add * powphat;
         coeff *= -1;
         powphat *= phat;
