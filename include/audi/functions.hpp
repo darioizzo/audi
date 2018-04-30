@@ -97,16 +97,16 @@ inline T log(const T &d)
  * @param d audi::gdual argument
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T pow(double base, const T &d)
+template <typename T, typename U, enable_if_t<std::is_same<U, int>::value || std::is_same<U, double>::value || std::is_same<U, mppp::real128>::value, int> = 0>
+inline gdual<T> pow(U base, const gdual<T> &d)
 {
     // checks wether the exponent is a constant in which
     // case it calls for a different overload
     if (d.degree() == 0) {
         auto p0 = d.constant_cf();
-        return T(audi::pow(base, p0));
+        return gdual<T>(audi::pow(base, p0));
     }
-    return exp(std::log(base) * d);
+    return exp(audi::log(T(base)) * d);
 }
 
 /// Overload for the exponentiation
@@ -138,7 +138,7 @@ inline T pow(const T &d, double alpha)
     int n = (alpha*10.);
     if (n % 10 == 0 && alpha > 0) {
         T retval(d);
-        for (auto i = 1; i < (int)n; ++i) {
+        for (auto i = 1; i < (int)alpha; ++i) {
             retval *= d;
         }
         return retval;

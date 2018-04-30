@@ -196,7 +196,7 @@ private:
 
         retval = retval - phat;
         for (auto i = 2u; i <= d2.m_order; ++i) {
-            fatt *= -1.;
+            fatt = -1. * fatt;
             phat *= tmp;
             retval = retval + fatt * phat;
         }
@@ -217,7 +217,7 @@ private:
 
         retval = retval - phat;
         for (auto i = 2u; i <= d2.m_order; ++i) {
-            fatt *= -1.;
+            fatt = -1. * fatt;
             phat *= tmp;
             retval = retval + fatt * phat;
         }

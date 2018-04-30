@@ -101,6 +101,8 @@ VECTORIZED_OVERLOAD(atanh)
 ARITH_OR_COMPLEX_OVERLOAD(atanh)
 REAL128_OVERLOAD(atanh)
 
+ARITH_OR_COMPLEX_OVERLOAD(abs)
+
 VECTORIZED_OVERLOAD(cbrt)
 REAL128_OVERLOAD(cbrt)
 
@@ -115,8 +117,9 @@ inline T cbrt(T in)
     return std::pow(in, 1. / 3.); // needs a separate template as cbrt does not exist for complex types
 }
 
-template <typename T, typename U, enable_if_t<std::is_same<U, mppp::real128>::value, int> = 0>
-inline U pow(const U &base, const T &d)
+// NON UNARY FUNCTIONS -------------------------------------------------------------------------------//
+template <typename T, typename U, enable_if_t<std::is_same<U, mppp::real128>::value || std::is_same<T, mppp::real128>::value, int> = 0>
+inline mppp::real128 pow(const T &base, const U &d)
 {
     return mppp::pow(base, d);
 }
@@ -155,7 +158,6 @@ inline vectorized_double pow(vectorized_double in, double exponent)
     return in;
 }
 
-ARITH_OR_COMPLEX_OVERLOAD(abs)
 
 }
 #endif

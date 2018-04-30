@@ -32,6 +32,8 @@ public:
     vectorized_double() : m_c({0.}){};
     // Constructor from int. Its mandatory for piranha::polynomial coefficient
     explicit vectorized_double(int a) : m_c({static_cast<double>(a)}){};
+    explicit vectorized_double(unsigned a) : m_c({static_cast<double>(a)}){};
+
 
     // Constructor from double value a. Construct [a]
     explicit vectorized_double(double a) : m_c({a}){};
