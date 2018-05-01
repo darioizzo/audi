@@ -30,14 +30,14 @@ namespace audi
  *
  * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T exp(const T &d)
+template <typename T>
+inline gdual<T> exp(const gdual<T> &d)
 {
-    T retval(1.);
-    T fact(1.);
+    gdual<T> retval(1.);
+    gdual<T> fact(1.);
     auto p0 = d.constant_cf();
     auto phat = d - p0;
-    T tmp(phat);
+    gdual<T> tmp(phat);
 
     retval += phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
@@ -65,17 +65,17 @@ inline T exp(const T &d)
  * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T log(const T &d)
+template <typename T>
+inline gdual<T> log(const gdual<T> &d)
 {
-    T retval(0.);
-    T fatt(1.);
+    gdual<T> retval(0.);
+    gdual<T> fatt(1.);
     auto p0 = d.constant_cf();
     auto log_p0 = audi::log(p0);
 
     auto phat = (d - p0);
     phat = phat / p0;
-    T tmp(phat);
+    gdual<T> tmp(phat);
 
     retval = log_p0 + phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
@@ -97,7 +97,7 @@ inline T log(const T &d)
  * @param d audi::gdual argument
  *
  */
-template <typename T, typename U, enable_if_t<std::is_same<U, int>::value || std::is_same<U, double>::value || std::is_same<U, mppp::real128>::value, int> = 0>
+template <typename T, typename U, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
 inline gdual<T> pow(U base, const gdual<T> &d)
 {
     // checks wether the exponent is a constant in which
@@ -107,6 +107,13 @@ inline gdual<T> pow(U base, const gdual<T> &d)
         return gdual<T>(audi::pow(base, p0));
     }
     return exp(audi::log(T(base)) * d);
+}
+
+template <typename T>
+T binomial(T x, unsigned y)
+{
+    T retval(audi::lgamma(x + 1) - audi::lgamma(y + 1) - audi::lgamma(x - y + 1));
+    return audi::exp(retval);
 }
 
 /// Overload for the exponentiation
@@ -127,34 +134,34 @@ inline gdual<T> pow(U base, const gdual<T> &d)
  * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T pow(const T &d, double alpha)
+template <typename T, typename U, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
+inline gdual<T> pow(const gdual<T> &d, U alpha)
 {
     // We check if the exponent is representable as a positive integer,
     // in which case we just do d*d*d*d*... etc.
-    // This is also a workaround to the issue (https://github.com/darioizzo/audi/issues/6)
-    // TODO: is there a better way to do this? Calling the pow (gdual, int) overload is not possible as it
-    // cannot be moved upfront.
-    int n = (alpha*10.);
-    if (n % 10 == 0 && alpha > 0) {
-        T retval(d);
-        for (auto i = 1; i < (int)alpha; ++i) {
+    int n = static_cast<int>(alpha);
+    if (n == alpha && alpha > 0.) {
+std::cout << "NOT HERE!" << std::endl;
+        gdual<T> retval(d);
+        for (auto i = 1; i < n; ++i) {
             retval *= d;
         }
         return retval;
-    }
-    auto p0 = d.constant_cf();
-    auto phat = d - p0;
-    T retval(audi::pow(p0, alpha));
-    phat = phat;
-    T tmp(phat);
+    } else {
+std::cout << "I AM HERE!" << std::endl;
+        auto p0 = d.constant_cf();
+        auto phat = d - p0;
+        gdual<T> retval(audi::pow(p0, alpha));
+        phat = phat;
+        gdual<T> tmp(phat);
 
-    retval += alpha * phat * audi::pow(p0, alpha - 1);
-    for (auto i = 2u; i <= d.get_order(); ++i) {
-        phat *= tmp;
-        retval += piranha::math::binomial(alpha, i) * phat * audi::pow(p0, alpha - i);
+        retval += alpha * phat * audi::pow(p0, alpha - 1);
+        for (auto i = 2u; i <= d.get_order(); ++i) {
+            phat *= tmp;
+            retval += binomial(alpha, i) * phat * audi::pow(p0, alpha - i);
+        }
+        return retval;
     }
-    return retval;
 }
 
 // Its important this comes after the pow(gdual, double) overload
@@ -166,13 +173,13 @@ inline T pow(const T &d, double alpha)
  * @param d audi::gdual argument
  * @param n integer exponent
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T pow(const T &d, int n)
+template <typename T>
+inline gdual<T> pow(const gdual<T> &d, int n)
 {
     if (n <= 0) {
         return audi::pow(d, (double)n);
     }
-    T retval(d);
+    gdual<T> retval(d);
     for (auto i = 1; i < n; ++i) {
         retval *= d;
     }
@@ -191,8 +198,8 @@ inline T pow(const T &d, int n)
  *
  * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T pow(const T &d1, const T &d2)
+template <typename T>
+inline gdual<T> pow(const gdual<T> &d1, const gdual<T> &d2)
 {
     return exp(d2 * log(d1));
 }
@@ -339,10 +346,11 @@ inline T cos(const T &d)
     T cos_taylor(1.);
     T tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
-        coeff *= -1.;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
-        factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
-        cos_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose precision in case of real128
+        coeff *= -1.;                            // -1, 1, -1, 1, ...
+        tmp *= phat2;                            // phat^2, phat^4, phat^6 ...
+        factorial *= i * (i - 1.);               // 2!, 4!, 6!, ...
+        cos_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose
+                                                 // precision in case of real128
     }
 
     factorial = 1.;
@@ -350,10 +358,11 @@ inline T cos(const T &d)
     T sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
-        coeff *= -1.;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
-        factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
-        sin_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose precision in case of real128
+        coeff *= -1.;                            // -1, 1, -1, 1, ...
+        tmp *= phat2;                            // phat^3, phat^5, phat^7 ...
+        factorial *= i * (i - 1.);               // 3!, 5!, 7!, ...
+        sin_taylor += (coeff * tmp) / factorial; // factorial is double, so the operation order matters not to loose
+                                                 // precision in case of real128
     }
     return (cos_p0 * cos_taylor - sin_p0 * sin_taylor);
 }
@@ -387,7 +396,9 @@ std::array<T, 2> sin_and_cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
-        cos_taylor += (coeff / factorial) * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
+        cos_taylor
+            += (coeff / factorial)
+               * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
 
     factorial = 1.;
@@ -398,7 +409,9 @@ std::array<T, 2> sin_and_cos(const T &d)
         coeff *= -1.;              // -1, 1, -1, 1, ...
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1.); // 3!, 5!, 7!, ...
-        sin_taylor += (coeff / factorial) * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
+        sin_taylor
+            += (coeff / factorial)
+               * tmp; // factorial is double, so the operation order matters not to loose precision in case of real128
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;

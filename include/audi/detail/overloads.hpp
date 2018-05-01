@@ -1,6 +1,8 @@
 #ifndef AUDI_OVERLOADS_HPP
 #define AUDI_OVERLOADS_HPP
 
+#include <cmath>
+
 #include <audi/back_compatibility.hpp>
 #include <audi/vectorized_double.hpp>
 #include <audi/real128.hpp>
@@ -26,7 +28,7 @@ struct is_arithmetic_or_complex
 // It is used to allow calls such as audi::cos(T) [T = double] in templated functions.
 #define ARITH_OR_COMPLEX_OVERLOAD(fun_name)                                                                            \
     template <typename T, enable_if_t<is_arithmetic_or_complex<T>::value, int> = 0>                                    \
-    inline T fun_name(T in)                                                                                            \
+    inline auto fun_name(T in) -> decltype(std::fun_name(T(0.)))                                                       \
     {                                                                                                                  \
         return std::fun_name(in);                                                                                      \
     }
@@ -48,6 +50,10 @@ REAL128_OVERLOAD(exp)
 VECTORIZED_OVERLOAD(erf)
 ARITH_OR_COMPLEX_OVERLOAD(erf)
 REAL128_OVERLOAD(erf)
+
+VECTORIZED_OVERLOAD(lgamma)
+ARITH_OR_COMPLEX_OVERLOAD(lgamma)
+REAL128_OVERLOAD(lgamma)
 
 VECTORIZED_OVERLOAD(log)
 ARITH_OR_COMPLEX_OVERLOAD(log)

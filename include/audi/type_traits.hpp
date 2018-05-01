@@ -1,8 +1,12 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
-#include <audi/gdual.hpp>
 #include <type_traits>
+#include<mp++/real128.hpp>
+
+#include <audi/gdual.hpp>
+#include <audi/vectorized_double.hpp>
+
 
 namespace audi
 {
@@ -21,6 +25,17 @@ template <typename T>
 struct is_gdual<gdual<T>> : std::true_type {
 };
 
+/// Type is arithmetic (includes multiple precision floats)
+/**
+ * Checks whether T is an arithmetic type (that is, an integral type or a floating-point type that includes multiple precision floats if available) 
+ *
+ * \tparam T a type to check
+ */
+template <class T>
+struct is_arithmetic
+    : std::integral_constant<bool, std::is_arithmetic<T>::value || std::is_same<T, mppp::real128>::value > {
+};
+
 /// Type is arithmetic or complex
 /**
  * Checks whether T is an arithmetic type (that is, an integral type or a floating-point type) or a complex
@@ -30,7 +45,18 @@ struct is_gdual<gdual<T>> : std::true_type {
  */
 template <class T>
 struct is_arithmetic_or_complex
-    : std::integral_constant<bool, std::is_arithmetic<T>::value || boost::is_complex<T>::value> {
+    : std::integral_constant<bool, audi::is_arithmetic<T>::value || boost::is_complex<T>::value> {
+};
+
+/// Type is allowed to be a coefficient for gduals
+/**
+ * Checks whether T is a type from which gdual construction is allowed
+ *
+ * \tparam T a type to check
+ */
+template <class T>
+struct is_gdual_cf
+    : std::integral_constant<bool, audi::is_arithmetic_or_complex<T>::value || std::is_same<T, vectorized_double>::value > {
 };
 }
 
