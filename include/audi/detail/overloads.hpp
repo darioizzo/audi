@@ -112,6 +112,10 @@ ARITH_OR_COMPLEX_OVERLOAD(abs)
 VECTORIZED_OVERLOAD(cbrt)
 REAL128_OVERLOAD(cbrt)
 
+VECTORIZED_OVERLOAD(sqrt)
+REAL128_OVERLOAD(sqrt)
+
+
 template <typename T, enable_if_t<std::is_arithmetic<T>::value, int> = 0>
 inline T cbrt(T in)
 {

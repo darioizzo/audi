@@ -112,8 +112,11 @@ inline gdual<T> pow(U base, const gdual<T> &d)
 template <typename T>
 T binomial(T x, unsigned y)
 {
-    T retval(audi::lgamma(x + 1) - audi::lgamma(y + 1) - audi::lgamma(x - y + 1));
-    return audi::exp(retval);
+    T retval(x);
+    for (auto i = 1u; i < y; ++i) {
+        retval = retval * (x - i) / (i + 1);
+    }
+    return retval;
 }
 
 /// Overload for the exponentiation
@@ -141,30 +144,26 @@ inline gdual<T> pow(const gdual<T> &d, U alpha)
     // in which case we just do d*d*d*d*... etc.
     int n = static_cast<int>(alpha);
     if (n == alpha && alpha > 0.) {
-std::cout << "NOT HERE!" << std::endl;
         gdual<T> retval(d);
         for (auto i = 1; i < n; ++i) {
             retval *= d;
         }
         return retval;
     } else {
-std::cout << "I AM HERE!" << std::endl;
         auto p0 = d.constant_cf();
         auto phat = d - p0;
         gdual<T> retval(audi::pow(p0, alpha));
-        phat = phat;
         gdual<T> tmp(phat);
-
         retval += alpha * phat * audi::pow(p0, alpha - 1);
         for (auto i = 2u; i <= d.get_order(); ++i) {
             phat *= tmp;
-            retval += binomial(alpha, i) * phat * audi::pow(p0, alpha - i);
+            auto achoosei = binomial(alpha, i);
+            retval += achoosei * phat * audi::pow(p0, alpha - i);
         }
         return retval;
     }
 }
 
-// Its important this comes after the pow(gdual, double) overload
 /// Overload for the integer exponentiation
 /**
  * Implements the integer exponentiation of a audi::gdual. Essentially,
@@ -176,14 +175,21 @@ std::cout << "I AM HERE!" << std::endl;
 template <typename T>
 inline gdual<T> pow(const gdual<T> &d, int n)
 {
-    if (n <= 0) {
-        return audi::pow(d, (double)n);
+    if (n < 0) {
+        gdual<T> retval(T(1.) / d);
+        for (auto i = 1; i < -n; ++i) {
+            retval /= d;
+        }
+        return retval;
+    } else if (n > 0) {
+        gdual<T> retval(d);
+        for (auto i = 1; i < n; ++i) {
+            retval *= d;
+        }
+        return retval;
+    } else {              //==0 case
+        return d - d + 1; // TODO: can this be made more efficient? (preserving symbol set and order)
     }
-    gdual<T> retval(d);
-    for (auto i = 1; i < n; ++i) {
-        retval *= d;
-    }
-    return retval;
 }
 
 /// Overload for the exponentiation of a gdual to a gdual power
@@ -221,10 +227,25 @@ inline gdual<T> pow(const gdual<T> &d1, const gdual<T> &d2)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T sqrt(const T &d)
+template <typename T>
+inline gdual<T> sqrt(const gdual<T> &d)
 {
-    return pow(d, 0.5); // TODO: subsitute this by similar code to cbrt?
+    T alpha(0.5);
+    gdual<T> retval(1.);
+    auto p0 = d.constant_cf();
+    auto sqrt_p0 = audi::sqrt(p0);
+
+    auto phat = d - p0;
+    phat = phat / p0;
+    gdual<T> tmp(phat);
+
+    retval += alpha * phat;
+    for (auto i = 2u; i <= d.get_order(); ++i) {
+        phat *= tmp;
+        retval += binomial(alpha, i) * phat;
+    }
+    retval *= sqrt_p0;
+    return retval;
 }
 
 /// Overload for the cubic root
@@ -244,22 +265,22 @@ inline T sqrt(const T &d)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T cbrt(const T &d)
+template <typename T>
+inline gdual<T> cbrt(const gdual<T> &d)
 {
-    double alpha = 1 / 3.;
-    T retval(1.);
+    T alpha(T(1.)/T(3.));
+    gdual<T> retval(1.);
     auto p0 = d.constant_cf();
     auto cbrt_p0 = audi::cbrt(p0);
 
     auto phat = d - p0;
     phat = phat / p0;
-    T tmp(phat);
+    gdual<T> tmp(phat);
 
     retval += alpha * phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
         phat *= tmp;
-        retval += piranha::math::binomial(alpha, i) * phat;
+        retval += binomial(alpha, i) * phat;
     }
     retval *= cbrt_p0;
     return retval;
