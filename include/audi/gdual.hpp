@@ -677,7 +677,7 @@ public:
     bool is_zero(double tol) const
     {
         for (auto it = _container().begin(); it != _container().end(); ++it) {
-            if (abs(it->m_cf) > tol) // call to audi abs has precedence
+            if (audi::abs(it->m_cf) > tol) // call to audi abs has precedence
             {
                 return false;
             }

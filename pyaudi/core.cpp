@@ -32,6 +32,9 @@ BOOST_PYTHON_MODULE(core)
                  return ::new gdual_v(pyaudi::l_to_v<double>(value), symbol, order);
              }));
 
+    // We expose the gdual<double> using the expose_gdual defined in exposed_gdual.hpp
+    // pyaudi::expose_gdual<mppp::real128>("real128");
+
     // We expose the functions
     bp::def("exp", +[](const gdual_d &d) { return exp(d); }, "Exponential (gdual_d).");
     bp::def("exp", +[](double x) { return std::exp(x); }, "Exponential (double).");
