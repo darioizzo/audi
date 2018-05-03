@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(trigonometric)
         BOOST_CHECK((cos(acos(x)) - x).trim(1e-32) == gdual_mp(0.)); // in this computation we have an accumulating precision loss at high orders
         BOOST_CHECK((acos(cos(x)) - x).trim(1e-32) == gdual_mp(0.)); // in this computation we have an accumulating precision loss at high orders
         BOOST_CHECK((tan(atan(x)) - x).trim(1e-34) == gdual_mp(0.));
-        BOOST_CHECK((atan(tan(x)) - x).trim(1e-34) == gdual_mp(0.));
+        BOOST_CHECK((atan(tan(x)) - x).trim(1e-33) == gdual_mp(0.));
 
 
     }

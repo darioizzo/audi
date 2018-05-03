@@ -268,7 +268,7 @@ inline gdual<T> sqrt(const gdual<T> &d)
 template <typename T>
 inline gdual<T> cbrt(const gdual<T> &d)
 {
-    T alpha(T(1.)/T(3.));
+    T alpha(T(1.) / T(3.));
     gdual<T> retval(1.);
     auto p0 = d.constant_cf();
     auto cbrt_p0 = audi::cbrt(p0);
@@ -317,8 +317,8 @@ inline gdual<T> sin(const gdual<T> &d)
     gdual<T> cos_taylor(1.);
     gdual<T> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1); // 2!, 4!, 6!, ...
         cos_taylor += (coeff * tmp) / factorial;
     }
@@ -328,8 +328,8 @@ inline gdual<T> sin(const gdual<T> &d)
     gdual<T> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1); // 3!, 5!, 7!, ...
         sin_taylor += (coeff * tmp) / factorial;
     }
@@ -367,8 +367,8 @@ inline gdual<T> cos(const gdual<T> &d)
     gdual<T> cos_taylor(1.);
     gdual<T> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1); // 2!, 4!, 6!, ...
         cos_taylor += (coeff * tmp) / factorial;
     }
@@ -378,8 +378,8 @@ inline gdual<T> cos(const gdual<T> &d)
     gdual<T> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1); // 3!, 5!, 7!, ...
         sin_taylor += (coeff * tmp) / factorial;
     }
@@ -412,8 +412,8 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
     gdual<T> cos_taylor(1.);
     gdual<T> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^2, phat^4, phat^6 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1); // 2!, 4!, 6!, ...
         cos_taylor += (coeff * tmp) / factorial;
     }
@@ -423,8 +423,8 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
     gdual<T> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
-        coeff = -coeff;              // -1, 1, -1, 1, ...
-        tmp *= phat2;              // phat^3, phat^5, phat^7 ...
+        coeff = -coeff;           // -1, 1, -1, 1, ...
+        tmp *= phat2;             // phat^3, phat^5, phat^7 ...
         factorial *= i * (i - 1); // 3!, 5!, 7!, ...
         sin_taylor += (coeff * tmp) / factorial;
     }
@@ -459,14 +459,14 @@ inline gdual<T> tan(const gdual<T> &d)
     auto tan_p0 = audi::tan(p0);
 
     // Pre-compute Bernoulli numbers.
-    std::vector<T> bn;
-    boost::math::bernoulli_b2n<T>(0, (d.get_order() + 1) / 2 + 1,
+    std::vector<double> bn;
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
                                        std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
     gdual<T> tan_taylor = phat;
     // Factors
-    T factorial(24);
-    T four_k(16);
+    double factorial(24);
+    double four_k(16);
     for (auto k = 2u; 2 * k - 1 <= d.get_order(); ++k) {
         phat *= phat2;
         tan_taylor += bn[k] * four_k * (1 - audi::abs(four_k)) / factorial * phat;
@@ -474,6 +474,14 @@ inline gdual<T> tan(const gdual<T> &d)
         factorial *= (2. * k + 1.) * (2. * k + 2.);
     }
     return (tan_p0 + tan_taylor) / (1. - tan_p0 * tan_taylor);
+}
+// template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> tan(const gdual<mppp::real128> &d)
+{
+    auto sincos = sin_and_cos(d);
+    return sincos[0] / sincos[1];
 }
 
 /// Overload for the hyperbolic sine
@@ -502,7 +510,7 @@ inline gdual<T> sinh(const gdual<T> &d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    T factorial(1.);
+    double factorial(1.);
     gdual<T> cosh_taylor(1.);
     gdual<T> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
@@ -511,7 +519,7 @@ inline gdual<T> sinh(const gdual<T> &d)
         cosh_taylor += tmp / factorial;
     }
 
-    factorial = T(1.);
+    factorial = 1.;
     gdual<T> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
@@ -548,7 +556,7 @@ inline gdual<T> cosh(const gdual<T> &d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    T factorial(1.);
+    double factorial(1.);
     gdual<T> cosh_taylor(1.);
     gdual<T> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
@@ -557,7 +565,7 @@ inline gdual<T> cosh(const gdual<T> &d)
         cosh_taylor += tmp / factorial;
     }
 
-    factorial = T(1.);
+    factorial = 1.;
     gdual<T> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
@@ -589,7 +597,7 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
     auto sinh_p0 = audi::sinh(p0);
     auto cosh_p0 = audi::cosh(p0);
 
-    T factorial(1.);
+    double factorial(1.);
     gdual<T> cosh_taylor(1.);
     gdual<T> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
@@ -598,7 +606,7 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
         cosh_taylor += tmp / factorial;
     }
 
-    factorial = T(1.);
+    factorial = 1.;
     gdual<T> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
@@ -637,14 +645,14 @@ inline gdual<T> tanh(const gdual<T> &d)
     auto tanh_p0 = audi::tanh(p0);
 
     // Pre-compute Bernoulli numbers.
-    std::vector<T> bn;
-    boost::math::bernoulli_b2n<T>(0, (d.get_order() + 1) / 2 + 1,
+    std::vector<double> bn;
+    boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
                                        std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
     gdual<T> tanh_taylor = phat;
     // Factors
-    T factorial(24.);
-    T four_k(16.);
+    double factorial(24.);
+    double four_k(16.);
     for (auto k = 2u; 2 * k - 1 <= d.get_order(); ++k) {
         phat *= phat2;
         tanh_taylor += bn[k] * four_k * (four_k - 1.) / factorial * phat;
@@ -652,6 +660,14 @@ inline gdual<T> tanh(const gdual<T> &d)
         factorial *= (2 * k + 1.) * (2 * k + 2.);
     }
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
+}
+// // template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> tanh(const gdual<mppp::real128> &d)
+{
+    auto sinhcosh = sinh_and_cosh(d);
+    return sinhcosh[0] / sinhcosh[1];
 }
 
 /// Overload for the inverse hyperbolic tangent
@@ -727,23 +743,23 @@ inline gdual<T> atan(const gdual<T> &d)
             auto f0 = p0 * p0;
             T cf_i(-1.);
             for (auto j = 1u; 2 * j <= k; ++j) {
-                binom += (binomial(k, 2u * j) * cf_i) * f0; 
+                binom += (binomial(k, 2u * j) * cf_i) * f0;
                 f0 *= p0 * p0;
-                cf_i *= -1.;
+                cf_i = -cf_i;
             }
             retval += binom * powphat * coeff1 / k;
-            coeff1 *= -1.;
+            coeff1 = -coeff1;
         } else { // This is for even powers 2..4..6
             T binom(0.);
             auto f0 = p0;
             T cf_i(1.);
             for (auto j = 1u; 2 * j - 1 <= k; ++j) {
-                binom += T(binomial(k, 2u * j - 1u) * cf_i) * f0; 
+                binom += T(binomial(k, 2u * j - 1u) * cf_i) * f0;
                 f0 *= p0 * p0;
-                cf_i *= -1;
+                cf_i = -cf_i;
             }
             retval += binom * powphat * coeff2 / k;
-            coeff2 *= -1;
+            coeff2 = -coeff2;
         }
         powphat *= phat;
     }
@@ -835,8 +851,14 @@ inline gdual<T> asin(const gdual<T> &d)
 template <typename T>
 inline gdual<T> acos(const gdual<T> &d)
 {
-    return 0.5 * boost::math::constants::pi<T>() - asin(d);
-
+    return 0.5 * boost::math::constants::pi<double>() - asin(d);
+}
+// template specialization for the mppp::real128 type. boost::math::constants::pi<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> acos(const gdual<mppp::real128> &d)
+{
+    return 0.5 * mppp::real128_pi() - asin(d);
 }
 
 /// Overload for the absolute value
@@ -871,7 +893,7 @@ inline gdual<T> abs(const gdual<T> &d)
 // Vectorized abs
 inline gdual<vectorized_double> abs(const gdual<vectorized_double> &d)
 {
-     gdual<vectorized_double> retval(d);
+    gdual<vectorized_double> retval(d);
     auto p0 = retval.constant_cf();
     for (auto it = retval._container().begin(); it != retval._container().end(); ++it) {
         // if the coefficient has one only element copy it over to the whole length of p0
