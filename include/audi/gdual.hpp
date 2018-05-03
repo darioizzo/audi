@@ -26,6 +26,7 @@
 
 #include <audi/back_compatibility.hpp>
 #include <audi/detail/overloads.hpp> //for audi::abs
+ 
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -444,7 +445,7 @@ public:
         if (epsilon < 0) {
             throw std::invalid_argument("When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: " + std::to_string(epsilon) );
         }
-        auto new_p = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(abs(coeff.first) < epsilon); });
+        auto new_p = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 

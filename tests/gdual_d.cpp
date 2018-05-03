@@ -273,6 +273,8 @@ BOOST_AUTO_TEST_CASE(subs)
         gdual_d x(0, "x", 100);
         auto sx = sin(x);
         auto sx1 = sx.subs("dx", 1.);
+        std::cout << sx << std::endl;
+        std::cout << sx1 << std::endl;
         BOOST_CHECK_CLOSE(sx1.constant_cf(), std::sin(1.), 1e-12);
     }
 }

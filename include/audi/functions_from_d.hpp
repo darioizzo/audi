@@ -132,7 +132,7 @@ inline T asinh_d(const T &f)
 
 /// Possible overload for the inverse cosine
 /**
- * Implements the inverse cosine of an audi::gdual. The audi:acos
+ * Implements the inverse cosine of an audi::gdual. The audi::acos
  * overload may be slower, but this is currently only provided as to benchmark the
  * performances of audi::_compose_from_derivative
  *
