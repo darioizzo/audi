@@ -33,13 +33,12 @@ namespace audi
  * @param dg Taylor expansion of the derivative of the outer function
  * @param g0 Value of the outer function at the expansion point
  */
-template <typename T, typename V,
-          enable_if_t<is_gdual<T>::value && std::is_same<V, typename T::cf_type>::value, int> = 0>
-inline T _compose_from_derivative(T f, T dg, V g0)
+template <typename T>
+inline gdual<T> _compose_from_derivative(gdual<T> f, gdual<T> dg, T g0)
 {
     auto ss = f.get_symbol_set();
     if (ss.size() == 0) {
-        return T(g0);
+        return gdual<T>(g0);
     }
     auto retval = (dg * f.partial(ss[0])).integrate(ss[0]);
     for (auto i = 1u; i < ss.size(); ++i) {
@@ -61,8 +60,8 @@ inline T _compose_from_derivative(T f, T dg, V g0)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T atanh_d(const T &f)
+template <typename T>
+inline gdual<T> atanh_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atanh(f0);
@@ -81,8 +80,8 @@ inline T atanh_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse tangent of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T atan_d(const T &f)
+template <typename T>
+inline gdual<T> atan_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atan(f0);
@@ -101,12 +100,12 @@ inline T atan_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse sine of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T asin_d(const T &f)
+template <typename T>
+inline gdual<T> asin_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asin(f0);
-    auto dg = 1. / sqrt(1. - f * f);
+    auto dg = 1. / audi::sqrt(1. - f * f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -121,12 +120,12 @@ inline T asin_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T asinh_d(const T &f)
+template <typename T>
+inline gdual<T> asinh_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asinh(f0);
-    auto dg = 1. / sqrt(1. + f * f);
+    auto dg = 1. / audi::sqrt(1. + f * f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -141,12 +140,12 @@ inline T asinh_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse cosine of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T acos_d(const T &f)
+template <typename T>
+inline gdual<T> acos_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acos(f0);
-    auto dg = -1. / sqrt(1. - f * f);
+    auto dg = -1. / audi::sqrt(1. - f * f);
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -161,12 +160,12 @@ inline T acos_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T acosh_d(const T &f)
+template <typename T>
+inline gdual<T> acosh_d(const gdual<T> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acosh(f0);
-    auto dg = 1. / sqrt((f - 1.) * (f + 1.));
+    auto dg = 1. / audi::sqrt((f - 1.) * (f + 1.));
     return _compose_from_derivative(f, dg, g0);
 }
 
@@ -181,14 +180,22 @@ inline T acosh_d(const T &f)
  * @return an audi:gdual containing the Taylor expansion of the error function of \p d
  *
  */
-template <typename T, enable_if_t<is_gdual<T>::value, int> = 0>
-inline T erf(const T &d)
+template <typename T>
+inline gdual<T>  erf(const gdual<T> &d)
 {
     auto f0 = d.constant_cf();
     auto g0 = audi::erf(f0);
     auto dg = (2. / std::sqrt(boost::math::constants::pi<double>())) * exp(-d * d);
     return _compose_from_derivative(d, dg, g0);
 }
+//template <>
+//inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
+//{
+//    auto f0 = d.constant_cf();
+//    auto g0 = audi::erf(f0);
+//    auto dg = (2. / audi::sqrt(mppp::real128_pi())) * exp(-d * d);
+//    return _compose_from_derivative(d, dg, g0);
+//}
 
 } // end of namespace audi
 

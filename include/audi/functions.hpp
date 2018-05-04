@@ -890,7 +890,8 @@ inline gdual<T> abs(const gdual<T> &d)
     }
     return -d;
 }
-// Vectorized abs
+// Vectorized abs specialization
+template <>
 inline gdual<vectorized_double> abs(const gdual<vectorized_double> &d)
 {
     gdual<vectorized_double> retval(d);
