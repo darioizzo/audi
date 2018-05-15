@@ -188,14 +188,14 @@ inline gdual<T>  erf(const gdual<T> &d)
     auto dg = (2. / std::sqrt(boost::math::constants::pi<double>())) * exp(-d * d);
     return _compose_from_derivative(d, dg, g0);
 }
-//template <>
-//inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
-//{
-//    auto f0 = d.constant_cf();
-//    auto g0 = audi::erf(f0);
-//    auto dg = (2. / audi::sqrt(mppp::real128_pi())) * exp(-d * d);
-//    return _compose_from_derivative(d, dg, g0);
-//}
+template <>
+inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
+{
+    auto f0 = d.constant_cf();
+    auto g0 = audi::erf(f0);
+    auto dg = (2. / audi::sqrt(mppp::real128_pi())) * exp(-d * d);
+    return _compose_from_derivative(d, dg, g0);
+}
 
 } // end of namespace audi
 

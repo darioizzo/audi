@@ -292,3 +292,27 @@ BOOST_AUTO_TEST_CASE(hyperbolic)
         BOOST_CHECK((atanh(tanh(x)) - x).trim(1e-33) == gdual_mp(0.));
     }
 }
+
+BOOST_AUTO_TEST_CASE(erf_fun)
+{
+    {
+        mppp::real128 onethird{"0.33333333333333333333333333333333333333333333333"};
+        gdual_mp x{onethird, "x", 3};
+        auto res = erf(x);
+        BOOST_CHECK(audi::abs(res.find_cf({0})
+                              - mppp::real128("0.362648111766062933408178640147865879692141590372537239240"))
+                    < 1e-33);
+        BOOST_CHECK(
+            audi::abs(res.find_cf({1})
+                      - mppp::real128("1.00971804299131606624460336666642604033678715687395758256805086446851098"))
+            < 1e-33);
+        BOOST_CHECK(
+            audi::abs(res.find_cf({2})
+                      - mppp::real128("-0.33657268099710535541486778888880868011226238562465252752268362148947000"))
+            < 1e-33);
+        BOOST_CHECK(
+            audi::abs(res.find_cf({3})
+                      - mppp::real128("-0.26177875188663749865600828024685119564287074437472974362875392782518447"))
+            < 1e-33);
+    }
+}

@@ -250,8 +250,9 @@ public:
     }
 
     template <typename T, generic_ctor_enabler<T> = 0>
-    explicit gdual(const T &value) : m_p(value), m_order(0u)
+    explicit gdual(const T &value) : m_p(), m_order(0u)
     {
+        m_p += Cf(value);
     }
 
     template <typename T>

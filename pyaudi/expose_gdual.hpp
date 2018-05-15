@@ -1,6 +1,10 @@
 #ifndef AUDI_EXPOSE_GDUAL_H
 #define AUDI_EXPOSE_GDUAL_H
 
+#if defined(AUDI_WITH_MPPP)
+#include <audi/real128.hpp>
+#endif
+
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
@@ -64,7 +68,7 @@ struct gdual_pickle_suite : bp::pickle_suite {
 
 // For non vectorized_double we do not perform any conversion on in-out types
 template <typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int> = 0>
-inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
+inline void expose_subs(bp::class_<gdual<T>> th)
 {
     th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
            "Substitutes a symbol with a value (does not remove symbol from symbol set)");
@@ -72,7 +76,7 @@ inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
 template <typename T, enable_if_t<std::is_same<T, vectorized_double>::value, int> = 0>
-inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
+inline void expose_subs(bp::class_<gdual<T>> th)
 {
     th.def(
         "subs",
@@ -80,6 +84,28 @@ inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
         "Substitutes a symbol with a value (does not remove symbol from symbol set)");
 }
 
+#if defined(AUDI_WITH_MPPP)
+// For mppp::real128 we expose additional constructors using a string representation of the values
+template <typename T, enable_if_t<std::is_same<T, mppp::real128>::value, int> = 0>
+inline void expose_additional_constructors(bp::class_<gdual<T>> th)
+{
+    th.def(bp::init<double>());
+    th.def(bp::init<double, const std::string &, unsigned int>());
+    th.def(bp::init<const std::string &>());
+    th.def(bp::init<const std::string &, const std::string &, unsigned int>());
+}
+
+// For !mppp::real128 we expose additional constructors using a string representation of the values
+template <typename T, enable_if_t<!std::is_same<T, mppp::real128>::value, int> = 0>
+inline void expose_additional_constructors(bp::class_<gdual<T>> th)
+{
+}
+#else
+template <typename T>
+inline void expose_additional_constructors(bp::class_<gdual<T>> th)
+{
+}
+#endif
 // This is the interface common across types
 template <typename T>
 bp::class_<gdual<T>> expose_gdual(std::string type)
@@ -177,7 +203,8 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                    },
                    "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
                    "factor");
-    expose_T_dependent_stuff<T>(th);
+    expose_subs<T>(th);
+    expose_additional_constructors<T>(th);
     return th;
 }
 }
