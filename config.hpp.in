@@ -1,0 +1,11 @@
+#ifndef AUDI_CONFIG_HPP
+#define AUDI_CONFIG_HPP
+
+// Start of defines instantiated by CMake.
+// clang-format off
+#define AUDI_VERSION_STRING "@audi_VERSION@"
+#define AUDI_VERSION_MAJOR @audi_VERSION_MAJOR@
+#define AUDI_VERSION_MINOR @audi_VERSION_MINOR@
+@AUDI_ENABLE_MPPP@
+
+#endif

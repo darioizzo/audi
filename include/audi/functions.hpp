@@ -1,6 +1,8 @@
 #ifndef AUDI_FUNCTIONS_HPP
 #define AUDI_FUNCTIONS_HPP
 
+#include <audi/config.hpp>
+
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/bernoulli.hpp>
 #include <cmath>
@@ -475,14 +477,6 @@ inline gdual<T> tan(const gdual<T> &d)
     }
     return (tan_p0 + tan_taylor) / (1. - tan_p0 * tan_taylor);
 }
-// template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
-// requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> tan(const gdual<mppp::real128> &d)
-{
-    auto sincos = sin_and_cos(d);
-    return sincos[0] / sincos[1];
-}
 
 /// Overload for the hyperbolic sine
 /**
@@ -660,14 +654,6 @@ inline gdual<T> tanh(const gdual<T> &d)
         factorial *= (2 * k + 1.) * (2 * k + 2.);
     }
     return (tanh_p0 + tanh_taylor) / (1. + tanh_p0 * tanh_taylor);
-}
-// // template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
-// requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> tanh(const gdual<mppp::real128> &d)
-{
-    auto sinhcosh = sinh_and_cosh(d);
-    return sinhcosh[0] / sinhcosh[1];
 }
 
 /// Overload for the inverse hyperbolic tangent
@@ -853,13 +839,6 @@ inline gdual<T> acos(const gdual<T> &d)
 {
     return 0.5 * boost::math::constants::pi<double>() - asin(d);
 }
-// template specialization for the mppp::real128 type. boost::math::constants::pi<mppp::real128> can also work, but
-// requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> acos(const gdual<mppp::real128> &d)
-{
-    return 0.5 * mppp::real128_pi() - asin(d);
-}
 
 /// Overload for the absolute value
 /**
@@ -909,6 +888,34 @@ inline gdual<vectorized_double> abs(const gdual<vectorized_double> &d)
     }
     return retval;
 }
+
+#if defined(AUDI_WITH_MPPP)
+// template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> tan(const gdual<mppp::real128> &d)
+{
+    auto sincos = sin_and_cos(d);
+    return sincos[0] / sincos[1];
+}
+
+// template specialization for the mppp::real128 type. boost::math::constants::pi<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> acos(const gdual<mppp::real128> &d)
+{
+    return 0.5 * mppp::real128_pi() - asin(d);
+}
+
+// template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
+// requires to specialize std::numeric_limits for vectorized and mppp::real128
+template <>
+inline gdual<mppp::real128> tanh(const gdual<mppp::real128> &d)
+{
+    auto sinhcosh = sinh_and_cosh(d);
+    return sinhcosh[0] / sinhcosh[1];
+}
+#endif
 
 } // end of namespace audi
 
