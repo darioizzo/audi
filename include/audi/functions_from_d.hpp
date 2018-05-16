@@ -4,6 +4,7 @@
 #include <boost/math/constants/constants.hpp>
 #include <cmath>
 
+#include <audi/config.hpp>
 #include <audi/back_compatibility.hpp>
 #include <audi/detail/overloads.hpp>
 #include <audi/gdual.hpp>
@@ -188,6 +189,8 @@ inline gdual<T>  erf(const gdual<T> &d)
     auto dg = (2. / std::sqrt(boost::math::constants::pi<double>())) * exp(-d * d);
     return _compose_from_derivative(d, dg, g0);
 }
+
+#if defined(AUDI_WITH_MPPP)
 template <>
 inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
 {
@@ -196,6 +199,7 @@ inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
     auto dg = (2. / audi::sqrt(mppp::real128_pi())) * exp(-d * d);
     return _compose_from_derivative(d, dg, g0);
 }
+#endif
 
 } // end of namespace audi
 
