@@ -84,28 +84,6 @@ inline void expose_subs(bp::class_<gdual<T>> th)
         "Substitutes a symbol with a value (does not remove symbol from symbol set)");
 }
 
-#if defined(AUDI_WITH_MPPP)
-// For mppp::real128 we expose additional constructors using a string representation of the values
-template <typename T, enable_if_t<std::is_same<T, mppp::real128>::value, int> = 0>
-inline void expose_additional_constructors(bp::class_<gdual<T>> th)
-{
-    th.def(bp::init<double>());
-    th.def(bp::init<double, const std::string &, unsigned int>());
-    th.def(bp::init<const std::string &>());
-    th.def(bp::init<const std::string &, const std::string &, unsigned int>());
-}
-
-// For !mppp::real128 we expose additional constructors using a string representation of the values
-template <typename T, enable_if_t<!std::is_same<T, mppp::real128>::value, int> = 0>
-inline void expose_additional_constructors(bp::class_<gdual<T>> th)
-{
-}
-#else
-template <typename T>
-inline void expose_additional_constructors(bp::class_<gdual<T>> th)
-{
-}
-#endif
 // This is the interface common across types
 template <typename T>
 bp::class_<gdual<T>> expose_gdual(std::string type)
@@ -199,12 +177,11 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                    "factor")
               .def("get_derivative",
                    +[](const gdual<T> &g, const bp::dict &pydict) {
-                       return g.get_derivative(pydict_to_umap<std::string, unsigned int>(pydict));
+                       return g.get_derivative(pydict_to_umap<std::string, unsigned>(pydict));
                    },
                    "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
                    "factor");
     expose_subs<T>(th);
-    expose_additional_constructors<T>(th);
     return th;
 }
 }

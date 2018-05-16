@@ -72,7 +72,7 @@ class gdual
     // Static checks.
     static_assert(
         piranha::is_cf<Cf>::value && piranha::is_differentiable<Cf>::value,
-        "A gdual must be constructed froma coefficient satisfying piranha's conditions is_cf and is_differentiable.");
+        "A gdual must be constructed from a coefficient satisfying piranha's conditions is_cf and is_differentiable.");
 
 public:
     using cf_type = Cf;
@@ -592,9 +592,9 @@ public:
     template <typename T>
     auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
     {
-        double cumfact = 1;
+        double cumfact = 1.;
         for (auto i = c.begin(); i < c.end(); ++i) {
-            cumfact *= boost::math::factorial<double>(static_cast<unsigned int>(*i));
+            cumfact *= boost::math::factorial<double>(static_cast<unsigned>(*i));
         }
         return this->find_cf(c) * cumfact;
     }
@@ -618,9 +618,9 @@ public:
     template <typename T>
     auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
     {
-        double cumfact = 1;
+        double cumfact = 1.;
         for (auto i = l.begin(); i < l.end(); ++i) {
-            cumfact *= boost::math::factorial<double>((unsigned int)(*i));
+            cumfact *= boost::math::factorial<double>((unsigned)(*i));
         }
         return this->find_cf(l) * cumfact;
     }
@@ -642,7 +642,7 @@ public:
      * @throws unspecified all exceptions thrown by the templated version call.
      * @throws std::invalid_argument: if one of the symbols is not found in the expression
      */
-    auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const
+    auto get_derivative(const std::unordered_map<std::string, unsigned> &dict) const
         -> decltype(std::declval<const gdual &>().get_derivative(std::vector<double>{}))
     {
         const auto &ss = m_p.get_symbol_set();
