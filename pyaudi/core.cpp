@@ -102,15 +102,39 @@ BOOST_PYTHON_MODULE(core)
     bp::def("erf", +[](double x) { return std::erf(x); }, "Error function (double).");
 
 #if defined(AUDI_WITH_MPPP)
-    // We expose the mppp::real128 class
-    bp::class_<mppp::real128>("real128", "Multiple precision float (a wrapper around __float128)")
+    // We expose the mppp::real128 class. NOTE: using boost::shared_ptr as holder is necessary for proper alignement of __float128 by boost.
+    // Otherwise: segfault.
+    // See http://webcache.googleusercontent.com/search?q=cache:xhGhABO-W58J:fhtagn.net/prog/2015/04/16/quaternion_boost_python.html&num=1&client=firefox-b&hl=en&gl=de&strip=1&vwsrc=0
+    bp::class_<mppp::real128, boost::shared_ptr<mppp::real128>>("real128", "Multiple precision float (a wrapper around __float128)")
               .def(bp::init<const std::string &>())
               .def("__repr__",
                    +[](const mppp::real128 &g) -> std::string {
                        std::ostringstream oss;
                        oss << g;
                        return oss.str();
-                   });
+                   })
+              .def(bp::self + bp::self)
+              .def(bp::self - bp::self)
+              .def(bp::self * bp::self)
+              .def(bp::self / bp::self)
+              .def(bp::self + double())
+              .def(bp::self - double())
+              .def(bp::self * double())
+              .def(bp::self / double())
+              .def(-bp::self)
+              .def(+bp::self)
+              .def(double() + bp::self)
+              .def(double() - bp::self)
+              .def(double() * bp::self)
+              .def(double() / bp::self)
+              .def(bp::self == bp::self)
+              .def(bp::self != bp::self)
+              .def("__pow__", +[](const mppp::real128 &gd, double x) { return audi::pow(gd, x); },
+                   "Exponentiation (mppp::real128, double).")
+              .def("__pow__", +[](const mppp::real128 &base, const mppp::real128 &gd) { return audi::pow(base, gd); },
+                   "Exponentiation (mppp::real128, mppp::real128).")
+              .def("__rpow__", +[](const mppp::real128 &gd, double x) { return audi::pow(x, gd); },
+                   "Exponentiation (double, mppp::real128).");
 
     // We expose the gdual<mppp::real128> arithmetic
     pyaudi::expose_gdual<mppp::real128>("real128")
@@ -140,6 +164,29 @@ BOOST_PYTHON_MODULE(core)
     bp::def("atanh", +[](const gdual_mp &d) { return atanh(d); }, "Inverse hyperbolic arc tangent (gdual_real128).");
     bp::def("abs", +[](const gdual_mp &d) { return abs(d); }, "Absolute value (gdual_real128).");
     bp::def("erf", +[](const gdual_mp &d) { return erf(d); }, "Error function (gdual_real128).");
+
+    // We expose simple mathematical functions to work on mppp::real128
+    bp::def("exp", +[](mppp::real128 x) { return audi::exp(x); }, "Exponential (mppp::real128).");
+    bp::def("log", +[](mppp::real128 x) { return audi::log(x); }, "Natural logarithm (mppp::real128).");
+    bp::def("sqrt", +[](mppp::real128 x) { return audi::sqrt(x); }, "Square root (mppp::real128).");
+    bp::def("cbrt", +[](mppp::real128 x) { return audi::cbrt(x); }, "Cubic root (mppp::real128).");
+    bp::def("sin", +[](mppp::real128 x) { return audi::sin(x); }, "Sine (mppp::real128).");
+    bp::def("asin", +[](mppp::real128 x) { return audi::asin(x); }, "Arc sine (mppp::real128).");
+    bp::def("cos", +[](mppp::real128 x) { return audi::cos(x); }, "Cosine (mppp::real128).");
+    bp::def("acos", +[](mppp::real128 x) { return audi::acos(x); }, "Arc cosine (mppp::real128).");
+    bp::def("tan", +[](mppp::real128 x) { return audi::tan(x); }, "Tangent (mppp::real128).");
+    bp::def("atan", +[](mppp::real128 x) { return audi::atan(x); }, "Arc tangent (mppp::real128).");
+    bp::def("sinh", +[](mppp::real128 x) { return audi::sinh(x); }, "Hyperbolic sine (mppp::real128).");
+    bp::def("asinh", +[](mppp::real128 x) { return audi::asinh(x); }, "Inverse hyperbolic sine (mppp::real128).");
+    bp::def("cosh", +[](mppp::real128 x) { return audi::cosh(x); }, "Hyperbolic cosine (mppp::real128).");
+    bp::def("acosh", +[](mppp::real128 x) { return audi::acosh(x); }, "Inverse hyperbolic cosine (mppp::real128).");
+    bp::def("sinh_and_cosh", +[](const gdual_v &d) { return pyaudi::v_to_l(sinh_and_cosh(d)); },
+            "Hyperbolic sine and hyperbolic cosine at once (gdual_v).");
+    bp::def("tanh", +[](mppp::real128 x) { return audi::tanh(x); }, "Hyperbolic tangent (mppp::real128).");
+    bp::def("atanh", +[](mppp::real128 x) { return audi::atanh(x); }, "Inverse hyperbolic arc tangent (mppp::real128).");
+    bp::def("abs", +[](mppp::real128 x) { return audi::abs(x); }, "Absolute value (mppp::real128).");
+    bp::def("erf", +[](mppp::real128 x) { return audi::erf(x); }, "Error function (mppp::real128).");
+
 #endif
 
     // Miscellanea functions
