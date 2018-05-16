@@ -101,7 +101,7 @@ BOOST_PYTHON_MODULE(core)
     bp::def("abs", +[](double x) { return std::abs(x); }, "Absolute value (double).");
     bp::def("erf", +[](double x) { return std::erf(x); }, "Error function (double).");
 
-//#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_MPPP)
     // We expose the mppp::real128 class
     bp::class_<mppp::real128>("real128", "Multiple precision float (a wrapper around __float128)")
               .def(bp::init<const std::string &>())
@@ -140,7 +140,7 @@ BOOST_PYTHON_MODULE(core)
     bp::def("atanh", +[](const gdual_mp &d) { return atanh(d); }, "Inverse hyperbolic arc tangent (gdual_real128).");
     bp::def("abs", +[](const gdual_mp &d) { return abs(d); }, "Absolute value (gdual_real128).");
     bp::def("erf", +[](const gdual_mp &d) { return erf(d); }, "Error function (gdual_real128).");
-//#endif
+#endif
 
     // Miscellanea functions
     bp::def("invert_map",

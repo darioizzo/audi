@@ -634,7 +634,7 @@ public:
      * the input should be {{"dx", 1u},{"dy",3u},{"dz",2u}}
      *
      * \note The current implementation call internally the other templated
-     * implementations. WHen piranha will implement the sparse monomial
+     * implementations. When piranha will implement the sparse monomial
      * this will change and be more efficient.
      *
      * @return the value of the derivative
