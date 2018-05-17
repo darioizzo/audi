@@ -1,3 +1,6 @@
+# Main audi/pyaudi project version.
+set(AUDI_PROJECT_VERSION 1.3)
+
 # CMake version check.
 cmake_minimum_required(VERSION 3.2)
 
@@ -28,9 +31,6 @@ endif()
 if((NOT AUDI_BUILD_AUDI) AND (NOT AUDI_BUILD_PYAUDI))
     message(FATAL_ERROR "Please select if you want to build audi or pyudi.")
 endif()
-
-# Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.3)
 
 if(AUDI_BUILD_AUDI)
     # Initial setup of a audi build.
