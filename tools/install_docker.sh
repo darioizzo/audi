@@ -6,9 +6,9 @@ set -x
 # Exit on error.
 set -e
 
-CMAKE_VERSION="3.10.0"
+CMAKE_VERSION="3.11.1"
 EIGEN3_VERSION="3.3.4"
-BOOST_VERSION="1.66.0"
+BOOST_VERSION="1.67.0"
 NLOPT_VERSION="2.4.2"
 
 if [[ ${AUDI_BUILD} == *36 ]]; then
@@ -40,7 +40,7 @@ cd
 mkdir install
 cd install
 
-# Install Boost https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+# Install Boost
 curl -L http://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2 > boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 tar xjf boost_`echo ${BOOST_VERSION}|tr "." "_"`.tar.bz2
 cd boost_`echo ${BOOST_VERSION}|tr "." "_"`
@@ -106,7 +106,7 @@ cd ..
 
 # Compile and install pyaudi (build directory is created by .travis.yml)
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DAUDI_BUILD_TESTS=no -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
+cmake -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
 
 # Compile wheels
