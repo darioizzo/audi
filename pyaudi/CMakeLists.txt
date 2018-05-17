@@ -32,13 +32,13 @@ endif()
 
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
-target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking YACMA::PythonModule Audi::audi ${MPFR_LIBRARIES})
+target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking YACMA::PythonModule Audi::audi)
 target_include_directories(pyaudi INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
 $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFACE:include>)
 
 # Setup of the pyaudi core module.
 YACMA_PYTHON_MODULE(core core.cpp docstrings.cpp)
-target_link_libraries(core PRIVATE ${PYAUDI_BP_TARGET} pyaudi ${MPFR_LIBRARIES})
+target_link_libraries(core PRIVATE ${PYAUDI_BP_TARGET} pyaudi)
 target_compile_options(core PRIVATE "$<$<CONFIG:DEBUG>:${AUDI_CXX_FLAGS_DEBUG}>" "$<$<CONFIG:RELEASE>:${AUDI_CXX_FLAGS_RELEASE}>")
 set_property(TARGET core PROPERTY CXX_STANDARD 11)
 set_property(TARGET core PROPERTY CXX_STANDARD_REQUIRED YES)

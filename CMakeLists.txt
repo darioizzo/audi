@@ -156,7 +156,7 @@ if(AUDI_BUILD_AUDI)
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
     target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization)    
-    target_link_libraries(audi INTERFACE Eigen3::eigen3 GMP::GMP MPFR::MPFR)
+    target_link_libraries(audi INTERFACE Eigen3::eigen3 MPFR::MPFR GMP::GMP)
     if(AUDI_WITH_MPPP)
         target_link_libraries(audi INTERFACE mp++::mp++)
     endif()
