@@ -59,41 +59,41 @@ public:
     }
     // ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized operator+(const T1 &d1v, const T2 &d2v)
+    friend vectorized<T> operator+(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         d1 += d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend vectorized<T> operator-(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         d1 -= d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized operator*(const T1 &d1v, const T2 &d2v)
+    friend vectorized<T> operator*(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         d1 *= d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized operator/(const T1 &d1v, const T2 &d2v)
+    friend vectorized<T> operator/(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         d1 /= d2;
         return d1;
     }
 
     // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
     // take care of scalar multiplication/division etc.
-    vectorized &operator+=(const vectorized &d1)
+    vectorized<T> &operator+=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<T>());
@@ -110,7 +110,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in +");
     }
-    vectorized &operator-=(const vectorized &d1)
+    vectorized<T> &operator-=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<T>());
@@ -127,7 +127,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in -");
     }
-    vectorized &operator*=(const vectorized &d1)
+    vectorized<T> &operator*=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
@@ -145,7 +145,7 @@ public:
         }
         throw std::invalid_argument("Coefficients of different sizes in *");
     }
-    vectorized &operator/=(const vectorized &d1)
+    vectorized<T> &operator/=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
@@ -164,24 +164,24 @@ public:
         throw std::invalid_argument("Coefficients of different sizes in /");
     }
     template <typename T1>
-    vectorized &operator/=(const T1 &d1)
+    vectorized<T> &operator/=(const T1 &d1)
     {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
                            [&d1](T x) { return x / d1; });
             return *this;
        
     }
-    vectorized operator-() const
+    vectorized<T> operator-() const
     {
-        vectorized retval(m_c);
+        vectorized<T> retval(m_c);
         transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<T>());
         return retval;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator==(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c == d2.m_c;
         } else if (d1.size() == 1u) {
@@ -199,8 +199,8 @@ public:
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator>(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c > d2.m_c;
         } else if (d1.size() == 1u) {
@@ -214,8 +214,8 @@ public:
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator<(const T1 &d1v, const T2 &d2v)
     {
-        vectorized d1(d1v);
-        vectorized d2(d2v);
+        vectorized<T> d1(d1v);
+        vectorized<T> d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c < d2.m_c;
         } else if (d1.size() == 1u) {
