@@ -29,7 +29,7 @@ class vectorized
 public:
     template <typename T1>
     using operator_enabler
-        = enable_if_t<(std::is_same<T1, vectorized>::value || std::is_arithmetic<T1>::value), int>;
+        = enable_if_t<(std::is_same<T1, vectorized<T>>::value || std::is_arithmetic<T1>::value), int>;
     // Default constructor. Constructs [0.]
     vectorized() : m_c({T(0.)}){};
    
