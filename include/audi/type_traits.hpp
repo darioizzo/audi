@@ -10,7 +10,6 @@
 #include <type_traits>
 
 #include <audi/gdual.hpp>
-#include <audi/vectorized_double.hpp>
 
 namespace audi
 {
@@ -59,16 +58,6 @@ struct is_arithmetic_or_complex
     : std::integral_constant<bool, audi::is_arithmetic<T>::value || boost::is_complex<T>::value> {
 };
 
-/// Type is allowed to be a coefficient for gduals
-/**
- * Checks whether T is a type from which gdual construction is allowed
- *
- * \tparam T a type to check
- */
-template <class T>
-struct is_gdual_cf : std::integral_constant<bool, audi::is_arithmetic_or_complex<T>::value
-                                                      || std::is_same<T, vectorized_double>::value> {
-};
 } // namespace audi
 
 #endif

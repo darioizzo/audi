@@ -67,7 +67,7 @@ struct gdual_pickle_suite : bp::pickle_suite {
 };
 
 // For non vectorized_double we do not perform any conversion on in-out types
-template <typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int> = 0>
+template <typename T>
 inline void expose_subs(bp::class_<gdual<T>> th)
 {
     th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
@@ -75,12 +75,12 @@ inline void expose_subs(bp::class_<gdual<T>> th)
 }
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
-template <typename T, enable_if_t<std::is_same<T, vectorized_double>::value, int> = 0>
-inline void expose_subs(bp::class_<gdual<T>> th)
+template <>
+inline void expose_subs(bp::class_<gdual<vectorized<double>>> th)
 {
     th.def(
         "subs",
-        +[](gdual<T> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, T(l_to_v<double>(in))); },
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, gdual<vectorized<double>>(l_to_v<double>(in))); },
         "Substitutes a symbol with a value (does not remove symbol from symbol set)");
 }
 

@@ -23,7 +23,7 @@ BOOST_PYTHON_MODULE(core)
 {
     // We register a converter between vectorized_double and a python list (handy to avoid a long separate interface in
     // expose gdual)
-    bp::to_python_converter<audi::vectorized_double, pyaudi::vectorized_double_to_python_list>();
+    bp::to_python_converter<audi::vectorized<double>, pyaudi::vectorized_to_python_list<double>>();
 
     // We expose the gdual<double> arithmetic
     pyaudi::expose_gdual<double>("double");
@@ -50,8 +50,8 @@ BOOST_PYTHON_MODULE(core)
     bp::def("abs", +[](const gdual_d &d) { return abs(d); }, "Absolute value (gdual_d).");
     bp::def("erf", +[](const gdual_d &d) { return erf(d); }, "Error function (gdual_d).");
 
-    // We expose the gdual<vectorized_double> arithmetic
-    pyaudi::expose_gdual<vectorized_double>("vdouble")
+    // We expose the gdual<vectorized<double>> arithmetic
+    pyaudi::expose_gdual<vectorized<double>>("vdouble")
         .def("__init__", bp::make_constructor(
                              +[](const bp::object &value) { return ::new gdual_v(pyaudi::l_to_v<double>(value)); }))
         .def("__init__",

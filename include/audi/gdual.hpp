@@ -25,7 +25,9 @@
 #include <vector>
 
 #include <audi/back_compatibility.hpp>
-#include <audi/detail/overloads.hpp> //for audi::abs
+#include <audi/detail/overloads.hpp>            //for audi::abs
+#include <audi/detail/overloads_vectorized.hpp> //for audi::abs
+
  
 
 /// Root namespace for AuDi symbols
@@ -62,7 +64,7 @@ namespace audi
  *
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
  * piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and
- * the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
+ * the audi::vectorized type. If piranha::is_differentiable<Cf>::value is also true then derivation
  * and integration are availiable.
  *
  */

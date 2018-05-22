@@ -13,6 +13,8 @@
 #include <audi/detail/overloads.hpp>
 #include <audi/gdual.hpp>
 #include <audi/type_traits.hpp>
+#include <audi/vectorized.hpp>
+
 
 namespace audi
 {
@@ -870,10 +872,10 @@ inline gdual<T> abs(const gdual<T> &d)
     return -d;
 }
 // Vectorized abs specialization
-template <>
-inline gdual<vectorized_double> abs(const gdual<vectorized_double> &d)
+template <typename T>
+inline gdual<vectorized<T>> abs(const gdual<vectorized<T>> &d)
 {
-    gdual<vectorized_double> retval(d);
+    gdual<vectorized<T>> retval(d);
     auto p0 = retval.constant_cf();
     for (auto it = retval._container().begin(); it != retval._container().end(); ++it) {
         // if the coefficient has one only element copy it over to the whole length of p0

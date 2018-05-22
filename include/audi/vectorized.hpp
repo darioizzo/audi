@@ -1,5 +1,5 @@
-#ifndef AUDI_VECTORIZED_DOUBLE_HPP
-#define AUDI_VECTORIZED_DOUBLE_HPP
+#ifndef AUDI_VECTORIZED_HPP
+#define AUDI_VECTORIZED_HPP
 
 #include <algorithm>
 #include <boost/serialization/vector.hpp>
@@ -12,6 +12,7 @@
 
 #include <audi/back_compatibility.hpp>
 
+
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
 
@@ -22,172 +23,171 @@ namespace audi
 // The coefficient is, essentially a vector of doubles [a0,a1,a2,...an] on which all arithmetic operations and
 // function calls operate element-wise.
 
-class vectorized_double
+template <typename T>
+class vectorized
 {
 public:
-    template <typename T>
+    template <typename T1>
     using operator_enabler
-        = enable_if_t<(std::is_same<T, vectorized_double>::value || std::is_arithmetic<T>::value), int>;
+        = enable_if_t<(std::is_same<T1, vectorized>::value || std::is_arithmetic<T1>::value), int>;
     // Default constructor. Constructs [0.]
-    vectorized_double() : m_c({0.}){};
-    // Constructor from int. Its mandatory for piranha::polynomial coefficient
-    explicit vectorized_double(int a) : m_c({static_cast<double>(a)}){};
-    explicit vectorized_double(unsigned a) : m_c({static_cast<double>(a)}){};
+    vectorized() : m_c({T(0.)}){};
+   
+    // Constructor other types
+    template<typename T1>
+    explicit vectorized(T1 a) : m_c({static_cast<T>(a)}){}
 
-
-    // Constructor from double value a. Construct [a]
-    explicit vectorized_double(double a) : m_c({a}){};
     // Constructor from an std::vector
-    explicit vectorized_double(const std::vector<double> &c) : m_c(c)
+    explicit vectorized(const std::vector<T> &c) : m_c(c)
     {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coefficient_v (lvalue)");
         }
     };
     // Constructor from an std::vector r value
-    explicit vectorized_double(std::vector<double> &&c) : m_c(c)
+    explicit vectorized(std::vector<T> &&c) : m_c(c)
     {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coefficient_v (rvalue)");
         }
     };
-    explicit vectorized_double(std::initializer_list<double> c) : m_c(c)
+    explicit vectorized(std::initializer_list<T> c1) : m_c(c1)
     {
         if (m_c.size() == 0) {
             throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
-    };
+    }
     // ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized_double operator+(const T1 &d1v, const T2 &d2v)
+    friend vectorized operator+(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         d1 += d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized_double operator-(const T1 &d1v, const T2 &d2v)
+    friend vectorized<T> operator-(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         d1 -= d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized_double operator*(const T1 &d1v, const T2 &d2v)
+    friend vectorized operator*(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         d1 *= d2;
         return d1;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized_double operator/(const T1 &d1v, const T2 &d2v)
+    friend vectorized operator/(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         d1 /= d2;
         return d1;
     }
 
     // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
     // take care of scalar multiplication/division etc.
-    vectorized_double &operator+=(const vectorized_double &d1)
+    vectorized &operator+=(const vectorized &d1)
     {
         if (d1.size() == this->size()) {
-            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<double>());
+            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<T>());
             return *this;
         } else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](double x) { return x + d1.m_c[0]; });
+                           [&d1](T x) { return x + d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
-            double scalar = m_c[0];
+            T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x) { return x + scalar; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return x + scalar; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in +");
     }
-    vectorized_double &operator-=(const vectorized_double &d1)
+    vectorized &operator-=(const vectorized &d1)
     {
         if (d1.size() == this->size()) {
-            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<double>());
+            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<T>());
             return *this;
         } else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](double x) { return x - d1.m_c[0]; });
+                           [&d1](T x) { return x - d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
-            double scalar = m_c[0];
+            T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x) { return scalar - x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar - x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in -");
     }
-    vectorized_double &operator*=(const vectorized_double &d1)
+    vectorized &operator*=(const vectorized &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
-                           std::multiplies<double>());
+                           std::multiplies<T>());
             return *this;
         } else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](double x) { return x * d1.m_c[0]; });
+                           [&d1](T x) { return x * d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
-            double scalar = m_c[0];
+            T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x) { return scalar * x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar * x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in *");
     }
-    vectorized_double &operator/=(const vectorized_double &d1)
+    vectorized &operator/=(const vectorized &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
-                           std::divides<double>());
+                           std::divides<T>());
             return *this;
         } else if (d1.size() == 1u) {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](double x) { return x / d1.m_c[0]; });
+                           [&d1](T x) { return x / d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
-            double scalar = m_c[0];
+            T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](double x) { return scalar / x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar / x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
     }
-    template <typename T>
-    vectorized_double &operator/=(const T &d1)
+    template <typename T1>
+    vectorized &operator/=(const T1 &d1)
     {
             std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](double x) { return x / d1; });
+                           [&d1](T x) { return x / d1; });
             return *this;
        
     }
-    vectorized_double operator-() const
+    vectorized operator-() const
     {
-        vectorized_double retval(m_c);
-        transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<double>());
+        vectorized retval(m_c);
+        transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<T>());
         return retval;
     }
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator==(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c == d2.m_c;
         } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return x == d1[0]; });
+            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return x == d1[0]; });
         } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](double x) { return x == d2[0]; });
+            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x == d2[0]; });
         }
         return false;
     }
@@ -199,14 +199,14 @@ public:
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator>(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c > d2.m_c;
         } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return d1[0] > x; });
+            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return d1[0] > x; });
         } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](double x) { return x > d2[0]; });
+            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x > d2[0]; });
         }
         return false;
     }
@@ -214,14 +214,14 @@ public:
     template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
     friend bool operator<(const T1 &d1v, const T2 &d2v)
     {
-        vectorized_double d1(d1v);
-        vectorized_double d2(d2v);
+        vectorized d1(d1v);
+        vectorized d2(d2v);
         if (d1.size() == d2.size()) {
             return d1.m_c < d2.m_c;
         } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](double x) { return d1[0] < x; });
+            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return d1[0] < x; });
         } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](double x) { return x < d2[0]; });
+            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x < d2[0]; });
         }
         return false;
     }
@@ -230,7 +230,7 @@ public:
     //    std::transform(in.m_c.begin(), in.m_c.end(), in.m_c.begin(), [](const double &x) { return std::abs(x); });
     //    return in;
     //}
-    friend std::ostream &operator<<(std::ostream &os, const vectorized_double &d)
+    friend std::ostream &operator<<(std::ostream &os, const vectorized<T> &d)
     {
         os << "[";
         if (d.size() <= MAX_STREAMED_COMPONENTS) {
@@ -246,46 +246,46 @@ public:
         }
         return os;
     }
-    std::vector<double>::size_type size() const
+    typename std::vector<T>::size_type size() const
     {
         return m_c.size();
     }
-    std::vector<double>::const_iterator begin() const
+    typename std::vector<T>::const_iterator begin() const
     {
         return m_c.begin();
     }
-    std::vector<double>::const_iterator end() const
+    typename std::vector<T>::const_iterator end() const
     {
         return m_c.end();
     }
-    std::vector<double>::iterator begin()
+    typename std::vector<T>::iterator begin()
     {
         return m_c.begin();
     }
-    std::vector<double>::iterator end()
+    typename std::vector<T>::iterator end()
     {
         return m_c.end();
     }
-    void resize(std::vector<double>::size_type new_size)
+    void resize(typename std::vector<T>::size_type new_size)
     {
         m_c.resize(new_size);
     }
-    void resize(std::vector<double>::size_type new_size, double val)
+    void resize(typename std::vector<T>::size_type new_size, T val)
     {
         m_c.resize(new_size, val);
     }
-    double operator[](const std::vector<double>::size_type idx) const
+    T operator[](const typename std::vector<T>::size_type idx) const
     {
         if (m_c.size() == 1u) {
             return m_c[0];
         }
         return m_c[idx];
     }
-    void set_value(const std::vector<double>::size_type idx, double val)
+    void set_value(const typename std::vector<T>::size_type idx, T val)
     {
         m_c[idx] = val;
     }
-    const std::vector<double> &get_v() const
+    const std::vector<T> &get_v() const
     {
         return m_c;
     }
@@ -298,7 +298,7 @@ private:
         ar &m_c;
     }
 
-    std::vector<double> m_c;
+    std::vector<T> m_c;
 };
 
 } // namespace audi
@@ -310,15 +310,15 @@ namespace math
 
 // ---------------------   impl functions needed for vectorized_double to pass piranha::is_cf type trait
 template <typename T>
-struct is_zero_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
-    bool operator()(const T &v) const
+struct is_zero_impl<audi::vectorized<T>> {
+    bool operator()(const audi::vectorized<T> &v) const
     {
-        return std::all_of(v.begin(), v.end(), [](double x) { return x == 0.; });
+        return std::all_of(v.begin(), v.end(), [](T x) { return x == 0.; });
     }
 };
 
 template <typename T>
-struct mul3_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
+struct mul3_impl<audi::vectorized<T>> {
     /// Call operator.
     /**
      * @param out the output value.
@@ -327,25 +327,25 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_dou
      *
      * @return the output of piranha::mp_integer::mul().
      */
-    void operator()(T &out, const T &a, const T &b) const
+    void operator()(audi::vectorized<T> &out, const audi::vectorized<T> &a, const audi::vectorized<T> &b) const
     {
         if (a.size() == b.size()) {
             if (out.size() != a.size()) {
                 out.resize(a.size());
             }
-            std::transform(a.begin(), a.end(), b.begin(), out.begin(), std::multiplies<double>());
+            std::transform(a.begin(), a.end(), b.begin(), out.begin(), std::multiplies<T>());
             return;
         } else if (a.size() == 1u) {
             if (out.size() != b.size()) {
                 out.resize(b.size());
             }
-            std::transform(b.begin(), b.end(), out.begin(), [a](double item) { return item * a[0]; });
+            std::transform(b.begin(), b.end(), out.begin(), [a](T item) { return item * a[0]; });
             return;
         } else if (b.size() == 1u) {
             if (out.size() != a.size()) {
                 out.resize(a.size());
             }
-            std::transform(a.begin(), a.end(), out.begin(), [b](double item) { return item * b[0]; });
+            std::transform(a.begin(), a.end(), out.begin(), [b](T item) { return item * b[0]; });
             return;
         }
         throw std::invalid_argument("Coefficients of different sizes in mul3");
@@ -354,48 +354,49 @@ struct mul3_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_dou
 
 // ------------------ impl functions needed to have the methods partial, integrate and subs
 template <typename T>
-struct partial_impl<T, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
+struct partial_impl<audi::vectorized<T>> {
     /// Call operator.
     /**
      * @return an instance of piranha::mp_integer constructed from zero.
      */
-    T operator()(const T &in, const std::string &) const
+    audi::vectorized<T> operator()(const audi::vectorized<T> &in, const std::string &) const
     {
-        return T(std::vector<double>(in.size(), 0.));
+        return audi::vectorized<T>(std::vector<T>(in.size(), 0.));
     }
 };
 template <typename T, typename U>
-struct pow_impl<T, U, typename std::enable_if<std::is_same<T, audi::vectorized_double>::value>::type> {
+struct pow_impl<audi::vectorized<T>, U> {
     /// Call operator.
     /**
      * @param c the input
      * @param exp the exponent
      * @return the exp operator applied to all elements of the input
      */
-    T operator()(const T &c, const U &exp) const
+    audi::vectorized<T> operator()(const audi::vectorized<T> &c, const U &exp) const
     {
         auto retval(c);
         std::transform(retval.begin(), retval.end(), retval.begin(),
-                       [exp](double x) { return piranha::math::pow(x, exp); });
+                       [exp](T x) { return piranha::math::pow(x, exp); });
         return retval;
     };
 };
 
-} // namespace math
+} // end of math namespace
 
-template <typename Archive>
-struct boost_save_impl<Archive, audi::vectorized_double> : boost_save_via_boost_api<Archive, audi::vectorized_double> {
+template <typename Archive, typename T>
+struct boost_save_impl<Archive, audi::vectorized<T>> : boost_save_via_boost_api<Archive, audi::vectorized<T>> {
 };
 
-template <typename Archive>
-struct boost_load_impl<Archive, audi::vectorized_double> : boost_load_via_boost_api<Archive, audi::vectorized_double> {
+template <typename Archive, typename T>
+struct boost_load_impl<Archive, audi::vectorized<T>> : boost_load_via_boost_api<Archive, audi::vectorized<T>> {
 };
 
-template <>
-struct zero_is_absorbing<audi::vectorized_double> : std::false_type {
+template <typename T>
+struct zero_is_absorbing<audi::vectorized<T>> : std::false_type {
 };
 
-} // namespace piranha
+} // end of piranha namespace
+
 
 #undef MAX_STREAMED_COMPONENTS
 #endif
