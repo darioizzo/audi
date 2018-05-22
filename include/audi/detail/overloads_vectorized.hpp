@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include <audi/vectorized.hpp>
-#include <audi/detail/overloads.hpp>
+#include <audi/detail/overloads.hpp> // to find audi::fun_name(el)
 
 
 // This macro writes the overload for std::fun_name performing elementwise evaluations on a vectorized<T>

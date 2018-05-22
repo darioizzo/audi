@@ -33,7 +33,7 @@ public:
     // Default constructor. Constructs [0.]
     vectorized() : m_c({T(0.)}){};
    
-    // Constructor other types
+    // Constructor from other, compatible, types
     template<typename T1>
     explicit vectorized(T1 a) : m_c({static_cast<T>(a)}){}
 
