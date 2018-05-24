@@ -7,11 +7,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include <audi/vectorized.hpp>
-#include <audi/real128.hpp>
-#include <audi/detail/overloads_vectorized.hpp>
-
-
+#include <audi/audi.hpp>
 
 using namespace audi;
 

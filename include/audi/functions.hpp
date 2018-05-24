@@ -11,6 +11,7 @@
 
 #include <audi/back_compatibility.hpp>
 #include <audi/detail/overloads.hpp>
+#include <audi/detail/overloads_vectorized.hpp>
 #include <audi/gdual.hpp>
 #include <audi/type_traits.hpp>
 #include <audi/vectorized.hpp>

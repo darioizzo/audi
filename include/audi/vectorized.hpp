@@ -26,10 +26,14 @@ namespace audi
 
 template <typename T>
 struct vectorized {
+    // type to be vectorized
     using v_type = T;
+
+    // enables operators between vectorized types and arithmetic types (extended to include mppp::real128)
     template <typename T1>
     using operator_enabler
         = enable_if_t<(std::is_same<T1, vectorized<T>>::value || audi::is_arithmetic<T1>::value), int>;
+
     // Default constructor. Constructs [0.]
     vectorized() : m_c({T(0.)}){};
 
@@ -59,19 +63,19 @@ struct vectorized {
             throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
     }
-    // ----------------- Juice implementation of the operators. It deals with the case [b1] op [a1,a2,..an].
+    // ----------------- Juice implementation of operators. It deals with the case [b1] op [a1,a2,..an].
     vectorized<T> &operator+=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x + d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x + d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return x + scalar; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return x + scalar; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in +");
@@ -82,12 +86,12 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x - d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x - d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar - x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar - x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in -");
@@ -98,12 +102,12 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::multiplies<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x * d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x * d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar * x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar * x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in *");
@@ -114,12 +118,12 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::divides<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x / d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x / d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](T x) { return scalar / x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar / x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
@@ -127,7 +131,7 @@ struct vectorized {
     template <typename T1>
     vectorized<T> &operator/=(const T1 &d1)
     {
-        std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x / d1; });
+        std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x / d1; });
         return *this;
     }
     vectorized<T> operator-() const
@@ -135,6 +139,13 @@ struct vectorized {
         vectorized<T> retval(m_c);
         transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<T>());
         return retval;
+    }
+    T operator[](const typename std::vector<T>::size_type idx) const
+    {
+        if (m_c.size() == 1u) {
+            return m_c[0];
+        }
+        return m_c[idx];
     }
     friend std::ostream &operator<<(std::ostream &os, const vectorized<T> &d)
     {
@@ -180,13 +191,6 @@ struct vectorized {
     {
         m_c.resize(new_size, val);
     }
-    T operator[](const typename std::vector<T>::size_type idx) const
-    {
-        if (m_c.size() == 1u) {
-            return m_c[0];
-        }
-        return m_c[idx];
-    }
     void set_value(const typename std::vector<T>::size_type idx, T val)
     {
         m_c[idx] = val;
@@ -201,8 +205,9 @@ struct vectorized {
         ar &m_c;
     }
 
+    // The container
     std::vector<T> m_c;
-};
+}; // end of struct vectorized
 
 /// Type is a vectorized
 /**
@@ -219,82 +224,78 @@ template <typename T>
 struct is_vectorized<vectorized<T>> : std::true_type {
 };
 
-// ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
+// ------------------- Binary arithmetic operators implemented using the available operators +=,-=, etc.
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-T1 operator+(T1 d1v, T2 d2)
+inline T1 operator+(T1 d1, const T2 &d2)
 {
-    T1 d1(d1v);
     d1 += d2;
     return d1;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-T1 operator+(T1 d1, T2 d2v)
+inline T1 operator+(T1 d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 + d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-T2 operator+(T1 d1v, T2 d2)
+T2 operator+(T1 d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 + d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-T1 operator-(T1 d1v, T2 d2)
+inline T1 operator-(T1 d1, const T2 &d2)
 {
-    T1 d1(d1v);
     d1 -= d2;
     return d1;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-T1 operator-(T1 d1, T2 d2v)
+inline T1 operator-(T1 d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 - d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-T2 operator-(T1 d1v, T2 d2)
+inline T2 operator-(T1 d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 - d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-T1 operator*(T1 d1v, T2 d2)
+inline T1 operator*(T1 d1, const T2 &d2)
 {
-    T1 d1(d1v);
     d1 *= d2;
     return d1;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-T1 operator*(T1 d1, T2 d2v)
+inline T1 operator*(T1 d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 * d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-T2 operator*(T1 d1v, T2 d2)
+inline T2 operator*(T1 d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 * d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-T1 operator/(T1 d1v, T2 d2)
+inline T1 operator/(T1 d1, const T2 &d2)
 {
-    T1 d1(d1v);
     d1 /= d2;
     return d1;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-T1 operator/(T1 d1, T2 d2v)
+inline T1 operator/(T1 d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 / d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-T2 operator/(T1 d1v, T2 d2)
+inline T2 operator/(T1 d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 / d2;
@@ -302,82 +303,82 @@ T2 operator/(T1 d1v, T2 d2)
 
 // Various comparison operators
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator==(const T1 &d1, const T2 &d2)
+inline bool operator==(const T1 &d1, const T2 &d2)
 {
     if (d1.size() == d2.size()) {
         return d1.m_c == d2.m_c;
     } else if (d1.size() == 1u) {
-        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return x == d1[0]; });
+        return std::all_of(d2.begin(), d2.end(), [d1](const typename T1::v_type &x) { return x == d1[0]; });
     } else if (d2.size() == 1u) {
-        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x == d2[0]; });
+        return std::all_of(d1.begin(), d1.end(), [d2](const typename T1::v_type &x) { return x == d2[0]; });
     }
     return false;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-bool operator==(const T1 &d1, const T2 &d2v)
+inline bool operator==(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 == d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator==(const T1 &d1v, const T2 &d2)
+inline bool operator==(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 == d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value || is_vectorized<T2>::value), int> = 0>
-bool operator!=(const T1 &d1, const T2 &d2)
+inline bool operator!=(const T1 &d1, const T2 &d2)
 {
     return !(d1 == d2);
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator>(const T1 &d1, const T2 &d2)
+inline bool operator>(const T1 &d1, const T2 &d2)
 {
     if (d1.size() == d2.size()) {
         return d1.m_c > d2.m_c;
     } else if (d1.size() == 1u) {
-        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return d1[0] > x; });
+        return std::all_of(d2.begin(), d2.end(), [d1](const typename T1::v_type &x) { return d1[0] > x; });
     } else if (d2.size() == 1u) {
-        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x > d2[0]; });
+        return std::all_of(d1.begin(), d1.end(), [d2](const typename T1::v_type &x) { return x > d2[0]; });
     }
     return false;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-bool operator>(const T1 &d1, const T2 &d2v)
+inline bool operator>(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 > d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator>(const T1 &d1v, const T2 &d2)
+inline bool operator>(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 > d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator<(const T1 &d1, const T2 &d2)
+inline bool operator<(const T1 &d1, const T2 &d2)
 {
     if (d1.size() == d2.size()) {
         return d1.m_c < d2.m_c;
     } else if (d1.size() == 1u) {
-        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return d1[0] < x; });
+        return std::all_of(d2.begin(), d2.end(), [d1](const typename T1::v_type &x) { return d1[0] < x; });
     } else if (d2.size() == 1u) {
-        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x < d2[0]; });
+        return std::all_of(d1.begin(), d1.end(), [d2](const typename T1::v_type &x) { return x < d2[0]; });
     }
     return false;
 }
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
-bool operator<(const T1 &d1, const T2 &d2v)
+inline bool operator<(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 < d2;
 }
 template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
-bool operator<(const T1 &d1v, const T2 &d2)
+inline bool operator<(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
     return d1 < d2;
@@ -394,7 +395,7 @@ template <typename T>
 struct is_zero_impl<audi::vectorized<T>> {
     bool operator()(const audi::vectorized<T> &v) const
     {
-        return std::all_of(v.begin(), v.end(), [](T x) { return x == 0.; });
+        return std::all_of(v.begin(), v.end(), [](const T &x) { return x == 0.; });
     }
 };
 
@@ -420,13 +421,13 @@ struct mul3_impl<audi::vectorized<T>> {
             if (out.size() != b.size()) {
                 out.resize(b.size());
             }
-            std::transform(b.begin(), b.end(), out.begin(), [a](T item) { return item * a[0]; });
+            std::transform(b.begin(), b.end(), out.begin(), [a](const T &item) { return item * a[0]; });
             return;
         } else if (b.size() == 1u) {
             if (out.size() != a.size()) {
                 out.resize(a.size());
             }
-            std::transform(a.begin(), a.end(), out.begin(), [b](T item) { return item * b[0]; });
+            std::transform(a.begin(), a.end(), out.begin(), [b](const T &item) { return item * b[0]; });
             return;
         }
         throw std::invalid_argument("Coefficients of different sizes in mul3");
@@ -456,7 +457,7 @@ struct pow_impl<audi::vectorized<T>, U> {
     audi::vectorized<T> operator()(const audi::vectorized<T> &c, const U &exp) const
     {
         auto retval(c);
-        std::transform(retval.begin(), retval.end(), retval.begin(), [exp](T x) { return piranha::math::pow(x, exp); });
+        std::transform(retval.begin(), retval.end(), retval.begin(), [exp](const T &x) { return piranha::math::pow(x, exp); });
         return retval;
     };
 };
