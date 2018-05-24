@@ -24,9 +24,9 @@ namespace audi
 // function calls operate element-wise.
 
 template <typename T>
-class vectorized
+struct vectorized
 {
-public:
+    using v_type = T;
     template <typename T1>
     using operator_enabler
         = enable_if_t<(std::is_same<T1, vectorized<T>>::value || std::is_arithmetic<T1>::value), int>;
@@ -177,59 +177,7 @@ public:
         transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<T>());
         return retval;
     }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend bool operator==(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        if (d1.size() == d2.size()) {
-            return d1.m_c == d2.m_c;
-        } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return x == d1[0]; });
-        } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x == d2[0]; });
-        }
-        return false;
-    }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend bool operator!=(const T1 &d1, const T2 &d2)
-    {
-        return !(d1 == d2);
-    }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend bool operator>(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        if (d1.size() == d2.size()) {
-            return d1.m_c > d2.m_c;
-        } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return d1[0] > x; });
-        } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x > d2[0]; });
-        }
-        return false;
-    }
 
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend bool operator<(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        if (d1.size() == d2.size()) {
-            return d1.m_c < d2.m_c;
-        } else if (d1.size() == 1u) {
-            return std::all_of(d2.begin(), d2.end(), [d1](T x) { return d1[0] < x; });
-        } else if (d2.size() == 1u) {
-            return std::all_of(d1.begin(), d1.end(), [d2](T x) { return x < d2[0]; });
-        }
-        return false;
-    }
-    //friend vectorized_double abs(vectorized_double in)
-    //{
-    //    std::transform(in.m_c.begin(), in.m_c.end(), in.m_c.begin(), [](const double &x) { return std::abs(x); });
-    //    return in;
-    //}
     friend std::ostream &operator<<(std::ostream &os, const vectorized<T> &d)
     {
         os << "[";
@@ -290,8 +238,6 @@ public:
         return m_c;
     }
 
-private:
-    friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int)
     {
@@ -301,6 +247,102 @@ private:
     std::vector<T> m_c;
 };
 
+/// Type is a vectorized
+/**
+ * Checks whether T is a vectorized type. Provides the member constant value which is equal to true,
+ * if T is the type vectorized<U> for any U.
+ *
+ * \tparam T a type to check
+ */
+
+template <typename T>
+struct is_vectorized : std::false_type {
+};
+template <typename T>
+struct is_vectorized<vectorized<T>> : std::true_type {
+};
+
+// Binary operators
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator==(const T1 &d1, const T2 &d2)
+{
+    if (d1.size() == d2.size()) {
+        return d1.m_c == d2.m_c;
+    } else if (d1.size() == 1u) {
+        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return x == d1[0]; });
+    } else if (d2.size() == 1u) {
+        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x == d2[0]; });
+    }
+    return false;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+bool operator==(const T1 &d1, const T2 &d2v)
+{
+    T1 d2(d2v);
+    return d1==d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator==(const T1 &d1v, const T2 &d2)
+{
+    T2 d1(d1v);
+    return d1==d2;
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value || is_vectorized<T2>::value), int> = 0>
+bool operator!=(const T1 &d1, const T2 &d2)
+{
+    return !(d1 == d2);
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator>(const T1 &d1, const T2 &d2)
+{
+    if (d1.size() == d2.size()) {
+        return d1.m_c > d2.m_c;
+    } else if (d1.size() == 1u) {
+        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return d1[0] > x; });
+    } else if (d2.size() == 1u) {
+        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x > d2[0]; });
+    }
+    return false;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+bool operator>(const T1 &d1, const T2 &d2v)
+{
+    T1 d2(d2v);
+    return d1>d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator>(const T1 &d1v, const T2 &d2)
+{
+    T2 d1(d1v);
+    return d1>d2;
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator<(const T1 &d1, const T2 &d2)
+{
+    if (d1.size() == d2.size()) {
+        return d1.m_c < d2.m_c;
+    } else if (d1.size() == 1u) {
+        return std::all_of(d2.begin(), d2.end(), [d1](typename T1::v_type x) { return d1[0] < x; });
+    } else if (d2.size() == 1u) {
+        return std::all_of(d1.begin(), d1.end(), [d2](typename T1::v_type x) { return x < d2[0]; });
+    }
+    return false;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+bool operator<(const T1 &d1, const T2 &d2v)
+{
+    T1 d2(d2v);
+    return d1<d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+bool operator<(const T1 &d1v, const T2 &d2)
+{
+    T2 d1(d1v);
+    return d1<d2;
+}
 } // namespace audi
 
 namespace piranha

@@ -31,7 +31,7 @@ namespace pyaudi
 
 template <typename T>
 struct gdual_pickle_suite : bp::pickle_suite {
-    static bp::tuple getinitargs(const gdual<T> &w)
+    static bp::tuple getinitargs(const gdual<T> &)
     {
         return bp::make_tuple();
     }
