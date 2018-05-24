@@ -13,21 +13,6 @@
 
 namespace audi
 {
-/// Type is a gdual
-/**
- * Checks whether T is a gdual type. Provides the member constant value which is equal to true,
- * if T is the type gdual<U> for any U.
- *
- * \tparam T a type to check
- */
-
-template <typename T>
-struct is_gdual : std::false_type {
-};
-template <typename T>
-struct is_gdual<gdual<T>> : std::true_type {
-};
-
 /// Type is arithmetic (includes multiple precision floats)
 /**
  * Checks whether T is an arithmetic type (that is, an integral type or a floating-point type that includes multiple

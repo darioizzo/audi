@@ -12,7 +12,7 @@
 
 #include <audi/back_compatibility.hpp>
 
-#include <audi/io.hpp>
+#include <audi/type_traits.hpp>
 
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
@@ -29,7 +29,7 @@ struct vectorized {
     using v_type = T;
     template <typename T1>
     using operator_enabler
-        = enable_if_t<(std::is_same<T1, vectorized<T>>::value || std::is_arithmetic<T1>::value), int>;
+        = enable_if_t<(std::is_same<T1, vectorized<T>>::value || audi::is_arithmetic<T1>::value), int>;
     // Default constructor. Constructs [0.]
     vectorized() : m_c({T(0.)}){};
 
@@ -228,13 +228,13 @@ T1 operator+(T1 d1v, T2 d2)
     d1 += d2;
     return d1;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 T1 operator+(T1 d1, T2 d2v)
 {
     T1 d2(d2v);
     return d1 + d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 T2 operator+(T1 d1v, T2 d2)
 {
     T2 d1(d1v);
@@ -248,13 +248,13 @@ T1 operator-(T1 d1v, T2 d2)
     d1 -= d2;
     return d1;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 T1 operator-(T1 d1, T2 d2v)
 {
     T1 d2(d2v);
     return d1 - d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 T2 operator-(T1 d1v, T2 d2)
 {
     T2 d1(d1v);
@@ -268,13 +268,13 @@ T1 operator*(T1 d1v, T2 d2)
     d1 *= d2;
     return d1;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 T1 operator*(T1 d1, T2 d2v)
 {
     T1 d2(d2v);
     return d1 * d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 T2 operator*(T1 d1v, T2 d2)
 {
     T2 d1(d1v);
@@ -288,13 +288,13 @@ T1 operator/(T1 d1v, T2 d2)
     d1 /= d2;
     return d1;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 T1 operator/(T1 d1, T2 d2v)
 {
     T1 d2(d2v);
     return d1 / d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 T2 operator/(T1 d1v, T2 d2)
 {
     T2 d1(d1v);
