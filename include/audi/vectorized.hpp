@@ -59,8 +59,7 @@ struct vectorized {
             throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
     }
-    // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
-    // take care of scalar multiplication/division etc.
+    // ----------------- Juice implementation of the operators. It deals with the case [b1] op [a1,a2,..an].
     vectorized<T> &operator+=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
@@ -314,13 +313,14 @@ bool operator==(const T1 &d1, const T2 &d2)
     }
     return false;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 bool operator==(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 == d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator==(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
@@ -345,13 +345,13 @@ bool operator>(const T1 &d1, const T2 &d2)
     }
     return false;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 bool operator>(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 > d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator>(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
@@ -370,13 +370,13 @@ bool operator<(const T1 &d1, const T2 &d2)
     }
     return false;
 }
-template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && audi::is_arithmetic<T2>::value), int> = 0>
 bool operator<(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
     return d1 < d2;
 }
-template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+template <typename T1, typename T2, enable_if_t<(audi::is_arithmetic<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator<(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);

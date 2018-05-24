@@ -1,15 +1,15 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
+#include <type_traits>
+#include <boost/type_traits/is_complex.hpp> 
+
 #include <audi/config.hpp>
 
 #if defined(AUDI_WITH_MPPP)
 #include <mp++/real128.hpp>
 #endif
 
-#include <type_traits>
-
-#include <audi/gdual.hpp>
 
 namespace audi
 {
