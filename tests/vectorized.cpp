@@ -11,8 +11,9 @@
 
 using namespace audi;
 
-template<typename T>
-void test_construction() {
+template <typename T>
+void test_construction()
+{
     // Default Constructor
     {
         vectorized<T> x;
@@ -47,8 +48,9 @@ void test_construction() {
     }
 }
 
-template<typename T>
-void test_math() {
+template <typename T>
+void test_math()
+{
     {
         vectorized<T> x1{T(1.), T(1.), T(2.), T(-3.), T(4.)};
         vectorized<T> x2{T(1.), T(1.), T(2.), T(3.), T(4.)};
@@ -100,7 +102,7 @@ void test_math() {
         // operators with vectorized-vectorized
         BOOST_CHECK(x1 + x2 == (vectorized<T>{T(4.), T(5.)}));
         BOOST_CHECK(x1 - x2 == (vectorized<T>{T(-2.), T(-1.)}));
-        BOOST_CHECK(x1 / x2 == (vectorized<T>{T(1.)/T(3.), T(2.)/T(3.)}));
+        BOOST_CHECK(x1 / x2 == (vectorized<T>{T(1.) / T(3.), T(2.) / T(3.)}));
         BOOST_CHECK(x1 * x2 == (vectorized<T>{T(3.), T(6.)}));
     }
 }
@@ -108,10 +110,14 @@ void test_math() {
 BOOST_AUTO_TEST_CASE(construction)
 {
     test_construction<double>();
+#if defined(AUDI_WITH_MPPP)
     test_construction<mppp::real128>();
+#endif
 }
 BOOST_AUTO_TEST_CASE(math)
 {
     test_math<double>();
+#if defined(AUDI_WITH_MPPP)
     test_math<mppp::real128>();
+#endif
 }
