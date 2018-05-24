@@ -12,6 +12,7 @@
 
 #include <audi/back_compatibility.hpp>
 
+#include <audi/io.hpp>
 
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector
 #define MAX_STREAMED_COMPONENTS 5u
@@ -24,18 +25,19 @@ namespace audi
 // function calls operate element-wise.
 
 template <typename T>
-struct vectorized
-{
+struct vectorized {
     using v_type = T;
     template <typename T1>
     using operator_enabler
         = enable_if_t<(std::is_same<T1, vectorized<T>>::value || std::is_arithmetic<T1>::value), int>;
     // Default constructor. Constructs [0.]
     vectorized() : m_c({T(0.)}){};
-   
+
     // Constructor from other, compatible, types
-    template<typename T1>
-    explicit vectorized(T1 a) : m_c({static_cast<T>(a)}){}
+    template <typename T1>
+    explicit vectorized(T1 a) : m_c({static_cast<T>(a)})
+    {
+    }
 
     // Constructor from an std::vector
     explicit vectorized(const std::vector<T> &c) : m_c(c)
@@ -57,40 +59,6 @@ struct vectorized
             throw std::invalid_argument("Cannot build an empty coefficient_v (initializer)");
         }
     }
-    // ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized<T> operator+(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        d1 += d2;
-        return d1;
-    }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized<T> operator-(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        d1 -= d2;
-        return d1;
-    }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized<T> operator*(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        d1 *= d2;
-        return d1;
-    }
-    template <typename T1, typename T2, operator_enabler<T1> = 0, operator_enabler<T2> = 0>
-    friend vectorized<T> operator/(const T1 &d1v, const T2 &d2v)
-    {
-        vectorized<T> d1(d1v);
-        vectorized<T> d2(d2v);
-        d1 /= d2;
-        return d1;
-    }
-
     // ----------------- Juice implementation of the operators. It also deals with the case [b1] op [a1,a2,..an] to
     // take care of scalar multiplication/division etc.
     vectorized<T> &operator+=(const vectorized<T> &d1)
@@ -99,8 +67,7 @@ struct vectorized
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](T x) { return x + d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x + d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
@@ -116,8 +83,7 @@ struct vectorized
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](T x) { return x - d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x - d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
@@ -130,12 +96,10 @@ struct vectorized
     vectorized<T> &operator*=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
-            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
-                           std::multiplies<T>());
+            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::multiplies<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](T x) { return x * d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x * d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
@@ -148,12 +112,10 @@ struct vectorized
     vectorized<T> &operator/=(const vectorized<T> &d1)
     {
         if (d1.size() == this->size()) {
-            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(),
-                           std::divides<T>());
+            std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::divides<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](T x) { return x / d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x / d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
@@ -166,10 +128,8 @@ struct vectorized
     template <typename T1>
     vectorized<T> &operator/=(const T1 &d1)
     {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
-                           [&d1](T x) { return x / d1; });
-            return *this;
-       
+        std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](T x) { return x / d1; });
+        return *this;
     }
     vectorized<T> operator-() const
     {
@@ -177,7 +137,6 @@ struct vectorized
         transform(retval.m_c.begin(), retval.m_c.end(), retval.m_c.begin(), std::negate<T>());
         return retval;
     }
-
     friend std::ostream &operator<<(std::ostream &os, const vectorized<T> &d)
     {
         os << "[";
@@ -237,7 +196,6 @@ struct vectorized
     {
         return m_c;
     }
-
     template <class Archive>
     void serialize(Archive &ar, const unsigned int)
     {
@@ -262,7 +220,88 @@ template <typename T>
 struct is_vectorized<vectorized<T>> : std::true_type {
 };
 
-// Binary operators
+// ------------------- Binary arithmetic operators implemented using the available +=,-=, etc.
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T1 operator+(T1 d1v, T2 d2)
+{
+    T1 d1(d1v);
+    d1 += d2;
+    return d1;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+T1 operator+(T1 d1, T2 d2v)
+{
+    T1 d2(d2v);
+    return d1 + d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T2 operator+(T1 d1v, T2 d2)
+{
+    T2 d1(d1v);
+    return d1 + d2;
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T1 operator-(T1 d1v, T2 d2)
+{
+    T1 d1(d1v);
+    d1 -= d2;
+    return d1;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+T1 operator-(T1 d1, T2 d2v)
+{
+    T1 d2(d2v);
+    return d1 - d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T2 operator-(T1 d1v, T2 d2)
+{
+    T2 d1(d1v);
+    return d1 - d2;
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T1 operator*(T1 d1v, T2 d2)
+{
+    T1 d1(d1v);
+    d1 *= d2;
+    return d1;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+T1 operator*(T1 d1, T2 d2v)
+{
+    T1 d2(d2v);
+    return d1 * d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T2 operator*(T1 d1v, T2 d2)
+{
+    T2 d1(d1v);
+    return d1 * d2;
+}
+
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T1 operator/(T1 d1v, T2 d2)
+{
+    T1 d1(d1v);
+    d1 /= d2;
+    return d1;
+}
+template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is_vectorized<T2>::value), int> = 0>
+T1 operator/(T1 d1, T2 d2v)
+{
+    T1 d2(d2v);
+    return d1 / d2;
+}
+template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
+T2 operator/(T1 d1v, T2 d2)
+{
+    T2 d1(d1v);
+    return d1 / d2;
+}
+
+// Various comparison operators
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator==(const T1 &d1, const T2 &d2)
 {
@@ -279,13 +318,13 @@ template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is
 bool operator==(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
-    return d1==d2;
+    return d1 == d2;
 }
 template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator==(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
-    return d1==d2;
+    return d1 == d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value || is_vectorized<T2>::value), int> = 0>
@@ -310,13 +349,13 @@ template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is
 bool operator>(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
-    return d1>d2;
+    return d1 > d2;
 }
 template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator>(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
-    return d1>d2;
+    return d1 > d2;
 }
 
 template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
@@ -335,13 +374,13 @@ template <typename T1, typename T2, enable_if_t<(is_vectorized<T1>::value && !is
 bool operator<(const T1 &d1, const T2 &d2v)
 {
     T1 d2(d2v);
-    return d1<d2;
+    return d1 < d2;
 }
 template <typename T1, typename T2, enable_if_t<(!is_vectorized<T1>::value && is_vectorized<T2>::value), int> = 0>
 bool operator<(const T1 &d1v, const T2 &d2)
 {
     T2 d1(d1v);
-    return d1<d2;
+    return d1 < d2;
 }
 } // namespace audi
 
@@ -417,13 +456,12 @@ struct pow_impl<audi::vectorized<T>, U> {
     audi::vectorized<T> operator()(const audi::vectorized<T> &c, const U &exp) const
     {
         auto retval(c);
-        std::transform(retval.begin(), retval.end(), retval.begin(),
-                       [exp](T x) { return piranha::math::pow(x, exp); });
+        std::transform(retval.begin(), retval.end(), retval.begin(), [exp](T x) { return piranha::math::pow(x, exp); });
         return retval;
     };
 };
 
-} // end of math namespace
+} // namespace math
 
 template <typename Archive, typename T>
 struct boost_save_impl<Archive, audi::vectorized<T>> : boost_save_via_boost_api<Archive, audi::vectorized<T>> {
@@ -437,8 +475,7 @@ template <typename T>
 struct zero_is_absorbing<audi::vectorized<T>> : std::false_type {
 };
 
-} // end of piranha namespace
-
+} // namespace piranha
 
 #undef MAX_STREAMED_COMPONENTS
 #endif
