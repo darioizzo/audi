@@ -11,7 +11,6 @@
 #include <piranha/s11n.hpp>
 
 #include <audi/back_compatibility.hpp>
-
 #include <audi/type_traits.hpp>
 
 // The streaming operator will only output the first MAX_STREAMED_COMPONENTS elements of the vector

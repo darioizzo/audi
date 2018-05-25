@@ -6,7 +6,18 @@
 #include <stdexcept>
 #include <vector>
 
-#include <audi/audi.hpp>
+#include <audi/config.hpp>
+
+#if defined(AUDI_WITH_MPPP)
+#include <audi/real128.hpp>
+#endif
+
+#include <audi/functions.hpp>
+#include <audi/gdual.hpp>
+#include <audi/vectorized.hpp>
+
+using gdual_v = audi::gdual<audi::vectorized<double>>;
+
 
 using namespace audi;
 
