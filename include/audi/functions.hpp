@@ -237,15 +237,15 @@ inline gdual<T> sqrt(const gdual<T> &d)
 {
     T alpha(0.5);
     gdual<T> retval(1.);
-    auto p0 = d.constant_cf();
-    auto sqrt_p0 = audi::sqrt(p0);
+    T p0 = d.constant_cf();
+    T sqrt_p0 = audi::sqrt(p0);
 
-    auto phat = d - p0;
+    gdual<T> phat = d - p0;
     phat = phat / p0;
     gdual<T> tmp(phat);
 
     retval += alpha * phat;
-    for (auto i = 2u; i <= d.get_order(); ++i) {
+    for (decltype(d.get_order()) i = 2u; i <= d.get_order(); ++i) {
         phat *= tmp;
         retval += binomial(alpha, i) * phat;
     }
@@ -275,15 +275,15 @@ inline gdual<T> cbrt(const gdual<T> &d)
 {
     T alpha(T(1.) / T(3.));
     gdual<T> retval(1.);
-    auto p0 = d.constant_cf();
-    auto cbrt_p0 = audi::cbrt(p0);
+    T p0 = d.constant_cf();
+    T cbrt_p0 = audi::cbrt(p0);
 
-    auto phat = d - p0;
+    gdual<T> phat = d - p0;
     phat = phat / p0;
     gdual<T> tmp(phat);
 
     retval += alpha * phat;
-    for (auto i = 2u; i <= d.get_order(); ++i) {
+    for (decltype(d.get_order()) i = 2u; i <= d.get_order(); ++i) {
         phat *= tmp;
         retval += binomial(alpha, i) * phat;
     }
