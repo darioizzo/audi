@@ -9,6 +9,8 @@
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
 
+#include<audi/io.hpp>
+
 using namespace audi;
 using gdual_d = gdual<double>;
 
