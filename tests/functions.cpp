@@ -70,9 +70,10 @@ BOOST_AUTO_TEST_CASE(square_root)
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p2) * sqrt(p2), p2, 1e-12) == true);
 
-print(p2,"\n");
-print(sqrt(p2),"\n");
-print(sqrt(p2)*sqrt(p2),"\n");
+print("p2: ", p2,"\n");
+print("sqrt(p2): ", sqrt(p2),"\n");
+print("p2: ", sqrt(p2)*sqrt(p2),"\n");
+print("sqrt : ", sqrt(-154.554),"\n");
 }
 
 BOOST_AUTO_TEST_CASE(cubic_root)
