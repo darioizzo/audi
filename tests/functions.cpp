@@ -9,6 +9,8 @@
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
 
+#include<audi/io.hpp>
+
 using namespace audi;
 using gdual_d = gdual<double>;
 
@@ -45,7 +47,7 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     // We check the implementation of pow(gdual_d, double) with respect to the behaviour in 0.
     // We compute the Taylor expansion of f = x^3.1 around 0. Which is T_f = 0. + 0.dx + 0.dx^2 + 0.dx^3 + inf dx^4-inf
     // dx^5 ...
-
+ 
     gdual_d x(0., "x", 7);
     auto f = pow(x, 3.1);
     BOOST_CHECK_EQUAL(f.find_cf({0}), 0.);
@@ -66,7 +68,10 @@ BOOST_AUTO_TEST_CASE(square_root)
     auto p1 = x * x * y - x * y * x * x * x + 3 * y * y * y * y * x * y * x; // positive p0
     auto p2 = x * x * y - x * y * x * x * x - 3 * y * y * y * y * x * y * x; // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1, 1e-12) == true);
+// The following test fails under old version of mingw as sqrt(-a) returns a!!! (https://sourceforge.net/p/mingw-w64/bugs/567/)
+#ifndef __MINGW32__
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p2) * sqrt(p2), p2, 1e-12) == true);
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(cubic_root)

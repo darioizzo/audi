@@ -25,7 +25,10 @@
 #include <vector>
 
 #include <audi/back_compatibility.hpp>
-#include <audi/detail/overloads.hpp> //for audi::abs
+#include <audi/detail/overloads.hpp>            //for audi::abs
+#include <audi/detail/overloads_vectorized.hpp> //for audi::abs
+
+ 
 
 /// Root namespace for AuDi symbols
 namespace audi
@@ -61,7 +64,7 @@ namespace audi
  *
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
  * piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and
- * the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
+ * the audi::vectorized type. If piranha::is_differentiable<Cf>::value is also true then derivation
  * and integration are availiable.
  *
  */
@@ -71,7 +74,7 @@ class gdual
     // Static checks.
     static_assert(
         piranha::is_cf<Cf>::value && piranha::is_differentiable<Cf>::value,
-        "A gdual must be constructed froma coefficient satisfying piranha's conditions is_cf and is_differentiable.");
+        "A gdual must be constructed from a coefficient satisfying piranha's conditions is_cf and is_differentiable.");
 
 public:
     using cf_type = Cf;
@@ -125,8 +128,9 @@ private:
     // A private constructor to move-initialise a gdual from a polynomial. Used
     // in the implementation of the operators.
     explicit gdual(p_type &&p, unsigned int order) : m_p(std::move(p)), m_order(order) {}
-    // A private constructor used in the implementation of the operators (is it necessary?)
-    explicit gdual(Cf value, unsigned int order) : m_p(value), m_order(order) {}
+    // A private constructor used in the implementation of the operators.
+    template<typename T>
+    explicit gdual(T value, unsigned int order) : m_p(Cf(value)), m_order(order) {}
 
     // Basic overloads for the addition
     static gdual add(const gdual &d1, const gdual &d2)
@@ -187,7 +191,7 @@ private:
     static gdual div(const gdual &d1, const gdual &d2)
     {
         gdual retval(1);
-        double fatt = -1.;
+        Cf fatt(-1);
         auto p0 = d2.constant_cf();
         auto phat = (d2 - p0);
         phat = phat / p0;
@@ -195,7 +199,7 @@ private:
 
         retval = retval - phat;
         for (auto i = 2u; i <= d2.m_order; ++i) {
-            fatt *= -1.;
+            fatt = -1. * fatt;
             phat *= tmp;
             retval = retval + fatt * phat;
         }
@@ -207,7 +211,7 @@ private:
     static gdual div(const T &d1, const gdual &d2)
     {
         gdual retval(1.);
-        double fatt = -1.;
+        Cf fatt(-1.);
         auto p0 = d2.constant_cf();
 
         auto phat = (d2 - p0);
@@ -216,7 +220,7 @@ private:
 
         retval = retval - phat;
         for (auto i = 2u; i <= d2.m_order; ++i) {
-            fatt *= -1.;
+            fatt = -1. * fatt;
             phat *= tmp;
             retval = retval + fatt * phat;
         }
@@ -226,7 +230,8 @@ private:
     template <typename T>
     static gdual div(const gdual &d1, const T &d2)
     {
-        return d1 * (1. / d2);
+        // Note: we create the reciprocal of d2 constructing a Cf otherwise we could loose precision, e.g. when T is double and Cf is real128
+        return d1 * (1. / Cf(d2));
     }
 
     p_type m_p;
@@ -247,12 +252,31 @@ public:
     }
 
     template <typename T, generic_ctor_enabler<T> = 0>
-    explicit gdual(const T &value) : m_p(value), m_order(0u)
+    explicit gdual(const T &value) : m_p(), m_order(0u)
+    {
+        m_p += Cf(value);
+    }
+
+    template <typename T>
+    explicit gdual(const std::initializer_list<T> &value) : m_p(value), m_order(0u)
     {
     }
 
     template <typename T, generic_ctor_enabler<T> = 0>
     explicit gdual(const T &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
+    {
+        check_order();
+        check_var_name(symbol);
+        if (order == 0) {
+            extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
+        } else {
+            m_p = p_type(std::string("d") + symbol);
+        }
+        m_p += Cf(value);
+    }
+
+    template <typename T>
+    explicit gdual(const std::initializer_list<T> &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
     {
         check_order();
         check_var_name(symbol);
@@ -421,8 +445,10 @@ public:
      */
     gdual trim(double epsilon) const
     {
-        auto new_p
-            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return std::abs(coeff.first) > epsilon; });
+        if (epsilon < 0) {
+            throw std::invalid_argument("When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: " + std::to_string(epsilon) );
+        }
+        auto new_p = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 
@@ -568,9 +594,9 @@ public:
     template <typename T>
     auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
     {
-        double cumfact = 1;
+        double cumfact = 1.;
         for (auto i = c.begin(); i < c.end(); ++i) {
-            cumfact *= boost::math::factorial<double>(static_cast<unsigned int>(*i));
+            cumfact *= boost::math::factorial<double>(static_cast<unsigned>(*i));
         }
         return this->find_cf(c) * cumfact;
     }
@@ -594,9 +620,9 @@ public:
     template <typename T>
     auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
     {
-        double cumfact = 1;
+        double cumfact = 1.;
         for (auto i = l.begin(); i < l.end(); ++i) {
-            cumfact *= boost::math::factorial<double>((unsigned int)(*i));
+            cumfact *= boost::math::factorial<double>((unsigned)(*i));
         }
         return this->find_cf(l) * cumfact;
     }
@@ -610,7 +636,7 @@ public:
      * the input should be {{"dx", 1u},{"dy",3u},{"dz",2u}}
      *
      * \note The current implementation call internally the other templated
-     * implementations. WHen piranha will implement the sparse monomial
+     * implementations. When piranha will implement the sparse monomial
      * this will change and be more efficient.
      *
      * @return the value of the derivative
@@ -618,7 +644,7 @@ public:
      * @throws unspecified all exceptions thrown by the templated version call.
      * @throws std::invalid_argument: if one of the symbols is not found in the expression
      */
-    auto get_derivative(const std::unordered_map<std::string, unsigned int> &dict) const
+    auto get_derivative(const std::unordered_map<std::string, unsigned> &dict) const
         -> decltype(std::declval<const gdual &>().get_derivative(std::vector<double>{}))
     {
         const auto &ss = m_p.get_symbol_set();
@@ -654,7 +680,7 @@ public:
     bool is_zero(double tol) const
     {
         for (auto it = _container().begin(); it != _container().end(); ++it) {
-            if (abs(it->m_cf) > tol) // call to audi abs has precedence
+            if (audi::abs(it->m_cf) > tol) // call to audi abs has precedence
             {
                 return false;
             }

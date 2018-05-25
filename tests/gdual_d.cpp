@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE audi_gdual_test
+#define BOOST_TEST_MODULE audi_gduald_test
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/test/unit_test.hpp>
@@ -273,6 +273,8 @@ BOOST_AUTO_TEST_CASE(subs)
         gdual_d x(0, "x", 100);
         auto sx = sin(x);
         auto sx1 = sx.subs("dx", 1.);
+        std::cout << sx << std::endl;
+        std::cout << sx1 << std::endl;
         BOOST_CHECK_CLOSE(sx1.constant_cf(), std::sin(1.), 1e-12);
     }
 }
@@ -333,4 +335,14 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     }
     BOOST_CHECK(newf == f);
     BOOST_CHECK(newf.get_order() == f.get_order());
+}
+
+BOOST_AUTO_TEST_CASE(trim)
+{
+    gdual_d x(1e-5, "x", 4);
+    gdual_d y(1e-3, "x", 4);
+    BOOST_CHECK(x.trim(1e-6) == x);
+    BOOST_CHECK(y.trim(1e-2) == gdual_d(0., "x", 1));
+    BOOST_CHECK(y.trim(100) == gdual_d(0., "x", 0));
+    BOOST_CHECK_THROW(x.trim(-1e-3), std::invalid_argument);
 }

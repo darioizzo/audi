@@ -1,3 +1,6 @@
+# Main audi/pyaudi project version.
+set(AUDI_PROJECT_VERSION 1.3)
+
 # CMake version check.
 cmake_minimum_required(VERSION 3.2)
 
@@ -17,6 +20,8 @@ endif()
 # and only one must be chosen.
 option(AUDI_BUILD_AUDI "Build audi." ON)
 option(AUDI_BUILD_PYAUDI "Build pyaudi." OFF)
+option(AUDI_WITH_MPPP "Enables multiple precision support based on the mp++ project." OFF)
+
 
 # Check consistency.
 if(AUDI_BUILD_AUDI AND AUDI_BUILD_PYAUDI)
@@ -26,9 +31,6 @@ endif()
 if((NOT AUDI_BUILD_AUDI) AND (NOT AUDI_BUILD_PYAUDI))
     message(FATAL_ERROR "Please select if you want to build audi or pyudi.")
 endif()
-
-# Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.2.4)
 
 if(AUDI_BUILD_AUDI)
     # Initial setup of a audi build.
@@ -87,6 +89,12 @@ endif()
 list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wduplicated-branches")
 list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wold-style-cast")
 
+# Configure config.hpp.
+if(AUDI_WITH_MPPP)
+    set(AUDI_ENABLE_MPPP "#define AUDI_WITH_MPPP")
+endif()
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/audi/config.hpp" @ONLY)
+
 if(AUDI_BUILD_PYAUDI)
     # audi dependencies.
     include(YACMAPythonSetup)
@@ -125,7 +133,6 @@ if(AUDI_BUILD_AUDI)
     message(STATUS "GMP library found.")
     message(STATUS "GMP include dir is: ${GMP_INCLUDE_DIR}")
     message(STATUS "GMP library is: ${GMP_LIBRARIES}")
-    include_directories(${GMP_INCLUDE_DIR})
     
     # MPFR setup.
     FIND_PACKAGE(MPFR REQUIRED)
@@ -139,12 +146,20 @@ if(AUDI_BUILD_AUDI)
         message(FATAL_ERROR "Unsupported MPFR version, please upgrade.")
     endif()
     message(STATUS "MPFR version is ok.")
-    include_directories(${MPFR_INCLUDE_DIR})
+
+    if(AUDI_WITH_MPPP)
+        # MP++ SETUP
+        find_package(mp++ REQUIRED)
+        message(STATUS "mp++ library found.")
+    endif()
 
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
     target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization)    
-    target_link_libraries(audi INTERFACE Eigen3::eigen3)
+    target_link_libraries(audi INTERFACE Eigen3::eigen3 MPFR::MPFR GMP::GMP)
+    if(AUDI_WITH_MPPP)
+        target_link_libraries(audi INTERFACE mp++::mp++)
+    endif()
     
     # This sets up the include directory to be different if we build
     target_include_directories(audi INTERFACE
@@ -154,13 +169,7 @@ if(AUDI_BUILD_AUDI)
 
     # These lines are temporary with piranha v0.10, will be simplified when this is updated
     target_include_directories(audi INTERFACE ${Piranha_INCLUDE_DIR})
-    target_include_directories(audi INTERFACE ${MPFR_INCLUDE_DIR})
-    target_include_directories(audi INTERFACE ${GMP_INCLUDE_DIR})
-    # First mpfr then gmp otherwise mingw is unhappy
-    target_link_libraries(audi INTERFACE ${MPFR_LIBRARIES})
-    target_link_libraries(audi INTERFACE ${GMP_LIBRARIES})
-    
-
+   
     # Builds the main file
     IF(AUDI_BUILD_MAIN)
         add_executable(main main.cpp)
@@ -181,7 +190,13 @@ if(AUDI_BUILD_AUDI)
 
     # Setup of the export.
     install(TARGETS audi EXPORT audi_export)
+    # Setup of the optional deps.
+    set(_AUDI_CONFIG_OPTIONAL_DEPS)
+    if(AUDI_WITH_MPPP)
+        set(_AUDI_CONFIG_OPTIONAL_DEPS "${_AUDI_CONFIG_OPTIONAL_DEPS}find_package(mp++ REQUIRED)\n")
+    endif()
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/audi-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" @ONLY)
+
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindGMP.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindMPFR.cmake"
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindPiranha.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"

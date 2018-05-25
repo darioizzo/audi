@@ -2,7 +2,7 @@ Audi and pyaudi
 ================================
 
 Audi (not the car, rather from latin: "listen!") is an open source, header only, C++ library 
-(exposed to python in the pyaudi package) that implements the algebra of Taylor truncated polynomials and
+(exposed to python in the pyaudi package) that implements the differential algebra of Taylor truncated polynomials and
 a few algorithms useful for its applications (Differential Intelligence, automatic differentiation, Taylor Models, etc.)
 
 When used for automated differentiation only, other automated differentiation codes may be more
@@ -45,6 +45,8 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
    notebooks/example00.ipynb
    notebooks/example01.ipynb
    notebooks/vectorized_double.ipynb
+   notebooks/mp_gdual.ipynb
+
 
 .. toctree::
    :maxdepth: 2

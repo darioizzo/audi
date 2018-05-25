@@ -1,15 +1,24 @@
-#define BOOST_TEST_MODULE audi_gdual_test
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+#define BOOST_TEST_MODULE audi_gdualv_test
+
 #include <boost/test/unit_test.hpp>
 
 #include <stdexcept>
 #include <vector>
 
-#include "helpers.hpp"
-#include <audi/audi.hpp>
+#include <audi/config.hpp>
+
+#if defined(AUDI_WITH_MPPP)
+#include <audi/real128.hpp>
+#endif
+
+#include <audi/functions.hpp>
+#include <audi/gdual.hpp>
+#include <audi/vectorized.hpp>
 
 using namespace audi;
+
+using gdual_v = audi::gdual<audi::vectorized<double>>;
+
 
 BOOST_AUTO_TEST_CASE(construction)
 {
@@ -219,41 +228,5 @@ BOOST_AUTO_TEST_CASE(arithmetic_div)
             BOOST_CHECK_EQUAL(div.constant_cf()[i], 50. / 5.);
             BOOST_CHECK_EQUAL(div.get_derivative({1})[i], 1 / 5.);
         }
-    }
-}
-BOOST_AUTO_TEST_CASE(substitution)
-{
-    gdual_v x(std::vector<double>{1., 1.}, "x", 1);
-    gdual_v y(std::vector<double>{-1., -1}, "y", 1);
-    auto res = x * y * x / (x - y); // [-0.75, -0.75]*dx+[-0.5, -0.5]+[0.25, 0.25]*dy
-    auto res2 = res.subs("dx", std::vector<double>{1.});
-    auto res3 = res.subs("dy", std::vector<double>{1.});
-    BOOST_CHECK_EQUAL(res2.constant_cf()[0], -1.25);
-    BOOST_CHECK_EQUAL(res2.constant_cf()[1], -1.25);
-    BOOST_CHECK_EQUAL(res2.get_derivative({0, 1})[0], 0.25);
-    BOOST_CHECK_EQUAL(res2.get_derivative({0, 1})[1], 0.25);
-    BOOST_CHECK_EQUAL(res2.get_derivative({1, 0})[0], 0.);
-    BOOST_CHECK_EQUAL(res2.get_derivative({1, 0}).size(), 1);
-    BOOST_CHECK_EQUAL(res3.constant_cf()[0], -0.25);
-    BOOST_CHECK_EQUAL(res3.constant_cf()[1], -0.25);
-    BOOST_CHECK_EQUAL(res3.get_derivative({1, 0})[0], -0.75);
-    BOOST_CHECK_EQUAL(res3.get_derivative({1, 0})[1], -0.75);
-    BOOST_CHECK_EQUAL(res3.get_derivative({0, 1})[0], 0.);
-    BOOST_CHECK_EQUAL(res3.get_derivative({0, 1}).size(), 1);
-}
-
-BOOST_AUTO_TEST_CASE(is_zero)
-{
-    // We test some trivial cases where truncation order does not influence the results
-    {
-        gdual_v x(std::vector<double>{{1, 2, 3, 4, 0.123, -21.211}}, "x", 4);
-        gdual_v y(std::vector<double>{{0.123, 1.2, 4.3, 2.4, 0.23, -1.211}}, "y", 4);
-        gdual_v z(std::vector<double>{{-0.2, -2.01, 0.123, -0.132, 1.123, -0.211}}, "z", 4);
-        gdual_v f = x * x * x + x * y * z + z * x * y;
-
-        BOOST_CHECK((f - f).is_zero(1e-12));
-        BOOST_CHECK((f - 1 / (1 / f)).is_zero(1e-12));
-        BOOST_CHECK(((f * f) / (f)-f).is_zero(1e-12));
-        BOOST_CHECK(!f.is_zero(1e-12));
     }
 }

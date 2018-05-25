@@ -1,6 +1,10 @@
 #ifndef AUDI_EXPOSE_GDUAL_H
 #define AUDI_EXPOSE_GDUAL_H
 
+#if defined(AUDI_WITH_MPPP)
+#include <audi/real128.hpp>
+#endif
+
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
@@ -27,7 +31,7 @@ namespace pyaudi
 
 template <typename T>
 struct gdual_pickle_suite : bp::pickle_suite {
-    static bp::tuple getinitargs(const gdual<T> &w)
+    static bp::tuple getinitargs(const gdual<T> &)
     {
         return bp::make_tuple();
     }
@@ -51,7 +55,7 @@ struct gdual_pickle_suite : bp::pickle_suite {
         }
         auto ptr = PyBytes_AsString(bp::object(state[0]).ptr());
         if (!ptr) {
-            pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize a population");
+            pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize");
         }
         const auto size = len(state[0]);
         std::string s(ptr, ptr + size);
@@ -63,20 +67,20 @@ struct gdual_pickle_suite : bp::pickle_suite {
 };
 
 // For non vectorized_double we do not perform any conversion on in-out types
-template <typename T, enable_if_t<!std::is_same<T, vectorized_double>::value, int> = 0>
-inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
+template <typename T>
+inline void expose_subs(bp::class_<gdual<T>> th)
 {
     th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
            "Substitutes a symbol with a value (does not remove symbol from symbol set)");
 }
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
-template <typename T, enable_if_t<std::is_same<T, vectorized_double>::value, int> = 0>
-inline void expose_T_dependent_stuff(bp::class_<gdual<T>> th)
+template <>
+inline void expose_subs(bp::class_<gdual<vectorized<double>>> th)
 {
     th.def(
         "subs",
-        +[](gdual<T> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, T(l_to_v<double>(in))); },
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, gdual<vectorized<double>>(l_to_v<double>(in))); },
         "Substitutes a symbol with a value (does not remove symbol from symbol set)");
 }
 
@@ -134,6 +138,8 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
               .def("integrate", &gdual<T>::template integrate<>, "Integrate with respect to argument")
               .def("partial", &gdual<T>::template partial<>, "Partial derivative with respect to argument")
               .def("is_zero", &gdual<T>::is_zero, "checks if all coefficients of the gdual are zero within a tolerance")
+              .def("trim", &gdual<T>::trim, "returns a new gdual removing  all coefficients that are smaller than a tolerance")
+              .def("extract_terms", &gdual<T>::extract_terms, "returns a new gdual containing only terms of a given order")
               .def(bp::self + bp::self)
               .def(bp::self - bp::self)
               .def(bp::self * bp::self)
@@ -171,11 +177,11 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                    "factor")
               .def("get_derivative",
                    +[](const gdual<T> &g, const bp::dict &pydict) {
-                       return g.get_derivative(pydict_to_umap<std::string, unsigned int>(pydict));
+                       return g.get_derivative(pydict_to_umap<std::string, unsigned>(pydict));
                    },
                    "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
                    "factor");
-    expose_T_dependent_stuff<T>(th);
+    expose_subs<T>(th);
     return th;
 }
 }

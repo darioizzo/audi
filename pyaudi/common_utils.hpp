@@ -87,9 +87,10 @@ inline std::vector<T> l_to_v(const bp::object &iterable)
     return std::vector<T>(bp::stl_input_iterator<T>(iterable), bp::stl_input_iterator<T>());
 }
 
-// Used to register the vectorized_double to list converter
-struct vectorized_double_to_python_list {
-    static PyObject *convert(const audi::vectorized_double &vd)
+// Used to register the vectorized to list converter
+template <typename T>
+struct vectorized_to_python_list {
+    static PyObject *convert(const audi::vectorized<T> &vd)
     {
         bp::list list;
         for (auto iter = vd.begin(); iter != vd.end(); ++iter) {
