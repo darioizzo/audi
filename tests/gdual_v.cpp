@@ -19,6 +19,7 @@ using namespace audi;
 
 using gdual_v = audi::gdual<audi::vectorized<double>>;
 
+
 BOOST_AUTO_TEST_CASE(construction)
 {
     // Constructing a vectorized constant
