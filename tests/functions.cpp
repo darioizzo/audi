@@ -67,6 +67,10 @@ BOOST_AUTO_TEST_CASE(square_root)
     auto p2 = x * x * y - x * y * x * x * x - 3 * y * y * y * y * x * y * x; // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1, 1e-12) == true);
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p2) * sqrt(p2), p2, 1e-12) == true);
+
+print(p2,"\n");
+print(sqrt(p2),"\n");
+print(sqrt(p2)*sqrt(p2),"\n");
 }
 
 BOOST_AUTO_TEST_CASE(cubic_root)
