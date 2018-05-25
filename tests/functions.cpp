@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     // We check the implementation of pow(gdual_d, double) with respect to the behaviour in 0.
     // We compute the Taylor expansion of f = x^3.1 around 0. Which is T_f = 0. + 0.dx + 0.dx^2 + 0.dx^3 + inf dx^4-inf
     // dx^5 ...
-
+ 
     gdual_d x(0., "x", 7);
     auto f = pow(x, 3.1);
     BOOST_CHECK_EQUAL(f.find_cf({0}), 0.);
