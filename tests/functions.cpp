@@ -68,14 +68,10 @@ BOOST_AUTO_TEST_CASE(square_root)
     auto p1 = x * x * y - x * y * x * x * x + 3 * y * y * y * y * x * y * x; // positive p0
     auto p2 = x * x * y - x * y * x * x * x - 3 * y * y * y * y * x * y * x; // negative coefficient
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p1) * sqrt(p1), p1, 1e-12) == true);
+// The following test fails under old version of mingw as sqrt(-a) returns a!!! (https://sourceforge.net/p/mingw-w64/bugs/567/)
+#ifndef __MINGW32__
     BOOST_CHECK(EPSILON_COMPARE(sqrt(p2) * sqrt(p2), p2, 1e-12) == true);
-
-print("p2: ", p2,"\n");
-print("sqrt(p2): ", sqrt(p2),"\n");
-print("p2: ", sqrt(p2)*sqrt(p2),"\n");
-print("sqrt (std): ", std::sqrt(-154.554),"\n");
-print("sqrt (audi): ", audi::sqrt(-154.554),"\n");
-
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(cubic_root)
