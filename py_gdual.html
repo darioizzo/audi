@@ -465,7 +465,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Evaluates the Taylor polynomial</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::vectorized_double evaluate(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::dict)</dd>
+<dd>audi::vectorized&lt;double&gt; evaluate(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt;,boost::python::dict)</dd>
 </dl>
 </dd></dl>
 
@@ -475,7 +475,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Extends the symbol set</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>void extend_symbol_set(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},boost::python::api::object)</dd>
+<dd>void extend_symbol_set(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},boost::python::api::object)</dd>
 </dl>
 </dd></dl>
 
@@ -485,7 +485,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>returns a new gdual containing only terms of a given order</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::gdual&lt;audi::vectorized_double&gt; extract_terms(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},unsigned int)</dd>
+<dd>audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; extract_terms(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},unsigned int)</dd>
 </dl>
 </dd></dl>
 
@@ -495,7 +495,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Finds the coefficient of the Taylor expansion</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::vectorized_double find_cf(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::api::object)</dd>
+<dd>audi::vectorized&lt;double&gt; find_cf(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt;,boost::python::api::object)</dd>
 </dl>
 </dd></dl>
 
@@ -506,7 +506,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <blockquote>
 <div><dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::vectorized_double get_derivative(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::api::object)</dd>
+<dd>audi::vectorized&lt;double&gt; get_derivative(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt;,boost::python::api::object)</dd>
 </dl>
 </div></blockquote>
 <dl class="docutils">
@@ -514,7 +514,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p class="first">Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial factor</p>
 <dl class="last docutils">
 <dt>C++ signature :</dt>
-<dd>audi::vectorized_double get_derivative(audi::gdual&lt;audi::vectorized_double&gt;,boost::python::dict)</dd>
+<dd>audi::vectorized&lt;double&gt; get_derivative(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt;,boost::python::dict)</dd>
 </dl>
 </dd>
 </dl>
@@ -526,7 +526,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Integrate with respect to argument</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::gdual&lt;audi::vectorized_double&gt; integrate(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+<dd>audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; integrate(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
 </dl>
 </dd></dl>
 
@@ -536,7 +536,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>checks if all coefficients of the gdual are zero within a tolerance</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>bool is_zero(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},double)</dd>
+<dd>bool is_zero(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},double)</dd>
 </dl>
 </dd></dl>
 
@@ -552,7 +552,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Partial derivative with respect to argument</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::gdual&lt;audi::vectorized_double&gt; partial(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
+<dd>audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; partial(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;)</dd>
 </dl>
 </dd></dl>
 
@@ -562,7 +562,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>Substitutes a symbol with a value (does not remove symbol from symbol set)</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::gdual&lt;audi::vectorized_double&gt; subs(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;,boost::python::api::object)</dd>
+<dd>audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; subs(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;,boost::python::api::object)</dd>
 </dl>
 </dd></dl>
 
@@ -572,7 +572,7 @@ operators +,*,/,-,** are overloaded so that the Taylor expansion of arithmetic c
 <dd><p>returns a new gdual removing  all coefficients that are smaller than a tolerance</p>
 <dl class="docutils">
 <dt>C++ signature :</dt>
-<dd>audi::gdual&lt;audi::vectorized_double&gt; trim(audi::gdual&lt;audi::vectorized_double&gt; {lvalue},double)</dd>
+<dd>audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; trim(audi::gdual&lt;audi::vectorized&lt;double&gt; &gt; {lvalue},double)</dd>
 </dl>
 </dd></dl>
 

@@ -185,7 +185,7 @@
             
   <div class="section" id="mathematical-functions">
 <h1>Mathematical functions<a class="headerlink" href="#mathematical-functions" title="Permalink to this headline">¶</a></h1>
-<p>The following functions are implemented for <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> arguments.</p>
+<p>The following functions are implemented computing the truncated Taylor series of the argument:</p>
 <blockquote>
 <div><ul class="simple">
 <li><a class="reference internal" href="#_CPPv3I0E3expRK1T" title="exp"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">exp()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E3logRK1T" title="log"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">log()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">pow()</span></code></a> (4 overloads), <a class="reference internal" href="#_CPPv3I0E4sqrtRK1T" title="sqrt"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sqrt()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E4cbrtRK1T" title="cbrt"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cbrt()</span></code></a></li>
@@ -194,6 +194,11 @@
 <li><a class="reference internal" href="#_CPPv3I0E4sinhRK1T" title="sinh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E4coshRK1T" title="cosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cosh()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E13sinh_and_coshRK1T" title="sinh_and_cosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E4tanhRK1T" title="tanh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">tanh()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv3I0E5atanhRK1T" title="atanh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atanh()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E5asinhRK1T" title="asinh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">asinh()</span></code></a>, <a class="reference internal" href="#_CPPv3I0E5acoshRK1T" title="acosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">acosh()</span></code></a></li>
 <li><a class="reference internal" href="#_CPPv3I0E3absRK1T" title="abs"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p>The following functions are implemented using the definition of their derivative:</p>
+<blockquote>
+<div><ul class="simple">
 <li><a class="reference internal" href="#_CPPv3I0E3erfRK1T" title="erf"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">erf()</span></code></a>: error function</li>
 </ul>
 </div></blockquote>
@@ -201,7 +206,7 @@
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3expRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">exp</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3expRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3expRK1T" title="exp::T">T</a> <code class="descname">exp</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3expRK1T" title="exp::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3expRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 It implements the exponential performing the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <div class="math notranslate nohighlight">
@@ -223,7 +228,7 @@ It implements the exponential performing the following computations in the <span
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3logRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">log</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3logRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3logRK1T" title="log::T">T</a> <code class="descname">log</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3logRK1T" title="log::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3logRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 It implements the logarithm performing the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
 <div class="math notranslate nohighlight">
@@ -245,7 +250,7 @@ It implements the logarithm performing the following computations in the <span c
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3powdRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">pow</code><span class="sig-paren">(</span>double <em>base</em>, <em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powdRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> <code class="descname">pow</code><span class="sig-paren">(</span>double <em>base</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powdRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 It computes the exponentiation of a double to the power of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 If the exponent is a constant gdual, it calls the std::pow overload. Otherwise
@@ -272,7 +277,7 @@ last expression instead.</p>
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3powRK1Td">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em>, double <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powRK1Td" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> <code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> &amp;<em>d</em>, double <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powRK1Td" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 It computes the exponentiation of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> when the exponent is not an integer.</p>
 <div class="math notranslate nohighlight">
@@ -301,7 +306,7 @@ It computes the exponentiation of a <a class="reference internal" href="gdual.ht
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3powRK1Ti">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powRK1Ti" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> <code class="descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3powdRK1T" title="pow::T">T</a> &amp;<em>d</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3powRK1Ti" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 It implements the integer exponentiation of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>. Essentially,
 it uses the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> multiplication on <strong>d</strong> <strong>n</strong> times</p>
@@ -351,7 +356,7 @@ a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual">
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E4sqrtRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4sqrtRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4sqrtRK1T" title="sqrt::T">T</a> <code class="descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4sqrtRK1T" title="sqrt::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4sqrtRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the square root of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -374,7 +379,7 @@ Essentially it performs the following computations in the <span class="math notr
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E4cbrtRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4cbrtRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4cbrtRK1T" title="cbrt::T">T</a> <code class="descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4cbrtRK1T" title="cbrt::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4cbrtRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the cubic root of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -397,7 +402,7 @@ Essentially it performs the following computations in the <span class="math notr
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3sinRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">sin</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3sinRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3sinRK1T" title="sin::T">T</a> <code class="descname">sin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3sinRK1T" title="sin::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3sinRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the sine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -420,7 +425,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E3cosRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">cos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3cosRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3cosRK1T" title="cos::T">T</a> <code class="descname">cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3cosRK1T" title="cos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3cosRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -443,7 +448,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E11sin_and_cosRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;T, 2&gt; <code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E11sin_and_cosRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;<a class="reference internal" href="#_CPPv3I0E11sin_and_cosRK1T" title="sin_and_cos::T">T</a>, 2&gt; <code class="descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E11sin_and_cosRK1T" title="sin_and_cos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E11sin_and_cosRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the sine and cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 As most of the computations for the sine and cosine is the same, it is twice as fast
@@ -464,7 +469,7 @@ Use this function when both sine and cosine are needed.</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E3tanRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3tanRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3tanRK1T" title="tan::T">T</a> <code class="descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3tanRK1T" title="tan::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3tanRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the tangent of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -488,7 +493,7 @@ Essentially it performs the following computations in the <span class="math notr
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E4sinhRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4sinhRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4sinhRK1T" title="sinh::T">T</a> <code class="descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4sinhRK1T" title="sinh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4sinhRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the hyperbolic sine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -511,7 +516,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E4coshRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4coshRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4coshRK1T" title="cosh::T">T</a> <code class="descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4coshRK1T" title="cosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4coshRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the hyperbolic cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -534,7 +539,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E13sinh_and_coshRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;T, 2&gt; <code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E13sinh_and_coshRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;<a class="reference internal" href="#_CPPv3I0E13sinh_and_coshRK1T" title="sinh_and_cosh::T">T</a>, 2&gt; <code class="descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E13sinh_and_coshRK1T" title="sinh_and_cosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E13sinh_and_coshRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the hyperbolic sine and cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 As most of the computations for the hyperbolic sine and cosine are the same, it is twice as fast
@@ -555,7 +560,7 @@ Use this function when both hyperbolic sine and cosine are needed.</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E4tanhRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4tanhRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4tanhRK1T" title="tanh::T">T</a> <code class="descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4tanhRK1T" title="tanh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4tanhRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the hyperbolic tangent of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -578,7 +583,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E5atanhRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5atanhRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E5atanhRK1T" title="atanh::T">T</a> <code class="descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5atanhRK1T" title="atanh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5atanhRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse hyperbolic tangent of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -601,7 +606,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E4atanRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4atanRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4atanRK1T" title="atan::T">T</a> <code class="descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4atanRK1T" title="atan::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4atanRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse tangent of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -627,7 +632,7 @@ f^{2k}}{2k}(-1)^k\end{split}\]</div>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E5asinhRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">asinh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5asinhRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E5asinhRK1T" title="asinh::T">T</a> <code class="descname">asinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5asinhRK1T" title="asinh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5asinhRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse hyperbolic sine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -649,7 +654,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E5acoshRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">acosh</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5acoshRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E5acoshRK1T" title="acosh::T">T</a> <code class="descname">acosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5acoshRK1T" title="acosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5acoshRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse hyperbolic cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -671,7 +676,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E4asinRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">asin</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4asinRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4asinRK1T" title="asin::T">T</a> <code class="descname">asin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4asinRK1T" title="asin::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4asinRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse sine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -693,7 +698,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E4acosRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">acos</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4acosRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E4acosRK1T" title="acos::T">T</a> <code class="descname">acos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E4acosRK1T" title="acos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E4acosRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the inverse cosine of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -715,7 +720,7 @@ Essentially it performs the following computations in the <span class="math notr
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E3absRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3absRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3absRK1T" title="abs::T">T</a> <code class="descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3absRK1T" title="abs::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3absRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Implements the absolute value of a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
 Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
@@ -746,7 +751,7 @@ Essentially it performs the following computations in the <span class="math notr
 <p><em>#include &lt;audi/functions_from_d.hpp&gt;</em></p>
 <dl class="function">
 <dt id="_CPPv3I0E3erfRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> T <code class="descname">erf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3erfRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv3I0E3erfRK1T" title="erf::T">T</a> <code class="descname">erf</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E3erfRK1T" title="erf::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E3erfRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>
 Essentially, it makes use of the definition:</p>
 <div class="math notranslate nohighlight">

@@ -1,7 +1,7 @@
 Mathematical functions
 ========================
 
-The following functions are implemented for :cpp:class:`gdual` arguments.
+The following functions are implemented computing the truncated Taylor series of the argument:
 
  * :cpp:func:`exp`, :cpp:func:`log`, :cpp:func:`pow` (4 overloads), :cpp:func:`sqrt`, :cpp:func:`cbrt`
  * :cpp:func:`sin`, :cpp:func:`cos`, :cpp:func:`sin_and_cos`, :cpp:func:`tan`
@@ -9,6 +9,10 @@ The following functions are implemented for :cpp:class:`gdual` arguments.
  * :cpp:func:`sinh`, :cpp:func:`cosh`, :cpp:func:`sinh_and_cosh`, :cpp:func:`tanh`
  * :cpp:func:`atanh`, :cpp:func:`asinh`, :cpp:func:`acosh`
  * :cpp:func:`abs`
+
+
+The following functions are implemented using the definition of their derivative:
+
  * :cpp:func:`erf`: error function
 
 -----------------------------------------------------------------------
@@ -464,3 +468,4 @@ The following functions are implemented for :cpp:class:`gdual` arguments.
    :param d: :cpp:class:`gdual` argument
    
    :return: the Taylor expansion of the error function of **d**
+
