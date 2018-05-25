@@ -1,14 +1,23 @@
 #define BOOST_TEST_MODULE audi_gdualv_test
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+
 #include <boost/test/unit_test.hpp>
 
 #include <stdexcept>
 #include <vector>
 
-#include <audi/audi.hpp>
+#include <audi/config.hpp>
+
+#if defined(AUDI_WITH_MPPP)
+#include <audi/real128.hpp>
+#endif
+
+#include <audi/functions.hpp>
+#include <audi/gdual.hpp>
+#include <audi/vectorized.hpp>
 
 using namespace audi;
+
+using gdual_v = audi::gdual<audi::vectorized<double>>;
 
 BOOST_AUTO_TEST_CASE(construction)
 {
