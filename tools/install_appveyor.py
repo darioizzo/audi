@@ -89,6 +89,20 @@ run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("Piranha sucessfully installed .. continuing")
 
+# Download mppp 0.11 https://github.com/bluescarni/mppp/archive/v0.11.zip
+wget(r'https://github.com/bluescarni/mppp/archive/v0.11.zip', 'mpppv10.zip')
+run_command(r'unzip mpppv10.zip', verbose=False)
+# Move to the directory created and make piranha install its headers
+os.chdir('mppp-0.11')
+os.makedirs('build')
+os.chdir('build')
+print("Installing mppp")
+run_command(
+    r'cmake -G "MinGW Makefiles" .. -DMPPP_WITH_QUADMATH=yes -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
+run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+os.chdir('../../')
+print("mppp sucessfully installed .. continuing")
+
 # Setup of the dependencies for a Python build.
 if is_python_build:
     if BUILD_TYPE == 'Python34':
@@ -131,7 +145,7 @@ if is_python_build:
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
 
 # Proceed to the build.
-common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local'
+common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_WITH_MPPP=yes'
 
 # Configuration step.
 if is_python_build:
