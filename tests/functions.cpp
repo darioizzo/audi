@@ -73,7 +73,9 @@ BOOST_AUTO_TEST_CASE(square_root)
 print("p2: ", p2,"\n");
 print("sqrt(p2): ", sqrt(p2),"\n");
 print("p2: ", sqrt(p2)*sqrt(p2),"\n");
-print("sqrt : ", sqrt(-154.554),"\n");
+print("sqrt (std): ", std::sqrt(-154.554),"\n");
+print("sqrt (audi): ", audi::sqrt(-154.554),"\n");
+
 }
 
 BOOST_AUTO_TEST_CASE(cubic_root)
