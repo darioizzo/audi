@@ -81,8 +81,8 @@ endif()
 if(MINGW)
 	# Flag needed to deal with big binaries in MinGW.
 	message(STATUS "Enabling the '-Wa,-mbig-obj' flag in MinGW builds.")
-	list(APPEND AUDI_CXX_FLAGS_DEBUG "-Wa,-mbig-obj")
-	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa,-mbig-obj")
+	list(APPEND AUDI_CXX_FLAGS_DEBUG "-Wa -mbig-obj")
+	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa -mbig-obj")
 endif()
 
 # Some flags that generate warnings due to Eigen or Piranha obsolete versions
