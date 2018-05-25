@@ -112,6 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -195,20 +196,20 @@
 template&lt;typename <code class="descname">Cf</code>&gt;<br /><em class="property">class </em><code class="descname">gdual</code><a class="headerlink" href="#_CPPv3I0E5gdual" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<p>This class represents an element of the algebra <span class="math notranslate">\(\mathcal P_{n,m}\)</span>, (see <a class="reference internal" href="theory_algebra.html#formal-definition"><span class="std std-ref">Formal definition</span></a>) defined
-over the field <span class="math notranslate">\(\mathbf K\)</span> (the field is represented by the template argument <strong>Cf</strong>). We call elements of this algebra
-generalized dual numbers as, among other things and when <span class="math notranslate">\(\mathbf K\)</span> is <span class="math notranslate">\(\mathbb R\)</span>, they generalize the dual numbers used for forward automatic differentiation.</p>
-<p>Using the multi-index notation, a generalized dual number (for example over the field <span class="math notranslate">\(\mathbb R\)</span> represented by doubles, i.e. <code class="code docutils literal notranslate"><span class="pre">gdual&lt;double&gt;</span></code>)
+<p>This class represents an element of the algebra <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span>, (see <a class="reference internal" href="theory_algebra.html#formal-definition"><span class="std std-ref">Formal definition</span></a>) defined
+over the field <span class="math notranslate nohighlight">\(\mathbf K\)</span> (the field is represented by the template argument <strong>Cf</strong>). We call elements of this algebra
+generalized dual numbers as, among other things and when <span class="math notranslate nohighlight">\(\mathbf K\)</span> is <span class="math notranslate nohighlight">\(\mathbb R\)</span>, they generalize the dual numbers used for forward automatic differentiation.</p>
+<p>Using the multi-index notation, a generalized dual number (for example over the field <span class="math notranslate nohighlight">\(\mathbb R\)</span> represented by doubles, i.e. <code class="code docutils literal notranslate"><span class="pre">gdual&lt;double&gt;</span></code>)
 may be written as:</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[T_f(\mathbf x) = \sum_{|\alpha| = 0}^m  \frac{(\mathbf x-\mathbf a)^\alpha}{\alpha!}(\partial^\alpha f)(\mathbf a)\]</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">A generalized dual number is defined by its truncation order <span class="math notranslate">\(m\)</span> as well as by its expansion point <span class="math notranslate">\(\mathbf a\)</span>.
+<p class="last">A generalized dual number is defined by its truncation order <span class="math notranslate nohighlight">\(m\)</span> as well as by its expansion point <span class="math notranslate nohighlight">\(\mathbf a\)</span>.
 All arithmetic operators +,*,/,- are overloaded so that computing with the type <a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> correspond to compute the
 Taylor expansion of the arithmetic computations.</p>
 </div>
-<p>A basic use case, where <span class="math notranslate">\(m = 2\)</span>, <span class="math notranslate">\(\mathbf a = [1.2, -0.1]\)</span> and <span class="math notranslate">\(f = \frac{x1+x2}{x1-x2}\)</span> is thus:</p>
+<p>A basic use case, where <span class="math notranslate nohighlight">\(m = 2\)</span>, <span class="math notranslate nohighlight">\(\mathbf a = [1.2, -0.1]\)</span> and <span class="math notranslate nohighlight">\(f = \frac{x1+x2}{x1-x2}\)</span> is thus:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x1</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 <span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">&quot;x2&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
@@ -230,17 +231,17 @@ and integration are also availiable and the resulting algebra is a differential 
 <h2>Constructors and destructors<a class="headerlink" href="#constructors-and-destructors" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3I0E5gdualRK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdualRK1T" title="gdual::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
 </div>
-<p>Constructs a gdual of order <span class="math notranslate">\(m = 0\)</span> with only a constant term <span class="math notranslate">\(c\)</span>. Essentially <span class="math notranslate">\(T_f = c\)</span> in <span class="math notranslate">\(\mathcal P_{0,0}\)</span></p>
+<p>Constructs a gdual of order <span class="math notranslate nohighlight">\(m = 0\)</span> with only a constant term <span class="math notranslate nohighlight">\(c\)</span>. Essentially <span class="math notranslate nohighlight">\(T_f = c\)</span> in <span class="math notranslate nohighlight">\(\mathcal P_{0,0}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> – The constant term <span class="math notranslate">\(c\)</span>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>c</strong> – The constant term <span class="math notranslate nohighlight">\(c\)</span>.</td>
 </tr>
 </tbody>
 </table>
@@ -249,19 +250,19 @@ template&lt;typename <code class="descname">T</code>&gt;<br /><em class="propert
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0E5gdualRK1TRKNSt6stringEj">
-template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1TRKNSt6stringEj" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">explicit</em> <code class="descname">gdual</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0E5gdualRK1T" title="gdual::T">T</a> &amp;<em>c</em>, <em class="property">const</em> std::string &amp;<em>symbol</em>, unsigned <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3I0E5gdualRK1TRKNSt6stringEj" title="Permalink to this definition">¶</a><br /></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This constructor is only enabled if <em>T</em> is not a gdual and if a piranha::polynomial can be constructed with coefficients in <em>T</em>.</p>
 </div>
-<p>Constructs a gdual of order <span class="math notranslate">\(m\)</span> representing a variable. Essentially <span class="math notranslate">\(T_f = c + dx\)</span> in <span class="math notranslate">\(\mathcal P_{1,m}\)</span></p>
+<p>Constructs a gdual of order <span class="math notranslate nohighlight">\(m\)</span> representing a variable. Essentially <span class="math notranslate nohighlight">\(T_f = c + dx\)</span> in <span class="math notranslate nohighlight">\(\mathcal P_{1,m}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>c</strong> – The constant term <span class="math notranslate">\(c\)</span>.</li>
-<li><strong>symbol</strong> – The symbol that will represent the variable (e.g. <span class="math notranslate">\(x\)</span>).</li>
+<li><strong>c</strong> – The constant term <span class="math notranslate nohighlight">\(c\)</span>.</li>
+<li><strong>symbol</strong> – The symbol that will represent the variable (e.g. <span class="math notranslate nohighlight">\(x\)</span>).</li>
 <li><strong>m</strong> – The truncation order of the algebra.</li>
 </ul>
 </td>
@@ -277,7 +278,7 @@ template&lt;typename <code class="descname">T</code>&gt;<br /><em class="propert
 <dl class="function">
 <dt id="_CPPv35gdualv">
 <code class="descname">gdual</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv35gdualv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Default constructor. Constructs a gdual of order <span class="math notranslate">\(m = 0\)</span> with only a zero constant term <span class="math notranslate">\(c\)</span>. Essentially <span class="math notranslate">\(T_f = 0\)</span> in <span class="math notranslate">\(\mathcal P_{0,0}\)</span></p>
+<dd><p>Default constructor. Constructs a gdual of order <span class="math notranslate nohighlight">\(m = 0\)</span> with only a zero constant term <span class="math notranslate nohighlight">\(c\)</span>. Essentially <span class="math notranslate nohighlight">\(T_f = 0\)</span> in <span class="math notranslate nohighlight">\(\mathcal P_{0,0}\)</span></p>
 </dd></dl>
 
 <hr class="docutils" />
@@ -359,7 +360,7 @@ of the piranha::polynomial it is added.</p>
 <h3>gdual manipulation<a class="headerlink" href="#gdual-manipulation" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt id="_CPPv3I0ENK4subsERKNSt6stringERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> T &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br /><a class="reference internal" href="#_CPPv3I0E5gdual" title="gdual">gdual</a> <code class="descname">subs</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>sym</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="subs::T">T</a> &amp;<em>val</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK4subsERKNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Substitute the differential <em>sym</em> with <em>val</em>. The <em>Cf</em> type must be constructable from <em>val</em>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -441,9 +442,9 @@ template&lt;typename <code class="descname">T</code>&gt;<br /><a class="referenc
 <dt id="_CPPv317extend_symbol_setRKNSt6vectorINSt6stringEEE">
 void <code class="descname">extend_symbol_set</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;std::string&gt; &amp;<em>sym_vars</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv317extend_symbol_setRKNSt6vectorINSt6stringEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Adds some symbolic variables to the current piranha::polynomial
-This is useful in situations where some differential <span class="math notranslate">\(dx\)</span> does not
+This is useful in situations where some differential <span class="math notranslate nohighlight">\(dx\)</span> does not
 appear as its coefficient is zero but we still want to treat the gdual as a function of
-<span class="math notranslate">\(x\)</span> too (for example when extracting the relative coefficient)</p>
+<span class="math notranslate nohighlight">\(x\)</span> too (for example when extracting the relative coefficient)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -531,11 +532,11 @@ unsigned int <code class="descname">get_order</code><span class="sig-paren">(</s
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK7find_cfERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK7find_cfERK1T" title="find_cf::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the coefficient of the monomial specified by the container <em>c</em>.
 The container contains the exponents of the requested monomial. In a three
-variable Taylor expansion with <span class="math notranslate">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
-the monomial <span class="math notranslate">\(dx dy^3 dz^2\)</span>.</p>
+variable Taylor expansion with <span class="math notranslate nohighlight">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
+the monomial <span class="math notranslate nohighlight">\(dx dy^3 dz^2\)</span>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Alphabetical order is used to order the symbol set and thus specify
@@ -566,7 +567,7 @@ the coefficients.</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">find_cf</code><span class="sig-paren">(</span>std::initializer_list&lt;<a class="reference internal" href="#_CPPv3I0ENK7find_cfERK1T" title="find_cf::T">T</a>&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK7find_cfENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the coefficient of the monomial specified by the initializer list <em>l</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -594,7 +595,7 @@ template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="
 <dl class="function">
 <dt id="_CPPv311constant_cfv">
 Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv311constant_cfv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Finds the constant coefficient of the Taylor polynomial. So that if <span class="math notranslate">\(T_{f} = f_0 + \hat f\)</span>, <span class="math notranslate">\(f_0\)</span> is returned</p>
+<dd><p>Finds the constant coefficient of the Taylor polynomial. So that if <span class="math notranslate nohighlight">\(T_{f} = f_0 + \hat f\)</span>, <span class="math notranslate nohighlight">\(f_0\)</span> is returned</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -608,13 +609,13 @@ Cf <code class="descname">constant_cf</code><span class="sig-paren">(</span><spa
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK14get_derivativeERK1T">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> T &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERK1T" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv3I0ENK14get_derivativeERK1T" title="get_derivative::T">T</a> &amp;<em>c</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the (mixed) derivative value of order specified by the container <em>c</em></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The container describes the derivative requested. In a three
-variable polynomial with <span class="math notranslate">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
-the sixth order derivative <span class="math notranslate">\(\frac{d^6}{dxdy^3dz^2}\)</span>.</p>
+variable polynomial with <span class="math notranslate nohighlight">\(x, y, z\)</span> as symbols, [1, 3, 2] would denote
+the sixth order derivative <span class="math notranslate nohighlight">\(\frac{d^6}{dxdy^3dz^2}\)</span>.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -643,7 +644,7 @@ contained in the Taylor expansion</p>
 <hr class="docutils" />
 <dl class="function">
 <dt id="_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE">
-template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;T&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
+template&lt;typename <code class="descname">T</code>&gt;<br />auto <code class="descname">get_derivative</code><span class="sig-paren">(</span>std::initializer_list&lt;<a class="reference internal" href="#_CPPv3I0ENK14get_derivativeERK1T" title="get_derivative::T">T</a>&gt; <em>l</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3I0ENK14get_derivativeENSt16initializer_listI1TEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns the (mixed) derivative value of order specified by the initializer list <em>l</em>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

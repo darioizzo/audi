@@ -105,6 +105,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -414,16 +415,16 @@ imported and the operators +,-,*,/, **</p>
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ 2{dx}+2{dx}{dy}^{2}+{dx}^{2}+0.666667{dx}^{3}-{dz}+0.166667{dz}^{3}-2{dx}{dy}+\mathcal{O}\left(4\right) \]</div></div>
 </div>
 </div>
 <div class="section" id="Extracting-the-derivatives">
 <h2>Extracting the derivatives<a class="headerlink" href="#Extracting-the-derivatives" title="Permalink to this headline">¶</a></h2>
 <p>We can now extract the values of the derivatives of
-<span class="math notranslate">\(f\left(x,y,z\right)\)</span> with respect to <span class="math notranslate">\(x,y,z\)</span> in the point
-<span class="math notranslate">\(\left(0,0,0\right)\)</span>. For instance, this is the value of
-<span class="math notranslate">\(\frac{\partial f}{\partial z}\)</span>:</p>
+<span class="math notranslate nohighlight">\(f\left(x,y,z\right)\)</span> with respect to <span class="math notranslate nohighlight">\(x,y,z\)</span> in the point
+<span class="math notranslate nohighlight">\(\left(0,0,0\right)\)</span>. For instance, this is the value of
+<span class="math notranslate nohighlight">\(\frac{\partial f}{\partial z}\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
@@ -465,7 +466,7 @@ imported and the operators +,-,*,/, **</p>
 </pre></div>
 </div>
 </div>
-<p>This is <span class="math notranslate">\(\frac{\partial^2 f}{\partial x \partial y}\)</span>:</p>
+<p>This is <span class="math notranslate nohighlight">\(\frac{\partial^2 f}{\partial x \partial y}\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [6]:
@@ -489,9 +490,9 @@ imported and the operators +,-,*,/, **</p>
 </div>
 <div class="section" id="Changing-the-point">
 <h2>Changing the point<a class="headerlink" href="#Changing-the-point" title="Permalink to this headline">¶</a></h2>
-<p>By re-defining <span class="math notranslate">\(x,y,z\)</span>, we can compute the derivatives in a
+<p>By re-defining <span class="math notranslate nohighlight">\(x,y,z\)</span>, we can compute the derivatives in a
 different point. For instance, for the computation of the derivatives in
-the point <span class="math notranslate">\(\left(1,2,3\right)\)</span>, we write:</p>
+the point <span class="math notranslate nohighlight">\(\left(1,2,3\right)\)</span>, we write:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [7]:
@@ -512,10 +513,10 @@ the point <span class="math notranslate">\(\left(1,2,3\right)\)</span>, we write
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ 0.0925294{dy}^{2}+0.07056{dz}^{2}+2.74659{dx}+0.0375972{dx}^{3}-0.248865{dy}-0.164999{dz}^{3}-0.0950441{dx}^{2}{dy}+1.55139+0.133785{dx}{dy}^{2}+1.08617{dx}^{2}-0.0354271{dy}^{3}+0.989992{dz}-0.306312{dx}{dy}+\mathcal{O}\left(4\right) \]</div></div>
 </div>
-<p>Now <span class="math notranslate">\(\frac{\partial f}{\partial z}\)</span>:</p>
+<p>Now <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial z}\)</span>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [8]:

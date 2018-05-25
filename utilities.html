@@ -107,6 +107,7 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -189,8 +190,8 @@
 <dt id="_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb">
 std::vector&lt;gdual_d&gt; <code class="descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Inversion of Taylor series.</p>
-<p>Consider a system of non linear equations in <span class="math notranslate">\(n\)</span> variables:</p>
-<div class="math notranslate">
+<p>Consider a system of non linear equations in <span class="math notranslate nohighlight">\(n\)</span> variables:</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\left\{
 \begin{array}{l}
 f_1(x_1, x_2, .., x_n) = 0 \\
@@ -198,9 +199,9 @@ f_1(x_1, x_2, .., x_n) = 0 \\
 f_n(x_1, x_2, .., x_n) = 0 \\
 \end{array}
 \right.\end{split}\]</div>
-<p>and represent each equation via a Taylor polynomial truncated at order <span class="math notranslate">\(m\)</span> (i.e. <span class="math notranslate">\(\in \mathcal P_{n,m}\)</span>) around
-some point <span class="math notranslate">\(\overline {\mathbf x}\)</span>:</p>
-<div class="math notranslate">
+<p>and represent each equation via a Taylor polynomial truncated at order <span class="math notranslate nohighlight">\(m\)</span> (i.e. <span class="math notranslate nohighlight">\(\in \mathcal P_{n,m}\)</span>) around
+some point <span class="math notranslate nohighlight">\(\overline {\mathbf x}\)</span>:</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\left\{
 \begin{array}{l}
 T_{f_1}(dx_1, dx_2, .., dx_n) = 0 \\
@@ -208,18 +209,18 @@ T_{f_1}(dx_1, dx_2, .., dx_n) = 0 \\
 T_{f_n}(dx_1, dx_2, .., dx_n) = 0 \\
 \end{array}
 \right.\end{split}\]</div>
-<p>The above system of, now, polynomial equations can be written as <span class="math notranslate">\(C + M + N = C + \mathcal M = 0\)</span>, where we have
-explicitly indicated the constant term <span class="math notranslate">\(C\)</span>, the linear term <span class="math notranslate">\(M\)</span> and the rest <span class="math notranslate">\(N\)</span>. The symbol
-<span class="math notranslate">\(\mathcal M\)</span> indicates what is called Taylor map and its inverse is found by this function by performing
+<p>The above system of, now, polynomial equations can be written as <span class="math notranslate nohighlight">\(C + M + N = C + \mathcal M = 0\)</span>, where we have
+explicitly indicated the constant term <span class="math notranslate nohighlight">\(C\)</span>, the linear term <span class="math notranslate nohighlight">\(M\)</span> and the rest <span class="math notranslate nohighlight">\(N\)</span>. The symbol
+<span class="math notranslate nohighlight">\(\mathcal M\)</span> indicates what is called Taylor map and its inverse is found by this function by performing
 some Picard iterations (fixed point) over the following simple formal equalities:</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[\mathcal M \circ \mathcal M^{-1} = \mathcal I \rightarrow  (M + N) \circ \mathcal M^{-1}  = \mathcal I \rightarrow M
 \circ \mathcal M^{-1} + N \circ \mathcal M^{-1} = \mathcal I\]</div>
 <p>and hence:</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[\mathcal M^{-1} = M^{-1} \circ \left(\mathcal I - N \circ \mathcal M^{-1}\right)\]</div>
 <p>which can be used to make a fixed point iterative scheme once
-the inverse of the linear part <span class="math notranslate">\(M^{-1}\)</span> is found. Note that the inverse is guaranteed to exist if the linear part is invertible.</p>
+the inverse of the linear part <span class="math notranslate nohighlight">\(M^{-1}\)</span> is found. Note that the inverse is guaranteed to exist if the linear part is invertible.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -230,7 +231,7 @@ the inverse of the linear part <span class="math notranslate">\(M^{-1}\)</span> 
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The inverse map <span class="math notranslate">\(\mathcal M^{-1}\)</span> represented as an <em>std::vector</em> of <em>gduals</em> with symbol set
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The inverse map <span class="math notranslate nohighlight">\(\mathcal M^{-1}\)</span> represented as an <em>std::vector</em> of <em>gduals</em> with symbol set
 [p0, p1, .. pn]</p>
 </td>
 </tr>

@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul class="current">
@@ -108,13 +109,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#The-Double-Pendulum-end-point">The Double Pendulum end-point</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Compute-the-inverse-map">Compute the inverse map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate">\(\theta\)</span> from <span class="math notranslate">\(x\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#The-Kepler’s-Equation">The Kepler’s Equation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Invert-the-map">Invert the map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate">\(E\)</span> from <span class="math notranslate">\(M\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span></a></li>
 </ul>
 </li>
 </ul>
@@ -371,12 +372,12 @@ locally invert systems of non linear equations.</p>
 <div class="section" id="The-Double-Pendulum-end-point">
 <h2>The Double Pendulum end-point<a class="headerlink" href="#The-Double-Pendulum-end-point" title="Permalink to this headline">¶</a></h2>
 <p>Let us consider, in 2D, the end point position of a double pendulum.</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[\begin{split}x = l_1 sin(\theta_1) + l_2 sin(\theta_2) \\
 y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
 <p>We will develop a model for the inversion of this system of equations,
-so that <span class="math notranslate">\(\theta_1\)</span> and <span class="math notranslate">\(\theta_2\)</span> can be expressed as a
-function of <span class="math notranslate">\(x\)</span> and <span class="math notranslate">\(y\)</span></p>
+so that <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> can be expressed as a
+function of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
@@ -438,7 +439,7 @@ function of <span class="math notranslate">\(x\)</span> and <span class="math no
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ 1.27409{d\theta_2}+2.63265e-06{d\theta_1}^{9}-0.000410445{d\theta_1}^{6}+3.51104e-06{d\theta_2}^{9}-0.159223{d\theta_1}^{3}+0.0372501+0.000358709{d\theta_2}^{6}-0.000252795{d\theta_2}^{7}-0.212348{d\theta_2}^{3}-2.39332e-08{d\theta_1}^{11}+7.32937e-06{d\theta_1}^{8}+0.00796114{d\theta_1}^{5}-0.0107613{d\theta_2}^{4}-0.14776{d\theta_1}^{2}+0.0106174{d\theta_2}^{5}-8.14374e-08{d\theta_1}^{10}-6.40551e-06{d\theta_2}^{8}-0.000189551{d\theta_1}^{7}+0.0123133{d\theta_1}^{4}+0.955336{d\theta_1}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">
@@ -458,7 +459,7 @@ function of <span class="math notranslate">\(x\)</span> and <span class="math no
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ -0.25827{d\theta_2}+8.14374e-07{d\theta_1}^{9}+0.00132686{d\theta_1}^{6}-7.11723e-07{d\theta_2}^{9}-0.0492534{d\theta_1}^{3}-2.22942+0.00176956{d\theta_2}^{6}+5.12441e-05{d\theta_2}^{7}+0.043045{d\theta_2}^{3}-7.4034e-09{d\theta_1}^{11}-2.36939e-05{d\theta_1}^{8}+0.00246267{d\theta_1}^{5}-0.0530869{d\theta_2}^{4}+0.477668{d\theta_1}^{2}-0.00215225{d\theta_2}^{5}+2.63265e-07{d\theta_1}^{10}-3.15994e-05{d\theta_2}^{8}-5.8635e-05{d\theta_1}^{7}-0.0398057{d\theta_1}^{4}+0.29552{d\theta_1}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
@@ -494,7 +495,7 @@ function of <span class="math notranslate">\(x\)</span> and <span class="math no
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ -33.3889{dp0}^{2}{dp1}^{2}+2.97638{dp0}^{2}{dp1}-1.53985e+08{dp0}^{2}{dp1}^{8}+7.49742{dp0}^{4}{dp1}-1.18854{dp0}^{8}-450.043{dp1}^{4}-0.461981{dp0}^{2}-60579.9{dp0}{dp1}^{6}+13499.7{dp0}^{7}{dp1}^{3}-19.2519{dp0}^{3}{dp1}^{2}+4.30881e+06{dp0}^{6}{dp1}^{5}+1.03732{dp0}^{3}{dp1}-2.89428e+08{dp0}^{3}{dp1}^{8}+4.30674{dp0}^{5}{dp1}-0.913559{dp0}^{9}+7.34785e+07{dp1}^{9}-5141.9{dp0}^{3}{dp1}^{4}-0.0793933{dp0}^{3}-45079.9{dp0}^{5}{dp1}^{4}-47904.3{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">
@@ -514,12 +515,12 @@ function of <span class="math notranslate">\(x\)</span> and <span class="math no
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ 25.7695{dp0}^{2}{dp1}^{2}-2.34715{dp0}^{2}{dp1}+1.18575e+08{dp0}^{2}{dp1}^{8}-5.78329{dp0}^{4}{dp1}+0.917051{dp0}^{8}+347.27{dp1}^{4}+0.343531{dp0}^{2}+46667.1{dp0}{dp1}^{6}-10399{dp0}^{7}{dp1}^{3}+14.7909{dp0}^{3}{dp1}^{2}-3.3184e+06{dp0}^{6}{dp1}^{5}-0.872053{dp0}^{3}{dp1}+2.22845e+08{dp0}^{3}{dp1}^{8}-3.30875{dp0}^{5}{dp1}+0.704389{dp0}^{9}-5.65823e+07{dp1}^{9}+3962.12{dp0}^{3}{dp1}^{4}+0.00876767{dp0}^{3}+34726{dp0}^{5}{dp1}^{4}+36914.5{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
 <div class="section" id="Compute--from-">
-<h3>Compute <span class="math notranslate">\(\theta\)</span> from <span class="math notranslate">\(x\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<h3>Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [9]:
@@ -618,7 +619,7 @@ Error in y:  1.7152856912616699e-10
 <div class="section" id="The-Kepler’s-Equation">
 <h2>The Kepler’s Equation<a class="headerlink" href="#The-Kepler’s-Equation" title="Permalink to this headline">¶</a></h2>
 <p>Let’s consider the long standing problem of inverting Kepler’s equation:</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[M = E - e sin(E)\]</div>
 <p>and face it using the map inversion functionality of pyaudi</p>
 <div class="section" id="Define-our-variables">
@@ -657,7 +658,7 @@ Error in y:  1.7152856912616699e-10
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ {dE}-0.00833333{dE}^{5}{de}+0.000198413{dE}^{7}{de}-{dE}{de}-2.75573e-06{dE}^{9}{de}+0.166667{dE}^{3}{de}+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
@@ -695,12 +696,12 @@ Error in y:  1.7152856912616699e-10
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ -20{dp0}^{3}{dp1}^{8}+0.00833333{dp0}^{5}{dp1}-3.33333{dp0}^{3}{dp1}^{4}+2.8{dp0}^{5}{dp1}^{4}+0.133333{dp0}^{5}{dp1}^{2}+{dp0}{dp1}^{10}-1.66667{dp0}^{3}{dp1}^{3}+0.758333{dp0}^{5}{dp1}^{3}+0.000705467{dp0}^{9}{dp1}^{2}+{dp0}{dp1}^{8}-0.000198413{dp0}^{7}{dp1}+2.75573e-06{dp0}^{9}{dp1}-1.07937{dp0}^{7}{dp1}^{4}-0.0126984{dp0}^{7}{dp1}^{2}+{dp0}{dp1}^{6}+{dp0}{dp1}^{2}-14{dp0}^{3}{dp1}^{7}+8.05{dp0}^{5}{dp1}^{5}-0.162698{dp0}^{7}{dp1}^{3}-5.83333{dp0}^{3}{dp1}^{5}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
 <div class="section" id="Compute--from-">
-<h3>Compute <span class="math notranslate">\(E\)</span> from <span class="math notranslate">\(M\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<h3>Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [18]:

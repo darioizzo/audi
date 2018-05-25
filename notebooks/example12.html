@@ -97,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul class="current">
@@ -344,8 +345,8 @@ div.nboutput div.output_area.stderr {
 <h1>High Order Taylor Maps I<a class="headerlink" href="#High-Order-Taylor-Maps-I" title="Permalink to this headline">¶</a></h1>
 <p>(by Dario Izzo)</p>
 <p>In this notebook we consider the system of differential equations
-<span class="math notranslate">\(\dot{\mathbf y} = \mathbf f(\mathbf y)\)</span>:</p>
-<div class="math notranslate">
+<span class="math notranslate nohighlight">\(\dot{\mathbf y} = \mathbf f(\mathbf y)\)</span>:</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{l}
 \dot r = v_r \\
 \dot v_r = - \frac 1{r^2} + r v_\theta^2\\
@@ -354,18 +355,18 @@ div.nboutput div.output_area.stderr {
 \end{array}\end{split}\]</div>
 <p>which describe, in non dimensional units, the Keplerian motion of a mass
 point object around some primary body. We show how we can build a high
-order Taylor map (HOTM, indicated with <span class="math notranslate">\(\mathcal M\)</span>) representing
-the final state of the system at the time <span class="math notranslate">\(T\)</span> as a function of the
+order Taylor map (HOTM, indicated with <span class="math notranslate nohighlight">\(\mathcal M\)</span>) representing
+the final state of the system at the time <span class="math notranslate nohighlight">\(T\)</span> as a function of the
 initial conditions.</p>
 <p>In other words, we build a polinomial representation of the relation
-<span class="math notranslate">\(\mathbf y(T) = \mathbf f(\mathbf y(0), T)\)</span>. Writing the initial
+<span class="math notranslate nohighlight">\(\mathbf y(T) = \mathbf f(\mathbf y(0), T)\)</span>. Writing the initial
 conditions as
-<span class="math notranslate">\(\mathbf y(0) = \overline {\mathbf y}(0) + \mathbf {dy}\)</span>, our HOTM
+<span class="math notranslate nohighlight">\(\mathbf y(0) = \overline {\mathbf y}(0) + \mathbf {dy}\)</span>, our HOTM
 will be written as:</p>
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[\mathbf y(T) = \mathcal M(\mathbf {dy})\]</div>
 <p>and will be valid in a neighbourhood of
-<span class="math notranslate">\(\overline {\mathbf y}(0)\)</span>.</p>
+<span class="math notranslate nohighlight">\(\overline {\mathbf y}(0)\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
@@ -547,7 +548,7 @@ xf (latex):
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate">
+<div class="math notranslate nohighlight">
 \[ 456.247{dvt}^{3}-0.00244413{dt}^{3}+32.5178{dr}{dt}^{3}{dvt}+9.72205{dr}{dt}^{3}{dvr}-98350.9{dr}^{2}{dvr}^{3}+95097.4{dr}^{3}{dt}{dvt}+3.44559{dt}^{3}{dvt}-14318.7{dvt}^{4}+680.557{dr}{dvt}+3059.27{dr}{dt}{dvr}{dvt}-501710{dr}{dvt}^{4}-2.01229{dvt}-4.00992{dr}-58.3323{dr}{dt}{dvr}+2119.32{dr}^{2}{dvr}-1040.11{dvr}^{2}{dvt}^{2}-93373.3{dr}^{2}{dvr}{dvt}-61205.4{dr}^{3}{dvr}-185943{dr}^{4}+1.00615{dt}^{2}{dvt}+\ldots+\mathcal{O}\left(6\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">

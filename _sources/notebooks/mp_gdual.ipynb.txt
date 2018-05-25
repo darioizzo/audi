@@ -1,0 +1,215 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Quadruple precision computations (new in 1.3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Qudruple precision floats\n",
+    "The class real128 in pyaudi ia a multiple precision float, basically wrapping the GNU C++ *__float128* type. It can be used outside of the whole differential algebra machinery (the gduals) to perform quadruple precision computations"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pyaudi import real128\n",
+    "from pyaudi import sin, acos"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "3.33333333333333333333333333333333317e-01\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Some simple math\n",
+    "x = real128(\"3\")\n",
+    "print(1/x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1.41120008059867222100744802808110299e-01\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Trigonometry\n",
+    "print(sin(x))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Double precision:\t 3.141592653589793\n",
+      "Quad precision:\t\t 3.14159265358979323846264338327950280e+00\n"
+     ]
+    }
+   ],
+   "source": [
+    "# The value of pi in double precision\n",
+    "print(\"Double precision:\\t\", 2*acos(0))\n",
+    "# The value of pi in quadruple precision\n",
+    "print(\"Quad precision:\\t\\t\", 2*acos(real128(\"0\")))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Qudruple precision gdual\n",
+    "The gdual can also perform computations in quadruple precision.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pyaudi import gdual_real128 as gdual\n",
+    "from pyaudi import sin, acos, sqrt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "A quadruple precision gdual computation: \n"
+     ]
+    },
+    {
+     "data": {
+      "text/latex": [
+       "\\[ -4.35605126899062478098382207778725168e-08{dy}-3.07827623008670817856190093496965737e-08{dx}+1.13010764054002057997221799187876804e-07{dy}^{2}+9.23482869026012453568570280490897241e-09+1.45201708966354159366127402592908378e-07{dx}{dy}+5.64350642182563166069681838077770461e-08{dx}^{2}+\\mathcal{O}\\left(3\\right) \\]"
+      ],
+      "text/plain": [
+       "-4.35605126899062478098382207778725168e-08*dy-3.07827623008670817856190093496965737e-08*dx+1.13010764054002057997221799187876804e-07*dy**2+9.23482869026012453568570280490897241e-09+1.45201708966354159366127402592908378e-07*dx*dy+5.64350642182563166069681838077770461e-08*dx**2"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "def easy_fun(x,y):\n",
+    "    return (1/x/y)**10\n",
+    "\n",
+    "x = gdual(\"3\", \"x\", 2)\n",
+    "y = gdual(\"2.12\", \"y\", 2)\n",
+    "res = easy_fun(x,y)\n",
+    "print(\"A quadruple precision gdual computation: \")\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "All quantities, that is the function value and its derivatives are in quadruple precision. Lets extract $\\frac{\\partial^2 f}{\\partial x \\partial y}$:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "value:  1.45201708966354159366127402592908378e-07\n",
+      "type:  <class 'pyaudi.core.real128'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "der = res.get_derivative({\"dx\": 1, \"dy\": 1})\n",
+    "print(\"value: \", der)\n",
+    "print(\"type: \", type(der))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<img src=\"http://images6.fanpop.com/image/photos/38700000/That-s-All-Folks-the-looney-tunes-show-38740983-500-281.jpg\"/>"
+      ],
+      "text/plain": [
+       "<IPython.core.display.Image object>"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from IPython.display import Image\n",
+    "from IPython.core.display import HTML \n",
+    "Image(url= \"http://images6.fanpop.com/image/photos/38700000/That-s-All-Folks-the-looney-tunes-show-38740983-500-281.jpg\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

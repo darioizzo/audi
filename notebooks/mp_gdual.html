@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Understanding gduals and floats &mdash; audi 1.3 documentation</title>
+  <title>Quadruple precision computations (new in 1.3) &mdash; audi 1.3 documentation</title>
   
 
   
@@ -34,8 +34,8 @@
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="audi 1.3 documentation" href="../index.html"/>
-        <link rel="next" title="Using vectorized doubles" href="vectorized_double.html"/>
-        <link rel="prev" title="The very basics" href="example00.html"/> 
+        <link rel="next" title="Differential Intelligence" href="example10.html"/>
+        <link rel="prev" title="Using vectorized doubles" href="vectorized_double.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -95,14 +95,13 @@
 <p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding gduals and floats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Importing-stuff">Importing stuff</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Arithmetic-between-floats-and-gduals">Arithmetic between floats and gduals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Promoting-a-gdual">Promoting a gdual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quadruple precision computations (new in 1.3)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Qudruple-precision-floats">Qudruple precision floats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Qudruple-precision-gdual">Qudruple precision gdual</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -155,13 +154,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Understanding gduals and floats</li>
+      <li>Quadruple precision computations (new in 1.3)</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/notebooks/example01.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/notebooks/mp_gdual.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -340,71 +339,53 @@ div.nboutput div.output_area.stderr {
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
 </style>
-<div class="section" id="Understanding-gduals-and-floats">
-<h1>Understanding gduals and floats<a class="headerlink" href="#Understanding-gduals-and-floats" title="Permalink to this headline">¶</a></h1>
-<p>(by Dario Izzo)</p>
-<p>Arithmetic operators +,-,+,/ and ** work on a gdual as well as
-mathematical functions (from pyaudi). But not everything must be a
-gdual. You can operate between gduals and floats too, and between gdual
-having different truncation order.</p>
-<div class="section" id="Importing-stuff">
-<h2>Importing stuff<a class="headerlink" href="#Importing-stuff" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Quadruple-precision-computations-(new-in-1.3)">
+<h1>Quadruple precision computations (new in 1.3)<a class="headerlink" href="#Quadruple-precision-computations-(new-in-1.3)" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Qudruple-precision-floats">
+<h2>Qudruple precision floats<a class="headerlink" href="#Qudruple-precision-floats" title="Permalink to this headline">¶</a></h2>
+<p>The class real128 in pyaudi ia a multiple precision float, basically
+wrapping the GNU C++ *__float128* type. It can be used outside of the
+whole differential algebra machinery (the gduals) to perform quadruple
+precision computations</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span>
-<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span>
+<span></span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">real128</span>
+<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">acos</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Arithmetic-between-floats-and-gduals">
-<h2>Arithmetic between floats and gduals<a class="headerlink" href="#Arithmetic-between-floats-and-gduals" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># a gdual</span>
-<span class="n">y</span> <span class="o">=</span> <span class="mf">2.1</span>                <span class="c1"># a float</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>              <span class="c1"># this will be a gdual</span>
-<span class="n">f</span>
+<span></span><span class="c1"># Some simple math</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">real128</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[2]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-\[ 3.3+{dx}+\mathcal{O}\left(4\right) \]</div></div>
+<div class="highlight"><pre>
+3.33333333333333333333333333333333317e-01
+</pre></div></div>
 </div>
-<p>NOTE: the gdual f defined above only contains derivative infos w.r.t the
-variable “x”. You cannot make derivatives w.r.t “y” as y was not defined
-as a gdual</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">tan</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">xf</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">yf</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">2.</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">3.</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The result is a float: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The result is a gdual (contains only derivatives w.r.t. x): {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;The result is a gdual (contains derivatives w.r.t. x and y): {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
-
+<span></span><span class="c1"># Trigonometry</span>
+<span class="k">print</span><span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -413,31 +394,19 @@ as a gdual</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-The result is a float: 4.183307552861899
-The result is a gdual (contains only derivatives w.r.t. x): 4.18331+5.06537*dx+1.54332*dx**2-0.0437224*dx**3
-The result is a gdual (contains derivatives w.r.t. x and y): -0.324612*dy+0.104137*dx*dy**2-0.0437224*dx**3+4.18331-0.250974*dx*dy-0.0345762*dy**3+5.06537*dx-0.0827871*dx**2*dy+0.10332*dy**2+1.54332*dx**2
+1.41120008059867222100744802808110299e-01
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Promoting-a-gdual">
-<h2>Promoting a gdual<a class="headerlink" href="#Promoting-a-gdual" title="Permalink to this headline">¶</a></h2>
-<p>You can also perform arithmetic operations with gduals defined with a
-different differentiation order. In this case the resulting gdual will
-be “promoted” to the higher order</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Order: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">))</span> <span class="c1"># The order is the maximum order terms will be retained during the</span>
-<span class="c1"># computations using the truncated Taylor Polynomial algebra computations</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Degree: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span> <span class="c1"># The degree is the actual degree of the polynomial</span>
-<span class="c1">#which will be less or equal than the order</span>
+<span></span><span class="c1"># The value of pi in double precision</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Double precision:</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">acos</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="c1"># The value of pi in quadruple precision</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Quad precision:</span><span class="se">\t\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">acos</span><span class="p">(</span><span class="n">real128</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -446,13 +415,103 @@ be “promoted” to the higher order</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
--1.9+dy+dx
-Order: 4
-Degree: 1
+Double precision:        3.141592653589793
+Quad precision:          3.14159265358979323846264338327950280e+00
 </pre></div></div>
 </div>
-<p>NOTE: be careful when using gdual promotion. You may “lose” information
-implicitly if the order equals the degree.</p>
+</div>
+<div class="section" id="Qudruple-precision-gdual">
+<h2>Qudruple precision gdual<a class="headerlink" href="#Qudruple-precision-gdual" title="Permalink to this headline">¶</a></h2>
+<p>The gdual can also perform computations in quadruple precision.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">gdual_real128</span> <span class="k">as</span> <span class="n">gdual</span>
+<span class="kn">from</span> <span class="nn">pyaudi</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">acos</span><span class="p">,</span> <span class="n">sqrt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">easy_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">10</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="s2">&quot;2.12&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">easy_fun</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;A quadruple precision gdual computation: &quot;</span><span class="p">)</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+A quadruple precision gdual computation:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+\[ -4.35605126899062478098382207778725168e-08{dy}-3.07827623008670817856190093496965737e-08{dx}+1.13010764054002057997221799187876804e-07{dy}^{2}+9.23482869026012453568570280490897241e-09+1.45201708966354159366127402592908378e-07{dx}{dy}+5.64350642182563166069681838077770461e-08{dx}^{2}+\mathcal{O}\left(3\right) \]</div></div>
+</div>
+<p>All quantities, that is the function value and its derivatives are in
+quadruple precision. Lets extract
+<span class="math notranslate nohighlight">\(\frac{\partial^2 f}{\partial x \partial y}\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">der</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;value: &quot;</span><span class="p">,</span> <span class="n">der</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;type: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">der</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+value:  1.45201708966354159366127402592908378e-07
+type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span> <span class="s2">&quot;http://images6.fanpop.com/image/photos/38700000/That-s-All-Folks-the-looney-tunes-show-38740983-500-281.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img src="http://images6.fanpop.com/image/photos/38700000/That-s-All-Folks-the-looney-tunes-show-38740983-500-281.jpg"/></div>
+</div>
 </div>
 </div>
 
@@ -463,10 +522,10 @@ implicitly if the order equals the degree.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="vectorized_double.html" class="btn btn-neutral float-right" title="Using vectorized doubles" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="example10.html" class="btn btn-neutral float-right" title="Differential Intelligence" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example00.html" class="btn btn-neutral" title="The very basics" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="vectorized_double.html" class="btn btn-neutral" title="Using vectorized doubles" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
