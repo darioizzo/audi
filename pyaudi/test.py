@@ -202,6 +202,14 @@ class test_gdual_double(_ut.TestCase):
         self.assertEqual(res3.get_derivative({"dx": 1}), -0.75)
         self.assertEqual(res3.get_derivative({"dy": 1}), 0.)
 
+        x = gdual(1, "x", 4)
+        x = x**2
+        y = gdual(0., "y", 1)
+        newx = x.subs("dx", y)
+        self.assertEqual(newx, gdual(1, "y", 4)*gdual(1, "y", 4))
+        self.assertEqual(newx.order, 4)
+
+
     def test_trim(self):
         from pyaudi import gdual_double as gdual
         x = gdual(1e-4, "x", 1)
@@ -513,6 +521,30 @@ class test_gdual_vdouble(_ut.TestCase):
         sinx = sin(x)
         self.assertTrue(sinx == sinx.extract_terms(0) + sinx.extract_terms(1)+ sinx.extract_terms(2)+ sinx.extract_terms(3))
         self.assertTrue(x.trim(1e-3) == gdual([0, 0],"x",1))
+
+    def test_subs(self):
+        from pyaudi import gdual_vdouble as gdual
+        x = gdual([1], "x", 1)
+        y = gdual([-1], "y", 1)
+        f = x * y * x / (x - y)  # -0.75*dx-0.5+0.25*dy
+        res2 = f.subs("dx", [1])
+        res3 = f.subs("dy", [1])
+        self.assertEqual(res2.constant_cf, [-1.25])
+        self.assertEqual(res2.constant_cf, [-1.25])
+        self.assertEqual(res2.get_derivative({"dy": 1}), [0.25])
+        self.assertEqual(res2.get_derivative({"dx": 1}), [0.])
+        self.assertEqual(res3.constant_cf, [-0.25])
+        self.assertEqual(res3.constant_cf, [-0.25])
+        self.assertEqual(res3.get_derivative({"dx": 1}), [-0.75])
+        self.assertEqual(res3.get_derivative({"dy": 1}), [0.])
+
+        x = gdual([1], "x", 4)
+        x = x**2
+        y = gdual([0.], "y", 1)
+        newx = x.subs("dx", y)
+        self.assertEqual(newx, gdual([1], "y", 4)*gdual([1], "y", 4))
+        self.assertEqual(newx.order, 4)
+
 
 class test_utilities(_ut.TestCase):
 

@@ -72,6 +72,8 @@ inline void expose_subs(bp::class_<gdual<T>> th)
 {
     th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
            "Substitutes a symbol with a value (does not remove symbol from symbol set)");
+    th.def("subs", +[](gdual<T> &gd, const std::string &sym,  const gdual<T> &in) { return gd.subs(sym, in); },
+           "Substitutes a symbol with a gdual");
 }
 
 // For vectorized double we perform conversion from and to lists so we need a different active template
@@ -80,8 +82,13 @@ inline void expose_subs(bp::class_<gdual<vectorized<double>>> th)
 {
     th.def(
         "subs",
-        +[](gdual<vectorized<double>> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, gdual<vectorized<double>>(l_to_v<double>(in))); },
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, l_to_v<double>(in)); },
         "Substitutes a symbol with a value (does not remove symbol from symbol set)");
+    th.def(
+        "subs",
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) { return gd.subs(sym, in); },
+        "Substitutes a symbol with a gdual");
+
 }
 
 // This is the interface common across types
