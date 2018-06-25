@@ -49,7 +49,7 @@ sh bootstrap.sh --with-python=/opt/python/${PYTHON_DIR}/bin/python > /dev/null
 cd ..
 
 # Install gmp (before mpfr as its used by it)
-curl https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 > gmp-6.1.2.tar.bz2
+curl -L https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 > gmp-6.1.2.tar.bz2
 tar xvf gmp-6.1.2.tar.bz2  > /dev/null 2>&1
 cd gmp-6.1.2 > /dev/null 2>&1
 ./configure --enable-fat > /dev/null 2>&1
@@ -58,7 +58,7 @@ make install > /dev/null 2>&1
 cd ..
 
 # Install mpfr
-curl http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > mpfr-3.1.6.tar.gz
+curl -L http://www.mpfr.org/mpfr-3.1.6/mpfr-3.1.6.tar.gz > mpfr-3.1.6.tar.gz
 tar xvf mpfr-3.1.6.tar.gz > /dev/null 2>&1
 cd mpfr-3.1.6
 ./configure > /dev/null 2>&1
