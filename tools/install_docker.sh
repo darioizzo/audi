@@ -11,12 +11,12 @@ EIGEN3_VERSION="3.3.4"
 BOOST_VERSION="1.67.0"
 NLOPT_VERSION="2.4.2"
 
-if [[ ${AUDI_BUILD} == *36 ]]; then
-	PYTHON_DIR="cp36-cp36m"
+if [[ ${AUDI_BUILD} == *37 ]]; then
+	PYTHON_DIR="cp37-cp37m"
 elif [[ ${AUDI_BUILD} == *35 ]]; then
-	PYTHON_DIR="cp35-cp35m"
+	PYTHON_DIR="cp36-cp36m"
 elif [[ ${AUDI_BUILD} == *34 ]]; then
-	PYTHON_DIR="cp34-cp34m"
+	PYTHON_DIR="cp35-cp35m"
 elif [[ ${AUDI_BUILD} == *27 ]]; then
 	PYTHON_DIR="cp27-cp27mu"
 else
@@ -125,8 +125,8 @@ cd /
 # Upload in PyPi
 # This variable will contain something if this is a tagged build (vx.y.z), otherwise it will be empty.
 export AUDI_RELEASE_VERSION=`echo "${TRAVIS_TAG}"|grep -E 'v[0-9]+\.[0-9]+.*'|cut -c 2-`
-if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
+#if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
     echo "Release build detected, uploading to PyPi."
     /opt/python/${PYTHON_DIR}/bin/pip install twine
     /opt/python/${PYTHON_DIR}/bin/twine upload -u darioizzo /audi/build/wheel/dist2/pyaudi*
-fi
+#fi
