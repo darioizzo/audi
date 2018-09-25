@@ -316,3 +316,22 @@ BOOST_AUTO_TEST_CASE(erf_fun)
             < 1e-33);
     }
 }
+
+BOOST_AUTO_TEST_CASE(comparisons)
+{
+    mppp::real128 xmp{"1.33333333333333333333333333333333333333333333333"};
+    mppp::real128 ymp{"3.33333333333333333333333333333333333333333333333"};
+
+    gdual_mp x(xmp, "x", 4);
+    gdual_mp y(ymp, "y", 4);
+    BOOST_CHECK(x < y);
+    BOOST_CHECK(x * x < y * y);
+    BOOST_CHECK(audi::sin(x) < y * y);
+    BOOST_CHECK(audi::sin(x) < exp(y));
+    BOOST_CHECK(y > x);
+    BOOST_CHECK(y * y > x * x);
+    BOOST_CHECK(y * y > audi::sin(x));
+    BOOST_CHECK(exp(y) > audi::sin(x));
+    BOOST_CHECK(!(y>y));
+    BOOST_CHECK(!(y<y));
+}

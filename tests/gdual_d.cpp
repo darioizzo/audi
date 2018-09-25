@@ -10,7 +10,6 @@
 #include <audi/audi.hpp>
 #include <audi/functions.hpp>
 
-
 using namespace audi;
 
 BOOST_AUTO_TEST_CASE(construction)
@@ -345,4 +344,20 @@ BOOST_AUTO_TEST_CASE(trim)
     BOOST_CHECK(y.trim(1e-2) == gdual_d(0., "x", 1));
     BOOST_CHECK(y.trim(100) == gdual_d(0., "x", 0));
     BOOST_CHECK_THROW(x.trim(-1e-3), std::invalid_argument);
+}
+
+BOOST_AUTO_TEST_CASE(comparisons)
+{
+    gdual_d x(1.2, "x", 4);
+    gdual_d y(3.4, "y", 4);
+    BOOST_CHECK(x < y);
+    BOOST_CHECK(x * x < y * y);
+    BOOST_CHECK(audi::sin(x) < y * y);
+    BOOST_CHECK(audi::sin(x) < exp(y));
+    BOOST_CHECK(y > x);
+    BOOST_CHECK(y * y > x * x);
+    BOOST_CHECK(y * y > audi::sin(x));
+    BOOST_CHECK(exp(y) > audi::sin(x));
+    BOOST_CHECK(!(y>y));
+    BOOST_CHECK(!(y<y));
 }

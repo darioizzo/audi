@@ -163,6 +163,8 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
               .def(double() / bp::self)
               .def(bp::self == bp::self)
               .def(bp::self != bp::self)
+              .def(bp::self < bp::self)
+              .def(bp::self > bp::self)
               .def("__pow__", +[](const gdual<T> &gd, double x) { return pow(gd, x); },
                    ("Exponentiation (gdual_" + type + ", double).").c_str())
               .def("__pow__", +[](const gdual<T> &base, const gdual<T> &gd) { return pow(base, gd); },

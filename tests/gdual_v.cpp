@@ -230,3 +230,19 @@ BOOST_AUTO_TEST_CASE(arithmetic_div)
         }
     }
 }
+
+BOOST_AUTO_TEST_CASE(comparisons)
+{
+    gdual_v x(std::vector<double>{1.1, 1.3}, "x", 4);
+    gdual_v y(std::vector<double>{3.1, 3.2}, "y", 4);
+    BOOST_CHECK(x < y);
+    BOOST_CHECK(x * x < y * y);
+    BOOST_CHECK(audi::sin(x) < y * y);
+    BOOST_CHECK(audi::sin(x) < exp(y));
+    BOOST_CHECK(y > x);
+    BOOST_CHECK(y * y > x * x);
+    BOOST_CHECK(y * y > audi::sin(x));
+    BOOST_CHECK(exp(y) > audi::sin(x));
+    BOOST_CHECK(!(y>y));
+    BOOST_CHECK(!(y<y));
+}

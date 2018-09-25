@@ -28,8 +28,6 @@
 #include <audi/detail/overloads.hpp>            //for audi::abs
 #include <audi/detail/overloads_vectorized.hpp> //for audi::abs
 
- 
-
 /// Root namespace for AuDi symbols
 namespace audi
 {
@@ -129,8 +127,10 @@ private:
     // in the implementation of the operators.
     explicit gdual(p_type &&p, unsigned int order) : m_p(std::move(p)), m_order(order) {}
     // A private constructor used in the implementation of the operators.
-    template<typename T>
-    explicit gdual(T value, unsigned int order) : m_p(Cf(value)), m_order(order) {}
+    template <typename T>
+    explicit gdual(T value, unsigned int order) : m_p(Cf(value)), m_order(order)
+    {
+    }
 
     // Basic overloads for the addition
     static gdual add(const gdual &d1, const gdual &d2)
@@ -230,7 +230,8 @@ private:
     template <typename T>
     static gdual div(const gdual &d1, const T &d2)
     {
-        // Note: we create the reciprocal of d2 constructing a Cf otherwise we could loose precision, e.g. when T is double and Cf is real128
+        // Note: we create the reciprocal of d2 constructing a Cf otherwise we could loose precision, e.g. when T is
+        // double and Cf is real128
         return d1 * (1. / Cf(d2));
     }
 
@@ -276,7 +277,8 @@ public:
     }
 
     template <typename T>
-    explicit gdual(const std::initializer_list<T> &value, const std::string &symbol, unsigned order) : m_p(), m_order(order)
+    explicit gdual(const std::initializer_list<T> &value, const std::string &symbol, unsigned order)
+        : m_p(), m_order(order)
     {
         check_order();
         check_var_name(symbol);
@@ -446,9 +448,12 @@ public:
     gdual trim(double epsilon) const
     {
         if (epsilon < 0) {
-            throw std::invalid_argument("When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: " + std::to_string(epsilon) );
+            throw std::invalid_argument(
+                "When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: "
+                + std::to_string(epsilon));
         }
-        auto new_p = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon); });
+        auto new_p
+            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 
@@ -713,6 +718,11 @@ public:
         return os;
     }
 
+    /** @name Comparison operators
+     *
+     */
+    //@{
+
     /// Overloaded Equality operator.
     /**
      * Compares the single polynomial coefficients of
@@ -744,6 +754,35 @@ public:
     {
         return !(d1 == d2);
     }
+
+    /// Overloaded less than operator
+    /**
+     * Compares the constant coefficients of two gduals
+     *
+     * @param d1 first audi::gdual argument
+     * @param d2 second audi::gdual argument
+     *
+     * @return The result of the comparison
+     */
+    friend bool operator<(const gdual &d1, const gdual &d2)
+    {
+        return d1.constant_cf() < d2.constant_cf();
+    }
+
+    /// Overloaded more than operator
+    /**
+     * Compares the constant coefficients of two gduals
+     *
+     * @param d1 first audi::gdual argument
+     * @param d2 second audi::gdual argument
+     *
+     * @return The result of the comparison
+     */
+    friend bool operator>(const gdual &d1, const gdual &d2)
+    {
+        return d1.constant_cf() > d2.constant_cf();
+    }
+    //@}
 
     /** @name Algebraic operators
      *
