@@ -13,9 +13,9 @@ NLOPT_VERSION="2.4.2"
 
 if [[ ${AUDI_BUILD} == *37 ]]; then
 	PYTHON_DIR="cp37-cp37m"
-elif [[ ${AUDI_BUILD} == *35 ]]; then
+elif [[ ${AUDI_BUILD} == *36 ]]; then
 	PYTHON_DIR="cp36-cp36m"
-elif [[ ${AUDI_BUILD} == *34 ]]; then
+elif [[ ${AUDI_BUILD} == *35 ]]; then
 	PYTHON_DIR="cp35-cp35m"
 elif [[ ${AUDI_BUILD} == *27 ]]; then
 	PYTHON_DIR="cp27-cp27mu"
