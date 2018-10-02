@@ -105,9 +105,7 @@ print("mppp sucessfully installed .. continuing")
 
 # Setup of the dependencies for a Python build.
 if is_python_build:
-    if BUILD_TYPE == 'Python34':
-        python_version = '34'
-    elif BUILD_TYPE == 'Python35':
+    if BUILD_TYPE == 'Python35':
         python_version = '35'
     elif BUILD_TYPE == 'Python36':
         python_version = '36'

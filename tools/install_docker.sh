@@ -87,9 +87,9 @@ cd ..
 cd ..
 
 # Install piranha
-curl -L https://github.com/bluescarni/piranha/archive/v0.10.tar.gz > v0.10
-tar xvf v0.10 > /dev/null 2>&1
-cd piranha-0.10
+curl -L https://github.com/bluescarni/piranha/archive/v0.11.tar.gz > v0.11
+tar xvf v0.11 > /dev/null 2>&1
+cd piranha-0.11
 mkdir build
 cd build
 cmake ../ > /dev/null
