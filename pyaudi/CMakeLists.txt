@@ -17,7 +17,7 @@ $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFAC
 pybind11_add_module(core core.cpp docstrings.cpp)
 target_link_libraries(core PRIVATE pyaudi)
 target_compile_options(core PRIVATE "$<$<CONFIG:DEBUG>:${AUDI_CXX_FLAGS_DEBUG}>" "$<$<CONFIG:RELEASE>:${AUDI_CXX_FLAGS_RELEASE}>")
-set_property(TARGET core PROPERTY CXX_STANDARD 11)
+set_property(TARGET core PROPERTY CXX_STANDARD 14)
 set_property(TARGET core PROPERTY CXX_STANDARD_REQUIRED YES)
 set_property(TARGET core PROPERTY CXX_EXTENSIONS NO)
 

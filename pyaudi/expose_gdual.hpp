@@ -1,107 +1,32 @@
 #ifndef AUDI_EXPOSE_GDUAL_H
 #define AUDI_EXPOSE_GDUAL_H
 
-#if defined(AUDI_WITH_MPPP)
-#include <audi/real128.hpp>
-#endif
+#include <audi/functions.hpp>
+#include <audi/gdual.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
-#include <boost/python.hpp>
-#include <sstream>   //ostringstream, stringstream
-#include <stdexcept> // stringstream
+#include <pybind11/operators.h>
+#include <pybind11/stl.h>
+#include <sstream>
 #include <string>
-#include <type_traits>
-#include <vector>
-
-#include "common_utils.hpp"
-#include "python_includes.hpp"
-#include <audi/audi.hpp>
-#include <audi/back_compatibility.hpp>
 
 #include "docstrings.hpp"
 
-namespace bp = boost::python;
 using namespace audi;
+namespace py = pybind11;
 
 namespace pyaudi
 {
-
-template <typename T>
-struct gdual_pickle_suite : bp::pickle_suite {
-    static bp::tuple getinitargs(const gdual<T> &)
-    {
-        return bp::make_tuple();
-    }
-
-    static bp::tuple getstate(const gdual<T> &w)
-    {
-        // Returns a tuple that contains the string
-        // representation of a gdual<T> as obtained
-        // from the boost serialization library
-        std::stringstream ss;
-        boost::archive::text_oarchive oa(ss);
-        oa << w;
-        auto s = ss.str();
-        return bp::make_tuple(pyaudi::make_bytes(s.data(), boost::numeric_cast<Py_ssize_t>(s.size())));
-    }
-
-    static void setstate(gdual<T> &w, bp::tuple state)
-    {
-        if (len(state) != 1) {
-            pyaudi_throw(PyExc_ValueError, "the state tuple must have a single element");
-        }
-        auto ptr = PyBytes_AsString(bp::object(state[0]).ptr());
-        if (!ptr) {
-            pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize");
-        }
-        const auto size = len(state[0]);
-        std::string s(ptr, ptr + size);
-        std::istringstream iss;
-        iss.str(s);
-        boost::archive::text_iarchive ia(iss);
-        ia >> w;
-    }
-};
-
-// For non vectorized_double we do not perform any conversion on in-out types
-template <typename T>
-inline void expose_subs(bp::class_<gdual<T>> th)
-{
-    th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
-           "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def("subs", +[](gdual<T> &gd, const std::string &sym,  const gdual<T> &in) { return gd.subs(sym, in); },
-           "Substitutes a symbol with a gdual");
-}
-
-// For vectorized double we perform conversion from and to lists so we need a different active template
-template <>
-inline void expose_subs(bp::class_<gdual<vectorized<double>>> th)
-{
-    th.def(
-        "subs",
-        +[](gdual<vectorized<double>> &gd, const std::string &sym, const bp::object &in) { return gd.subs(sym, l_to_v<double>(in)); },
-        "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def(
-        "subs",
-        +[](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) { return gd.subs(sym, in); },
-        "Substitutes a symbol with a gdual");
-
-}
-
 // This is the interface common across types
 template <typename T>
-bp::class_<gdual<T>> expose_gdual(std::string type)
+py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
 {
     auto th
-        = bp::class_<gdual<T>>(("gdual_" + type).c_str(), gdual_docstring().c_str())
-              .def(bp::init<>())
-              .def(bp::init<const gdual<T> &>())
-              .def(bp::init<T>())
-              .def(bp::init<T, const std::string &, unsigned int>())
-              .def_pickle(gdual_pickle_suite<T>())
+        = py::class_<gdual<double>>(m, ("gdual_" + type).c_str(), gdual_docstring().c_str())
+              .def(py::init<>())
+              .def(py::init<const gdual<double> &>())
+              .def(py::init<double>())
+              .def(py::init<double, const std::string &, unsigned int>())
               .def("__repr__",
                    +[](const gdual<T> &g) -> std::string {
                        std::ostringstream oss;
@@ -117,81 +42,53 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                                  + boost::lexical_cast<std::string>(g.get_order() + 1) + "\\right) \\]";
                        return std::string("\\[ ") + retval;
                    })
-              .def("__setstate__",
-                   +[](gdual<T> &p, bp::tuple state) {
-                       if (len(state) != 1) {
-                           pyaudi_throw(PyExc_ValueError, "the state tuple must have a single element");
-                       }
-                       auto ptr = PyBytes_AsString(bp::object(state[0]).ptr());
-                       if (!ptr) {
-                           pyaudi_throw(PyExc_TypeError, "a bytes object is needed to deserialize a gdual");
-                       }
-                       const auto size = len(state[0]);
-                       std::string s(ptr, ptr + size);
-                       std::istringstream iss;
-                       iss.str(s);
-                       boost::archive::text_iarchive ia(iss);
-                       ia >> p;
-                   })
-              .add_property("symbol_set", +[](const gdual<T> &gd) { return pyaudi::v_to_l(gd.get_symbol_set()); })
-              .add_property("symbol_set_size", &gdual<T>::get_symbol_set_size)
-              .add_property("degree", &gdual<T>::degree, gdual_degree_docstring().c_str())
-              .add_property("order", &gdual<T>::get_order, "truncation order (>= degree)")
-              .def("extend_symbol_set",
-                   +[](gdual<T> &gd, const bp::object &in) {
-                       return gd.extend_symbol_set(pyaudi::l_to_v<std::string>(in));
-                   },
-                   "Extends the symbol set")
+              .def_property_readonly("symbol_set", &gdual<T>::get_symbol_set)
+              .def_property_readonly("symbol_set_size", &gdual<T>::get_symbol_set_size)
+              .def_property_readonly("degree", &gdual<T>::degree, gdual_degree_docstring().c_str())
+              .def_property_readonly("order", &gdual<T>::get_order, "truncation order (>= degree)")
+              .def("extend_symbol_set", &gdual<T>::extend_symbol_set, "Extends the symbol set")
               .def("integrate", &gdual<T>::template integrate<>, "Integrate with respect to argument")
               .def("partial", &gdual<T>::template partial<>, "Partial derivative with respect to argument")
               .def("is_zero", &gdual<T>::is_zero, "checks if all coefficients of the gdual are zero within a tolerance")
-              .def("trim", &gdual<T>::trim, "returns a new gdual removing  all coefficients that are smaller than a tolerance")
-              .def("extract_terms", &gdual<T>::extract_terms, "returns a new gdual containing only terms of a given order")
-              .def(bp::self + bp::self)
-              .def(bp::self - bp::self)
-              .def(bp::self * bp::self)
-              .def(bp::self / bp::self)
-              .def(bp::self + double())
-              .def(bp::self - double())
-              .def(bp::self * double())
-              .def(bp::self / double())
-              .def(-bp::self)
-              .def(+bp::self)
-              .def(double() + bp::self)
-              .def(double() - bp::self)
-              .def(double() * bp::self)
-              .def(double() / bp::self)
-              .def(bp::self == bp::self)
-              .def(bp::self != bp::self)
-              .def(bp::self < bp::self)
-              .def(bp::self > bp::self)
+              .def("trim", &gdual<T>::trim,
+                   "returns a new gdual removing  all coefficients that are smaller than a tolerance")
+              .def("extract_terms", &gdual<T>::extract_terms,
+                   "returns a new gdual containing only terms of a given order")
+              .def(py::self + py::self)
+              .def(py::self - py::self)
+              .def(py::self * py::self)
+              .def(py::self / py::self)
+              .def(py::self + double())
+              .def(py::self - double())
+              .def(py::self * double())
+              .def(py::self / double())
+              .def(-py::self)
+              .def(+py::self)
+              .def(double() + py::self)
+              .def(double() - py::self)
+              .def(double() * py::self)
+              .def(double() / py::self)
+              .def(py::self == py::self)
+              .def(py::self != py::self)
+              .def(py::self < py::self)
+              .def(py::self > py::self)
               .def("__pow__", +[](const gdual<T> &gd, double x) { return pow(gd, x); },
                    ("Exponentiation (gdual_" + type + ", double).").c_str())
               .def("__pow__", +[](const gdual<T> &base, const gdual<T> &gd) { return pow(base, gd); },
                    ("Exponentiation (gdual_" + type + ", gdual_" + type + ").").c_str())
               .def("__rpow__", +[](const gdual<T> &gd, double x) { return pow(x, gd); },
                    ("Exponentiation (double, gdual_" + type + ").").c_str())
-              .add_property("constant_cf", &gdual<T>::constant_cf, "Constant term of the polynomial")
-              .def("evaluate",
-                   +[](const gdual<T> &gd, const bp::dict &dict) {
-                       return gd.evaluate(pydict_to_umap<std::string, double>(dict));
-                   },
-                   "Evaluates the Taylor polynomial")
-              .def("find_cf",
-                   +[](const gdual<T> &gd, const bp::object &in) { return gd.find_cf(pyaudi::l_to_v<int>(in)); },
-                   "Finds the coefficient of the Taylor expansion")
-              .def("get_derivative",
-                   +[](const gdual<T> &gd, const bp::object &in) { return gd.get_derivative(pyaudi::l_to_v<int>(in)); },
-                   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
-                   "factor")
-              .def("get_derivative",
-                   +[](const gdual<T> &g, const bp::dict &pydict) {
-                       return g.get_derivative(pydict_to_umap<std::string, unsigned>(pydict));
-                   },
+              .def_property_readonly("constant_cf", &gdual<T>::constant_cf, "Constant term of the polynomial")
+              .def("evaluate", &gdual<T>::evaluate, "Evaluates the Taylor polynomial")
+              .def("find_cf", &gdual<T>::find_cf, "Finds the coefficient of the Taylor expansion")
+              .def("get_derivative", py::overload_cast<std::vector<unsigned>>(&gdual<T>::get_derivative),
                    "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
                    "factor");
-    expose_subs<T>(th);
+              //.def("get_derivative",
+               //    py::overload_cast<std::unordered_map<std::string, unsigned>>(&gdual<T>::get_derivative),
+                //   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
+                  // "factor");
     return th;
 }
-}
+} // namespace pyaudi
 #endif
