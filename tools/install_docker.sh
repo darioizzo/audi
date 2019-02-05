@@ -96,6 +96,16 @@ cmake ../ > /dev/null
 make install > /dev/null 2>&1
 cd ..
 
+# Install pybind11
+curl -L https://github.com/pybind/pybind11/archive/v2.2.4.tar.gz > v2.2.4
+tar xvf v2.2.4 > /dev/null 2>&1
+cd pybind11-2.2.4
+mkdir build
+cd build
+cmake ../ -DPYBIND11_TEST=OFF > /dev/null
+make install > /dev/null 2>&1
+cd ..
+
 # Install audi headers
 cd /audi
 mkdir build_audi

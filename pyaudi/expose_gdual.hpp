@@ -4,8 +4,11 @@
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
 #include <pybind11/operators.h>
+#include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <sstream>
 #include <string>
@@ -41,6 +44,26 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                        retval += std::string("+\\mathcal{O}\\left(")
                                  + boost::lexical_cast<std::string>(g.get_order() + 1) + "\\right) \\]";
                        return std::string("\\[ ") + retval;
+                   })
+              .def("__getstate__",
+                   [](const gdual<T> &p) {
+                       // Returns a tuple that contains the string
+                       // representation of a gdual<T> as obtained
+                       // from the boost serialization library
+                       std::stringstream ss;
+                       boost::archive::text_oarchive oa(ss);
+                       oa << p;
+                       return py::make_tuple(ss.str());
+                   })
+              .def("__setstate__",
+                   [](gdual<T> &p, py::tuple t) {
+                       if (t.size() != 1) throw std::runtime_error("Invalid state!");
+                       // Invoke the default constructor.
+                       new (&p) gdual<T>;
+                       // Reconstruct the gdual<T>
+                       std::stringstream ss(t[0].cast<std::string>());
+                       boost::archive::text_iarchive ia(ss);
+                       ia >> p;
                    })
               .def_property_readonly("symbol_set", &gdual<T>::get_symbol_set)
               .def_property_readonly("symbol_set_size", &gdual<T>::get_symbol_set_size)
@@ -80,14 +103,18 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                    ("Exponentiation (double, gdual_" + type + ").").c_str())
               .def_property_readonly("constant_cf", &gdual<T>::constant_cf, "Constant term of the polynomial")
               .def("evaluate", &gdual<T>::evaluate, "Evaluates the Taylor polynomial")
-              .def("find_cf", &gdual<T>::find_cf, "Finds the coefficient of the Taylor expansion")
-              .def("get_derivative", py::overload_cast<std::vector<unsigned>>(&gdual<T>::get_derivative),
-                   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
+              .def("find_cf", [](const gdual<T> &g, const std::vector<int> &v) { return g.find_cf(v); },
+                   "Find the coefficient of the Taylor expansion")
+              .def(
+                  "get_derivative",
+                  [](const gdual<T> &g, const std::vector<unsigned> &v) { return g.get_derivative(v); },
+                  "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial factor")
+              .def("get_derivative",
+                   [](const gdual<T> &g, const std::unordered_map<std::string, unsigned> &dict) {
+                       return g.get_derivative(dict);
+                   },
+                   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial "
                    "factor");
-              //.def("get_derivative",
-               //    py::overload_cast<std::unordered_map<std::string, unsigned>>(&gdual<T>::get_derivative),
-                //   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted by the factorial "
-                  // "factor");
     return th;
 }
 } // namespace pyaudi

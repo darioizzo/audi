@@ -103,6 +103,20 @@ run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("mppp sucessfully installed .. continuing")
 
+# Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
+wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
+run_command(r'unzip pybind11_v224.zip', verbose=False)
+# Move to the directory created and make piranha install its headers
+os.chdir('pybind11-2.2.4')
+os.makedirs('build')
+os.chdir('build')
+print("Installing pybind11")
+run_command(
+    r'cmake -G "MinGW Makefiles" .. -DPYBIND11_TEST=OFF -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
+run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+os.chdir('../../')
+print("pybind11 sucessfully installed .. continuing")
+
 # Setup of the dependencies for a Python build.
 if is_python_build:
     if BUILD_TYPE == 'Python35':
