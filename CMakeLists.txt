@@ -106,8 +106,8 @@ if(AUDI_BUILD_PYAUDI)
     # NOTE: for the time being, require that audi/pyaudi versions are matching exactly.
     find_package(audi ${AUDI_PROJECT_VERSION} EXACT REQUIRED)
 
-    # Internal variable that will be used to tell AudiFindBoost to locate Boost.Python.
-    set(_AUDI_FIND_BOOST_PYTHON TRUE)
+    # Find pybind11
+    find_package(pybind11 REQUIRED)
 endif()
 
 # Boost setup (common to audi/pyaudi).
