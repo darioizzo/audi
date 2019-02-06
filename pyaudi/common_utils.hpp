@@ -4,6 +4,8 @@
 #include <audi/vectorized.hpp>
 #include <pybind11/pybind11.h>
 
+// We add a specialization for the type audi::vectorized<T> so that
+// we can easily have functions with this type as input and output
 namespace pybind11
 {
 namespace detail
