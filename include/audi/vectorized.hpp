@@ -198,6 +198,12 @@ struct vectorized {
     {
         return m_c;
     }
+    void push_back(const T &in) {
+        m_c.push_back(in);
+    }
+    void clear() {
+        m_c.clear();
+    }
     template <class Archive>
     void serialize(Archive &ar, const unsigned int)
     {

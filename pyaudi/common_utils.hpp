@@ -1,104 +1,57 @@
 #ifndef PYAUDI_COMMON_UTILS_HPP
 #define PYAUDI_COMMON_UTILS_HPP
 
-#include <boost/python.hpp>
-#include <boost/python/stl_iterator.hpp>
-#include <unordered_map>
+#include <audi/vectorized.hpp>
+#include <pybind11/pybind11.h>
 
-#include <audi/audi.hpp>
-
-// A throwing macro similar to audi_throw, only for Python. This will set the global
-// error string of Python to "msg", the exception type to "type", and then invoke the Boost
-// Python function to raise the Python exception.
-#define pyaudi_throw(type, msg)                                                                                        \
-    PyErr_SetString(type, msg);                                                                                        \
-    boost::python::throw_error_already_set();                                                                          \
-    throw
-
-namespace bp = boost::python;
-
-namespace pyaudi
+namespace pybind11
 {
-// Wrapper around the CPython function to create a bytes object from raw data.
-bp::object make_bytes(const char *ptr, Py_ssize_t len)
+namespace detail
 {
-    PyObject *retval;
-    if (len) {
-        retval = PyBytes_FromStringAndSize(ptr, len);
-    } else {
-        retval = PyBytes_FromStringAndSize(nullptr, 0);
-    }
-    if (!retval) {
-        pyaudi_throw(PyExc_RuntimeError, "unable to create a bytes object: the 'PyBytes_FromStringAndSize()' "
-                                         "function returned NULL");
-    }
-    return bp::object(bp::handle<>(retval));
-}
-
-// Converts a C++ vector to a python list
 template <typename T>
-inline bp::list v_to_l(std::vector<T> vector)
-{
-    bp::list list;
-    for (auto iter = vector.begin(); iter != vector.end(); ++iter) {
-        list.append(*iter);
-    }
-    return list;
-}
+struct type_caster<audi::vectorized<T>> {
+public:
+    /**
+     * This macro establishes the name 'inty' in
+     * function signatures and declares a local variable
+     * 'value' of type inty
+     */
+    PYBIND11_TYPE_CASTER(audi::vectorized<T>, _("vectorized<T>"));
 
-// Converts a C++ array to a python list
-template <typename T, std::size_t dim>
-inline bp::list v_to_l(std::array<T, dim> vector)
-{
-    bp::list list;
-    for (auto iter = vector.begin(); iter != vector.end(); ++iter) {
-        list.append(*iter);
-    }
-    return list;
-}
-
-// Converts a C++ unordered map to a python dict (TO BE TESTED)
-template <typename K, typename V>
-inline bp::dict umap_to_pydict(std::map<K, V> map)
-{
-    boost::python::dict dictionary;
-    for (auto iter = map.begin(); iter != map.end(); ++iter) {
-        dictionary[iter->first] = iter->second;
-    }
-    return dictionary;
-}
-
-// Converts a python dict to an std::unordered_map if the Value type is double or unsigned int
-template <typename Key_type, typename Value_type>
-inline std::unordered_map<Key_type, Value_type> pydict_to_umap(const bp::dict &dict)
-{
-    std::unordered_map<Key_type, Value_type> retval;
-    bp::stl_input_iterator<Key_type> it(dict), end;
-    for (; it != end; ++it) {
-        retval[*it] = bp::extract<Value_type>(dict[*it])();
-    }
-    return retval;
-}
-
-// Converts a python iterable to an std::vector
-template <typename T>
-inline std::vector<T> l_to_v(const bp::object &iterable)
-{
-    return std::vector<T>(bp::stl_input_iterator<T>(iterable), bp::stl_input_iterator<T>());
-}
-
-// Used to register the vectorized to list converter
-template <typename T>
-struct vectorized_to_python_list {
-    static PyObject *convert(const audi::vectorized<T> &vd)
+    /**
+     * Conversion part 1 (Python->C++): convert a PyObject into a inty
+     * instance or return false upon failure. The second argument
+     * indicates whether implicit conversions should be applied.
+     */
+    bool load(handle src, bool)
     {
-        bp::list list;
-        for (auto iter = vd.begin(); iter != vd.end(); ++iter) {
-            list.append(*iter);
+        if (!isinstance<list>(src))
+            return false;
+        auto s = reinterpret_borrow<list>(src);
+        value.clear();
+        for (auto it : s) {
+            value.push_back(it.cast<T>());
         }
-        return boost::python::incref(list.ptr());
+        return true;
+    }
+
+    /**
+     * Conversion part 2 (C++ -> Python): convert an inty instance into
+     * a Python object. The second and third arguments are used to
+     * indicate the return value policy and parent object (for
+     * ``return_value_policy::reference_internal``) and are generally
+     * ignored by implicit casters.
+     */
+    static handle cast(audi::vectorized<T> src, return_value_policy /* policy */, handle /* parent */)
+    {
+        list l(src.size());
+        size_t index = 0;
+        for (decltype(src.size()) i = 0; i < src.size(); ++i) {
+            PyList_SET_ITEM(l.ptr(), i, pybind11::cast(src[i]).release().ptr()); // steals a reference
+        }
+        return l.release();
     }
 };
-}
-
+} // namespace detail
+} // namespace pybind11
 #endif
