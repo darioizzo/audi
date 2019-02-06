@@ -3,6 +3,8 @@
 
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
+#include <audi/vectorized.hpp>
+
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -20,6 +22,34 @@ namespace py = pybind11;
 
 namespace pyaudi
 {
+
+// For non vectorized_double we do not perform any conversion on in-out types
+template <typename T>
+inline void expose_subs(py::class_<gdual<T>> th)
+{
+    th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
+           "Substitutes a symbol with a value (does not remove symbol from symbol set)");
+    th.def("subs", +[](gdual<T> &gd, const std::string &sym,  const gdual<T> &in) { return gd.subs(sym, in); },
+           "Substitutes a symbol with a gdual");
+}
+
+// For vectorized double we perform conversion from and to lists so we need a different active template
+template <>
+inline void expose_subs(py::class_<gdual<vectorized<double>>> th)
+{
+    th.def(
+        "subs",
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const std::vector<double> &in) { return gd.subs(sym, in); },
+        "Substitutes a symbol with a value (does not remove symbol from symbol set)");
+    th.def(
+        "subs",
+        +[](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) { return gd.subs(sym, in); },
+        "Substitutes a symbol with a gdual");
+
+}
+
+
+
 // This is the interface common across types
 template <typename T>
 py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
@@ -115,6 +145,7 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                    },
                    "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial "
                    "factor");
+    expose_subs<T>(th);
     return th;
 }
 } // namespace pyaudi
