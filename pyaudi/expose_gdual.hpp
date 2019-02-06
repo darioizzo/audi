@@ -55,11 +55,11 @@ template <typename T>
 py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
 {
     auto th
-        = py::class_<gdual<double>>(m, ("gdual_" + type).c_str(), gdual_docstring().c_str())
+        = py::class_<gdual<T>>(m, ("gdual_" + type).c_str(), gdual_docstring().c_str())
               .def(py::init<>())
-              .def(py::init<const gdual<double> &>())
-              .def(py::init<double>())
-              .def(py::init<double, const std::string &, unsigned int>())
+              .def(py::init<const gdual<T> &>())
+              .def(py::init<T>())
+              .def(py::init<T, const std::string &, unsigned int>())
               .def("__repr__",
                    +[](const gdual<T> &g) -> std::string {
                        std::ostringstream oss;

@@ -31,4 +31,8 @@ PYBIND11_MODULE(core, m)
     // We expose the class gdual<double> or gdual_d
     pyaudi::expose_gdual<double>(m, "double");
 
+    // We expose the class gdual<vectorized<double>> or gdual_v
+    pyaudi::expose_gdual<audi::vectorized<double>>(m, "vdouble");
+        .def(py::init<std::vector<double>>())
+        .def(py::init<std::vector<double>, const std::string &, unsigned int>());
 }
