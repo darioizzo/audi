@@ -152,7 +152,7 @@ if is_python_build:
        r'-DPYBIND11_TEST=OFF' + ' ' +
        r'-DPYTHON_PREFIX=C:\\Python' + python_version + ' ' +
        r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe', verbose=True)
-    run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+    run_command(r'mingw32-make install VERBOSE=1', verbose=True)
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
 
