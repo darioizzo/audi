@@ -8,7 +8,7 @@ endif()
 
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
-target_link_libraries(pyaudi INTERFACE Boost::disable_autolinking Audi::audi)
+target_link_libraries(pyaudi INTERFACE Audi::audi)
 target_include_directories(pyaudi INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
 $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFACE:include>)
 
