@@ -6,13 +6,6 @@ if(UNIX)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif()
 
-list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden")
-list(REMOVE_ITEM AUDI_CXX_FLAGS_RELEASE "-fvisibility=hidden")
-list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden")
-list(REMOVE_ITEM AUDI_CXX_FLAGS_RELEASE "-fvisibility=hidden")
-list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden")
-list(REMOVE_ITEM AUDI_CXX_FLAGS_RELEASE "-fvisibility=hidden")
-
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
 target_link_libraries(pyaudi INTERFACE Audi::audi)
