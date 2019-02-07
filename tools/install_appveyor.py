@@ -136,6 +136,9 @@ if is_python_build:
         # (https://github.com/pypa/pip/issues/1997)
         run_command(pinterp + r' -m pip install twine')
 
+    # Download the python lib https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python36.lib
+    wget(r'https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python36.lib', r'python'+python_version+r'.lib')
+    shutil.move(r'python' + python_version + r'.lib', r'C:\\Python' + python_version + r'\\libs\\')
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
     wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
     run_command(r'unzip pybind11_v224.zip', verbose=False)
