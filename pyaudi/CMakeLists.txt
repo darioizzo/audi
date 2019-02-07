@@ -6,16 +6,6 @@ if(UNIX)
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif()
 
-# Boost.Python version 1.64 (and possibly later?) has issues with default hidden visibility.
-if(${Boost_MAJOR_VERSION} GREATER 1 OR (${Boost_MAJOR_VERSION} EQUAL 1 AND ${Boost_MINOR_VERSION} GREATER 63))
-list(FIND AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden" _PYAUDI_HAS_VHIDDEN)
-if (NOT ${_PYAUDI_HAS_VHIDDEN} EQUAL -1)
-	message(STATUS "Removing the '-fvisibility=hidden' flag for Boost.Python > 1.63.")
-	list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden")
-	list(REMOVE_ITEM AUDI_CXX_FLAGS_RELEASE "-fvisibility=hidden")
-endif()
-endif()
-
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
 target_link_libraries(pyaudi INTERFACE Boost::disable_autolinking Audi::audi)

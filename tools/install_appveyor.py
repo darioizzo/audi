@@ -125,19 +125,19 @@ if is_python_build:
         python_version + r'\\Lib\\site-packages\\pyaudi'
 
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
-    wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
-    run_command(r'unzip pybind11_v224.zip', verbose=False)
-    # Move to the directory created and make piranha install its headers
-    os.chdir('pybind11-2.2.4')
-    os.makedirs('build')
-    os.chdir('build')
-    print("Installing pybind11")
-    run_command(
+    #wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
+    #run_command(r'unzip pybind11_v224.zip', verbose=False)
+    ## Move to the directory created and make piranha install its headers
+    #os.chdir('pybind11-2.2.4')
+    #os.makedirs('build')
+    #os.chdir('build')
+    #print("Installing pybind11")
+    #run_command(
         r'cmake -G "MinGW Makefiles" .. -DPYBIND11_TEST=OFF -DPYTHON_EXECUTABLE=C:\\Python' + python_version + 
         r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll', verbose=True)
-    run_command(r'mingw32-make install VERBOSE=1', verbose=False)
-    os.chdir('../../')
-    print("pybind11 sucessfully installed .. continuing")
+    #run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+    #os.chdir('../../')
+    #print("pybind11 sucessfully installed .. continuing")
 
 
 
@@ -152,6 +152,8 @@ if is_python_build:
     # Install pip and deps.
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py')
+    # Install python deps (pybind11)
+    run_command(pinterp + r' -m pip install pybind11', verbose=True)
     if is_release_build:
         # call pip via python, workaround to avoid path issues when calling pip from win
         # (https://github.com/pypa/pip/issues/1997)
