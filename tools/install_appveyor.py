@@ -137,7 +137,7 @@ if is_python_build:
         run_command(pinterp + r' -m pip install twine')
 
     # Download the python lib https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python36.lib
-    wget(r'https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python36.lib', r'python'+python_version+r'.lib')
+    wget(r'https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python'+python_version+r'.lib', r'python'+python_version+r'.lib')
     shutil.move(r'python' + python_version + r'.lib', r'C:\\Python' + python_version + r'\\libs\\')
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
     wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
@@ -150,9 +150,7 @@ if is_python_build:
     run_command(
        r'cmake -G "MinGW Makefiles" ..' + ' ' +
        r'-DPYBIND11_TEST=OFF' + ' ' +
-       r'-DPYTHON_PREFIX=C:\\Python' + python_version + ' ' +
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe' + ' ' +
-       r'-DPYTHON_LIBRARIES=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll', verbose=True)
+       r'-DPYTHON_PREFIX=C:\\Python' + python_version + ' ', verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=False)
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
