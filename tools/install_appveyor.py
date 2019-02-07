@@ -147,7 +147,7 @@ if is_python_build:
     run_command(
        r'cmake -G "MinGW Makefiles" .. ' + 
        r'-DPYBIND11_TEST=OFF ' + 
-       r'-DPYTHON_PREFIX=C:\\Python ' + python_version + 
+       r'-DPYTHON_PREFIX=C:\\Python' + python_version + 
        r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe ' + 
        r'-DPYTHON_LIBRARIES=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll', verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=False)
