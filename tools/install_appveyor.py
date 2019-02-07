@@ -124,6 +124,18 @@ if is_python_build:
     pyaudi_install_path = r'C:\\Python' + \
         python_version + r'\\Lib\\site-packages\\pyaudi'
 
+    # Get Python.
+    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
+         python_package, 'python.7z')
+    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
+        # Install pip and deps.
+    wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
+    run_command(pinterp + ' get-pip.py')
+    if is_release_build:
+        # call pip via python, workaround to avoid path issues when calling pip from win
+        # (https://github.com/pypa/pip/issues/1997)
+        run_command(pinterp + r' -m pip install twine')
+
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
     wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_v224.zip')
     run_command(r'unzip pybind11_v224.zip', verbose=False)
@@ -138,22 +150,6 @@ if is_python_build:
     run_command(r'mingw32-make install VERBOSE=1', verbose=False)
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
-
-    # Get Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         python_package, 'python.7z')
-    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
-    # Get Boost Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         boost_python_package, 'boost_python.7z')
-    run_command(r'7z x -aoa -oC:\\ boost_python.7z', verbose=False)
-    # Install pip and deps.
-    wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
-    run_command(pinterp + ' get-pip.py')
-    if is_release_build:
-        # call pip via python, workaround to avoid path issues when calling pip from win
-        # (https://github.com/pypa/pip/issues/1997)
-        run_command(pinterp + r' -m pip install twine')
 
 # Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
