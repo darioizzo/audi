@@ -139,8 +139,6 @@ if is_python_build:
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
 
-PYTHON_INCLUDE_DIR
-
     # Get Python.
     wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
          python_package, 'python.7z')
