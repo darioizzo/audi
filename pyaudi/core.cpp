@@ -1,4 +1,4 @@
-#define PYBIND11_EXPORT __attribute__ ((visibility("default")))
+// #define PYBIND11_EXPORT __attribute__ ((visibility("default")))
 
 #include <audi/audi.hpp>
 #include <cmath>
