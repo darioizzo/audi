@@ -1,6 +1,5 @@
 #define PYBIND11_EXPORT __attribute__ ((visibility("default")))
 
-
 #include <audi/audi.hpp>
 #include <cmath>
 #include <pybind11/pybind11.h>
