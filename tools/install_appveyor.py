@@ -1,7 +1,7 @@
 import os
 import re
 import sys
-
+import shutil
 
 def wget(url, out):
     import urllib.request
@@ -194,7 +194,6 @@ if is_python_build:
     run_command(
         pinterp + r' -c "from pyaudi import test; test.run_test_suite()"')
     # Build the wheel.
-    import shutil
     os.chdir('wheel')
     shutil.move(pyaudi_install_path, r'.')
     wheel_libs = 'mingw_wheel_libs_python{}.txt'.format(python_version[0])
