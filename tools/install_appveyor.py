@@ -120,9 +120,9 @@ if is_python_build:
     #rm_fr(r'c:\\Python' + python_version)
 
     # Set paths.
-    pinterp = r'c:\\Python' + python_version + r'\\python.exe'
-    pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
-    twine = r'c:\\Python' + python_version + r'\\scripts\\twine'
+    pinterp = r'c:\\Python' + python_version + r'-x64\\python.exe'
+    pip = r'c:\\Python' + python_version + r'-x64\\scripts\\pip'
+    twine = r'c:\\Python' + python_version + r'-x64\\scripts\\twine'
     pyaudi_install_path = r'C:\\Python' + \
         python_version + r'\\Lib\\site-packages\\pyaudi'
 
@@ -153,8 +153,8 @@ if is_python_build:
     run_command(
        r'cmake -G "MinGW Makefiles" ..' + ' ' +
        r'-DPYBIND11_TEST=OFF' + ' ' +
-       r'-DPYTHON_PREFIX=C:\\Python' + python_version + ' ' +
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe', verbose=True)
+       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r'-x64 ' +
+       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe', verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=True)
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
@@ -176,7 +176,7 @@ if is_python_build:
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
     run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + ' ' +
-                r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll ')
+                r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'-x64\\libs\\python' + python_version + r'.dll ')
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
