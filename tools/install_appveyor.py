@@ -114,24 +114,24 @@ if is_python_build:
     else:
         raise RuntimeError('Unsupported Python build: ' + BUILD_TYPE)
 
-    #python_package = r'python' + python_version + r'_mingw_64.7z'
+    python_package = r'python' + python_version + r'_mingw_64.7z'
     
     # Remove any existing Python installation.
-    #rm_fr(r'c:\\Python' + python_version)
+    rm_fr(r'c:\\Python' + python_version)
 
     # Set paths.
-    pinterp = r'c:\\Python' + python_version + r'-x64\\python.exe'
-    pip = r'c:\\Python' + python_version + r'-x64\\scripts\\pip'
-    twine = r'c:\\Python' + python_version + r'-x64\\scripts\\twine'
+    pinterp = r'c:\\Python' + python_version + r'\\python.exe'
+    pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
+    twine = r'c:\\Python' + python_version + r'\\scripts\\twine'
     pyaudi_install_path = r'C:\\Python' + \
-        python_version + r'-x64\\Lib\\site-packages\\pyaudi'
+        python_version + r'\\Lib\\site-packages\\pyaudi'
 
     # Get Python.
-    #wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-    #     python_package, 'python.7z')
-    #run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
-        # Install pip and deps.
-    
+    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
+         python_package, 'python.7z')
+    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
+
+    # Install pip and deps.
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py')
     if is_release_build:
@@ -153,10 +153,10 @@ if is_python_build:
     run_command(
        r'cmake -G "MinGW Makefiles" ..' + r' ' +
        r'-DPYBIND11_TEST=OFF' + ' ' +
-       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r'-x64' + r' ' + 
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe' + r' ' + 
-       r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'-x64\\include' + r' ' + 
-       r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'-x64\\python' + python_version + r'.dll'
+       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r' ' + 
+       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe' + r' ' + 
+       r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'\\include' + r' ' + 
+       r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\python' + python_version + r'.dll'
        , verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=True)
     os.chdir('../../')
@@ -180,10 +180,10 @@ if is_python_build:
     os.chdir('build_pyaudi')
     run_command(r'cmake -G "MinGW Makefiles" ..' + r' ' + 
                 r'-DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' ' +
-                r'-DPYTHON_PREFIX=C:\\Python' + python_version + r'-x64' + r' ' + 
-                r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe' + r' ' + 
-                r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'-x64\\include' + r' ' + 
-                r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'-x64\\python' + python_version + r'.dll'
+       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r' ' + 
+       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe' + r' ' + 
+       r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'\\include' + r' ' + 
+       r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\python' + python_version + r'.dll'
                , verbose=True)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
