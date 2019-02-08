@@ -143,10 +143,10 @@ if is_python_build:
     #wget(r'https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python'+python_version+r'.lib', r'python'+python_version+r'.lib')
     #shutil.move(r'python' + python_version + r'.lib', r'C:\\Python' + python_version + r'\\libs\\')
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
-    wget(r'https://github.com/darioizzo/pybind11/archive/v2.2.4.patch.zip', 'pybind11_v224.zip')
-    run_command(r'unzip pybind11_v224.zip', verbose=False)
+    wget(r'https://github.com/darioizzo/pybind11/archive/v.3.dev0.patch.zip', 'pybind11_v3dev.zip')
+    run_command(r'unzip pybind11_v3dev.zip', verbose=False)
     # Move to the directory created and make piranha install its headers
-    os.chdir('pybind11-2.2.4.patch') 
+    os.chdir('pybind11-3.dev0.patch') 
     os.makedirs('build')
     os.chdir('build')
     print("Installing pybind11")
