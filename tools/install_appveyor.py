@@ -154,7 +154,8 @@ if is_python_build:
        r'cmake -G "MinGW Makefiles" ..' + ' ' +
        r'-DPYBIND11_TEST=OFF' + ' ' +
        r'-DPYTHON_PREFIX=C:\\Python' + python_version + r'-x64 ' +
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe', verbose=True)
+       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'-x64\\python.exe',
+       r'-DPYTHON_INCLUDE_DIRS=C:\\Python' + python_version + r'-x64\\include', verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=True)
     os.chdir('../../')
     print("pybind11 sucessfully installed .. continuing")
