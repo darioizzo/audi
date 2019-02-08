@@ -113,10 +113,12 @@ if is_python_build:
         python_version = '27'
     else:
         raise RuntimeError('Unsupported Python build: ' + BUILD_TYPE)
-    python_package = r'python' + python_version + r'_mingw_64.7z'
-    boost_python_package = r'boost_python_' + python_version + r'_mingw_64.7z'
+
+    #python_package = r'python' + python_version + r'_mingw_64.7z'
+    
     # Remove any existing Python installation.
-    rm_fr(r'c:\\Python' + python_version)
+    #rm_fr(r'c:\\Python' + python_version)
+
     # Set paths.
     pinterp = r'c:\\Python' + python_version + r'\\python.exe'
     pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
@@ -125,10 +127,11 @@ if is_python_build:
         python_version + r'\\Lib\\site-packages\\pyaudi'
 
     # Get Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         python_package, 'python.7z')
-    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
+    #wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
+    #     python_package, 'python.7z')
+    #run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
         # Install pip and deps.
+    
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py')
     if is_release_build:
