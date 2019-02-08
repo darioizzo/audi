@@ -124,7 +124,7 @@ if is_python_build:
     pip = r'c:\\Python' + python_version + r'-x64\\scripts\\pip'
     twine = r'c:\\Python' + python_version + r'-x64\\scripts\\twine'
     pyaudi_install_path = r'C:\\Python' + \
-        python_version + r'\\Lib\\site-packages\\pyaudi'
+        python_version + r'-x64\\Lib\\site-packages\\pyaudi'
 
     # Get Python.
     #wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
