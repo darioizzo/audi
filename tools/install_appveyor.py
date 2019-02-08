@@ -146,7 +146,7 @@ if is_python_build:
     wget(r'https://github.com/darioizzo/pybind11/archive/v.3.dev0.patch.zip', 'pybind11_v3dev.zip')
     run_command(r'unzip pybind11_v3dev.zip', verbose=False)
     # Move to the directory created and make piranha install its headers
-    os.chdir('pybind11-3.dev0.patch') 
+    os.chdir('pybind11-v.3.dev0.patch') 
     os.makedirs('build')
     os.chdir('build')
     print("Installing pybind11")
