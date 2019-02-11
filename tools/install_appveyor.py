@@ -140,6 +140,7 @@ if is_python_build:
         # call pip via python, workaround to avoid path issues when calling pip from win
         # (https://github.com/pypa/pip/issues/1997)
         run_command(pinterp + r' -m pip install twine')
+    run_command(pinterp + r' -m pip install numpy') # necessary for the tests
 
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
     wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_224.zip')
