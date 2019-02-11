@@ -207,7 +207,9 @@ if is_python_build:
     # Build the wheel.
     os.chdir('wheel')
     shutil.move(pyaudi_install_path, r'.')
-    shutil.move(r'pyaudi/core.cp'+ python_version + r'-win_amd64.pyd', r'pyaudi/core.py')
+    # We must rename the file to core.pyd as wheel_setup defines that as a name. An alternative
+    # is to have wheel setup define a different name according to the build, but thats more complex even if probably better eventually.
+    shutil.move(r'pyaudi/core.cp'+ python_version + r'-win_amd64.pyd', r'pyaudi/core.pyd')
     wheel_libs = 'mingw_wheel_libs_python{}.txt'.format(python_version[0])
     DLL_LIST = [_[:-1] for _ in open(wheel_libs, 'r').readlines()]
     for _ in DLL_LIST:
