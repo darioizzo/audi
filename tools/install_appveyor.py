@@ -76,10 +76,10 @@ run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 
 
 # Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
-wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
+wget(r'https://github.com/bluescarni/piranha/archive/v0.11.zip', 'piranhav11.zip')
 run_command(r'unzip piranhav10.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
-os.chdir('piranha-0.10')
+os.chdir('piranha-0.11')
 os.makedirs('build')
 os.chdir('build')
 print("Installing piranha")
@@ -90,8 +90,8 @@ os.chdir('../../')
 print("Piranha sucessfully installed .. continuing")
 
 # Download mppp 0.11 https://github.com/bluescarni/mppp/archive/v0.11.zip
-wget(r'https://github.com/bluescarni/mppp/archive/v0.11.zip', 'mpppv10.zip')
-run_command(r'unzip mpppv10.zip', verbose=False)
+wget(r'https://github.com/bluescarni/mppp/archive/v0.11.zip', 'mpppv11.zip')
+run_command(r'unzip mpppv11.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
 os.chdir('mppp-0.11')
 os.makedirs('build')
