@@ -182,8 +182,9 @@ if is_python_build:
                 r'-DPYTHON_PREFIX=' + pypath + r' ' +
                 r'-DPYTHON_EXECUTABLE=' + pinterp + r' ' +
                 r'-DPYTHON_INCLUDE_DIR=' + pypath + r'\\include' + r' ' +
-                r'-DPYTHON_LIBRARY=' + pylib
-               , verbose=True)
+                r'-DPYTHON_LIBRARY=' + pylib + r' ' +
+                r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=C:\\local\\lib\\libboost_serialization-mgw62-mt-1_63.dll'
+                , verbose=True)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
