@@ -77,7 +77,7 @@ run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 
 # Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.11.zip', 'piranhav11.zip')
-run_command(r'unzip piranhav10.zip', verbose=False)
+run_command(r'unzip piranhav11.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
 os.chdir('piranha-0.11')
 os.makedirs('build')
