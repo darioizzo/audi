@@ -78,12 +78,12 @@ if(YACMA_COMPILER_IS_INTELXX)
   list(APPEND AUDI_CXX_FLAGS_DEBUG "-diag-disable" "2259,1682,68")
   list(APPEND AUDI_CXX_FLAGS_RELEASE "-diag-disable" "2259,1682,68")
 endif()
-if(MINGW)
-	# Flag needed to deal with big binaries in MinGW.
-	message(STATUS "Enabling the '-Wa,-mbig-obj' flag in MinGW builds.")
-	list(APPEND AUDI_CXX_FLAGS_DEBUG "-Wa,-mbig-obj")
-	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa,-mbig-obj")
-endif()
+#if(MINGW) WILL NOT WORK WITH PYBIND11
+#	# Flag needed to deal with big binaries in MinGW.
+#	message(STATUS "Enabling the '-Wa,-mbig-obj' flag in MinGW builds.")
+#	list(APPEND AUDI_CXX_FLAGS_DEBUG "-Wa,-mbig-obj")
+#	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa,-mbig-obj")
+#endif()
 
 # Some flags that generate warnings due to Eigen or Piranha obsolete versions
 list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wduplicated-branches")

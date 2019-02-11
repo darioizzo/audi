@@ -120,16 +120,18 @@ if is_python_build:
     rm_fr(r'c:\\Python' + python_version)
 
     # Set paths.
-    pinterp = r'c:\\Python' + python_version + r'\\python.exe'
-    pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
-    twine = r'c:\\Python' + python_version + r'\\scripts\\twine'
+    pypath = r'c:\\Python' + python_version + r'-x64'
+    pinterp = r'c:\\Python' + python_version + r'-x64\\python.exe'
+    pylib = pypath + r'\\python' + python_version + r'.dll'
+    pip = r'c:\\Python' + python_version + r'-x64\\scripts\\pip'
+    twine = r'c:\\Python' + python_version + r'-x64\\scripts\\twine'
     pyaudi_install_path = r'C:\\Python' + \
-        python_version + r'\\Lib\\site-packages\\pyaudi'
+        python_version + r'-x64\\Lib\\site-packages\\pyaudi'
 
     # Get Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         python_package, 'python.7z')
-    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
+    #wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
+    #     python_package, 'python.7z')
+    #run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
 
     # Install pip and deps.
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
@@ -139,24 +141,21 @@ if is_python_build:
         # (https://github.com/pypa/pip/issues/1997)
         run_command(pinterp + r' -m pip install twine')
 
-    # Download the python lib https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python36.lib
-    #wget(r'https://github.com/mitsuba-renderer/dependencies_win64/raw/master/lib/python'+python_version+r'.lib', r'python'+python_version+r'.lib')
-    #shutil.move(r'python' + python_version + r'.lib', r'C:\\Python' + python_version + r'\\libs\\')
     # Download pybind11 https://github.com/pybind/pybind11/archive/v2.2.4.zip
-    wget(r'https://github.com/darioizzo/pybind11/archive/v.3.dev0.patch.zip', 'pybind11_v3dev.zip')
-    run_command(r'unzip pybind11_v3dev.zip', verbose=False)
+    wget(r'https://github.com/pybind/pybind11/archive/v2.2.4.zip', 'pybind11_224.zip')
+    run_command(r'unzip pybind11_224.zip', verbose=False)
     # Move to the directory created and make piranha install its headers
-    os.chdir('pybind11-v.3.dev0.patch') 
+    os.chdir('pybind11-v.2.2.4') 
     os.makedirs('build')
     os.chdir('build')
     print("Installing pybind11")
     run_command(
        r'cmake -G "MinGW Makefiles" ..' + r' ' +
-       r'-DPYBIND11_TEST=OFF' + ' ' +
-       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r' ' + 
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe' + r' ' + 
-       r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'\\include' + r' ' + 
-       r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\python' + python_version + r'.dll'
+       r'-DPYBIND11_TEST=OFF' + r' ' +
+       r'-DPYTHON_PREFIX=' + pypath + r' ' +
+       r'-DPYTHON_EXECUTABLE=' + pinterp + r' ' +
+       r'-DPYTHON_INCLUDE_DIR=' + pypath + r'\\include' + r' ' +
+       r'-DPYTHON_LIBRARY=' + pylib
        , verbose=True)
     run_command(r'mingw32-make install VERBOSE=1', verbose=True)
     os.chdir('../../')
@@ -180,10 +179,10 @@ if is_python_build:
     os.chdir('build_pyaudi')
     run_command(r'cmake -G "MinGW Makefiles" ..' + r' ' + 
                 r'-DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' ' +
-       r'-DPYTHON_PREFIX=C:\\Python' + python_version + r' ' + 
-       r'-DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe' + r' ' + 
-       r'-DPYTHON_INCLUDE_DIR=C:\\Python' + python_version + r'\\include' + r' ' + 
-       r'-DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\python' + python_version + r'.dll'
+                r'-DPYTHON_PREFIX=' + pypath + r' ' +
+                r'-DPYTHON_EXECUTABLE=' + pinterp + r' ' +
+                r'-DPYTHON_INCLUDE_DIR=' + pypath + r'\\include' + r' ' +
+                r'-DPYTHON_LIBRARY=' + pylib
                , verbose=True)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
