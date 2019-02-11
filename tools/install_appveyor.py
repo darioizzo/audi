@@ -57,8 +57,8 @@ is_python_build = 'Python' in BUILD_TYPE
 
 
 # Get mingw and set the path.
-wget(r'https://github.com/bluescarni/binary_deps/raw/master/x86_64-6.2.0-release-posix-seh-rt_v5-rev1.7z', 'mw64.7z')
-run_command(r'7z x -oC:\\ mw64.7z', verbose=False)
+run_command(r'wget https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-posix/seh/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z -OutFile mingw64.7z -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome', verbose=False)
+run_command(r'7z x -oC:\\mingw64 mingw64.7z', verbose=False)
 ORIGINAL_PATH = os.environ['PATH']
 os.environ['PATH'] = r'C:\\mingw64\\bin;' + os.environ['PATH']
 
