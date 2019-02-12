@@ -47,7 +47,6 @@ public:
     static handle cast(audi::vectorized<T> src, return_value_policy /* policy */, handle /* parent */)
     {
         list l(src.size());
-        size_t index = 0;
         for (decltype(src.size()) i = 0; i < src.size(); ++i) {
             PyList_SET_ITEM(l.ptr(), i, pybind11::cast(src[i]).release().ptr()); // steals a reference
         }
