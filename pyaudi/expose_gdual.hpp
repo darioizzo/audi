@@ -5,7 +5,6 @@
 #include <audi/gdual.hpp>
 #include <audi/vectorized.hpp>
 
-
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
@@ -29,7 +28,7 @@ inline void expose_subs(py::class_<gdual<T>> th)
 {
     th.def("subs", +[](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
            "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def("subs", +[](gdual<T> &gd, const std::string &sym,  const gdual<T> &in) { return gd.subs(sym, in); },
+    th.def("subs", +[](gdual<T> &gd, const std::string &sym, const gdual<T> &in) { return gd.subs(sym, in); },
            "Substitutes a symbol with a gdual");
 }
 
@@ -37,18 +36,17 @@ inline void expose_subs(py::class_<gdual<T>> th)
 template <>
 inline void expose_subs(py::class_<gdual<vectorized<double>>> th)
 {
-    th.def(
-        "subs",
-        +[](gdual<vectorized<double>> &gd, const std::string &sym, const std::vector<double> &in) { return gd.subs(sym, in); },
-        "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def(
-        "subs",
-        +[](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) { return gd.subs(sym, in); },
-        "Substitutes a symbol with a gdual");
-
+    th.def("subs",
+           +[](gdual<vectorized<double>> &gd, const std::string &sym, const std::vector<double> &in) {
+               return gd.subs(sym, in);
+           },
+           "Substitutes a symbol with a value (does not remove symbol from symbol set)");
+    th.def("subs",
+           +[](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) {
+               return gd.subs(sym, in);
+           },
+           "Substitutes a symbol with a gdual");
 }
-
-
 
 // This is the interface common across types
 template <typename T>
@@ -75,26 +73,24 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                                  + boost::lexical_cast<std::string>(g.get_order() + 1) + "\\right) \\]";
                        return std::string("\\[ ") + retval;
                    })
-              .def("__getstate__",
-                   [](const gdual<T> &p) {
-                       // Returns a tuple that contains the string
-                       // representation of a gdual<T> as obtained
-                       // from the boost serialization library
-                       std::stringstream ss;
-                       boost::archive::text_oarchive oa(ss);
-                       oa << p;
-                       return py::make_tuple(ss.str());
-                   })
-              .def("__setstate__",
-                   [](gdual<T> &p, py::tuple t) {
-                       if (t.size() != 1) throw std::runtime_error("Invalid state!");
-                       // Invoke the default constructor.
-                       new (&p) gdual<T>;
-                       // Reconstruct the gdual<T>
-                       std::stringstream ss(t[0].cast<std::string>());
-                       boost::archive::text_iarchive ia(ss);
-                       ia >> p;
-                   })
+              .def(py::pickle(
+                  [](const gdual<T> &p) { // __getstate__
+                                          /* Return a tuple that fully encodes the state of the object */
+                      std::stringstream ss;
+                      boost::archive::text_oarchive oa(ss);
+                      oa << p;
+                      return py::make_tuple(ss.str());
+                  },
+                  [](py::tuple t) { // __setstate__
+                      if (t.size() != 1) throw std::runtime_error("Invalid state!");
+                      // Create a C++ instance
+                      gdual<T> p;
+                      // Reconstruct the gdual<T>
+                      std::stringstream ss(t[0].cast<std::string>());
+                      boost::archive::text_iarchive ia(ss);
+                      ia >> p;
+                      return p;
+                  }))
               .def_property_readonly("symbol_set", &gdual<T>::get_symbol_set)
               .def_property_readonly("symbol_set_size", &gdual<T>::get_symbol_set_size)
               .def_property_readonly("degree", &gdual<T>::degree, gdual_degree_docstring().c_str())

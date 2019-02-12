@@ -226,7 +226,7 @@ class test_gdual_double(_ut.TestCase):
 
     def test_serialization(self):
         from pyaudi import gdual_double as gdual
-        import pickle as pk
+        import cpickle as pk
         x = gdual(1, "x", 4)
         y = gdual(1, "y", 4)
         z = gdual(1, "z", 4)
