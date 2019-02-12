@@ -5,7 +5,7 @@ environment:
   #- BUILD_TYPE: "Python37"
   #- BUILD_TYPE: "Python36"
   #- BUILD_TYPE: "Python27"
-  - BUILD_TYPE: "Release"
+  #- BUILD_TYPE: "Release"
   - BUILD_TYPE: "Debug"
   global:
     PLATFORMTOOLSET: "v140"
