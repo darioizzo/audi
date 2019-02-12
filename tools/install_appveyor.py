@@ -169,7 +169,7 @@ os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_WITH_MPPP=yes'
 # For python 27 we need to add -DCMAKE_CXX_FLAGS="-DMS_WIN64" to avoid a strange undefined reference to `__imp_Py_InitModule4'
 # during linking.  (see https://stackoverflow.com/questions/2842469/python-undefined-reference-to-imp-py-initmodule4)
-if python_version = '27':
+if python_version == '27':
     common_cmake_opts = common_cmake_opts + r' -DCMAKE_CXX_FLAGS="-DMS_WIN64"'
 
 # Configuration step.
