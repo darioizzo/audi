@@ -124,6 +124,8 @@ cd wheel
 # Copy the installed pyaudi files, wherever they might be in /usr/local,
 # into the current dir.
 cp -a `find /usr/local/lib -type d -iname 'pyaudi'` ./
+ls
+mv pyaudi/core.* pyaudi/core.so
 # Create the wheel and repair it.
 /opt/python/${PYTHON_DIR}/bin/python setup.py bdist_wheel
 auditwheel repair dist/pyaudi* -w ./dist2
