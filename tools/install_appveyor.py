@@ -206,7 +206,7 @@ elif BUILD_TYPE in ['Release', 'Debug']:
         r'-DBoost_TIMER_LIBRARY_DEBUG=C:\\local\\lib\\libboost_timer-mgw62-mt-1_63.dll' + r' '  + \
         r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG=C:\\local\\lib\\libboost_unit_test_framework-mgw62-mt-1_63.dll' + r' '  + \
         r'-DBoost_CHRONO_LIBRARY_DEBUG=C:\\local\\lib\\libboost_chrono-mgw62-mt-1_63.dll' + r' '  + \
-        r'-DBoost_CHRONO_LIBRARY_RELEASE=C:\\local\\lib\\libboost_chrono-mgw62-mt-1_63.dll' + r ' ' + \
+        r'-DBoost_CHRONO_LIBRARY_RELEASE=C:\\local\\lib\\libboost_chrono-mgw62-mt-1_63.dll' + r' ' + \
         r'-DCMAKE_CXX_FLAGS="-Wa,-mbig-obj"'
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
