@@ -196,6 +196,15 @@ elif BUILD_TYPE in ['Release', 'Debug']:
     os.chdir('build_audi')
     cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
         r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
+    cmake_opts = cmake_opts + 
+        r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=C:\\local\\lib\\libboost_serialization-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_SYSTEM_LIBRARY_RELEASE=C:\\local\\lib\\libboost_system-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_TIMER_LIBRARY_RELEASE=C:\\local\\lib\\libboost_timer-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=C:\\local\\lib\\libboost_unit_test_framework-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_SERIALIZATION_LIBRARY_DEBUG=C:\\local\\lib\\libboost_serialization-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_SYSTEM_LIBRARY_DEBUG=C:\\local\\lib\\libboost_system-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_TIMER_LIBRARY_DEBUG=C:\\local\\lib\\libboost_timer-mgw62-mt-1_63.dll' + r' '  +
+        r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG=C:\\local\\lib\\libboost_unit_test_framework-mgw62-mt-1_63.dll'
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     run_command(r'ctest')
