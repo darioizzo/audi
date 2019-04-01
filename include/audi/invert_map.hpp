@@ -23,7 +23,7 @@ namespace detail
 // This is the composition operator. It substitutes all symbol in A
 // with the gduals in B. Careful that A and B do not share symbols otherwise
 // unexpexted effect may arise
-taylor_map operator&(const taylor_map &A, const taylor_map &B)
+inline taylor_map operator&(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval;
     auto ss = A[0].get_symbol_set();
@@ -38,7 +38,7 @@ taylor_map operator&(const taylor_map &A, const taylor_map &B)
 }
 
 // This is the sum operator.
-taylor_map operator+(const taylor_map &A, const taylor_map &B)
+inline taylor_map operator+(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval(B.size());
     for (decltype(B.size()) i = 0u; i < B.size(); ++i) {
@@ -48,7 +48,7 @@ taylor_map operator+(const taylor_map &A, const taylor_map &B)
 }
 
 // This is the diff operator.
-taylor_map operator-(const taylor_map &A, const taylor_map &B)
+inline taylor_map operator-(const taylor_map &A, const taylor_map &B)
 {
     taylor_map retval(B.size());
     for (decltype(B.size()) i = 0u; i < B.size(); ++i) {
@@ -59,7 +59,7 @@ taylor_map operator-(const taylor_map &A, const taylor_map &B)
 
 // This is the "multiplication" operator.
 template <typename T>
-taylor_map operator*(const T &c, const taylor_map &A)
+inline taylor_map operator*(const T &c, const taylor_map &A)
 {
     taylor_map retval(A.size());
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
@@ -68,7 +68,7 @@ taylor_map operator*(const T &c, const taylor_map &A)
     return retval;
 }
 
-taylor_map trim(const taylor_map &A, double epsilon)
+inline taylor_map trim(const taylor_map &A, double epsilon)
 {
     taylor_map retval(A.size());
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
@@ -136,7 +136,7 @@ static unsigned _(I n)
  * map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
  * the gduals are not all the same.
  */
-taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
+inline taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
 {
     // To find the overloaded operators
     using namespace detail;
