@@ -44,13 +44,20 @@ cd ..
 cd /audi
 mkdir build_audi
 cd build_audi
-cmake -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=no -DCMAKE_BUILD_TYPE=Release ../
+cmake -DAUDI_BUILD_AUDI=yes \
+      -DAUDI_BUILD_TESTS=no \
+	  -DCMAKE_BUILD_TYPE=Release ../
 make install
 cd ..
 
 # Compile and install pyaudi (build directory is created by .travis.yml)
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DBoost_PYTHON${PYTHON_VERSION}_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIBRARY_NAME} -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
+cmake -DBoost_NO_BOOST_CMAKE=ON \
+      -DCMAKE_BUILD_TYPE=Release \
+	  -DAUDI_BUILD_AUDI=no \
+	  -DAUDI_BUILD_PYAUDI=yes \
+	  -DBoost_PYTHON${PYTHON_VERSION}_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIBRARY_NAME} \
+	  -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
 
 # Compile wheels

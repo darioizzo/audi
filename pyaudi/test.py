@@ -1,3 +1,5 @@
+from __future__ import absolute_import as _ai
+
 import unittest as _ut
 
 
@@ -241,6 +243,18 @@ class test_gdual_double(_ut.TestCase):
 
 class test_function_calls(_ut.TestCase):
 
+    def runTest(self):
+            self.test_exponentiation()
+            self.test_sqrt()
+            self.test_cbrt()
+            self.test_exp_log()
+            self.test_sin_and_cos()
+            self.test_tan()
+            self.test_sinh_and_cosh()
+            self.test_tanh()
+            self.test_inverse_functions()
+            self.test_abs()
+
     def test_exponentiation(self):
         from pyaudi import gdual_double as gdual
 
@@ -406,6 +420,14 @@ class test_function_calls(_ut.TestCase):
 
 class test_gdual_vdouble(_ut.TestCase):
 
+    def runTest(self):
+            self.test_construction()
+            self.test_consistency()
+            self.test_consistency_functions()
+            self.test_trim()
+            self.test_extract_terms()
+            self.test_subs()
+
     def test_construction(self):
         from pyaudi import gdual_vdouble as gdual
         x = gdual([2., 3.], "x", 3)
@@ -548,6 +570,9 @@ class test_gdual_vdouble(_ut.TestCase):
 
 class test_utilities(_ut.TestCase):
 
+    def runTest(self):
+            self.test_map_inversion()
+
     def test_map_inversion(self):
         from pyaudi import gdual_double as gdual
         from pyaudi import sin, exp, invert_map, cos
@@ -576,24 +601,18 @@ class test_utilities(_ut.TestCase):
         g0, g1 = invert_map(map = [f0, f1])
         g0, g1 = invert_map([f0, f1])
 
-
-
-
 def run_test_suite():
     """Run the full test suite.
-    This function will raise an exception if at least one test fails.
+    This function must raise an exception if at least one test fails.
     """
     retval = 0
-    suite_gdouble = _ut.TestLoader().loadTestsFromTestCase(test_gdual_double)
-    suite_function_calls = _ut.TestLoader().loadTestsFromTestCase(test_function_calls)
-    suite_gvdouble = _ut.TestLoader().loadTestsFromTestCase(test_gdual_vdouble)
-    suite_utilities = _ut.TestLoader().loadTestsFromTestCase(test_utilities)
+    suite = _ut.TestLoader().loadTestsFromTestCase(test_gdual_double)
+    suite.addTest(test_function_calls())
+    suite.addTest(test_gdual_vdouble())
+    suite.addTest(test_utilities())
 
-    print("\nRunning gdual_double tests")
-    test_result = _ut.TextTestRunner(verbosity=2).run(suite_gdouble)
-    print("\nRunning function calls tests")
-    test_result = _ut.TextTestRunner(verbosity=2).run(suite_function_calls)
-    print("\nRunning gdual_vdouble tests")
-    test_result = _ut.TextTestRunner(verbosity=2).run(suite_gvdouble)
-    print("\nRunning utilities tests")
-    test_result = _ut.TextTestRunner(verbosity=2).run(suite_utilities)
+    test_result = _ut.TextTestRunner(verbosity=2).run(suite)
+    if len(test_result.failures) > 0 or len(test_result.errors) > 0:
+        retval = 1
+    if retval != 0:
+        raise RuntimeError('One or more tests failed.')
