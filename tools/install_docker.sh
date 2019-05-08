@@ -36,7 +36,7 @@ tar xvf v0.11 > /dev/null 2>&1
 cd piranha-0.11
 mkdir build
 cd build
-cmake ../ > /dev/null
+cmake -DBoost_NO_BOOST_CMAKE=ON ../ > /dev/null
 make install > /dev/null 2>&1
 cd ..
 
@@ -44,7 +44,8 @@ cd ..
 cd /audi
 mkdir build_audi
 cd build_audi
-cmake -DAUDI_BUILD_AUDI=yes \
+cmake -DBoost_NO_BOOST_CMAKE=ON \
+      -DAUDI_BUILD_AUDI=yes \
       -DAUDI_BUILD_TESTS=no \
 	  -DCMAKE_BUILD_TYPE=Release ../
 make install
