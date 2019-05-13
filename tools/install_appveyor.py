@@ -142,7 +142,7 @@ common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local ' + \
                     r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \
                     r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
                     r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
-                    r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll'
+                    r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll '
 
 # Configuration step.
 if is_python_build:
@@ -173,9 +173,9 @@ if is_python_build:
 elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
     os.chdir('build_audi')
-    cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
-        common_cmake_opts + \ 
-        r' -DAUDI_BUILD_TESTS=yes '
+    cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + r' ' + \
+        common_cmake_opts + \
+        r'-DAUDI_BUILD_TESTS=yes '
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     run_command(r'ctest')
