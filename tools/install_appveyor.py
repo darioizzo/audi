@@ -69,6 +69,8 @@ run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
+run_command(r'ls C:\\local\\include', verbose=True)
+run_command(r'ls C:\\local\\lib', verbose=True)
 
 # Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
