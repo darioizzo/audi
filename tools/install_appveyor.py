@@ -175,7 +175,7 @@ elif BUILD_TYPE in ['Release', 'Debug']:
     os.chdir('build_audi')
     cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
         common_cmake_opts + \ 
-        r' -DAUDI_BUILD_TESTS=yes ')
+        r' -DAUDI_BUILD_TESTS=yes '
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     run_command(r'ctest')
