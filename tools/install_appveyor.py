@@ -69,10 +69,6 @@ run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
-run_command(r'ls C:\\local\\include', verbose=True)
-run_command(r'ls C:\\local\\lib', verbose=True)
-run_command(r'ls', verbose=True)
-run_command(r'ls C:\\local', verbose=True)
 
 # Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
@@ -82,8 +78,7 @@ os.chdir('piranha-0.10')
 os.makedirs('build')
 os.chdir('build')
 print("Installing piranha")
-run_command(
-    r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DBoost_INCLUDE_DIR=c:\\local\\include', verbose=False)
+run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DBoost_INCLUDE_DIR=c:\\local\\include', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("Piranha sucessfully installed .. continuing")
@@ -150,7 +145,13 @@ if is_python_build:
             r'-DAUDI_BUILD_AUDI=yes ' + \
             r'-DAUDI_BUILD_PYAUDI=no ' + \
             r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
-            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ')
+            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
+            r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \
+            r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
+            r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
+            r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll ')
+
+
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     os.chdir('..')
     os.makedirs('build_pyaudi')
