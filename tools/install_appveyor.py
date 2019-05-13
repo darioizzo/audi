@@ -134,38 +134,37 @@ if is_python_build:
         run_command(pip + ' install twine')
 
 # Proceed to the build.
-common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_WITH_MPPP=yes '
+common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local ' + \
+                    r'-DCMAKE_INSTALL_PREFIX=c:\\local ' + \
+                    r'-DAUDI_WITH_MPPP=yes ' + \
+                    r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
+                    r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
+                    r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \
+                    r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
+                    r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
+                    r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll ')
 
 # Configuration step.
 if is_python_build:
     os.makedirs('build_audi')
     os.chdir('build_audi')
-    run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
+    run_command(r'cmake -G "MinGW Makefiles" .. ' + \
             common_cmake_opts + \
+            r'-DCMAKE_BUILD_TYPE=Release ' + \
             r'-DAUDI_BUILD_TESTS=no ' + \
             r'-DAUDI_BUILD_AUDI=yes ' + \
-            r'-DAUDI_BUILD_PYAUDI=no ' + \
-            r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
-            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
-            r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \
-            r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
-            r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
-            r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll ')
+            r'-DAUDI_BUILD_PYAUDI=no ')
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 
     os.chdir('..')
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
-    run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
+    run_command(r'cmake -G "MinGW Makefiles" .. ' + \
         common_cmake_opts + \
+        r'-DCMAKE_BUILD_TYPE=Release ' + \
         r'-DAUDI_BUILD_AUDI=no ' + \
         r'-DAUDI_BUILD_PYAUDI=yes ' + \
         r'-DPYAUDI_INSTALL_PATH=c:\\local ' + \
-        r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
-        r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
-        r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \
-        r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
-        r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
         r'-DBoost_PYTHON' + python_version + r'_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' + python_version + r'-mgw81-mt-x64-1_70.dll ' + \
         r'-DPYTHON_INCLUDE_DIR=C:\\' + python_folder + r'\\include ' + \
         r'-DPYTHON_EXECUTABLE=C:\\' + python_folder + r'\\python.exe ' + \
@@ -175,7 +174,8 @@ elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
     os.chdir('build_audi')
     cmake_opts = r'-DCMAKE_BUILD_TYPE=' + BUILD_TYPE + \
-        r' -DAUDI_BUILD_TESTS=yes ' + common_cmake_opts
+        + common_cmake_opts \ 
+        r' -DAUDI_BUILD_TESTS=yes ')
     run_command(r'cmake -G "MinGW Makefiles" .. ' + cmake_opts)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     run_command(r'ctest')
