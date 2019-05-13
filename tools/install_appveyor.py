@@ -67,7 +67,6 @@ wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.
 # Extract them.
 run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
-run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 
 
