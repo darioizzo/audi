@@ -70,11 +70,11 @@ run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 
-# Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
-wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
-run_command(r'unzip piranhav10.zip', verbose=False)
+# Download piranha 0.11 https://github.com/bluescarni/piranha/archive/v0.11.zip
+wget(r'https://github.com/bluescarni/piranha/archive/v0.11.zip', 'piranhav11.zip')
+run_command(r'unzip piranhav11.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
-os.chdir('piranha-0.10')
+os.chdir('piranha-0.11')
 os.makedirs('build')
 os.chdir('build')
 print("Installing piranha")
@@ -150,9 +150,8 @@ if is_python_build:
             r'-DBoost_SYSTEM_LIBRARY_RELEASE=c:\\local\\lib\\libboost_system-mgw81-mt-x64-1_70.dll ' + \
             r'-DBoost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE=c:\\local\\lib\\libboost_unit_test_framework-mgw81-mt-x64-1_70.dll ' + \
             r'-DBoost_TIMER_LIBRARY_RELEASE=c:\\local\\lib\\libboost_timer-mgw81-mt-x64-1_70.dll ')
-
-
     run_command(r'mingw32-make install VERBOSE=1 -j2')
+
     os.chdir('..')
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
