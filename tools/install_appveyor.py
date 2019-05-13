@@ -94,7 +94,7 @@ print("Installing mppp")
 run_command(
     r'cmake -G "MinGW Makefiles" .. -DMPPP_WITH_QUADMATH=yes -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
-os.chdir('../../')
+os.chdir('../../') 
 print("mppp sucessfully installed .. continuing")
 
 # Setup of the Python build variables (version based)
