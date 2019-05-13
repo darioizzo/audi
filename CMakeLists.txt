@@ -1,5 +1,5 @@
 # Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.6.4)
+set(AUDI_PROJECT_VERSION 1.6.5)
 
 # CMake version check.
 cmake_minimum_required(VERSION 3.2)
