@@ -81,7 +81,7 @@ print("Installing piranha")
 run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DBoost_INCLUDE_DIR=c:\\local\\include', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
-print("Piranha sucessfully installed .. continuing")
+print("Piranha successfully installed .. continuing")
 
 # Download mppp 0.11 https://github.com/bluescarni/mppp/archive/v0.11.zip
 wget(r'https://github.com/bluescarni/mppp/archive/v0.11.zip', 'mpppv10.zip')
@@ -95,9 +95,9 @@ run_command(
     r'cmake -G "MinGW Makefiles" .. -DMPPP_WITH_QUADMATH=yes -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../') 
-print("mppp sucessfully installed .. continuing")
+print("mppp successfully installed .. continuing")
 
-# Setup of the Python build variables (version based)
+# Setup of the Python build variables (python version based)
 if is_python_build:
     if 'Python37-x64' in BUILD_TYPE:
         python_version = r'37'
@@ -133,7 +133,7 @@ if is_python_build:
     if is_release_build:
         run_command(pip + ' install twine')
 
-# Proceed to the build.
+# Proceed to the build. The following arguments will be used for all build cases.
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local ' + \
                     r'-DCMAKE_INSTALL_PREFIX=c:\\local ' + \
                     r'-DAUDI_WITH_MPPP=yes ' + \
