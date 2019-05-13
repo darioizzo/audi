@@ -2,27 +2,22 @@ import os
 import re
 import sys
 
-
 def wget(url, out):
     import urllib.request
     print('Downloading "' + url + '" as "' + out + '"')
     urllib.request.urlretrieve(url, out)
 
-
 def rm_fr(path):
-    import os
     import shutil
     if os.path.isdir(path) and not os.path.islink(path):
         shutil.rmtree(path)
     elif os.path.exists(path):
         os.remove(path)
 
-
 def run_command(raw_command, directory=None, verbose=True):
     # Helper function to run a command and display optionally its output
     # unbuffered.
     import shlex
-    import sys
     from subprocess import Popen, PIPE, STDOUT
     print(raw_command)
     proc = Popen(shlex.split(raw_command), cwd=directory,
@@ -45,7 +40,7 @@ def run_command(raw_command, directory=None, verbose=True):
         raise RuntimeError(output)
     return output
 
-
+# ----------------------------------SCRIPT START-----------------------------------------#
 # Build type setup.
 BUILD_TYPE = os.environ['BUILD_TYPE']
 is_release_build = (os.environ['APPVEYOR_REPO_TAG'] == 'true') and bool(
@@ -55,17 +50,18 @@ if is_release_build:
           os.environ['APPVEYOR_REPO_TAG_NAME'] + "'")
 is_python_build = 'Python' in BUILD_TYPE
 
-
-# Get mingw and set the path.
-wget(r'https://github.com/bluescarni/binary_deps/raw/master/x86_64-6.2.0-release-posix-seh-rt_v5-rev1.7z', 'mw64.7z')
-run_command(r'7z x -oC:\\ mw64.7z', verbose=False)
+# Check here for a list of installed software in the appveyor VMs: https://www.appveyor.com/docs/windows-images-software/
+# USING: mingw64 8.1.0
 ORIGINAL_PATH = os.environ['PATH']
+run_command(r'mv C:\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64 C:\\mingw64')
 os.environ['PATH'] = r'C:\\mingw64\\bin;' + os.environ['PATH']
+# Set the path so that the precompiled boost libs can be found.
+os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
+
 
 # Download common deps.
-wget(r'https://github.com/bluescarni/binary_deps/raw/master/gmp_mingw_64.7z', 'gmp.7z')
-wget(r'https://github.com/bluescarni/binary_deps/raw/master/mpfr_mingw_64.7z', 'mpfr.7z')
-wget(r'https://github.com/bluescarni/binary_deps/raw/master/boost_mingw_64.7z', 'boost.7z')
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/gmp_mingw81_64.7z', 'gmp.7z')
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/mpfr_mingw81_64.7z', 'mpfr.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.7z')
 
 # Extract them.
@@ -103,44 +99,40 @@ run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("mppp sucessfully installed .. continuing")
 
-# Setup of the dependencies for a Python build.
+# Setup of the Python build variables (version based)
 if is_python_build:
-    if BUILD_TYPE == 'Python35':
-        python_version = '35'
-    elif BUILD_TYPE == 'Python36':
+    if 'Python37-x64' in BUILD_TYPE:
+        python_version = r'37'
+        python_folder = r'Python37-x64'
+        python_library = r'C:\\' + python_folder + r'\\python37.dll '
+    elif 'Python36-x64' in BUILD_TYPE:
         python_version = '36'
-    elif BUILD_TYPE == 'Python27':
-        python_version = '27'
+        python_folder = r'Python36-x64'
+        python_library = r'C:\\' + python_folder + r'\\python36.dll '
+    elif 'Python27-x64' in BUILD_TYPE:
+        python_version = r'27'
+        python_folder = r'Python27-x64'
+        python_library = r'C:\\' + python_folder + r'\\libs\\python27.dll '
+        # Fot py27 I could not get it to work with the appveyor python (I was close but got tired).
+        # Since this is anyway going to disappear (py27 really!!!), I am handling it as a one time workaround using the old py27 patched by bluescarni
+        rm_fr(r'c:\\Python27-x64')
+        wget(r'https://github.com/bluescarni/binary_deps/raw/master/python27_mingw_64.7z', 'python.7z')
+        run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
+        run_command(r'mv C:\\Python27 C:\\Python27-x64', verbose=False)
     else:
         raise RuntimeError('Unsupported Python build: ' + BUILD_TYPE)
-    python_package = r'python' + python_version + r'_mingw_64.7z'
-    boost_python_package = r'boost_python_' + python_version + r'_mingw_64.7z'
-    # Remove any existing Python installation.
-    rm_fr(r'c:\\Python' + python_version)
-    # Set paths.
-    pinterp = r'c:\\Python' + python_version + r'\\python.exe'
-    pip = r'c:\\Python' + python_version + r'\\scripts\\pip'
-    twine = r'c:\\Python' + python_version + r'\\scripts\\twine'
-    pyaudi_install_path = r'C:\\Python' + \
-        python_version + r'\\Lib\\site-packages\\pyaudi'
-    # Get Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         python_package, 'python.7z')
-    run_command(r'7z x -aoa -oC:\\ python.7z', verbose=False)
-    # Get Boost Python.
-    wget(r'https://github.com/bluescarni/binary_deps/raw/master/' +
-         boost_python_package, 'boost_python.7z')
-    run_command(r'7z x -aoa -oC:\\ boost_python.7z', verbose=False)
-    # Install pip and deps.
-    wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
-    run_command(pinterp + ' get-pip.py')
-    if is_release_build:
-        # call pip via python, workaround to avoid path issues when calling pip from win
-        # (https://github.com/pypa/pip/issues/1997)
-        run_command(pinterp + r' -m pip install twine')
 
-# Set the path so that the precompiled libs can be found.
-os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
+    # Set paths.
+    pinterp = r"C:\\" + python_folder + r'\\python.exe'
+    pip = r"C:\\" + python_folder + r'\\scripts\\pip'
+    twine = r"C:\\" + python_folder + r'\\scripts\\twine'
+    module_install_path = r"C:\\" + python_folder + r'\\Lib\\site-packages\\pyaudi'
+    # Install pip and deps.
+    run_command(pinterp + r' --version', verbose=True)
+    wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
+    run_command(pinterp + ' get-pip.py --force-reinstall')
+    if is_release_build:
+        run_command(pip + ' install twine')
 
 # Proceed to the build.
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\local -DAUDI_WITH_MPPP=yes'
@@ -149,14 +141,29 @@ common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local -DCMAKE_INSTALL_PREFIX=c:\\l
 if is_python_build:
     os.makedirs('build_audi')
     os.chdir('build_audi')
-    run_command(
-        r'cmake -G "MinGW Makefiles" ..  -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_TESTS=no -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_PYAUDI=no' + ' ' + common_cmake_opts)
+    run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
+            common_cmake_opts + \
+            r'-DAUDI_BUILD_TESTS=no ' + \
+            r'-DAUDI_BUILD_AUDI=yes ' + \
+            r'-DAUDI_BUILD_PYAUDI=no ' + \
+            r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
+            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ')
     run_command(r'mingw32-make install VERBOSE=1 -j2')
     os.chdir('..')
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
-    run_command(r'cmake -G "MinGW Makefiles" ..  -DPYAUDI_INSTALL_PATH=c:\\local -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes -DCMAKE_BUILD_TYPE=Release ' + common_cmake_opts + r' -DBoost_PYTHON_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' +
-                (python_version[0] if python_version[0] == '3' else r'') + r'-mgw62-mt-1_63.dll  -DPYTHON_EXECUTABLE=C:\\Python' + python_version + r'\\python.exe -DPYTHON_LIBRARY=C:\\Python' + python_version + r'\\libs\\python' + python_version + r'.dll')
+        run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
+            common_cmake_opts + \
+            r'-DAUDI_BUILD_TESTS=no ' + \
+            r'-DAUDI_BUILD_AUDI=no ' + \
+            r'-DAUDI_BUILD_PYAUDI=yes ' + \
+            r'-DPYAUDI_INSTALL_PATH=c:\\local ' + \
+            r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
+            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
+            r'-DBoost_PYTHON' + python_version + r'_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' + python_version + r'-mgw81-mt-x64-1_70.dll ' + \
+            r'-DPYTHON_INCLUDE_DIR=C:\\' + python_folder + r'\\include ' + \
+            r'-DPYTHON_EXECUTABLE=C:\\' + python_folder + r'\\python.exe ' + \
+            r'-DPYTHON_LIBRARY=' + python_library)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
