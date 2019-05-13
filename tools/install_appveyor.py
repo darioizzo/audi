@@ -129,6 +129,7 @@ if is_python_build:
     run_command(pinterp + r' --version', verbose=True)
     wget(r'https://bootstrap.pypa.io/get-pip.py', 'get-pip.py')
     run_command(pinterp + ' get-pip.py --force-reinstall')
+    run_command(pip + ' install numpy')
     if is_release_build:
         run_command(pip + ' install twine')
 
@@ -157,7 +158,6 @@ if is_python_build:
     os.chdir('build_pyaudi')
     run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
         common_cmake_opts + \
-        r'-DAUDI_BUILD_TESTS=no ' + \
         r'-DAUDI_BUILD_AUDI=no ' + \
         r'-DAUDI_BUILD_PYAUDI=yes ' + \
         r'-DPYAUDI_INSTALL_PATH=c:\\local ' + \
