@@ -55,11 +55,11 @@ is_python_build = 'Python' in BUILD_TYPE
 ORIGINAL_PATH = os.environ['PATH']
 run_command(r'mv C:\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64 C:\\mingw64')
 os.environ['PATH'] = r'C:\\mingw64\\bin;' + os.environ['PATH']
-# Set the path so that the precompiled boost libs can be found.
+# Set the path so that the precompiled libs can be found.
 os.environ['PATH'] = os.environ['PATH'] + r';c:\\local\\lib'
 
-
 # Download common deps.
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/boost_mgw81-mt-x64-1_70.7z', 'boost.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/gmp_mingw81_64.7z', 'gmp.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/mpfr_mingw81_64.7z', 'mpfr.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.7z')
@@ -68,7 +68,7 @@ wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.
 run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
-
+run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
 
 # Download piranha 0.10 https://github.com/bluescarni/piranha/archive/v0.10.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.10.zip', 'piranhav10.zip')
@@ -79,7 +79,7 @@ os.makedirs('build')
 os.chdir('build')
 print("Installing piranha")
 run_command(
-    r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local ', verbose=False)
+    r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DBoost_INCLUDE_DIR=c:\\local\\include', verbose=False)
 run_command(r'mingw32-make install VERBOSE=1', verbose=False)
 os.chdir('../../')
 print("Piranha sucessfully installed .. continuing")
