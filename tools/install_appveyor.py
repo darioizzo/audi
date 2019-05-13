@@ -152,18 +152,18 @@ if is_python_build:
     os.chdir('..')
     os.makedirs('build_pyaudi')
     os.chdir('build_pyaudi')
-        run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
-            common_cmake_opts + \
-            r'-DAUDI_BUILD_TESTS=no ' + \
-            r'-DAUDI_BUILD_AUDI=no ' + \
-            r'-DAUDI_BUILD_PYAUDI=yes ' + \
-            r'-DPYAUDI_INSTALL_PATH=c:\\local ' + \
-            r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
-            r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
-            r'-DBoost_PYTHON' + python_version + r'_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' + python_version + r'-mgw81-mt-x64-1_70.dll ' + \
-            r'-DPYTHON_INCLUDE_DIR=C:\\' + python_folder + r'\\include ' + \
-            r'-DPYTHON_EXECUTABLE=C:\\' + python_folder + r'\\python.exe ' + \
-            r'-DPYTHON_LIBRARY=' + python_library)
+    run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_BUILD_TYPE=Release ' + \
+        common_cmake_opts + \
+        r'-DAUDI_BUILD_TESTS=no ' + \
+        r'-DAUDI_BUILD_AUDI=no ' + \
+        r'-DAUDI_BUILD_PYAUDI=yes ' + \
+        r'-DPYAUDI_INSTALL_PATH=c:\\local ' + \
+        r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
+        r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
+        r'-DBoost_PYTHON' + python_version + r'_LIBRARY_RELEASE=c:\\local\\lib\\libboost_python' + python_version + r'-mgw81-mt-x64-1_70.dll ' + \
+        r'-DPYTHON_INCLUDE_DIR=C:\\' + python_folder + r'\\include ' + \
+        r'-DPYTHON_EXECUTABLE=C:\\' + python_folder + r'\\python.exe ' + \
+        r'-DPYTHON_LIBRARY=' + python_library)
     run_command(r'mingw32-make install VERBOSE=1 -j2')
 elif BUILD_TYPE in ['Release', 'Debug']:
     os.makedirs('build_audi')
