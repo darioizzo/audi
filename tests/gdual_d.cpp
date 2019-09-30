@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     }
 }
 
-BOOST_AUTO_TEST_CASE(is_zero)
+BOOST_AUTO_TEST_CASE(is_zero_test)
 {
     // We test some trivial cases where truncation order does not influence the results
     {
@@ -303,6 +303,9 @@ BOOST_AUTO_TEST_CASE(extract_order)
     BOOST_CHECK_NO_THROW(f.extract_terms(order));
 }
 
+// TODO
+#if 0
+
 BOOST_AUTO_TEST_CASE(serialization_test)
 {
     gdual_d x(1, "x", 4);
@@ -336,6 +339,8 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     BOOST_CHECK(newf.get_order() == f.get_order());
 }
 
+#endif
+
 BOOST_AUTO_TEST_CASE(trim)
 {
     gdual_d x(1e-5, "x", 4);
@@ -358,6 +363,6 @@ BOOST_AUTO_TEST_CASE(comparisons)
     BOOST_CHECK(y * y > x * x);
     BOOST_CHECK(y * y > audi::sin(x));
     BOOST_CHECK(exp(y) > audi::sin(x));
-    BOOST_CHECK(!(y>y));
-    BOOST_CHECK(!(y<y));
+    BOOST_CHECK(!(y > y));
+    BOOST_CHECK(!(y < y));
 }

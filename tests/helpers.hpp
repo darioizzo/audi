@@ -35,10 +35,10 @@ inline bool EPSILON_COMPARE(const gdual<T> &d1, const gdual<T> &d2, const double
     gdual<T> zero = d2 - d1;
 
     // checks that the coefficients of d2 - d1 are all within a reltol <= eps
-    for (auto it = zero._container().begin(); it != zero._container().end(); ++it) {
-        if (std::abs(it->m_cf) > epsilon) {
+    for (const auto &t : zero._poly()) {
+        if (std::abs(t.second) > epsilon) {
             std::cout << "Failing to be within epsilon from zero: " << zero << std::endl;
-            std::cout << "Coefficient: " << std::abs(it->m_cf) << std::endl;
+            std::cout << "Coefficient: " << std::abs(t.second) << std::endl;
             std::cout << "Allowed epsilon: " << epsilon << std::endl;
             return false;
         }

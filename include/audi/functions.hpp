@@ -6,7 +6,6 @@
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/special_functions/bernoulli.hpp>
 #include <cmath>
-#include <piranha/binomial.hpp>
 #include <stdexcept>
 
 #include <audi/back_compatibility.hpp>
@@ -15,7 +14,6 @@
 #include <audi/gdual.hpp>
 #include <audi/type_traits.hpp>
 #include <audi/vectorized.hpp>
-
 
 namespace audi
 {
