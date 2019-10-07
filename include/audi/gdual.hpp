@@ -18,6 +18,7 @@
 #include <boost/math/special_functions/factorials.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
+#include <obake/key/key_degree.hpp>
 #include <obake/math/degree.hpp>
 #include <obake/math/diff.hpp>
 #include <obake/math/evaluate.hpp>
@@ -342,14 +343,10 @@ public:
      */
     void extend_symbol_set(const std::vector<std::string> &sym_vars)
     {
-        // piranha::symbol_set ss;
-        // for (auto sym_var : sym_vars) {
-        //     check_var_name_has_d(sym_var);
-        //     ss.add(sym_var);
-        // }
-        // m_p = m_p.extend_symbol_set(ss);
-        // TODO
-        throw;
+        for (auto sym_var : sym_vars) {
+            check_var_name_has_d(sym_var);
+        }
+        m_p = obake::add_symbols(m_p, obake::symbol_set(sym_vars.begin(), sym_vars.end()));
     }
 
     /// Integration
@@ -447,16 +444,13 @@ public:
      */
     gdual trim(double epsilon) const
     {
-        // if (epsilon < 0) {
-        //     throw std::invalid_argument(
-        //         "When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: "
-        //         + std::to_string(epsilon));
-        // }
-        // auto new_p
-        //     = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon);
-        //     });
-        // return gdual(std::move(new_p), m_order);
-        // TODO
+        if (epsilon < 0) {
+            throw std::invalid_argument(
+                "When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: "
+                + std::to_string(epsilon));
+        }
+        auto new_p = obake::filter(m_p, [epsilon](const auto &p) { return !(audi::abs(p.second) < epsilon); });
+        return gdual(std::move(new_p), m_order);
     }
 
     /// Extracts all terms of some order
@@ -472,14 +466,13 @@ public:
      */
     gdual extract_terms(unsigned order) const
     {
-        // if (order > m_order) {
-        //     throw std::invalid_argument("requested order is beyond the truncation order.");
-        // }
-        // auto res = m_p.filter([order](const std::pair<Cf, p_type> &coeff) {
-        //     return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order;
-        // });
-        // return gdual(std::move(res), order);
-        // TODO
+        if (order > m_order) {
+            throw std::invalid_argument("requested order is beyond the truncation order.");
+        }
+        auto res = obake::filter(m_p, [order, &ss = m_p.get_symbol_set()](const auto &p) {
+            return static_cast<unsigned>(obake::key_degree(p.first, ss)) == order;
+        });
+        return gdual(std::move(res), order);
     }
 
     /// Evaluates the Taylor polynomial
@@ -662,7 +655,6 @@ public:
         -> decltype(std::declval<const gdual &>().get_derivative(std::vector<unsigned>{}))
     {
         const auto &ss = m_p.get_symbol_set();
-        // TODO ask dario about this.
         std::vector<unsigned> coeff(ss.size(), 0);
         for (const auto &entry : dict) {
             auto idx = ss.index_of(ss.find(entry.first));

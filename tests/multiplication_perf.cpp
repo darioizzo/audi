@@ -1,8 +1,12 @@
+#include <optional>
+#include <vector>
+
 #define BOOST_TEST_MODULE audi_gdual_test
+#include <boost/lexical_cast.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/timer/timer.hpp>
-#include <piranha/settings.hpp>
-#include <vector>
+
+#include <tbb/task_scheduler_init.h>
 
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
@@ -37,9 +41,9 @@ void scalable_mul(unsigned int m, unsigned int n)
 
 BOOST_AUTO_TEST_CASE(multiplication_performance)
 {
+    std::optional<tbb::task_scheduler_init> tinit;
     if (boost::unit_test::framework::master_test_suite().argc > 1) {
-        piranha::settings::set_n_threads(
-            boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
+        tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
     }
     std::cout << "Testing multiplication of (1 + x1 + .. + xn)^m * (1 - x1 - .. - xn)^m: " << std::endl;
     for (auto m = 10u; m < 11u; ++m) {
