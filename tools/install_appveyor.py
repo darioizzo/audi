@@ -136,7 +136,6 @@ if is_python_build:
 # Proceed to the build. The following arguments will be used for all build cases.
 common_cmake_opts = r'-DCMAKE_PREFIX_PATH=c:\\local ' + \
                     r'-DCMAKE_INSTALL_PREFIX=c:\\local ' + \
-                    r'-DAUDI_WITH_MPPP=yes ' + \
                     r'-DBoost_INCLUDE_DIR=c:\\local\\include ' + \
                     r'-DBoost_SERIALIZATION_LIBRARY_RELEASE=c:\\local\\lib\\libboost_serialization-mgw81-mt-x64-1_70.dll ' + \
                     r'-DBoost_CHRONO_LIBRARY_RELEASE=c:\\local\\lib\\libboost_chrono-mgw81-mt-x64-1_70.dll ' + \

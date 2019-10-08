@@ -7,7 +7,7 @@
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <audi/real128.hpp>
 #endif
 

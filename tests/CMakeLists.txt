@@ -36,9 +36,7 @@ ADD_AUDI_TESTCASE(functions_from_d)
 ADD_AUDI_TESTCASE(functions_floating_precision)
 ADD_AUDI_TESTCASE(invert_map)
 
-if(AUDI_WITH_MPPP)
-	ADD_AUDI_TESTCASE(gdual_mp)
-endif()
+ADD_AUDI_TESTCASE(gdual_mp)
 
 ADD_AUDI_PERFORMANCE_TESTCASE(multiplication)
 ADD_AUDI_PERFORMANCE_TESTCASE(division)

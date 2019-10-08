@@ -890,7 +890,7 @@ inline gdual<vectorized<T>> abs(const gdual<vectorized<T>> &d)
     return retval;
 }
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 // template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
 // requires to specialize std::numeric_limits for vectorized and mppp::real128
 template <>

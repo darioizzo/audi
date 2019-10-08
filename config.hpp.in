@@ -6,6 +6,13 @@
 #define AUDI_VERSION_STRING "@audi_VERSION@"
 #define AUDI_VERSION_MAJOR @audi_VERSION_MAJOR@
 #define AUDI_VERSION_MINOR @audi_VERSION_MINOR@
-@AUDI_ENABLE_MPPP@
+
+#include <mp++/config.hpp>
+
+#if defined(MPPP_WITH_QUADMATH)
+
+#define AUDI_WITH_QUADMATH
+
+#endif
 
 #endif

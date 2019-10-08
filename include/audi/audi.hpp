@@ -5,7 +5,7 @@
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <audi/real128.hpp>
 #endif
 
@@ -20,7 +20,7 @@ namespace audi
 using gdual_d = audi::gdual<double>;
 using gdual_v = audi::gdual<audi::vectorized<double>>;
 using gdual_c = audi::gdual<std::complex<double>>;
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 using gdual_mp = audi::gdual<mppp::real128>;
 #endif
 } // namespace audi
