@@ -27,10 +27,8 @@ The main functionalities of AuDi are exposed into a python module called pyaudi.
 the following dependencies installed in your system
 
 * The `boost <http://www.boost.org/>`_ C++ libraries: the following boost libraries are necessary: boost_python, boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system
-* `piranha <http://bluescarni.github.io/piranha/index.html>`_: piranha headers must be found in the system
+* `obake <https://github.com/bluescarni/obake>`_
 * `audi <https://github.com/darioizzo/audi>`_: audi headers must be found in the system
-* `GNU MPFR library <http://www.mpfr.org/>`_: needed by piranha/audi
-* `The GMP multiprecision library <https://gmplib.org/>`_: needed by piranha/audi
 * `Eigen linear algebra library <https://eigen.tuxfamily.org/>`_: The Eigen headers must be found in the system
 
 You can then clone the `audi github repository <https://github.com/darioizzo/audi>`_  and configure it using cmake.

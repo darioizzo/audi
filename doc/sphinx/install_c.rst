@@ -6,9 +6,7 @@ Installation (C++ header only library)
 Audi is a header only library which has the following third party dependencies
 
 * The `boost <http://www.boost.org/>`_ C++ libraries: the following boost libraries are necessary: boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system
-* `piranha <http://bluescarni.github.io/piranha/index.html>`_: piranha headers must be found in the system
-* `GNU MPFR library <http://www.mpfr.org/>`_: needed by piranha
-* `The GMP multiprecision library <https://gmplib.org/>`_: needed by piranha
+* `obake <https://github.com/bluescarni/obake>`_
 * `Eigen linear algebra library <https://eigen.tuxfamily.org/>`_: The Eigen headers must be found in the system
 
 After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest Audi version via git:
