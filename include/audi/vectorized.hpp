@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <exception>
+#include <initializer_list>
+#include <type_traits>
 #include <vector>
 
 #include <boost/serialization/vector.hpp>
@@ -33,11 +35,11 @@ struct vectorized {
         = enable_if_t<(std::is_same<T1, vectorized<T>>::value || audi::is_arithmetic<T1>::value), int>;
 
     // Default constructor. Constructs [0.]
-    vectorized() : m_c({T(0.)}){};
+    vectorized() : m_c{T(0.)} {};
 
     // Constructor from other, compatible, types
-    template <typename T1>
-    explicit vectorized(T1 a) : m_c({static_cast<T>(a)})
+    template <typename T1, std::enable_if_t<std::is_constructible_v<T, T1>, int> = 0>
+    explicit vectorized(T1 a) : m_c{static_cast<T>(a)}
     {
     }
 

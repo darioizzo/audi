@@ -19,7 +19,6 @@ using namespace audi;
 
 using gdual_v = audi::gdual<audi::vectorized<double>>;
 
-
 BOOST_AUTO_TEST_CASE(construction)
 {
     // Constructing a vectorized constant
@@ -243,6 +242,6 @@ BOOST_AUTO_TEST_CASE(comparisons)
     BOOST_CHECK(y * y > x * x);
     BOOST_CHECK(y * y > audi::sin(x));
     BOOST_CHECK(exp(y) > audi::sin(x));
-    BOOST_CHECK(!(y>y));
-    BOOST_CHECK(!(y<y));
+    BOOST_CHECK(!(y > y));
+    BOOST_CHECK(!(y < y));
 }

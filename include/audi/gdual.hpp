@@ -290,7 +290,7 @@ public:
         if (order == 0) {
             extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
         } else {
-            m_p = p_type(std::string("d") + symbol);
+            m_p = obake::make_polynomials<p_type>(std::string("d") + symbol)[0];
         }
         m_p += Cf(value);
     }
@@ -306,7 +306,7 @@ public:
      *
      * @return the size of the symbol set.
      */
-    auto get_symbol_set_size() const -> decltype(m_p.get_symbol_set().size())
+    auto get_symbol_set_size() const
     {
         return m_p.get_symbol_set().size();
     }
@@ -483,7 +483,7 @@ public:
      * @throws unspecified any exception thrown by:
      * - obake::evaluate,
      */
-    auto evaluate(const obake::symbol_map<double> &dict) const -> decltype(obake::evaluate(m_p, dict))
+    auto evaluate(const obake::symbol_map<double> &dict) const
     {
         return obake::evaluate(m_p, dict);
     }
@@ -495,7 +495,7 @@ public:
      *
      * @return the current degree of the polynomial
      */
-    auto degree() const -> decltype(obake::degree(m_p))
+    auto degree() const
     {
         return obake::degree(m_p);
     }
@@ -652,7 +652,6 @@ public:
      * @throws std::invalid_argument: if one of the symbols is not found in the expression
      */
     auto get_derivative(const std::unordered_map<std::string, unsigned> &dict) const
-        -> decltype(std::declval<const gdual &>().get_derivative(std::vector<unsigned>{}))
     {
         const auto &ss = m_p.get_symbol_set();
         std::vector<unsigned> coeff(ss.size(), 0);
