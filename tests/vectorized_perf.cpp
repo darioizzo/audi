@@ -2,8 +2,6 @@
 #include <boost/timer/timer.hpp>
 #include <functional>
 #include <iomanip>
-#include <piranha/polynomial.hpp>
-#include <piranha/type_traits.hpp>
 #include <random>
 #include <vector>
 
