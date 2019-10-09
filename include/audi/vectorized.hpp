@@ -429,6 +429,25 @@ inline std::size_t byte_size(const vectorized<T> &c)
     return sizeof(T) * c.size() + sizeof(c);
 }
 
+inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T> &y)
+{
+    if (x.size() == y.size()) {
+        const auto size = x.size();
+        ret.resize(size);
+        std::transform(x.begin(), x.end(), y.begin(), ret.begin(), std::multiplies<T>());
+    } else if (x.size() == 1u) {
+        const auto size = y.size();
+        ret.resize(size);
+        std::transform(y.begin(), y.end(), ret.begin(), [scalar = x[0]](const auto &v) { return v * scalar; });
+    } else if (y.size() == 1u) {
+        const auto size = x.size();
+        ret.resize(size);
+        std::transform(x.begin(), x.end(), ret.begin(), [scalar = y[0]](const auto &v) { return v * scalar; });
+    } else {
+        throw std::invalid_argument("Coefficients of different sizes in fma3");
+    }
+}
+
 } // namespace audi
 
 #undef MAX_STREAMED_COMPONENTS
