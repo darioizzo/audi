@@ -2,6 +2,7 @@
 #define AUDI_VECTORIZED_HPP
 
 #include <algorithm>
+#include <cstddef>
 #include <exception>
 #include <initializer_list>
 #include <type_traits>
@@ -9,6 +10,7 @@
 
 #include <boost/serialization/vector.hpp>
 
+#include <obake/math/negate.hpp>
 #include <obake/math/pow.hpp>
 
 #include <audi/back_compatibility.hpp>
@@ -399,7 +401,6 @@ inline bool is_zero(const vectorized<T> &v)
     return std::all_of(v.begin(), v.end(), [](const T &x) { return x == 0.; });
 }
 
-// ------------------ impl functions needed to have the methods partial, integrate and subs
 template <typename T>
 inline vectorized<T> diff(const vectorized<T> &in, const std::string &)
 {
@@ -412,6 +413,20 @@ inline vectorized<T> pow(const vectorized<T> &c, const U &exp)
     auto retval(c);
     std::transform(retval.begin(), retval.end(), retval.begin(), [exp](const T &x) { return obake::pow(x, exp); });
     return retval;
+}
+
+template <typename T>
+inline void negate(vectorized<T> &c)
+{
+    for (auto &x : c) {
+        obake::negate(x);
+    }
+}
+
+template <typename T>
+inline std::size_t byte_size(const vectorized<T> &c)
+{
+    return sizeof(T) * c.size() + sizeof(c);
 }
 
 } // namespace audi
