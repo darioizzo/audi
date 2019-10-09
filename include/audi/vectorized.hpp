@@ -429,6 +429,7 @@ inline std::size_t byte_size(const vectorized<T> &c)
     return sizeof(T) * c.size() + sizeof(c);
 }
 
+template <typename T>
 inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T> &y)
 {
     if (x.size() == y.size()) {
