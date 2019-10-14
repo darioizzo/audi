@@ -10,35 +10,24 @@
 #include <string>
 #include <vector>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/split_free.hpp>
+#include <boost/serialization/binary_object.hpp>
+#include <boost/serialization/serialization.hpp>
 
 #include <mp++/real128.hpp>
 
 // This header adds to the mppp::real128 class  the necessary methods that allow it to be
 // considered as a type in gdual (obake::is_cf, obake::is_differentiable)
 
-namespace boost
+namespace boost::serialization
 {
-namespace serialization
-{
+
 template <class Archive>
-void save(Archive &ar, const mppp::real128 &t, unsigned int version)
+void serialize(Archive &ar, mppp::real128 &t, unsigned int)
 {
-    std::string s(t.to_string());
-    ar << s;
+    ar &serialization::make_binary_object(&t, sizeof(t));
 }
-template <class Archive>
-void load(Archive &ar, mppp::real128 &t, unsigned int version)
-{
-    std::string s;
-    ar >> s;
-    t = mppp::real128(s);
-}
-} // namespace serialization
-} // namespace boost
-BOOST_SERIALIZATION_SPLIT_FREE(mppp::real128)
+
+} // namespace boost::serialization
 
 #else
 

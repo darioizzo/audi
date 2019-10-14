@@ -3,6 +3,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <fstream>
 #include <stdexcept>
 #include <vector>
 
@@ -303,9 +304,6 @@ BOOST_AUTO_TEST_CASE(extract_order)
     BOOST_CHECK_NO_THROW(f.extract_terms(order));
 }
 
-// TODO
-#if 0
-
 BOOST_AUTO_TEST_CASE(serialization_test)
 {
     gdual_d x(1, "x", 4);
@@ -338,8 +336,6 @@ BOOST_AUTO_TEST_CASE(serialization_test)
     BOOST_CHECK(newf == f);
     BOOST_CHECK(newf.get_order() == f.get_order());
 }
-
-#endif
 
 BOOST_AUTO_TEST_CASE(trim)
 {
