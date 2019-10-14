@@ -416,7 +416,7 @@ inline vectorized<T> pow(const vectorized<T> &c, const U &exp)
 }
 
 template <typename T>
-inline void negate(vectorized<T> &c)
+inline void negate(vectorized<T> &c) noexcept(noexcept(obake::negate(std::declval<T &>())))
 {
     for (auto &x : c) {
         obake::negate(x);
@@ -424,7 +424,7 @@ inline void negate(vectorized<T> &c)
 }
 
 template <typename T>
-inline std::size_t byte_size(const vectorized<T> &c)
+inline std::size_t byte_size(const vectorized<T> &c) noexcept
 {
     return sizeof(T) * c.size() + sizeof(c);
 }
