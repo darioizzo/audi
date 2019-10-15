@@ -175,7 +175,6 @@ if(AUDI_BUILD_AUDI)
 endif()
 
 if(AUDI_BUILD_PYAUDI)
-    # TODO
     # Configure version
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)    
     # Add the pyaudi subdirectory.
@@ -191,6 +190,3 @@ if(AUDI_BUILD_PYAUDI)
         configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/wheel_setup.py" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.py" @ONLY)
     endif()
 endif()
-
-
-

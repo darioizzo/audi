@@ -5,6 +5,9 @@
 #include <audi/real128.hpp>
 #endif
 
+#include <obake/symbols.hpp>
+#include <obake/tex_stream_insert.hpp>
+
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/lexical_cast.hpp>
@@ -118,7 +121,7 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
                   "_repr_latex_",
                   +[](const gdual<T> &g) -> std::string {
                       std::ostringstream oss;
-                      g._poly().print_tex(oss);
+                      obake::tex_stream_insert(oss, g._poly());
                       auto retval = oss.str();
                       retval += std::string("+\\mathcal{O}\\left(")
                                 + boost::lexical_cast<std::string>(g.get_order() + 1) + "\\right) \\]";
@@ -190,7 +193,8 @@ bp::class_<gdual<T>> expose_gdual(std::string type)
               .def(
                   "evaluate",
                   +[](const gdual<T> &gd, const bp::dict &dict) {
-                      return gd.evaluate(pydict_to_umap<std::string, double>(dict));
+                      auto umap = pydict_to_umap<std::string, double>(dict);
+                      return gd.evaluate(obake::symbol_map<double>(umap.begin(), umap.end()));
                   },
                   "Evaluates the Taylor polynomial")
               .def(

@@ -876,14 +876,14 @@ inline gdual<vectorized<T>> abs(const gdual<vectorized<T>> &d)
 {
     gdual<vectorized<T>> retval(d);
     auto p0 = retval.constant_cf();
-    for (auto it = retval._container().begin(); it != retval._container().end(); ++it) {
+    for (auto it = retval._poly().begin(); it != retval._poly().end(); ++it) {
         // if the coefficient has one only element copy it over to the whole length of p0
-        if (it->m_cf.size() == 1u) {
-            it->m_cf.resize(p0.size(), it->m_cf[0]);
+        if (it->second.size() == 1u) {
+            it->second.resize(p0.size(), it->second[0]);
         }
         for (auto i = 0u; i < p0.size(); ++i) {
             if (p0[i] < 0) {
-                it->m_cf.set_value(i, -it->m_cf[i]);
+                it->second.set_value(i, -it->second[i]);
             }
         }
     }

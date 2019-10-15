@@ -1,6 +1,5 @@
 #include <boost/python.hpp>
 #include <cmath>
-#include <piranha/thread_pool.hpp>
 #include <vector>
 
 #include <audi/config.hpp>
@@ -298,19 +297,4 @@ BOOST_PYTHON_MODULE(core)
             return pyaudi::v_to_l(invert_map(pyaudi::l_to_v<gdual_d>(map_in), verbose));
         },
         "Inverts a Taylor map (gdual_d)", (bp::arg("map"), bp::arg("verbose") = false));
-
-    // Define a cleanup functor to be run when the module is unloaded.
-    struct audi_cleanup_functor {
-        void operator()() const
-        {
-            std::cout << "Shutting down the thread pool.\n";
-            piranha::thread_pool_shutdown<void>();
-        }
-    };
-    // Expose it.
-    bp::class_<audi_cleanup_functor> cl_c("_audi_cleanup_functor", bp::init<>());
-    cl_c.def("__call__", &audi_cleanup_functor::operator());
-    // Register it.
-    bp::object atexit_mod = bp::import("atexit");
-    atexit_mod.attr("register")(audi_cleanup_functor{});
 }
