@@ -15,7 +15,7 @@ export PATH="$HOME/miniconda/bin:$PATH"
 bash miniconda.sh -b -p $HOME/miniconda
 conda config --add channels conda-forge --force
 
-conda_pkgs="cmake>=3.3 eigen obake mppp boost-cpp"
+conda_pkgs="cmake>=3.3 eigen obake-devel mppp boost-cpp"
 
 conda create -q -p $deps_dir -y $conda_pkgs
 source activate $deps_dir
@@ -28,7 +28,7 @@ export PATH="$deps_dir/bin:$PATH"
 mkdir build
 cd build
 
-cmake ../ -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_BUILD_TYPE=Release -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=yes
+cmake ../ -DBoost_NO_BOOST_CMAKE=ON -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_BUILD_TYPE=Debug -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=yes
 make -j2 VERBOSE=1
 ctest -j4 -V
 
