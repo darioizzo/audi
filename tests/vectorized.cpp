@@ -43,8 +43,6 @@ void test_construction()
         BOOST_CHECK_THROW(vectorized<T>(std::vector<T>{}), std::invalid_argument);
         // lvalue
         BOOST_CHECK_THROW(vectorized<T>{empty}, std::invalid_argument);
-        // initializer list
-        BOOST_CHECK_THROW(vectorized<T>({}), std::invalid_argument);
     }
 }
 
