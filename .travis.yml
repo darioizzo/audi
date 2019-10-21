@@ -34,7 +34,8 @@ matrix:
 # install:
 # - docker pull $DOCKER_IMAGE
 script:
-- if [[ "${AUDI_BUILD}" == OSX* ]]; then bash tools/travis_osx.sh; fi
+  - if [[ "${AUDI_BUILD}" == OSX* ]]; then bash tools/travis_osx.sh; fi
+
 notifications:
   email: false
 

@@ -24,10 +24,20 @@ export PATH="$deps_dir/bin:$PATH"
 export CXX=clang++
 export CC=clang
 
-cmake ../ -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_BUILD_TYPE=${AUDI_BUILD_TYPE} -DAUDI_BUILD_TESTS=yes
+mkdir build
+cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_BUILD_TYPE=${AUDI_BUILD} -DAUDI_BUILD_AUDI=yes -DAUDI_BUILD_TESTS=yes
 make -j2 VERBOSE=1
 make install
 ctest -j4 -V
+
+cd ..
+mkdir build_pyaudi
+cd build_pyaudi
+cmake ../ -DCMAKE_INSTALL_PREFIX=$deps_dir -DCMAKE_PREFIX_PATH=$deps_dir -DCMAKE_BUILD_TYPE=${AUDI_BUILD} -DAUDI_BUILD_AUDI=no -DAUDI_BUILD_PYAUDI=yes
+make -j2 VERBOSE=1
+make install
+python -c "import pyaudi.test; pyaudi.test.run_test_suite()"
 
 set +e
 set +x
