@@ -76,7 +76,7 @@ jobs:
           cmake --build . --target install
           cd ..
           mkdir build_pyaudi
-          cd buid_pyaudi
+          cd build_pyaudi
           cmake .. -G Ninja ^
                 -DCMAKE_BUILD_TYPE=Release ^
                 -DCMAKE_C_COMPILER=clang-cl ^
