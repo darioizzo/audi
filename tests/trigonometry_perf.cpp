@@ -3,8 +3,9 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/timer/timer.hpp>
 
-#include <optional>
 #include <vector>
+
+#include <boost/optional.hpp>
 
 #include <tbb/task_scheduler_init.h>
 
@@ -84,7 +85,7 @@ void scalable_test_sin_over_cos(int m, int n)
 
 BOOST_AUTO_TEST_CASE(trigonometry_perf)
 {
-    std::optional<tbb::task_scheduler_init> tinit;
+    boost::optional<tbb::task_scheduler_init> tinit;
     if (boost::unit_test::framework::master_test_suite().argc > 1) {
         tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
     }
