@@ -343,7 +343,7 @@ class test_function_calls(_ut.TestCase):
         y = gdual(1.5, "y", 10)
 
         p1 = x + y
-        self.assertTrue((tan(p1) - sin(p1) / cos(p1)).is_zero(1e-12))
+        self.assertTrue((tan(p1) - sin(p1) / cos(p1)).is_zero(1e-10))
 
     def test_sinh_and_cosh(self):
         from pyaudi import gdual_double as gdual
