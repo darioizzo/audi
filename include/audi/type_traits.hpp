@@ -1,15 +1,14 @@
 #ifndef AUDI_TYPE_TRAITS_HPP
 #define AUDI_TYPE_TRAITS_HPP
 
+#include <boost/type_traits/is_complex.hpp>
 #include <type_traits>
-#include <boost/type_traits/is_complex.hpp> 
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <mp++/real128.hpp>
 #endif
-
 
 namespace audi
 {
@@ -20,15 +19,14 @@ namespace audi
  *
  * \tparam T a type to check
  */
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 template <class T>
 struct is_arithmetic
     : std::integral_constant<bool, std::is_arithmetic<T>::value || std::is_same<T, mppp::real128>::value> {
 };
 #else
 template <class T>
-struct is_arithmetic
-    : std::integral_constant<bool, std::is_arithmetic<T>::value> {
+struct is_arithmetic : std::integral_constant<bool, std::is_arithmetic<T>::value> {
 };
 #endif
 /// Type is arithmetic or complex

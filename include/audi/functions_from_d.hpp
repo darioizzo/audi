@@ -4,8 +4,8 @@
 #include <boost/math/constants/constants.hpp>
 #include <cmath>
 
-#include <audi/config.hpp>
 #include <audi/back_compatibility.hpp>
+#include <audi/config.hpp>
 #include <audi/detail/overloads.hpp>
 #include <audi/gdual.hpp>
 
@@ -182,7 +182,7 @@ inline gdual<T> acosh_d(const gdual<T> &f)
  *
  */
 template <typename T>
-inline gdual<T>  erf(const gdual<T> &d)
+inline gdual<T> erf(const gdual<T> &d)
 {
     auto f0 = d.constant_cf();
     auto g0 = audi::erf(f0);
@@ -190,9 +190,9 @@ inline gdual<T>  erf(const gdual<T> &d)
     return _compose_from_derivative(d, dg, g0);
 }
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 template <>
-inline gdual<mppp::real128>  erf(const gdual<mppp::real128> &d)
+inline gdual<mppp::real128> erf(const gdual<mppp::real128> &d)
 {
     auto f0 = d.constant_cf();
     auto g0 = audi::erf(f0);

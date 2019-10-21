@@ -5,9 +5,11 @@
 #define BOOST_TEST_MODULE audi_gdual_test
 #include <boost/test/unit_test.hpp>
 #include <boost/timer/timer.hpp>
-#include <piranha/settings.hpp>
 
+#include <optional>
 #include <vector>
+
+#include <tbb/task_scheduler_init.h>
 
 using namespace audi;
 
@@ -30,9 +32,9 @@ void scalable_test(int m, int n, gdual<double> (*func)(const gdual<double> &d), 
 
 BOOST_AUTO_TEST_CASE(functions_from_derivative_vs_nilpotency)
 {
+    std::optional<tbb::task_scheduler_init> tinit;
     if (boost::unit_test::framework::master_test_suite().argc > 1) {
-        piranha::settings::set_n_threads(
-            boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
+        tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
     }
 
     unsigned int low = 9, high = 10;

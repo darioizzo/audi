@@ -2,27 +2,34 @@
 #define AUDI_GDUAL_HPP
 
 #include <algorithm>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/math/special_functions/factorials.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 #include <initializer_list>
 #include <iostream>
 #include <iterator>
 #include <limits>
-#include <piranha/math.hpp>
-#include <piranha/monomial.hpp>
-#include <piranha/polynomial.hpp>
-#include <piranha/safe_cast.hpp>
-#include <piranha/series_multiplier.hpp>
-#include <piranha/symbol.hpp>
-#include <piranha/type_traits.hpp>
 #include <stdexcept>
 #include <string>
 #include <type_traits> // For std::enable_if, std::is_same, etc.
 #include <utility>
 #include <vector>
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/math/special_functions/factorials.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+
+#include <obake/key/key_degree.hpp>
+#include <obake/math/degree.hpp>
+#include <obake/math/diff.hpp>
+#include <obake/math/evaluate.hpp>
+#include <obake/math/integrate.hpp>
+#include <obake/math/subs.hpp>
+#include <obake/math/trim.hpp>
+#include <obake/math/truncate_degree.hpp>
+#include <obake/polynomials/packed_monomial.hpp>
+#include <obake/polynomials/polynomial.hpp>
+#include <obake/series.hpp>
+#include <obake/symbols.hpp>
 
 #include <audi/back_compatibility.hpp>
 #include <audi/detail/overloads.hpp>            //for audi::abs
@@ -60,10 +67,7 @@ namespace audi
  * Integration and differentiation are also implemented so that the generalized dual computations are
  * formally made in a differential algebra.
  *
- * @note The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
- * piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and
- * the audi::vectorized type. If piranha::is_differentiable<Cf>::value is also true then derivation
- * and integration are availiable.
+ * @note The class can be instantiated with any type that is suitable to be a coefficient in a obake polynomial.
  *
  */
 template <typename Cf>
@@ -71,12 +75,13 @@ class gdual
 {
     // Static checks.
     static_assert(
-        piranha::is_cf<Cf>::value && piranha::is_differentiable<Cf>::value,
-        "A gdual must be constructed from a coefficient satisfying piranha's conditions is_cf and is_differentiable.");
+        obake::is_cf_v<Cf> && obake::is_differentiable_v<Cf>,
+        "A gdual must be constructed from a coefficient satisfying obake's conditions is_cf and is_differentiable.");
 
 public:
     using cf_type = Cf;
-    using p_type = piranha::polynomial<Cf, piranha::monomial<unsigned short>>;
+    using key_type = obake::packed_monomial<unsigned long long>;
+    using p_type = obake::polynomial<key_type, cf_type>;
 
 private:
     // We enable the overloads of the +,-,*,/ operators only in the following cases:
@@ -172,7 +177,7 @@ private:
     static gdual mul(const gdual &d1, const gdual &d2)
     {
         const unsigned int order = std::max(d1.get_order(), d2.get_order());
-        return gdual(p_type::truncated_multiplication(d1.m_p, d2.m_p, order), order);
+        return gdual(truncated_mul(d1.m_p, d2.m_p, order), order);
     }
 
     template <typename T>
@@ -248,8 +253,8 @@ public:
     /// Destructor (contains a sanity check)
     ~gdual()
     {
-        assert(m_p.degree() >= 0);
-        assert(static_cast<unsigned>(m_p.degree()) <= m_order);
+        assert(obake::degree(m_p) >= 0);
+        assert(static_cast<unsigned>(obake::degree(m_p)) <= m_order);
     }
 
     template <typename T, generic_ctor_enabler<T> = 0>
@@ -271,7 +276,7 @@ public:
         if (order == 0) {
             extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
         } else {
-            m_p = p_type(std::string("d") + symbol);
+            m_p = obake::make_polynomials<p_type>(std::string("d") + symbol)[0];
         }
         m_p += Cf(value);
     }
@@ -285,7 +290,7 @@ public:
         if (order == 0) {
             extend_symbol_set(std::vector<std::string>{std::string("d") + symbol});
         } else {
-            m_p = p_type(std::string("d") + symbol);
+            m_p = obake::make_polynomials<p_type>(std::string("d") + symbol)[0];
         }
         m_p += Cf(value);
     }
@@ -301,7 +306,7 @@ public:
      *
      * @return the size of the symbol set.
      */
-    auto get_symbol_set_size() const -> decltype(m_p.get_symbol_set().size())
+    auto get_symbol_set_size() const
     {
         return m_p.get_symbol_set().size();
     }
@@ -316,7 +321,7 @@ public:
     {
         std::vector<std::string> retval;
         for (auto s : m_p.get_symbol_set()) {
-            std::string tmp(s.get_name());
+            std::string tmp(s);
             retval.push_back(tmp.erase(0, 1));
         }
         return retval;
@@ -335,18 +340,13 @@ public:
      *
      * @throws std::invalid_argument:
      * - if any symbol in \p sym_vars does not start with the letter "d"
-     *
-     * @throws unspecified any exception thrown by:
-     * - piranha::series::extend_symbol_set,
      */
     void extend_symbol_set(const std::vector<std::string> &sym_vars)
     {
-        piranha::symbol_set ss;
         for (auto sym_var : sym_vars) {
             check_var_name_has_d(sym_var);
-            ss.add(sym_var);
         }
-        m_p = m_p.extend_symbol_set(ss);
+        m_p = obake::add_symbols(m_p, obake::symbol_set(sym_vars.begin(), sym_vars.end()));
     }
 
     /// Integration
@@ -363,15 +363,15 @@ public:
      * - if \p var_name starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
      *
      * @throws unspecified any exception thrown by:
-     * - piranha::series::truncate_degree,
-     * - piranha::series::integrate
+     * - obake::truncate_degree,
+     * - obake::integrate
      */
-    template <enable_if_t<piranha::is_differentiable<Cf>::value, int> = 0>
+    template <enable_if_t<obake::is_differentiable<Cf>::value, int> = 0>
     gdual integrate(const std::string &var_name)
     {
         check_var_name(var_name);
-        auto new_p = m_p.integrate("d" + var_name);
-        new_p = new_p.truncate_degree(static_cast<int>(m_order));
+        auto new_p = obake::integrate(m_p, "d" + var_name);
+        new_p = obake::truncate_degree(new_p, static_cast<int>(m_order));
         return gdual(std::move(new_p), m_order);
     }
 
@@ -387,13 +387,13 @@ public:
      * - if \p symbol starts with the letter "d" (this avoid creating confusing names for symbol's differentials)
      *
      * @throws unspecified any exception thrown by:
-     * - piranha::series::partial,
+     * - obake::diff,
      */
-    template <enable_if_t<piranha::is_differentiable<Cf>::value, int> = 0>
+    template <enable_if_t<obake::is_differentiable<Cf>::value, int> = 0>
     gdual partial(const std::string &var_name)
     {
         check_var_name(var_name);
-        auto new_p = m_p.partial("d" + var_name);
+        auto new_p = obake::diff(m_p, "d" + var_name);
         return gdual(std::move(new_p), m_order);
     }
 
@@ -402,12 +402,12 @@ public:
      * Substitute the symbol \p sym with the value \p val
      *
      * @throws unspecified any exception thrown by:
-     * - piranha::series::subs,
+     * - obake::subs,
      */
     template <typename T>
     gdual subs(const std::string &sym, const T &val) const
     {
-        auto new_p = m_p.subs(sym, Cf(val));
+        auto new_p = obake::subs(m_p, obake::symbol_map<Cf>{{sym, Cf(val)}});
         return gdual(std::move(new_p), m_order);
     }
 
@@ -422,15 +422,15 @@ public:
      * @param val The gdual to substitute \p sym with.
      *
      * @throws unspecified any exception thrown by:
-     * - piranha::math::subs,
-     * - piranha::polynomial::trim
-     * - piranha::math::truncate_degree
+     * - obake::subs,
+     * - obake::trim
+     * - obake::truncate_degree
      */
     gdual subs(const std::string &sym, const gdual &val) const
     {
-        auto new_p = piranha::math::subs(m_p, sym, val.m_p);
-        auto new_p2 = piranha::math::truncate_degree(new_p, static_cast<decltype(m_p.degree())>(m_order));
-        new_p = new_p2.trim();
+        auto new_p = obake::subs(m_p, obake::symbol_map<decltype(val.m_p)>{{sym, val.m_p}});
+        auto new_p2 = obake::truncate_degree(new_p, static_cast<decltype(obake::degree(m_p))>(m_order));
+        new_p = obake::trim(new_p2);
         return gdual(std::move(new_p), m_order);
     }
 
@@ -441,9 +441,6 @@ public:
      * @param epsilon Tolerance used to trim coefficients.
      *
      * @return The new trimmed gdual.
-     *
-     * @throws unspecified any exception thrown by:
-     * - piranha::polynomial::filter,
      */
     gdual trim(double epsilon) const
     {
@@ -452,8 +449,7 @@ public:
                 "When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: "
                 + std::to_string(epsilon));
         }
-        auto new_p
-            = m_p.filter([epsilon](const std::pair<Cf, p_type> &coeff) { return !(audi::abs(coeff.first) < epsilon); });
+        auto new_p = obake::filter(m_p, [epsilon](const auto &p) { return !(audi::abs(p.second) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 
@@ -467,16 +463,14 @@ public:
      *
      * @throws std::invalid_argument
      * - if the \p order is higher than the gdual order
-     * @throws unspecified any exception thrown by:
-     * - piranha::math::subs,
      */
     gdual extract_terms(unsigned order) const
     {
         if (order > m_order) {
             throw std::invalid_argument("requested order is beyond the truncation order.");
         }
-        auto res = m_p.filter([order](const std::pair<Cf, p_type> &coeff) {
-            return static_cast<unsigned>(piranha::math::degree(coeff.second)) == order;
+        auto res = obake::filter(m_p, [order, &ss = m_p.get_symbol_set()](const auto &p) {
+            return static_cast<unsigned>(obake::key_degree(p.first, ss)) == order;
         });
         return gdual(std::move(res), order);
     }
@@ -487,13 +481,11 @@ public:
      * differentials (variables variations)
      *
      * @throws unspecified any exception thrown by:
-     * - piranha::math::evaluate,
+     * - obake::evaluate,
      */
-    auto evaluate(const std::unordered_map<std::string, double> &dict) const
-        -> decltype(piranha::math::evaluate(m_p, dict))
+    auto evaluate(const obake::symbol_map<double> &dict) const
     {
-        auto retval = piranha::math::evaluate(m_p, dict);
-        return retval;
+        return obake::evaluate(m_p, dict);
     }
     /// Current degree
     /**
@@ -503,9 +495,9 @@ public:
      *
      * @return the current degree of the polynomial
      */
-    auto degree() const -> decltype(m_p.degree())
+    auto degree() const
     {
-        return m_p.degree();
+        return obake::degree(m_p);
     }
 
     /// Getter for the truncation order
@@ -542,7 +534,7 @@ public:
      * - if the requested coefficient is beyond the truncation order
      */
     template <typename T>
-    auto find_cf(const T &c) const -> decltype(m_p.find_cf(c))
+    Cf find_cf(const T &c) const
     {
         if (std::accumulate(c.begin(), c.end(), 0u) > m_order) {
             throw std::invalid_argument("requested coefficient is beyond the truncation order.");
@@ -551,7 +543,12 @@ public:
             throw std::invalid_argument(
                 "requested monomial does not exist, check the length of the input with respect to the symbol set size");
         }
-        return m_p.find_cf(c);
+        const auto it = m_p.find(key_type(c.begin(), c.end()));
+        if (it == m_p.end()) {
+            return Cf(0);
+        } else {
+            return it->second;
+        }
     }
 
     /// Finds the coefficient of a particular monomial
@@ -567,7 +564,7 @@ public:
      * - if the requested coefficient is beyond the truncation order
      */
     template <typename T>
-    auto find_cf(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
+    Cf find_cf(std::initializer_list<T> l)
     {
         if (std::accumulate(l.begin(), l.end(), 0u) > m_order) {
             throw std::invalid_argument("requested coefficient is beyond the truncation order.");
@@ -576,7 +573,12 @@ public:
             throw std::invalid_argument(
                 "requested monomial does not exist, check the length of the input with respect to the symbol set size");
         }
-        return m_p.find_cf(l);
+        const auto it = m_p.find(key_type(l.begin(), l.end()));
+        if (it == m_p.end()) {
+            return Cf(0);
+        } else {
+            return it->second;
+        }
     }
 
     /// Gets the derivative value
@@ -597,7 +599,7 @@ public:
      * - if the requested coefficient is beyond the truncation order
      */
     template <typename T>
-    auto get_derivative(const T &c) const -> decltype(m_p.find_cf(c))
+    Cf get_derivative(const T &c) const
     {
         double cumfact = 1.;
         for (auto i = c.begin(); i < c.end(); ++i) {
@@ -623,7 +625,7 @@ public:
      * - if the requested coefficient is beyond the truncation order
      */
     template <typename T>
-    auto get_derivative(std::initializer_list<T> l) const -> decltype(m_p.find_cf(l))
+    Cf get_derivative(std::initializer_list<T> l) const
     {
         double cumfact = 1.;
         for (auto i = l.begin(); i < l.end(); ++i) {
@@ -641,7 +643,7 @@ public:
      * the input should be {{"dx", 1u},{"dy",3u},{"dz",2u}}
      *
      * \note The current implementation call internally the other templated
-     * implementations. When piranha will implement the sparse monomial
+     * implementations. When obake will implement the sparse monomial
      * this will change and be more efficient.
      *
      * @return the value of the derivative
@@ -650,12 +652,11 @@ public:
      * @throws std::invalid_argument: if one of the symbols is not found in the expression
      */
     auto get_derivative(const std::unordered_map<std::string, unsigned> &dict) const
-        -> decltype(std::declval<const gdual &>().get_derivative(std::vector<double>{}))
     {
         const auto &ss = m_p.get_symbol_set();
-        std::vector<double> coeff(ss.size(), 0);
+        std::vector<unsigned> coeff(ss.size(), 0);
         for (const auto &entry : dict) {
-            auto idx = ss.index_of(piranha::symbol{entry.first});
+            auto idx = ss.index_of(ss.find(entry.first));
             if (idx == ss.size()) {
                 return cf_type(0.);
             }
@@ -684,8 +685,8 @@ public:
      */
     bool is_zero(double tol) const
     {
-        for (auto it = _container().begin(); it != _container().end(); ++it) {
-            if (audi::abs(it->m_cf) > tol) // call to audi abs has precedence
+        for (const auto &t : m_p) {
+            if (audi::abs(t.second) > tol) // call to audi abs has precedence
             {
                 return false;
             }
@@ -696,15 +697,10 @@ public:
     /// Overloaded stream operator
     /**
      * Will direct to stream a human-readable representation of the generalized dual number.
-     * It uses the piranha overload for the type piranha::series. Refer to that
+     * It uses the obake overload for the type obake::series. Refer to that
      * documentation for further details
      *
      * \note The print order of the terms will be undefined.
-     * \note At most piranha::settings::get_max_term_output() terms
-     * are printed, and terms in excess are represented with ellipsis "..."
-     * at the end of the output; if piranha::settings::get_max_term_output()
-     * is zero, all the terms will be printed. piranha::settings::set_max_term_output()
-     * is used to set this parameter.
      *
      * @param[in,out] os target stream.
      * @param d audi::gdual argument.
@@ -873,7 +869,7 @@ public:
      * may only be a double or int.
      *
      * \note The truncated polynomial multiplication operator is at the very heart of AuDi
-     * and its details / performances are those of the piranha multiplication
+     * and its details / performances are those of the obake multiplication
      * algorithm which is, essentially, used.
      *
      * @param d1 first audi::gdual argument
@@ -923,18 +919,18 @@ public:
     /**
      * @return a reference to the internal container of terms.
      */
-    auto _container() -> decltype(m_p._container())
+    auto _container() -> decltype(m_p._get_s_table())
     {
-        return m_p._container();
+        return m_p._get_s_table();
     }
 
     /// Get a const reference to the container of terms.
     /**
      * @return a const reference to the internal container of terms.
      */
-    auto _container() const -> decltype(m_p._container())
+    auto _container() const -> decltype(m_p._get_s_table())
     {
-        return m_p._container();
+        return m_p._get_s_table();
     }
 
     /// Get a const reference to the polynomial.

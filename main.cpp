@@ -1,6 +1,3 @@
-#include <piranha/math.hpp>
-#include <piranha/monomial.hpp>
-
 #include <audi/audi.hpp>
 
 using namespace audi;

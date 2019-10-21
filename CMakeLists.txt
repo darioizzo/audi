@@ -1,27 +1,27 @@
-# Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.6.5)
-
 # CMake version check.
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.3)
+
+# Set default build type to "Release".
+# NOTE: this should be done before the project command since the latter can set
+# CMAKE_BUILD_TYPE itself (it does so for nmake).
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING
+	    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+	FORCE)
+endif()
+
+# Main audi/pyaudi project version.
+set(AUDI_PROJECT_VERSION 1.7)
 
 # Module path setup.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules" "${CMAKE_SOURCE_DIR}/cmake_modules/yacma")
 
 message(STATUS "System name: ${CMAKE_SYSTEM_NAME}")
 
-# Set default build type to "Release".
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING
-        "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-    FORCE)
-endif()
-
 # Main build options: build audi or pyaudi. They cannot be on at the same time,
 # and only one must be chosen.
 option(AUDI_BUILD_AUDI "Build audi." ON)
 option(AUDI_BUILD_PYAUDI "Build pyaudi." OFF)
-option(AUDI_WITH_MPPP "Enables multiple precision support based on the mp++ project." OFF)
-
 
 # Check consistency.
 if(AUDI_BUILD_AUDI AND AUDI_BUILD_PYAUDI)
@@ -34,7 +34,7 @@ endif()
 
 if(AUDI_BUILD_AUDI)
     # Initial setup of a audi build.
-    project(audi VERSION ${AUDI_PROJECT_VERSION})
+    project(audi VERSION ${AUDI_PROJECT_VERSION} LANGUAGES CXX C)
     enable_testing()
 
     # Build option: enable test set.
@@ -45,7 +45,7 @@ if(AUDI_BUILD_AUDI)
 
 else()
     # Initial setup of a pyaudi build.
-    project(pyaudi VERSION ${AUDI_PROJECT_VERSION})
+    project(pyaudi VERSION ${AUDI_PROJECT_VERSION} LANGUAGES CXX C)
 endif()
 
 # Common general bits.
@@ -85,14 +85,11 @@ if(MINGW)
 	list(APPEND AUDI_CXX_FLAGS_RELEASE "-Wa,-mbig-obj")
 endif()
 
-# Some flags that generate warnings due to Eigen or Piranha obsolete versions
+# Some flags that generate warnings due to Eigen obsolete versions
 list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wduplicated-branches")
 list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-Wold-style-cast")
 
 # Configure config.hpp.
-if(AUDI_WITH_MPPP)
-    set(AUDI_ENABLE_MPPP "#define AUDI_WITH_MPPP")
-endif()
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/config.hpp.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/audi/config.hpp" @ONLY)
 
 if(AUDI_BUILD_PYAUDI)
@@ -120,61 +117,31 @@ if(AUDI_BUILD_AUDI)
     find_package(Eigen3 REQUIRED)
     message(STATUS "Eigen include directory: ${EIGEN3_INCLUDE_DIR}")
     message(STATUS "Eigen version detected: ${EIGEN3_VERSION}")
-    include_directories(${EIGEN3_INCLUDE_DIR})
     
-    # Piranha setup.
-    find_package(Piranha REQUIRED)
-    message(STATUS "Piranha library found.")
-    message(STATUS "Piranha include dir is: ${Piranha_INCLUDE_DIR}")
-    include_directories(${Piranha_INCLUDE_DIR})
+    # obake setup.
+    find_package(obake REQUIRED)
+    message(STATUS "obake library found.")
 
-    # GMP setup.
-    find_package(GMP REQUIRED)
-    message(STATUS "GMP library found.")
-    message(STATUS "GMP include dir is: ${GMP_INCLUDE_DIR}")
-    message(STATUS "GMP library is: ${GMP_LIBRARIES}")
-    
-    # MPFR setup.
-    FIND_PACKAGE(MPFR REQUIRED)
-    message(STATUS "MPFR library found.")
-    message(STATUS "MPFR include dir is: ${MPFR_INCLUDE_DIR}")
-    message(STATUS "MPFR library is: ${MPFR_LIBRARIES}")
-    message(STATUS "Checking MPFR version.")
-    try_compile(MPFR_VERSION_CHECK ${CMAKE_BINARY_DIR} "${CMAKE_SOURCE_DIR}/cmake_modules/mpfr_check_version.cpp"
-        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:STRING=${MPFR_INCLUDE_DIR};${GMP_INCLUDE_DIR}")
-    if(NOT MPFR_VERSION_CHECK)
-        message(FATAL_ERROR "Unsupported MPFR version, please upgrade.")
-    endif()
-    message(STATUS "MPFR version is ok.")
-
-    if(AUDI_WITH_MPPP)
-        # MP++ SETUP
-        find_package(mp++ REQUIRED)
-        message(STATUS "mp++ library found.")
-    endif()
+    # mp++ setup.
+    find_package(mp++ REQUIRED)
+    message(STATUS "mp++ library found.")
 
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
-    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization)    
-    target_link_libraries(audi INTERFACE Eigen3::eigen3 MPFR::MPFR GMP::GMP)
-    if(AUDI_WITH_MPPP)
-        target_link_libraries(audi INTERFACE mp++::mp++)
-    endif()
+    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization obake::obake Eigen3::eigen3 mp++::mp++)
     
     # This sets up the include directory to be different if we build
     target_include_directories(audi INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
-    # These lines are temporary with piranha v0.10, will be simplified when this is updated
-    target_include_directories(audi INTERFACE ${Piranha_INCLUDE_DIR})
-   
+
     # Builds the main file
     IF(AUDI_BUILD_MAIN)
         add_executable(main main.cpp)
         target_link_libraries(main audi)
-        set_property(TARGET main PROPERTY CXX_STANDARD 11)
+        set_property(TARGET main PROPERTY CXX_STANDARD 17)
         set_property(TARGET main PROPERTY CXX_STANDARD_REQUIRED YES)
         set_property(TARGET main PROPERTY CXX_EXTENSIONS NO)
     ENDIF()
@@ -191,15 +158,10 @@ if(AUDI_BUILD_AUDI)
     # Setup of the export.
     install(TARGETS audi EXPORT audi_export)
     # Setup of the optional deps.
-    set(_AUDI_CONFIG_OPTIONAL_DEPS)
-    if(AUDI_WITH_MPPP)
-        set(_AUDI_CONFIG_OPTIONAL_DEPS "${_AUDI_CONFIG_OPTIONAL_DEPS}find_package(mp++ REQUIRED)\n")
-    endif()
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/audi-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" @ONLY)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindGMP.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindMPFR.cmake"
-            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindPiranha.cmake" "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindEigen3.cmake" DESTINATION "lib/cmake/audi")
     install(EXPORT audi_export NAMESPACE Audi:: DESTINATION lib/cmake/audi)
     # Take care of versioning.
@@ -228,6 +190,3 @@ if(AUDI_BUILD_PYAUDI)
         configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tools/wheel_setup.py" "${CMAKE_CURRENT_BINARY_DIR}/wheel/setup.py" @ONLY)
     endif()
 endif()
-
-
-

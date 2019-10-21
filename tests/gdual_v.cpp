@@ -2,12 +2,13 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <fstream>
 #include <stdexcept>
 #include <vector>
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <audi/real128.hpp>
 #endif
 
@@ -18,7 +19,6 @@
 using namespace audi;
 
 using gdual_v = audi::gdual<audi::vectorized<double>>;
-
 
 BOOST_AUTO_TEST_CASE(construction)
 {
@@ -243,6 +243,6 @@ BOOST_AUTO_TEST_CASE(comparisons)
     BOOST_CHECK(y * y > x * x);
     BOOST_CHECK(y * y > audi::sin(x));
     BOOST_CHECK(exp(y) > audi::sin(x));
-    BOOST_CHECK(!(y>y));
-    BOOST_CHECK(!(y<y));
+    BOOST_CHECK(!(y > y));
+    BOOST_CHECK(!(y < y));
 }

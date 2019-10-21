@@ -38,9 +38,9 @@ resulting in the output:
 
 .. note::
 
-  The class can be instantiated with any type that is suitable to be a coefficient in a piranha polynomial (
-  piranha::is_cf<Cf>::value must be true). Classical examples would be double, float, std::complex<double>, and
-  the audi::vectorized_double type. If piranha::is_differentiable<Cf>::value is also true then derivation
+  The class can be instantiated with any type that is suitable to be a coefficient in an obake polynomial (
+  obake::is_cf_v<Cf> must be true). Classical examples would be double, float, std::complex<double>, and
+  the audi::vectorized_double type. If obake::is_differentiable_v<Cf> is also true then derivation
   and integration are also availiable and the resulting algebra is a differential algebra.
 
 ------------------------------------------------------
@@ -52,7 +52,7 @@ Constructors and destructors
 
    .. note::  
 
-      This constructor is only enabled if *T* is not a gdual and if a piranha::polynomial can be constructed with coefficients in *T*.
+      This constructor is only enabled if *T* is not a gdual and if an obake::polynomial can be constructed with coefficients in *T*.
 
    Constructs a gdual of order :math:`m = 0` with only a constant term :math:`c`. Essentially :math:`T_f = c` in :math:`\mathcal P_{0,0}`
 
@@ -64,7 +64,7 @@ Constructors and destructors
 
    .. note::  
 
-      This constructor is only enabled if *T* is not a gdual and if a piranha::polynomial can be constructed with coefficients in *T*.
+      This constructor is only enabled if *T* is not a gdual and if an obake::polynomial can be constructed with coefficients in *T*.
 
    Constructs a gdual of order :math:`m` representing a variable. Essentially :math:`T_f = c + dx` in :math:`\mathcal P_{1,m}`
 
@@ -72,7 +72,7 @@ Constructors and destructors
    :param symbol: The symbol that will represent the variable (e.g. :math:`x`).
    :param m: The truncation order of the algebra.
 
-   :exception: std::invalid_argument if the symbol names starts already with "d" a differential. This avoids symbols like ddx in the piranha::polynomial.
+   :exception: std::invalid_argument if the symbol names starts already with "d" a differential. This avoids symbols like ddx in the obake::polynomial.
 
 ------------------------------------------------------
 
@@ -111,11 +111,11 @@ Differential algebra operations
 
    .. note::
       
-      This template is only enabled if *Cf* satisfies piranha::is_differentiable, which is
+      This template is only enabled if *Cf* satisfies obake::is_differentiable, which is
       the case for float, double, std::complex and vectorized_double types. 
 
    Performs the integration of the gdual with respect to *var_name*. If the *var_name* differential is not in the symbol set
-   of the piranha::polynomial it is added. 
+   of the obake::polynomial it is added.
    Note that Information may be lost as the truncation order is preserved.
 
    :param var_name: Symbol name (cannot start with "d").
@@ -128,11 +128,11 @@ Differential algebra operations
 
    .. note::
       
-      This template is only enabled if *Cf* satisfies piranha::is_differentiable, which is
+      This template is only enabled if *Cf* satisfies obake::is_differentiable, which is
       the case for float, double, std::complex and vectorized_double types. 
 
    Performs the partial derivative of the gdual with respect to *var_name*. If the *var_name* differential is not in the symbol set
-   of the piranha::polynomial it is added. 
+   of the obake::polynomial it is added.
 
    :param var_name: Symbol name (cannot start with "d").
 
@@ -185,13 +185,13 @@ gdual manipulation
 
 .. cpp:function:: void extend_symbol_set(const std::vector<std::string> &sym_vars)
 
-   Adds some symbolic variables to the current piranha::polynomial
+   Adds some symbolic variables to the current obake::polynomial
    This is useful in situations where some differential :math:`dx` does not
    appear as its coefficient is zero but we still want to treat the gdual as a function of 
    :math:`x` too (for example when extracting the relative coefficient)
 
    :param sym_vars: list of symbolic names. It must contain all symbolic names of
-     the current piranha::polynomial. It may contain more. All symbols must start with the letter "d".
+     the current obake::polynomial. It may contain more. All symbols must start with the letter "d".
 
    :exception: std::invalid_argument if any symbol in *sym_vars* does not start with the letter "d"
      or if *sym_vars* does not contain all current symbols too.
@@ -203,13 +203,13 @@ gdual inspection
 
 .. cpp:function:: auto get_symbol_set_size() const
 
-   Returns the size of the symbol set of the piranha::polynomial
+   Returns the size of the symbol set of the obake::polynomial
 
 ------------------------------------------------------
 
 .. cpp:function:: std::vector<std::string> get_symbol_set() const
 
-   Returns the symbol set of the piranha::polynomial stripping the differentials (i.e. "dx" becomes "x")
+   Returns the symbol set of the obake::polynomial stripping the differentials (i.e. "dx" becomes "x")
 
 ------------------------------------------------------
 
@@ -428,11 +428,7 @@ We specify the documentation of a few operators with non trivial meaning.
 
    .. note::
       
-      The print order of the terms will be undefined. At most piranha::settings::get_max_term_output() terms
-      are printed, and terms in excess are represented with ellipsis "..."
-      at the end of the output; if piranha::settings::get_max_term_output()
-      is zero, all the terms will be printed. piranha::settings::set_max_term_output()
-      is used to set this parameter.
+      The print order of the terms will be undefined.
 
    :param os: target stream.
    :param d: gdual argument.

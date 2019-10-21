@@ -1,12 +1,13 @@
 #define BOOST_TEST_MODULE audi_gdualv2_test
 #include <boost/test/unit_test.hpp>
 
+#include <fstream>
 #include <stdexcept>
 #include <vector>
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <audi/real128.hpp>
 #endif
 
@@ -39,7 +40,7 @@ BOOST_AUTO_TEST_CASE(substitution)
     BOOST_CHECK_EQUAL(res3.get_derivative({0, 1}).size(), 1);
 }
 
-BOOST_AUTO_TEST_CASE(is_zero)
+BOOST_AUTO_TEST_CASE(is_zero_test)
 {
     // We test some trivial cases where truncation order does not influence the results
     {
@@ -73,7 +74,7 @@ BOOST_AUTO_TEST_CASE(extract_order)
         auto f2 = f.extract_terms(i);
         terms.push_back(f2);
     }
-    auto sum = std::accumulate(terms.begin(), terms.end(), gdual_v({0.,0.}));
+    auto sum = std::accumulate(terms.begin(), terms.end(), gdual_v({0., 0.}));
     BOOST_CHECK((sum - f).is_zero(0.));
     // And we test the throw
     BOOST_CHECK_THROW(f.extract_terms(order + 1), std::invalid_argument);
@@ -85,6 +86,6 @@ BOOST_AUTO_TEST_CASE(trim)
     gdual_v x({10., -1e-4, 10., -10.}, "x", 4);
     gdual_v y({1e-3, -1e-4, 1e-9, 1e-5}, "x", 4);
     BOOST_CHECK(x.trim(1e-1) == x);
-    BOOST_CHECK(y.trim(1e-2) == gdual_v({0.,0.,0.,0.}, "x", 4));
+    BOOST_CHECK(y.trim(1e-2) == gdual_v({0., 0., 0., 0.}, "x", 4));
     BOOST_CHECK_THROW(x.trim(-1e-3), std::invalid_argument);
 }

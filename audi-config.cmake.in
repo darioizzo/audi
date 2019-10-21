@@ -6,11 +6,9 @@ set(_AUDI_CONFIG_OLD_MODULE_PATH "${CMAKE_MODULE_PATH}")
 list(APPEND CMAKE_MODULE_PATH "${_AUDI_CONFIG_SELF_DIR}")
 find_package(Threads REQUIRED) 
 include(AudiFindBoost) 
-find_package(Piranha REQUIRED) 
-find_package(GMP REQUIRED)
-find_package(MPFR REQUIRED)
+find_package(obake REQUIRED)
 find_package(Eigen3 REQUIRED)
-@_AUDI_CONFIG_OPTIONAL_DEPS@
+find_package(mp++ REQUIRED)
 
 #Restore original module path.
 set(CMAKE_MODULE_PATH "${_AUDI_CONFIG_OLD_MODULE_PATH}") 

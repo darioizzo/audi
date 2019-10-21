@@ -5,7 +5,7 @@
 
 #include <audi/config.hpp>
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 #include <audi/real128.hpp>
 #endif
 
@@ -27,7 +27,7 @@ struct is_arithmetic_or_complex
         return std::fun_name(in);                                                                                      \
     }
 
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 // This macro writes the overload for std::fun_name af a mppp::real128. It simply calls mppp::fun_name
 // It is used to allow calls such as audi::cos(T) [T = double] in templated functions.
 #define REAL128_OVERLOAD(fun_name)                                                                                     \
@@ -39,7 +39,7 @@ struct is_arithmetic_or_complex
 
 namespace audi
 {
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
 
 REAL128_OVERLOAD(exp)
 REAL128_OVERLOAD(erf)

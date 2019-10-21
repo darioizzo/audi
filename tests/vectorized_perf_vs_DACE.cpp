@@ -3,14 +3,13 @@
 #include <boost/timer/timer.hpp>
 #include <functional>
 #include <iomanip>
-//#include <piranha/polynomial.hpp>
-//#include <piranha/type_traits.hpp>
 #include <random>
 #include <vector>
 
 #include <audi/audi.hpp>
 
-// compile with g++ multiplication_perf_DACE.cpp -std=c++14 -I/usr/local/include -ldace -lboost_system -lboost_unit_test_framework -lboost_timer -lpthread -lgmp -lmpfr -O3 -DNDEBUG
+// compile with g++ multiplication_perf_DACE.cpp -std=c++14 -I/usr/local/include -ldace -lboost_system
+// -lboost_unit_test_framework -lboost_timer -lpthread -lgmp -lmpfr -O3 -DNDEBUG
 //
 using namespace DACE;
 
@@ -43,7 +42,7 @@ void measure_speedup(int points, unsigned int order, unsigned int size)
     auto foo = (coeff_v + x + y + z + w + q + r + s) / (coeff_v - x - y - z - w - q - r - s);
     for (int i = 1; i < size; ++i) {
         foo *= (coeff_v + x + y + z + w + q + r + s) / (coeff_v - x - y - z - w - q - r - s);
-    } 
+    }
     foo *= foo;
     auto wall1 = t1.elapsed().wall;
 

@@ -3,6 +3,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <fstream>
 #include <stdexcept>
 #include <vector>
 
@@ -228,7 +229,7 @@ BOOST_AUTO_TEST_CASE(integrate_partial)
     }
 }
 
-BOOST_AUTO_TEST_CASE(is_zero)
+BOOST_AUTO_TEST_CASE(is_zero_test)
 {
     // We test some trivial cases where truncation order does not influence the results
     {
@@ -358,6 +359,6 @@ BOOST_AUTO_TEST_CASE(comparisons)
     BOOST_CHECK(y * y > x * x);
     BOOST_CHECK(y * y > audi::sin(x));
     BOOST_CHECK(exp(y) > audi::sin(x));
-    BOOST_CHECK(!(y>y));
-    BOOST_CHECK(!(y<y));
+    BOOST_CHECK(!(y > y));
+    BOOST_CHECK(!(y < y));
 }

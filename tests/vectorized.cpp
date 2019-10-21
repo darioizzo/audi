@@ -110,14 +110,14 @@ void test_math()
 BOOST_AUTO_TEST_CASE(construction)
 {
     test_construction<double>();
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
     test_construction<mppp::real128>();
 #endif
 }
 BOOST_AUTO_TEST_CASE(math)
 {
     test_math<double>();
-#if defined(AUDI_WITH_MPPP)
+#if defined(AUDI_WITH_QUADMATH)
     test_math<mppp::real128>();
 #endif
 }

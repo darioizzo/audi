@@ -2,13 +2,17 @@
 #define AUDI_VECTORIZED_HPP
 
 #include <algorithm>
-#include <boost/serialization/vector.hpp>
+#include <cstddef>
 #include <exception>
+#include <initializer_list>
+#include <type_traits>
 #include <vector>
 
-#include <piranha/math.hpp>
-#include <piranha/pow.hpp>
-#include <piranha/s11n.hpp>
+#include <boost/serialization/vector.hpp>
+
+#include <obake/math/fma3.hpp>
+#include <obake/math/negate.hpp>
+#include <obake/math/pow.hpp>
 
 #include <audi/back_compatibility.hpp>
 #include <audi/type_traits.hpp>
@@ -19,7 +23,7 @@
 namespace audi
 {
 
-// This class implements a vectorized coefficient to be used as the coefficient type in a piranha polynomial
+// This class implements a vectorized coefficient to be used as the coefficient type in an obake polynomial
 // The coefficient is, essentially a vector of doubles [a0,a1,a2,...an] on which all arithmetic operations and
 // function calls operate element-wise.
 
@@ -34,11 +38,11 @@ struct vectorized {
         = enable_if_t<(std::is_same<T1, vectorized<T>>::value || audi::is_arithmetic<T1>::value), int>;
 
     // Default constructor. Constructs [0.]
-    vectorized() : m_c({T(0.)}){};
+    vectorized() : m_c{T(0.)} {};
 
     // Constructor from other, compatible, types
-    template <typename T1>
-    explicit vectorized(T1 a) : m_c({static_cast<T>(a)})
+    template <typename T1, std::enable_if_t<std::is_constructible_v<T, T1>, int> = 0>
+    explicit vectorized(T1 a) : m_c{static_cast<T>(a)}
     {
     }
 
@@ -69,12 +73,14 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::plus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x + d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
+                           [&d1](const T &x) { return x + d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return x + scalar; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(),
+                           [scalar](const T &x) { return x + scalar; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in +");
@@ -85,12 +91,14 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::minus<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x - d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
+                           [&d1](const T &x) { return x - d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar - x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(),
+                           [scalar](const T &x) { return scalar - x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in -");
@@ -101,12 +109,14 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::multiplies<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x * d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
+                           [&d1](const T &x) { return x * d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar * x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(),
+                           [scalar](const T &x) { return scalar * x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in *");
@@ -117,12 +127,14 @@ struct vectorized {
             std::transform(this->m_c.begin(), this->m_c.end(), d1.m_c.begin(), this->m_c.begin(), std::divides<T>());
             return *this;
         } else if (d1.size() == 1u) {
-            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(), [&d1](const T &x) { return x / d1.m_c[0]; });
+            std::transform(this->m_c.begin(), this->m_c.end(), this->m_c.begin(),
+                           [&d1](const T &x) { return x / d1.m_c[0]; });
             return *this;
         } else if (this->size() == 1u) {
             T scalar = m_c[0];
             this->resize(d1.size());
-            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(), [scalar](const T &x) { return scalar / x; });
+            std::transform(d1.m_c.begin(), d1.m_c.end(), this->m_c.begin(),
+                           [scalar](const T &x) { return scalar / x; });
             return *this;
         }
         throw std::invalid_argument("Coefficients of different sizes in /");
@@ -382,100 +394,90 @@ inline bool operator<(const T1 &d1v, const T2 &d2)
     T2 d1(d1v);
     return d1 < d2;
 }
-} // namespace audi
 
-namespace piranha
+// ---------------------   impl functions needed for vectorized_double to pass the obake::is_cf type trait
+template <typename T>
+inline bool is_zero(const vectorized<T> &v)
 {
-namespace math
+    return std::all_of(v.begin(), v.end(), [](const T &x) { return x == 0.; });
+}
+
+template <typename T>
+inline vectorized<T> diff(const vectorized<T> &in, const std::string &)
 {
+    return vectorized<T>(std::vector<T>(in.size(), 0.));
+}
 
-// ---------------------   impl functions needed for vectorized_double to pass piranha::is_cf type trait
-template <typename T>
-struct is_zero_impl<audi::vectorized<T>> {
-    bool operator()(const audi::vectorized<T> &v) const
-    {
-        return std::all_of(v.begin(), v.end(), [](const T &x) { return x == 0.; });
-    }
-};
-
-template <typename T>
-struct mul3_impl<audi::vectorized<T>> {
-    /// Call operator.
-    /**
-     * @param out the output value.
-     * @param a the first operand.
-     * @param b the second operand.
-     *
-     * @return the output of piranha::mp_integer::mul().
-     */
-    void operator()(audi::vectorized<T> &out, const audi::vectorized<T> &a, const audi::vectorized<T> &b) const
-    {
-        if (a.size() == b.size()) {
-            if (out.size() != a.size()) {
-                out.resize(a.size());
-            }
-            std::transform(a.begin(), a.end(), b.begin(), out.begin(), std::multiplies<T>());
-            return;
-        } else if (a.size() == 1u) {
-            if (out.size() != b.size()) {
-                out.resize(b.size());
-            }
-            std::transform(b.begin(), b.end(), out.begin(), [a](const T &item) { return item * a[0]; });
-            return;
-        } else if (b.size() == 1u) {
-            if (out.size() != a.size()) {
-                out.resize(a.size());
-            }
-            std::transform(a.begin(), a.end(), out.begin(), [b](const T &item) { return item * b[0]; });
-            return;
-        }
-        throw std::invalid_argument("Coefficients of different sizes in mul3");
-    }
-};
-
-// ------------------ impl functions needed to have the methods partial, integrate and subs
-template <typename T>
-struct partial_impl<audi::vectorized<T>> {
-    /// Call operator.
-    /**
-     * @return an instance of piranha::mp_integer constructed from zero.
-     */
-    audi::vectorized<T> operator()(const audi::vectorized<T> &in, const std::string &) const
-    {
-        return audi::vectorized<T>(std::vector<T>(in.size(), 0.));
-    }
-};
 template <typename T, typename U>
-struct pow_impl<audi::vectorized<T>, U> {
-    /// Call operator.
-    /**
-     * @param c the input
-     * @param exp the exponent
-     * @return the exp operator applied to all elements of the input
-     */
-    audi::vectorized<T> operator()(const audi::vectorized<T> &c, const U &exp) const
-    {
-        auto retval(c);
-        std::transform(retval.begin(), retval.end(), retval.begin(), [exp](const T &x) { return piranha::math::pow(x, exp); });
-        return retval;
-    };
-};
-
-} // namespace math
-
-template <typename Archive, typename T>
-struct boost_save_impl<Archive, audi::vectorized<T>> : boost_save_via_boost_api<Archive, audi::vectorized<T>> {
-};
-
-template <typename Archive, typename T>
-struct boost_load_impl<Archive, audi::vectorized<T>> : boost_load_via_boost_api<Archive, audi::vectorized<T>> {
-};
+inline vectorized<T> pow(const vectorized<T> &c, const U &exp)
+{
+    auto retval(c);
+    std::transform(retval.begin(), retval.end(), retval.begin(), [exp](const T &x) { return obake::pow(x, exp); });
+    return retval;
+}
 
 template <typename T>
-struct zero_is_absorbing<audi::vectorized<T>> : std::false_type {
-};
+inline void negate(vectorized<T> &c) noexcept(noexcept(obake::negate(std::declval<T &>())))
+{
+    for (auto &x : c) {
+        obake::negate(x);
+    }
+}
 
-} // namespace piranha
+template <typename T>
+inline std::size_t byte_size(const vectorized<T> &c) noexcept
+{
+    return sizeof(T) * c.size() + sizeof(c);
+}
+
+template <typename T>
+inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T> &y)
+{
+    const auto x_size = x.size(), y_size = y.size();
+
+    constexpr auto use_fma = obake::is_mult_addable_v<T &, const T &, const T &>;
+
+    if (x_size == y_size) {
+        ret.resize(x_size);
+        auto ret_it = ret.begin();
+
+        for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
+            if constexpr (use_fma) {
+                obake::fma3(*ret_it, x[i], y[i]);
+            } else {
+                *ret_it += x[i] * y[i];
+            }
+        }
+    } else if (x_size == 1u) {
+        ret.resize(y_size);
+        auto ret_it = ret.begin();
+
+        const auto x0 = x[0];
+        for (decltype(x.size()) i = 0; i < y_size; ++i, ++ret_it) {
+            if constexpr (use_fma) {
+                obake::fma3(*ret_it, x0, y[i]);
+            } else {
+                *ret_it += x0 * y[i];
+            }
+        }
+    } else if (y_size == 1u) {
+        ret.resize(x_size);
+        auto ret_it = ret.begin();
+
+        const auto y0 = y[0];
+        for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
+            if constexpr (use_fma) {
+                obake::fma3(*ret_it, x[i], y0);
+            } else {
+                *ret_it += x[i] * y0;
+            }
+        }
+    } else {
+        throw std::invalid_argument("Coefficients of different sizes in fma3");
+    }
+}
+
+} // namespace audi
 
 #undef MAX_STREAMED_COMPONENTS
 #endif
