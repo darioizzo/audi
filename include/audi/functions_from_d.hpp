@@ -34,12 +34,12 @@ namespace audi
  * @param dg Taylor expansion of the derivative of the outer function
  * @param g0 Value of the outer function at the expansion point
  */
-template <typename T>
-inline gdual<T> _compose_from_derivative(gdual<T> f, gdual<T> dg, T g0)
+template <typename T, typename M>
+inline gdual<T, M> _compose_from_derivative(gdual<T, M> f, gdual<T, M> dg, T g0)
 {
     auto ss = f.get_symbol_set();
     if (ss.size() == 0) {
-        return gdual<T>(g0);
+        return gdual<T, M>(g0);
     }
     auto retval = (dg * f.partial(ss[0])).integrate(ss[0]);
     for (auto i = 1u; i < ss.size(); ++i) {
@@ -61,8 +61,8 @@ inline gdual<T> _compose_from_derivative(gdual<T> f, gdual<T> dg, T g0)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> atanh_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> atanh_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atanh(f0);
@@ -81,8 +81,8 @@ inline gdual<T> atanh_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> atan_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> atan_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::atan(f0);
@@ -101,8 +101,8 @@ inline gdual<T> atan_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse sine of \p d
  *
  */
-template <typename T>
-inline gdual<T> asin_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> asin_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asin(f0);
@@ -121,8 +121,8 @@ inline gdual<T> asin_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
  */
-template <typename T>
-inline gdual<T> asinh_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> asinh_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::asinh(f0);
@@ -141,8 +141,8 @@ inline gdual<T> asinh_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse cosine of \p d
  *
  */
-template <typename T>
-inline gdual<T> acos_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> acos_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acos(f0);
@@ -161,8 +161,8 @@ inline gdual<T> acos_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
  */
-template <typename T>
-inline gdual<T> acosh_d(const gdual<T> &f)
+template <typename T, typename M>
+inline gdual<T, M> acosh_d(const gdual<T, M> &f)
 {
     auto f0 = f.constant_cf();
     auto g0 = audi::acosh(f0);
@@ -181,8 +181,8 @@ inline gdual<T> acosh_d(const gdual<T> &f)
  * @return an audi:gdual containing the Taylor expansion of the error function of \p d
  *
  */
-template <typename T>
-inline gdual<T> erf(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> erf(const gdual<T, M> &d)
 {
     auto f0 = d.constant_cf();
     auto g0 = audi::erf(f0);
@@ -191,8 +191,8 @@ inline gdual<T> erf(const gdual<T> &d)
 }
 
 #if defined(AUDI_WITH_QUADMATH)
-template <>
-inline gdual<mppp::real128> erf(const gdual<mppp::real128> &d)
+template <typename M>
+inline gdual<mppp::real128, M> erf(const gdual<mppp::real128, M> &d)
 {
     auto f0 = d.constant_cf();
     auto g0 = audi::erf(f0);

@@ -33,14 +33,14 @@ namespace audi
  *
  * @return an audi:gdual containing the Taylor expansion of the exponential of \p d
  */
-template <typename T>
-inline gdual<T> exp(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> exp(const gdual<T, M> &d)
 {
-    gdual<T> retval(1.);
-    gdual<T> fact(1.);
+    gdual<T, M> retval(1.);
+    gdual<T, M> fact(1.);
     auto p0 = d.constant_cf();
     auto phat = d - p0;
-    gdual<T> tmp(phat);
+    gdual<T, M> tmp(phat);
 
     retval += phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
@@ -68,17 +68,17 @@ inline gdual<T> exp(const gdual<T> &d)
  * @return an audi:gdual containing the Taylor expansion of the logarithm of \p d
  *
  */
-template <typename T>
-inline gdual<T> log(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> log(const gdual<T, M> &d)
 {
-    gdual<T> retval(0.);
-    gdual<T> fatt(1.);
+    gdual<T, M> retval(0.);
+    gdual<T, M> fatt(1.);
     auto p0 = d.constant_cf();
     auto log_p0 = audi::log(p0);
 
     auto phat = (d - p0);
     phat = phat / p0;
-    gdual<T> tmp(phat);
+    gdual<T, M> tmp(phat);
 
     retval = log_p0 + phat;
     for (auto i = 2u; i <= d.get_order(); ++i) {
@@ -100,14 +100,14 @@ inline gdual<T> log(const gdual<T> &d)
  * @param d audi::gdual argument
  *
  */
-template <typename T, typename U, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
-inline gdual<T> pow(U base, const gdual<T> &d)
+template <typename T, typename U, typename M, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
+inline gdual<T, M> pow(U base, const gdual<T, M> &d)
 {
     // checks wether the exponent is a constant in which
     // case it calls for a different overload
     if (d.degree() == 0) {
         auto p0 = d.constant_cf();
-        return gdual<T>(audi::pow(base, p0));
+        return gdual<T, M>(audi::pow(base, p0));
     }
     return exp(audi::log(T(base)) * d);
 }
@@ -140,14 +140,14 @@ T binomial(T x, unsigned y)
  * @return an audi:gdual containing the Taylor expansion of \p d elevated to the power \p alpha
  *
  */
-template <typename T, typename U, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
-inline gdual<T> pow(const gdual<T> &d, U alpha)
+template <typename T, typename U, typename M, enable_if_t<audi::is_arithmetic<U>::value, int> = 0>
+inline gdual<T, M> pow(const gdual<T, M> &d, U alpha)
 {
     // We check if the exponent is representable as a positive integer,
     // in which case we just do d*d*d*d*... etc.
     int n = static_cast<int>(alpha);
     if (n == alpha && alpha > 0.) {
-        gdual<T> retval(d);
+        gdual<T, M> retval(d);
         for (auto i = 1; i < n; ++i) {
             retval *= d;
         }
@@ -155,8 +155,8 @@ inline gdual<T> pow(const gdual<T> &d, U alpha)
     } else {
         auto p0 = d.constant_cf();
         auto phat = d - p0;
-        gdual<T> retval(audi::pow(p0, alpha));
-        gdual<T> tmp(phat);
+        gdual<T, M> retval(audi::pow(p0, alpha));
+        gdual<T, M> tmp(phat);
         retval += alpha * phat * audi::pow(p0, alpha - 1);
         for (auto i = 2u; i <= d.get_order(); ++i) {
             phat *= tmp;
@@ -175,17 +175,17 @@ inline gdual<T> pow(const gdual<T> &d, U alpha)
  * @param d audi::gdual argument
  * @param n integer exponent
  */
-template <typename T>
-inline gdual<T> pow(const gdual<T> &d, int n)
+template <typename T, typename M>
+inline gdual<T, M> pow(const gdual<T, M> &d, int n)
 {
     if (n < 0) {
-        gdual<T> retval(T(1.) / d);
+        gdual<T, M> retval(T(1.) / d);
         for (auto i = 1; i < -n; ++i) {
             retval /= d;
         }
         return retval;
     } else if (n > 0) {
-        gdual<T> retval(d);
+        gdual<T, M> retval(d);
         for (auto i = 1; i < n; ++i) {
             retval *= d;
         }
@@ -207,8 +207,8 @@ inline gdual<T> pow(const gdual<T> &d, int n)
  *
  * @throw std::domain_error if std::log(\f$f_0\f$) is not finite (uses std::isfinite)
  */
-template <typename T>
-inline gdual<T> pow(const gdual<T> &d1, const gdual<T> &d2)
+template <typename T, typename M>
+inline gdual<T, M> pow(const gdual<T, M> &d1, const gdual<T, M> &d2)
 {
     return exp(d2 * log(d1));
 }
@@ -230,17 +230,17 @@ inline gdual<T> pow(const gdual<T> &d1, const gdual<T> &d2)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T>
-inline gdual<T> sqrt(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> sqrt(const gdual<T, M> &d)
 {
     T alpha(0.5);
-    gdual<T> retval(1.);
+    gdual<T, M> retval(1.);
     T p0 = d.constant_cf();
     T sqrt_p0 = audi::sqrt(p0);
 
-    gdual<T> phat = d - p0;
+    gdual<T, M> phat = d - p0;
     phat = phat / p0;
-    gdual<T> tmp(phat);
+    gdual<T, M> tmp(phat);
 
     retval += alpha * phat;
     for (decltype(d.get_order()) i = 2u; i <= d.get_order(); ++i) {
@@ -268,17 +268,17 @@ inline gdual<T> sqrt(const gdual<T> &d)
  * @return an audi:gdual containing the Taylor expansion of the square root of \p d
  *
  */
-template <typename T>
-inline gdual<T> cbrt(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> cbrt(const gdual<T, M> &d)
 {
     T alpha(T(1.) / T(3.));
-    gdual<T> retval(1.);
+    gdual<T, M> retval(1.);
     T p0 = d.constant_cf();
     T cbrt_p0 = audi::cbrt(p0);
 
-    gdual<T> phat = d - p0;
+    gdual<T, M> phat = d - p0;
     phat = phat / p0;
-    gdual<T> tmp(phat);
+    gdual<T, M> tmp(phat);
 
     retval += alpha * phat;
     for (decltype(d.get_order()) i = 2u; i <= d.get_order(); ++i) {
@@ -305,8 +305,8 @@ inline gdual<T> cbrt(const gdual<T> &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the sine of \p d
  */
-template <typename T>
-inline gdual<T> sin(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> sin(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -317,8 +317,8 @@ inline gdual<T> sin(const gdual<T> &d)
 
     double factorial(1.);
     int coeff(1.);
-    gdual<T> cos_taylor(1.);
-    gdual<T> tmp(cos_taylor);
+    gdual<T, M> cos_taylor(1.);
+    gdual<T, M> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
         tmp *= phat2;             // phat^2, phat^4, phat^6 ...
@@ -328,7 +328,7 @@ inline gdual<T> sin(const gdual<T> &d)
 
     factorial = 1.;
     coeff = 1;
-    gdual<T> sin_taylor(phat);
+    gdual<T, M> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
@@ -355,8 +355,8 @@ inline gdual<T> sin(const gdual<T> &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the cosine of \p d
  */
-template <typename T>
-inline gdual<T> cos(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> cos(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -367,8 +367,8 @@ inline gdual<T> cos(const gdual<T> &d)
 
     double factorial(1.);
     int coeff(1.);
-    gdual<T> cos_taylor(1.);
-    gdual<T> tmp(cos_taylor);
+    gdual<T, M> cos_taylor(1.);
+    gdual<T, M> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
         tmp *= phat2;             // phat^2, phat^4, phat^6 ...
@@ -378,7 +378,7 @@ inline gdual<T> cos(const gdual<T> &d)
 
     factorial = 1.;
     coeff = 1;
-    gdual<T> sin_taylor(phat);
+    gdual<T, M> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
@@ -400,8 +400,8 @@ inline gdual<T> cos(const gdual<T> &d)
  * @return an std::array containing the Taylor expansions of sine and the cosine (first element, second element)
  *
  */
-template <typename T>
-std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
+template <typename T, typename M>
+std::array<gdual<T, M>, 2> sin_and_cos(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -412,8 +412,8 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
 
     double factorial(1.);
     int coeff(1.);
-    gdual<T> cos_taylor(1.);
-    gdual<T> tmp(cos_taylor);
+    gdual<T, M> cos_taylor(1.);
+    gdual<T, M> tmp(cos_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
         tmp *= phat2;             // phat^2, phat^4, phat^6 ...
@@ -423,7 +423,7 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
 
     factorial = 1.;
     coeff = 1;
-    gdual<T> sin_taylor(phat);
+    gdual<T, M> sin_taylor(phat);
     tmp = sin_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         coeff = -coeff;           // -1, 1, -1, 1, ...
@@ -433,7 +433,7 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
     }
     auto sine = sin_p0 * cos_taylor + cos_p0 * sin_taylor;
     auto cosine = cos_p0 * cos_taylor - sin_p0 * sin_taylor;
-    return std::array<gdual<T>, 2>{{std::move(sine), std::move(cosine)}};
+    return std::array<gdual<T, M>, 2>{{std::move(sine), std::move(cosine)}};
 }
 
 /// Overload for the tangent
@@ -453,8 +453,8 @@ std::array<gdual<T>, 2> sin_and_cos(const gdual<T> &d)
  * @return an audi:gdual containing the Taylor expansion of the tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> tan(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> tan(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -466,7 +466,7 @@ inline gdual<T> tan(const gdual<T> &d)
     boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
                                        std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
-    gdual<T> tan_taylor = phat;
+    gdual<T, M> tan_taylor = phat;
     // Factors
     double factorial(24);
     double four_k(16);
@@ -495,8 +495,8 @@ inline gdual<T> tan(const gdual<T> &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic sine of \p d
  */
-template <typename T>
-inline gdual<T> sinh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> sinh(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -506,8 +506,8 @@ inline gdual<T> sinh(const gdual<T> &d)
     auto cosh_p0 = audi::cosh(p0);
 
     double factorial(1.);
-    gdual<T> cosh_taylor(1.);
-    gdual<T> tmp(cosh_taylor);
+    gdual<T, M> cosh_taylor(1.);
+    gdual<T, M> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
@@ -515,7 +515,7 @@ inline gdual<T> sinh(const gdual<T> &d)
     }
 
     factorial = 1.;
-    gdual<T> sinh_taylor(phat);
+    gdual<T, M> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
@@ -541,8 +541,8 @@ inline gdual<T> sinh(const gdual<T> &d)
  *
  * @return an audi:gdual containing the Taylor expansion of the hyperbolic cosine of \p d
  */
-template <typename T>
-inline gdual<T> cosh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> cosh(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -552,8 +552,8 @@ inline gdual<T> cosh(const gdual<T> &d)
     auto cosh_p0 = audi::cosh(p0);
 
     double factorial(1.);
-    gdual<T> cosh_taylor(1.);
-    gdual<T> tmp(cosh_taylor);
+    gdual<T, M> cosh_taylor(1.);
+    gdual<T, M> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
@@ -561,7 +561,7 @@ inline gdual<T> cosh(const gdual<T> &d)
     }
 
     factorial = 1.;
-    gdual<T> sinh_taylor(phat);
+    gdual<T, M> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
@@ -582,8 +582,8 @@ inline gdual<T> cosh(const gdual<T> &d)
  * @return an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element)
  *
  */
-template <typename T>
-std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
+template <typename T, typename M>
+std::array<gdual<T, M>, 2> sinh_and_cosh(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -593,8 +593,8 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
     auto cosh_p0 = audi::cosh(p0);
 
     double factorial(1.);
-    gdual<T> cosh_taylor(1.);
-    gdual<T> tmp(cosh_taylor);
+    gdual<T, M> cosh_taylor(1.);
+    gdual<T, M> tmp(cosh_taylor);
     for (auto i = 2u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^2, phat^4, phat^6 ...
         factorial *= i * (i - 1.); // 2!, 4!, 6!, ...
@@ -602,7 +602,7 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
     }
 
     factorial = 1.;
-    gdual<T> sinh_taylor(phat);
+    gdual<T, M> sinh_taylor(phat);
     tmp = sinh_taylor;
     for (auto i = 3u; i <= d.get_order(); i += 2) {
         tmp *= phat2;              // phat^3, phat^5, phat^7 ...
@@ -611,7 +611,7 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
     }
     auto sineh = sinh_p0 * cosh_taylor + cosh_p0 * sinh_taylor;
     auto cosineh = cosh_p0 * cosh_taylor + sinh_p0 * sinh_taylor;
-    return std::array<gdual<T>, 2>{{std::move(sineh), std::move(cosineh)}};
+    return std::array<gdual<T, M>, 2>{{std::move(sineh), std::move(cosineh)}};
 }
 
 /// Overload for the hyperbolic tangent
@@ -631,8 +631,8 @@ std::array<gdual<T>, 2> sinh_and_cosh(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the hyperbolic tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> tanh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> tanh(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
@@ -644,7 +644,7 @@ inline gdual<T> tanh(const gdual<T> &d)
     boost::math::bernoulli_b2n<double>(0, (d.get_order() + 1) / 2 + 1,
                                        std::back_inserter(bn)); // Fill vector with even Bernoulli numbers.
 
-    gdual<T> tanh_taylor = phat;
+    gdual<T, M> tanh_taylor = phat;
     // Factors
     double factorial(24.);
     double four_k(16.);
@@ -673,15 +673,15 @@ inline gdual<T> tanh(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> atanh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> atanh(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0);
     auto powphat(phat);
     auto atanh_p0 = audi::atanh(p0);
 
-    gdual<T> retval(0.);
+    gdual<T, M> retval(0.);
     double coeff = 1.;
 
     for (auto k = 1u; k <= d.get_order(); ++k) {
@@ -713,14 +713,14 @@ inline gdual<T> atanh(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse tangent of \p d
  *
  */
-template <typename T>
-inline gdual<T> atan(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> atan(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     auto phat = (d - p0) / (1. + p0 * p0);
     auto powphat(phat);
 
-    auto retval = gdual<T>(audi::atan(p0));
+    auto retval = gdual<T, M>(audi::atan(p0));
     T coeff1(1.);
     T coeff2(-1.);
 
@@ -769,8 +769,8 @@ inline gdual<T> atan(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic sine of \p d
  *
  */
-template <typename T>
-inline gdual<T> asinh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> asinh(const gdual<T, M> &d)
 {
     return log(d + sqrt(1. + d * d));
 }
@@ -791,8 +791,8 @@ inline gdual<T> asinh(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse hyperbolic cosine of \p d
  *
  */
-template <typename T>
-inline gdual<T> acosh(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> acosh(const gdual<T, M> &d)
 {
     return log(d + sqrt(d * d - 1.));
 }
@@ -813,8 +813,8 @@ inline gdual<T> acosh(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse sine of \p d
  *
  */
-template <typename T>
-inline gdual<T> asin(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> asin(const gdual<T, M> &d)
 {
     return atan(d / sqrt(1. - d * d));
 }
@@ -835,8 +835,8 @@ inline gdual<T> asin(const gdual<T> &d)
  * @return an audi::gdual containing the Taylor expansion of the inverse cosine of \p d
  *
  */
-template <typename T>
-inline gdual<T> acos(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> acos(const gdual<T, M> &d)
 {
     return 0.5 * boost::math::constants::pi<double>() - asin(d);
 }
@@ -861,8 +861,8 @@ inline gdual<T> acos(const gdual<T> &d)
  * @return an audi:gdual containing the Taylor expansion of the absoute value of \p d
  *
  */
-template <typename T>
-inline gdual<T> abs(const gdual<T> &d)
+template <typename T, typename M>
+inline gdual<T, M> abs(const gdual<T, M> &d)
 {
     auto p0 = d.constant_cf();
     if (p0 >= 0) {
@@ -871,10 +871,10 @@ inline gdual<T> abs(const gdual<T> &d)
     return -d;
 }
 // Vectorized abs specialization
-template <typename T>
-inline gdual<vectorized<T>> abs(const gdual<vectorized<T>> &d)
+template <typename T, typename M>
+inline gdual<vectorized<T>, M> abs(const gdual<vectorized<T>, M> &d)
 {
-    gdual<vectorized<T>> retval(d);
+    gdual<vectorized<T>, M> retval(d);
     auto p0 = retval.constant_cf();
     for (auto it = retval._poly().begin(); it != retval._poly().end(); ++it) {
         // if the coefficient has one only element copy it over to the whole length of p0
@@ -893,8 +893,8 @@ inline gdual<vectorized<T>> abs(const gdual<vectorized<T>> &d)
 #if defined(AUDI_WITH_QUADMATH)
 // template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
 // requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> tan(const gdual<mppp::real128> &d)
+template <typename M>
+inline gdual<mppp::real128, M> tan(const gdual<mppp::real128, M> &d)
 {
     auto sincos = sin_and_cos(d);
     return sincos[0] / sincos[1];
@@ -902,16 +902,16 @@ inline gdual<mppp::real128> tan(const gdual<mppp::real128> &d)
 
 // template specialization for the mppp::real128 type. boost::math::constants::pi<mppp::real128> can also work, but
 // requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> acos(const gdual<mppp::real128> &d)
+template <typename M>
+inline gdual<mppp::real128, M> acos(const gdual<mppp::real128, M> &d)
 {
     return 0.5 * mppp::real128_pi() - asin(d);
 }
 
 // template specialization for the mppp::real128 type.  boost::math::bernoulli_b2n<mppp::real128> can also work, but
 // requires to specialize std::numeric_limits for vectorized and mppp::real128
-template <>
-inline gdual<mppp::real128> tanh(const gdual<mppp::real128> &d)
+template <typename M>
+inline gdual<mppp::real128, M> tanh(const gdual<mppp::real128, M> &d)
 {
     auto sinhcosh = sinh_and_cosh(d);
     return sinhcosh[0] / sinhcosh[1];

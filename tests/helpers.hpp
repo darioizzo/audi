@@ -29,10 +29,10 @@ namespace audi
 {
 
 // Compares two gduals allowing for a small epsilon tolerance of 10 * std::numeric_limits<double>::epsilon()
-template <typename T>
-inline bool EPSILON_COMPARE(const gdual<T> &d1, const gdual<T> &d2, const double epsilon)
+template <typename T, typename M>
+inline bool EPSILON_COMPARE(const gdual<T, M> &d1, const gdual<T, M> &d2, const double epsilon)
 {
-    gdual<T> zero = d2 - d1;
+    gdual<T, M> zero = d2 - d1;
 
     // checks that the coefficients of d2 - d1 are all within a reltol <= eps
     for (const auto &t : zero._poly()) {

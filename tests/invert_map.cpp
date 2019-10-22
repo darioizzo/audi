@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include <obake/polynomials/packed_monomial.hpp>
+
 #include <audi/audi.hpp>
 #include <audi/functions.hpp>
 #include <audi/invert_map.hpp>
@@ -20,8 +22,8 @@ BOOST_AUTO_TEST_CASE(computations)
     {
         // We invert (around 0) asin(x), hence checking to get the MacLaurin series
         // for sin(x) = dx - dx^3/3! + dx^5/5! + H.O.T.
-        gdual_d x(0, "x", 5);
-        std::vector<gdual_d> map, map_inv;
+        gdual<double, obake::packed_monomial<unsigned long long>> x(0, "x", 5);
+        std::vector<gdual<double, obake::packed_monomial<unsigned long long>>> map, map_inv;
         map.push_back(asin(x));
         map_inv = invert_map(map);
         BOOST_CHECK_CLOSE(map_inv[0].constant_cf(), 0, 1e-12);        // constant
@@ -34,8 +36,8 @@ BOOST_AUTO_TEST_CASE(computations)
     {
         // We invert (around 0.1) some complex mathematical formula and check that its inversion
         // computes correctly
-        gdual_d x(0.1, "x", 10);
-        std::vector<gdual_d> map, map_inv;
+        gdual<double, obake::packed_monomial<unsigned long long>> x(0.1, "x", 10);
+        std::vector<gdual<double, obake::packed_monomial<unsigned long long>>> map, map_inv;
         auto p0 = x * 3. * sin(x / 2.) + x + 1. * pow(1 + x, cos(x * 3));
         map.push_back(p0);
         map_inv = invert_map(map);
@@ -48,44 +50,44 @@ BOOST_AUTO_TEST_CASE(computations)
     {
         // We invert a 2-D map in x,y (polynomial) and check that the map composition
         // is the identity f(g(x)) = x (since no constant_cf is present)
-        gdual_d x(1., "x", 4);
-        gdual_d y(1., "y", 4);
-        std::vector<gdual_d> map, map_inv;
+        gdual<double, obake::packed_monomial<unsigned long long>> x(1., "x", 4);
+        gdual<double, obake::packed_monomial<unsigned long long>> y(1., "y", 4);
+        std::vector<gdual<double, obake::packed_monomial<unsigned long long>>> map, map_inv;
         map.push_back(x + y + x * x * y - 3.);
         map.push_back(x - y + y * y * x - 1.);
         map_inv = invert_map(map);
         auto I = map_inv & map;
-        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual_d(0, "x", 4), 1e-10));
-        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual_d(0, "y", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual<double, obake::packed_monomial<unsigned long long>>(0, "x", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual<double, obake::packed_monomial<unsigned long long>>(0, "y", 4), 1e-10));
     }
     {
         // We invert a 2-D map in x,y and check that the map composition
         // is the identity f(g(x)) = x (since no constant_cf is present)
-        gdual_d x(1., "x", 4);
-        gdual_d y(1., "y", 4);
-        std::vector<gdual_d> map, map_inv;
+        gdual<double, obake::packed_monomial<unsigned long long>> x(1., "x", 4);
+        gdual<double, obake::packed_monomial<unsigned long long>> y(1., "y", 4);
+        std::vector<gdual<double, obake::packed_monomial<unsigned long long>>> map, map_inv;
         map.push_back(sin(x * y - 1.) + x + y - 2.);
         map.push_back(cos(x * y * y - 1) - y + x - 1.);
         map_inv = invert_map(map);
         auto I = map_inv & map;
-        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual_d(0, "x", 4), 1e-10));
-        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual_d(0, "y", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual<double, obake::packed_monomial<unsigned long long>>(0, "x", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual<double, obake::packed_monomial<unsigned long long>>(0, "y", 4), 1e-10));
     }
     // 3 - D cases
     {
         // We invert a 3-D map in x,y,z and check that the map composition
         // is the identity f(g(x)) = x (since no constant_cf is present)
-        gdual_d x(1., "x", 4);
-        gdual_d y(1., "y", 4);
-        gdual_d z(1., "z", 4);
-        std::vector<gdual_d> map, map_inv;
+        gdual<double, obake::packed_monomial<unsigned long long>> x(1., "x", 4);
+        gdual<double, obake::packed_monomial<unsigned long long>> y(1., "y", 4);
+        gdual<double, obake::packed_monomial<unsigned long long>> z(1., "z", 4);
+        std::vector<gdual<double, obake::packed_monomial<unsigned long long>>> map, map_inv;
         map.push_back(x * y * z + x * y - 2 * z);
         map.push_back(y * z * x * x + z * y - z - y);
-        map.push_back(x - 2*z + cos(x * y * z - 1.));
+        map.push_back(x - 2 * z + cos(x * y * z - 1.));
         map_inv = invert_map(map);
         auto I = map_inv & map;
-        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual_d(0, "x", 4), 1e-10));
-        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual_d(0, "y", 4), 1e-10));
-        BOOST_CHECK(EPSILON_COMPARE(I[2], gdual_d(0, "z", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[0], gdual<double, obake::packed_monomial<unsigned long long>>(0, "x", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[1], gdual<double, obake::packed_monomial<unsigned long long>>(0, "y", 4), 1e-10));
+        BOOST_CHECK(EPSILON_COMPARE(I[2], gdual<double, obake::packed_monomial<unsigned long long>>(0, "z", 4), 1e-10));
     }
 }
