@@ -26,7 +26,7 @@
 #include <obake/math/subs.hpp>
 #include <obake/math/trim.hpp>
 #include <obake/math/truncate_degree.hpp>
-#include <obake/polynomials/packed_monomial.hpp>
+#include <obake/polynomials/d_packed_monomial.hpp>
 #include <obake/polynomials/polynomial.hpp>
 #include <obake/series.hpp>
 #include <obake/symbols.hpp>
@@ -70,7 +70,7 @@ namespace audi
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a obake polynomial.
  *
  */
-template <typename Cf>
+template <typename Cf, typename Monomial = obake::d_packed_monomial<unsigned long long, 8>>
 class gdual
 {
     // Static checks.
@@ -80,7 +80,7 @@ class gdual
 
 public:
     using cf_type = Cf;
-    using key_type = obake::packed_monomial<unsigned long long>;
+    using key_type = Monomial;
     using p_type = obake::polynomial<key_type, cf_type>;
 
 private:
@@ -88,24 +88,23 @@ private:
     // - at least one operand is a gdual,
     // - the other operand, if not gdual<Cf>, must be double, int or unsigned int or Cf
     template <typename T, typename U>
-    using gdual_if_enabled =
-        typename std::enable_if<(std::is_same<T, gdual<Cf>>::value && std::is_same<U, gdual<Cf>>::value)
-                                    || (std::is_same<T, gdual<Cf>>::value && std::is_same<U, Cf>::value)
-                                    || (std::is_same<T, gdual<Cf>>::value && std::is_same<U, double>::value)
-                                    || (std::is_same<T, gdual<Cf>>::value && std::is_same<U, int>::value)
-                                    || (std::is_same<T, gdual<Cf>>::value && std::is_same<U, unsigned int>::value)
-                                    || (std::is_same<U, gdual<Cf>>::value && std::is_same<T, Cf>::value)
-                                    || (std::is_same<U, gdual<Cf>>::value && std::is_same<T, double>::value)
-                                    || (std::is_same<U, gdual<Cf>>::value && std::is_same<T, int>::value)
-                                    || (std::is_same<U, gdual<Cf>>::value && std::is_same<T, unsigned int>::value),
-                                gdual>::type;
+    using gdual_if_enabled = typename std::enable_if<
+        (std::is_same<T, gdual<Cf, Monomial>>::value && std::is_same<U, gdual<Cf, Monomial>>::value)
+            || (std::is_same<T, gdual<Cf, Monomial>>::value && std::is_same<U, Cf>::value)
+            || (std::is_same<T, gdual<Cf, Monomial>>::value && std::is_same<U, double>::value)
+            || (std::is_same<T, gdual<Cf, Monomial>>::value && std::is_same<U, int>::value)
+            || (std::is_same<T, gdual<Cf, Monomial>>::value && std::is_same<U, unsigned int>::value)
+            || (std::is_same<U, gdual<Cf, Monomial>>::value && std::is_same<T, Cf>::value)
+            || (std::is_same<U, gdual<Cf, Monomial>>::value && std::is_same<T, double>::value)
+            || (std::is_same<U, gdual<Cf, Monomial>>::value && std::is_same<T, int>::value)
+            || (std::is_same<U, gdual<Cf, Monomial>>::value && std::is_same<T, unsigned int>::value),
+        gdual>::type;
 
-    // Enable the generic ctor only if T is not a gdual<Cf> (after removing
+    // Enable the generic ctor only if T is not a gdual<Cf,Monomial> (after removing
     // const/reference qualifiers).
     template <typename T>
-    using generic_ctor_enabler
-        = enable_if_t<!std::is_same<gdual<Cf>, decay_t<T>>::value && std::is_constructible<p_type, decay_t<T>>::value,
-                      int>;
+    using generic_ctor_enabler = enable_if_t<
+        !std::is_same<gdual<Cf, Monomial>, decay_t<T>>::value && std::is_constructible<p_type, decay_t<T>>::value, int>;
 
     void check_order() const
     {

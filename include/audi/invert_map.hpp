@@ -7,25 +7,25 @@
 #include <string>
 #include <vector>
 
-#include <audi/gdual.hpp>
 #include <audi/exceptions.hpp>
+#include <audi/gdual.hpp>
 #include <audi/io.hpp>
-
-using gdual_d = audi::gdual<double>;
 
 namespace audi
 {
 // The basic type of a Taylor map, that is a "square" collection of gduals
-using taylor_map = std::vector<gdual_d>;
+template <typename Cf, typename M>
+using taylor_map = std::vector<gdual<Cf, M>>;
 
 namespace detail
 {
 // This is the composition operator. It substitutes all symbol in A
 // with the gduals in B. Careful that A and B do not share symbols otherwise
 // unexpexted effect may arise
-inline taylor_map operator&(const taylor_map &A, const taylor_map &B)
+template <typename Cf, typename M>
+inline taylor_map<Cf, M> operator&(const taylor_map<Cf, M> &A, const taylor_map<Cf, M> &B)
 {
-    taylor_map retval;
+    taylor_map<Cf, M> retval;
     auto ss = A[0].get_symbol_set();
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
         auto tmp = A[i];
@@ -38,9 +38,10 @@ inline taylor_map operator&(const taylor_map &A, const taylor_map &B)
 }
 
 // This is the sum operator.
-inline taylor_map operator+(const taylor_map &A, const taylor_map &B)
+template <typename Cf, typename M>
+inline taylor_map<Cf, M> operator+(const taylor_map<Cf, M> &A, const taylor_map<Cf, M> &B)
 {
-    taylor_map retval(B.size());
+    taylor_map<Cf, M> retval(B.size());
     for (decltype(B.size()) i = 0u; i < B.size(); ++i) {
         retval[i] = A[i] + B[i];
     }
@@ -48,9 +49,10 @@ inline taylor_map operator+(const taylor_map &A, const taylor_map &B)
 }
 
 // This is the diff operator.
-inline taylor_map operator-(const taylor_map &A, const taylor_map &B)
+template <typename Cf, typename M>
+inline taylor_map<Cf, M> operator-(const taylor_map<Cf, M> &A, const taylor_map<Cf, M> &B)
 {
-    taylor_map retval(B.size());
+    taylor_map<Cf, M> retval(B.size());
     for (decltype(B.size()) i = 0u; i < B.size(); ++i) {
         retval[i] = A[i] - B[i];
     }
@@ -58,19 +60,20 @@ inline taylor_map operator-(const taylor_map &A, const taylor_map &B)
 }
 
 // This is the "multiplication" operator.
-template <typename T>
-inline taylor_map operator*(const T &c, const taylor_map &A)
+template <typename T, typename Cf, typename M>
+inline taylor_map<Cf, M> operator*(const T &c, const taylor_map<Cf, M> &A)
 {
-    taylor_map retval(A.size());
+    taylor_map<Cf, M> retval(A.size());
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
         retval[i] = A[i] * c;
     }
     return retval;
 }
 
-inline taylor_map trim(const taylor_map &A, double epsilon)
+template <typename Cf, typename M>
+inline taylor_map<Cf, M> trim(const taylor_map<Cf, M> &A, double epsilon)
 {
-    taylor_map retval(A.size());
+    taylor_map<Cf, M> retval(A.size());
     for (decltype(A.size()) i = 0u; i < A.size(); ++i) {
         retval[i] = A[i].trim(epsilon);
     }
@@ -88,7 +91,7 @@ static unsigned _(I n)
     return static_cast<unsigned>(n);
 }
 
-} // ends detail
+} // namespace detail
 
 /// Inversion of Taylor maps
 /**
@@ -129,14 +132,15 @@ static unsigned _(I n)
  * coefficient which will be neglected
  * @param verbose when true some output is shown during the Picard iterations
  *
- * @return The inverse map \f$\mathcal M^{-1}\f$ represented as an <tt> std::vector </tt> of <tt> gduals </tt> with symbol set
- * [p0, p1, .. pn]
+ * @return The inverse map \f$\mathcal M^{-1}\f$ represented as an <tt> std::vector </tt> of <tt> gduals </tt> with
+ * symbol set [p0, p1, .. pn]
  *
  * @throws std::invalid_argument if \p map_in is empty, if its linear part is not invertable, if the symbol set of the
  * map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
  * the gduals are not all the same.
  */
-inline taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
+template <typename Cf, typename Monomial>
+inline taylor_map<Cf, Monomial> invert_map(const taylor_map<Cf, Monomial> &map_in, bool verbose = false)
 {
     // To find the overloaded operators
     using namespace detail;
@@ -149,14 +153,14 @@ inline taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
     // The map has to contain equal order gduals. (We could allow for different order implementing some promotion)
     auto map_order = map_in[0].get_order();
     if (!std::all_of(map_in.cbegin(), map_in.cend(),
-                     [&map_order](const gdual_d &el) { return (el.get_order() == map_order); })) {
+                     [&map_order](const gdual<Cf, Monomial> &el) { return (el.get_order() == map_order); })) {
         audi_throw(std::invalid_argument,
                    "Impossible to invert the Tayor Map as the order of its components are mismatching.");
     }
     // The map needs to contain gdual having the same symbols. (We could allow different symbols and take the union)
     auto ss = map_in[0].get_symbol_set();
     if (!std::all_of(map_in.cbegin(), map_in.cend(),
-                     [&ss](const gdual_d &el) { return (el.get_symbol_set() == ss); })) {
+                     [&ss](const gdual<Cf, Monomial> &el) { return (el.get_symbol_set() == ss); })) {
         audi_throw(std::invalid_argument,
                    "Impossible to invert the Tayor Map as the symbol sets of its components are mismatching.");
     }
@@ -176,13 +180,14 @@ inline taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
     }
     /// ---------------------- Algorithm Start ---------------------------------------///
     // We decompose the map as map = M + N (linear plus non linear part). The inverse of the linear part will be Minv
-    taylor_map M(map_size, gdual_d(0)), Minv(map_size, gdual_d(0)), N(map_size, gdual_d(0)), I(map_size, gdual_d(0)),
-        Minv2(map_size, gdual_d(0));
-    taylor_map retval;
+    taylor_map<Cf, Monomial> M(map_size, gdual<Cf, Monomial>(0)), Minv(map_size, gdual<Cf, Monomial>(0)),
+        N(map_size, gdual<Cf, Monomial>(0)), I(map_size, gdual<Cf, Monomial>(0)),
+        Minv2(map_size, gdual<Cf, Monomial>(0));
+    taylor_map<Cf, Monomial> retval;
 
     // We construct the identity map [dp0, dp1, dp2, ... ]
     for (decltype(map_size) i = 0u; i < map_size; ++i) {
-        I[i] = gdual_d(0., "p" + std::to_string(i), map_order);
+        I[i] = gdual<Cf, Monomial>(0., "p" + std::to_string(i), map_order);
         I[i].extend_symbol_set(ss_inv);
     }
 
@@ -226,8 +231,8 @@ inline taylor_map invert_map(const taylor_map &map_in, bool verbose = false)
     // symbols to avoid mess when subs symbols later)
     for (decltype(invm.rows()) i = 0; i < invm.rows(); ++i) {
         for (decltype(invm.cols()) j = 0; j < invm.cols(); ++j) {
-            gdual_d dummy(0., "p" + std::to_string(j), map_order);
-            gdual_d dummy2(0., "pdummy" + std::to_string(j), map_order);
+            gdual<Cf, Monomial> dummy(0., "p" + std::to_string(j), map_order);
+            gdual<Cf, Monomial> dummy2(0., "pdummy" + std::to_string(j), map_order);
             dummy *= invm(i, j);
             dummy2 *= invm(i, j);
             // this must have the same symbols of the identity and the final symbols of the onverse map returned

@@ -9,11 +9,13 @@
 
 #include <boost/optional.hpp>
 
+#include <obake/polynomials/packed_monomial.hpp>
+
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
 
 using namespace audi;
-using gdual_d = gdual<double>;
+using gdual_d = gdual<double, obake::packed_monomial<unsigned long long>>;
 
 void scalable_mul(unsigned int m, unsigned int n)
 {
