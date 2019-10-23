@@ -70,7 +70,7 @@ namespace audi
  * @note The class can be instantiated with any type that is suitable to be a coefficient in a obake polynomial.
  *
  */
-template <typename Cf, typename Monomial = obake::d_packed_monomial<unsigned long long, 6>>
+template <typename Cf, typename Monomial = obake::d_packed_monomial<unsigned long long, 8>>
 class gdual
 {
     // Static checks.
