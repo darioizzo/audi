@@ -30,16 +30,6 @@ fi
 cd
 cd install
 
-# Install piranha
-curl -L https://github.com/bluescarni/piranha/archive/v0.11.tar.gz > v0.11
-tar xvf v0.11 > /dev/null 2>&1
-cd piranha-0.11
-mkdir build
-cd build
-cmake -DBoost_NO_BOOST_CMAKE=ON ../ > /dev/null
-make install > /dev/null 2>&1
-cd ..
-
 # Install audi headers
 cd /audi
 mkdir build_audi
