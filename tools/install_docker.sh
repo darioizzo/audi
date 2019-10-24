@@ -27,9 +27,6 @@ else
 	exit 1
 fi
 
-cd
-cd install
-
 # Install audi headers
 cd /audi
 mkdir build_audi
@@ -42,7 +39,8 @@ make install
 cd ..
 
 # Compile and install pyaudi (build directory is created by .travis.yml)
-cd build
+mkdir build_pyaudi
+cd build_pyaudi
 cmake -DBoost_NO_BOOST_CMAKE=ON \
       -DCMAKE_BUILD_TYPE=Release \
 	  -DAUDI_BUILD_AUDI=no \
