@@ -21,18 +21,13 @@ matrix:
     sudo: required
     services:
     - docker
-  - env: AUDI_BUILD="manylinux64Py27mu" DOCKER_IMAGE="pagmo2/manylinux2010_x86_64_with_deps"
-    sudo: required
-    services:
-    - docker
   - env: AUDI_BUILD="OSXDebug" AUDI_BUILD_TYPE="Debug"
     os: osx
     osx_image: xcode10.3
   - env: AUDI_BUILD="OSXRelease" AUDI_BUILD_TYPE="Release"
     os: osx
     osx_image: xcode10.3
-# install:
-# - docker pull $DOCKER_IMAGE
+
 script:
   - if [[ "${AUDI_BUILD}" == OSX* ]]; then bash tools/travis_osx.sh; fi
   - if [[ "${AUDI_BUILD}" == manylinux* ]]; then bash tools/install_travis.sh; fi
