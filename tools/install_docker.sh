@@ -59,7 +59,7 @@ cp -a `find /usr/local/lib -type d -iname 'pyaudi'` ./
 auditwheel repair dist/pyaudi* -w ./dist2
 # Try to install it and run the tests.
 cd /
-/opt/python/${PYTHON_DIR}/bin/pip install /audi/build/wheel/dist2/pyaudi*
+/opt/python/${PYTHON_DIR}/bin/pip install /audi/build_pyaudi/wheel/dist2/pyaudi*
 /opt/python/${PYTHON_DIR}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
@@ -68,5 +68,5 @@ export AUDI_RELEASE_VERSION=`echo "${TRAVIS_TAG}"|grep -E 'v[0-9]+\.[0-9]+.*'|cu
 if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
     echo "Release build detected, uploading to PyPi."
     /opt/python/${PYTHON_DIR}/bin/pip install twine
-    /opt/python/${PYTHON_DIR}/bin/twine upload -u darioizzo /audi/build/wheel/dist2/pyaudi*
+    /opt/python/${PYTHON_DIR}/bin/twine upload -u darioizzo /audi/build_pyaudi/wheel/dist2/pyaudi*
 fi
