@@ -27,19 +27,6 @@ else
 	exit 1
 fi
 
-cd
-cd install
-
-# Install piranha
-curl -L https://github.com/bluescarni/piranha/archive/v0.11.tar.gz > v0.11
-tar xvf v0.11 > /dev/null 2>&1
-cd piranha-0.11
-mkdir build
-cd build
-cmake -DBoost_NO_BOOST_CMAKE=ON ../ > /dev/null
-make install > /dev/null 2>&1
-cd ..
-
 # Install audi headers
 cd /audi
 mkdir build_audi
@@ -52,7 +39,8 @@ make install
 cd ..
 
 # Compile and install pyaudi (build directory is created by .travis.yml)
-cd build
+mkdir build_pyaudi
+cd build_pyaudi
 cmake -DBoost_NO_BOOST_CMAKE=ON \
       -DCMAKE_BUILD_TYPE=Release \
 	  -DAUDI_BUILD_AUDI=no \
@@ -71,7 +59,7 @@ cp -a `find /usr/local/lib -type d -iname 'pyaudi'` ./
 auditwheel repair dist/pyaudi* -w ./dist2
 # Try to install it and run the tests.
 cd /
-/opt/python/${PYTHON_DIR}/bin/pip install /audi/build/wheel/dist2/pyaudi*
+/opt/python/${PYTHON_DIR}/bin/pip install /audi/build_pyaudi/wheel/dist2/pyaudi*
 /opt/python/${PYTHON_DIR}/bin/python -c "from pyaudi import test; test.run_test_suite()"
 
 # Upload in PyPi
@@ -80,5 +68,5 @@ export AUDI_RELEASE_VERSION=`echo "${TRAVIS_TAG}"|grep -E 'v[0-9]+\.[0-9]+.*'|cu
 if [[ "${AUDI_RELEASE_VERSION}" != "" ]]; then
     echo "Release build detected, uploading to PyPi."
     /opt/python/${PYTHON_DIR}/bin/pip install twine
-    /opt/python/${PYTHON_DIR}/bin/twine upload -u darioizzo /audi/build/wheel/dist2/pyaudi*
+    /opt/python/${PYTHON_DIR}/bin/twine upload -u darioizzo /audi/build_pyaudi/wheel/dist2/pyaudi*
 fi
