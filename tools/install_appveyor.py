@@ -97,9 +97,9 @@ os.chdir('../../')
 print("abseil successfully installed .. continuing")
 
 # Download obake 0.1 https://github.com/bluescarni/obake/archive/v0.1.zip
-wget(r'https://github.com/bluescarni/obake/archive/v0.1.zip', 'obake.zip')
+wget(r'https://github.com/bluescarni/obake/archive/e3ade59b127fca5fcf9bdc86c4c08c6eaac3c231.zip', 'obake.zip')
 run_command(r'unzip obake.zip', verbose=True)
-os.chdir('obake-0.1')
+os.chdir('obake-e3ade59b127fca5fcf9bdc86c4c08c6eaac3c231')
 os.makedirs('build')
 os.chdir('build')
 print("Installing obake")
