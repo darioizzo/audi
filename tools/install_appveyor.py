@@ -75,17 +75,28 @@ run_command(r'7z x -aoa -oC:\\ tbb.7z', verbose=False)
 # Download mppp 0.17 https://github.com/bluescarni/mppp/archive/v0.17.zip
 wget(r'https://github.com/bluescarni/mppp/archive/v0.17.zip', 'mppp.zip')
 run_command(r'unzip mppp.zip', verbose=False)
-# Move to the directory created and make piranha install its headers
 os.chdir('mppp-0.17')
 os.makedirs('build')
 os.chdir('build')
 print("Installing mp++")
-run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DCMAKE_PREFIX_PATH=c:\\local -DMPPP_WITH_MPFR=yes', verbose=False)
-run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DCMAKE_PREFIX_PATH=c:\\local -DMPPP_WITH_MPFR=yes', verbose=True)
+run_command(r'mingw32-make install VERBOSE=1', verbose=True)
 os.chdir('../../')
 print("mp++ successfully installed .. continuing")
 
-# Download piranha 0.11 https://github.com/bluescarni/piranha/archive/v0.11.zip
+# Download abseil https://github.com/abseil/abseil-cpp/archive/20190808.zip
+wget(r'https://github.com/abseil/abseil-cpp/archive/20190808.zip', 'abseil.zip')
+run_command(r'unzip abseil.zip', verbose=False)
+os.chdir('abseil-cpp-20190808')
+os.makedirs('build')
+os.chdir('build')
+print("Installing abseil")
+run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DCMAKE_PREFIX_PATH=c:\\local', verbose=True)
+run_command(r'mingw32-make install VERBOSE=1', verbose=True)
+os.chdir('../../')
+print("abseil successfully installed .. continuing")
+
+# Download obake 0.1 https://github.com/bluescarni/obake/archive/v0.1.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.11.zip', 'piranhav11.zip')
 run_command(r'unzip piranhav11.zip', verbose=False)
 # Move to the directory created and make piranha install its headers
