@@ -63,12 +63,27 @@ wget(r'https://github.com/bluescarni/binary_deps/raw/master/boost_mgw81-mt-x64-1
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/gmp_mingw81_64.7z', 'gmp.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/mpfr_mingw81_64.7z', 'mpfr.7z')
 wget(r'https://github.com/bluescarni/binary_deps/raw/master/eigen3.7z', 'eigen3.7z')
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/tbb_2019_mgw81.7z', 'tbb.7z')
 
 # Extract them.
 run_command(r'7z x -aoa -oC:\\ gmp.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ mpfr.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ eigen3.7z', verbose=False)
 run_command(r'7z x -aoa -oC:\\ boost.7z', verbose=False)
+run_command(r'7z x -aoa -oC:\\ tbb.7z', verbose=False)
+
+# Download mppp 0.17 https://github.com/bluescarni/mppp/archive/v0.17.zip
+wget(r'https://github.com/bluescarni/mppp/archive/v0.17.zip', 'mppp.zip')
+run_command(r'unzip mppp.zip', verbose=False)
+# Move to the directory created and make piranha install its headers
+os.chdir('mppp-0.17')
+os.makedirs('build')
+os.chdir('build')
+print("Installing mp++")
+run_command(r'cmake -G "MinGW Makefiles" .. -DCMAKE_INSTALL_PREFIX=c:\\local -DCMAKE_PREFIX_PATH=c:\\local -DMPPP_WITH_MPFR=yes', verbose=False)
+run_command(r'mingw32-make install VERBOSE=1', verbose=False)
+os.chdir('../../')
+print("mp++ successfully installed .. continuing")
 
 # Download piranha 0.11 https://github.com/bluescarni/piranha/archive/v0.11.zip
 wget(r'https://github.com/bluescarni/piranha/archive/v0.11.zip', 'piranhav11.zip')
