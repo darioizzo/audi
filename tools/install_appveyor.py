@@ -85,7 +85,7 @@ os.chdir('../../')
 print("mp++ successfully installed .. continuing")
 
 # Download abseil https://github.com/abseil/abseil-cpp/archive/20190808.zip
-wget(r'https://github.com/abseil/abseil-cpp/archive/20190808.zip', 'abseil.zip')
+wget(r'https://github.com/bluescarni/binary_deps/raw/master/abseil-cpp-20190808.zip', 'abseil.zip')
 run_command(r'unzip abseil.zip', verbose=False)
 os.chdir('abseil-cpp-20190808')
 os.makedirs('build')
