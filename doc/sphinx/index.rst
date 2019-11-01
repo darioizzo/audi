@@ -22,7 +22,7 @@ Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson se
    Audi is thread-safe and, when possible, makes use of obake fine-grained parallelization of the truncated polynomial multiplication.
    The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.
 
-Audi is open source (GPL3) and its code available in github <https://github.com/darioizzo/audi>`_
+Audi is open source (GPL3) and its code available in `github <https://github.com/darioizzo/audi>`_
 
 -----------------------------------------------
 
