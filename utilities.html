@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; audi 1.3 documentation</title>
+  <title>Utilities &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="index.html"/>
+    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
         <link rel="up" title="Documentation (C++ header only library)" href="doc_c++.html"/>
         <link rel="next" title="Documentation (Python package)" href="doc_python.html"/>
         <link rel="prev" title="Mathematical functions" href="functions.html"/> 
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -107,7 +107,6 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -187,8 +186,8 @@
 <h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
 <p><em>#include &lt;audi/invert_map.hpp&gt;</em></p>
 <dl class="function">
-<dt id="_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb">
-std::vector&lt;gdual_d&gt; <code class="descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv310invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv410invert_mapRKNSt6vectorI7gdual_dEEb">
+std::vector&lt;gdual_d&gt; <code class="sig-name descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Inversion of Taylor series.</p>
 <p>Consider a system of non linear equations in <span class="math notranslate nohighlight">\(n\)</span> variables:</p>
 <div class="math notranslate nohighlight">
@@ -221,27 +220,23 @@ some Picard iterations (fixed point) over the following simple formal equalities
 \[\mathcal M^{-1} = M^{-1} \circ \left(\mathcal I - N \circ \mathcal M^{-1}\right)\]</div>
 <p>which can be used to make a fixed point iterative scheme once
 the inverse of the linear part <span class="math notranslate nohighlight">\(M^{-1}\)</span> is found. Note that the inverse is guaranteed to exist if the linear part is invertible.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>map_in</strong> – The input map represented as an <em>std::vector</em> of <em>gdual&lt;double&gt;</em>. They can have a constant coefficient which will be neglected</li>
-<li><strong>verbose</strong> – when true some output is shown during the iterations</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map_in</strong> – The input map represented as an <em>std::vector</em> of <em>gdual&lt;double&gt;</em>. They can have a constant coefficient which will be neglected</p></li>
+<li><p><strong>verbose</strong> – when true some output is shown during the iterations</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The inverse map <span class="math notranslate nohighlight">\(\mathcal M^{-1}\)</span> represented as an <em>std::vector</em> of <em>gduals</em> with symbol set
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inverse map <span class="math notranslate nohighlight">\(\mathcal M^{-1}\)</span> represented as an <em>std::vector</em> of <em>gduals</em> with symbol set
 [p0, p1, .. pn]</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Exception:</th><td class="field-body"><p class="first last">std::invalid_argument if <em>map_in</em> is empty, if its linear part is not invertable, if the symbol set of the
+</dd>
+<dt class="field-odd">Exception</dt>
+<dd class="field-odd"><p>std::invalid_argument if <em>map_in</em> is empty, if its linear part is not invertable, if the symbol set of the
 map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
 the gduals are not all the same.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="s">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
 <span class="k">auto</span> <span class="n">sinx</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
 <span class="k">auto</span> <span class="n">asinx</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
@@ -302,7 +297,7 @@ the gduals are not all the same.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -312,7 +307,10 @@ the gduals are not all the same.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="None"></script>
 
   
 

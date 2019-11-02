@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Audi and pyaudi &mdash; audi 1.3 documentation</title>
+  <title>Audi and pyaudi &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="#"/>
+    <link rel="top" title="audi 1.7 documentation" href="#"/>
         <link rel="next" title="Quick start" href="quickstart.html"/> 
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -96,7 +96,6 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -178,15 +177,15 @@ efficient on some targeted application, Audi was built to be fast and efficient
 across all application ranges (low/high order of derivation, one variable,
 many variables, sparse/dense cases).</p>
 <p>Audi is internally powered by the truncated polynomial multiplication algorithm
-of the open source project <a class="reference external" href="https://github.com/bluescarni/piranha">Piranha</a> some details of which are described in:</p>
+of the open source project <a class="reference external" href="https://github.com/bluescarni/obake">obake</a> some details of which are described in:</p>
 <p>Biscani, Francesco. <a class="reference external" href="http://dl.acm.org/citation.cfm?id=2442845">Parallel sparse polynomial multiplication on modern hardware architectures.</a>  Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.</p>
 <p>Biscani, Francesco. <a class="reference external" href="http://arxiv.org/pdf/1004.4548v1.pdf">Multiplication of sparse Laurent polynomials and Poisson series on modern hardware architectures.</a> arXiv preprint arXiv:1004.4548 (2010).</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Audi is thread-safe and, when possible, makes use of Piranha fine-grained parallelization of the truncated polynomial multiplication.
+<p class="admonition-title">Note</p>
+<p>Audi is thread-safe and, when possible, makes use of obake fine-grained parallelization of the truncated polynomial multiplication.
 The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.</p>
 </div>
-<p>Audi is open source (GPL3) and its code available in github &lt;<a class="reference external" href="https://github.com/darioizzo/audi">https://github.com/darioizzo/audi</a>&gt;`_</p>
+<p>Audi is open source (GPL3) and its code available in <a class="reference external" href="https://github.com/darioizzo/audi">github</a></p>
 <hr class="docutils" />
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
@@ -197,8 +196,9 @@ The benefits of this fine grained parallelization are well visible for many vari
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install_c.html">Installation (C++ header only library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install_p.html">Installation (Python package)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_c.html">Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_c.html#from-source">From source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_p.html">Python bindings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a><ul>
@@ -240,11 +240,6 @@ The benefits of this fine grained parallelization are well visible for many vari
 <li class="toctree-l2"><a class="reference internal" href="notebooks/vectorized_double.html#Operating-on-doubles">Operating on doubles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/vectorized_double.html#Operating-on-vectorized-doubles">Operating on vectorized doubles</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/vectorized_double.html#A-deeper-look-into-the-speedup">A deeper look into the speedup</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/mp_gdual.html#Qudruple-precision-floats">Qudruple precision floats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/mp_gdual.html#Qudruple-precision-gdual">Qudruple precision gdual</a></li>
 </ul>
 </li>
 </ul>
@@ -293,9 +288,9 @@ The benefits of this fine grained parallelization are well visible for many vari
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 
@@ -338,7 +333,7 @@ The benefits of this fine grained parallelization are well visible for many vari
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -348,7 +343,10 @@ The benefits of this fine grained parallelization are well visible for many vari
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="None"></script>
 
   
 

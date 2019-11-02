@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>High Order Taylor Maps I &mdash; audi 1.3 documentation</title>
+  <title>High Order Taylor Maps I &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="../index.html"/>
+    <link rel="top" title="audi 1.7 documentation" href="../index.html"/>
         <link rel="next" title="High Order Taylor Maps II" href="example13.html"/>
         <link rel="prev" title="Training Artificial Neural Networks" href="example11.html"/> 
 
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -97,7 +97,6 @@
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul class="current">
@@ -230,18 +229,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 9ex;
+    min-width: 7ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -281,9 +280,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -291,7 +290,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -340,12 +339,45 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 </style>
 <div class="section" id="High-Order-Taylor-Maps-I">
 <h1>High Order Taylor Maps I<a class="headerlink" href="#High-Order-Taylor-Maps-I" title="Permalink to this headline">¶</a></h1>
 <p>(by Dario Izzo)</p>
-<p>In this notebook we consider the system of differential equations
-<span class="math notranslate nohighlight">\(\dot{\mathbf y} = \mathbf f(\mathbf y)\)</span>:</p>
+<p>In this notebook we consider the system of differential equations <span class="math notranslate nohighlight">\(\dot{\mathbf y} = \mathbf f(\mathbf y)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{l}
 \dot r = v_r \\
@@ -353,23 +385,13 @@ div.nboutput div.output_area.stderr {
 \dot \theta = v_\theta \\
 \dot v_\theta = -2 \frac{v_\theta v_r}{r}
 \end{array}\end{split}\]</div>
-<p>which describe, in non dimensional units, the Keplerian motion of a mass
-point object around some primary body. We show how we can build a high
-order Taylor map (HOTM, indicated with <span class="math notranslate nohighlight">\(\mathcal M\)</span>) representing
-the final state of the system at the time <span class="math notranslate nohighlight">\(T\)</span> as a function of the
-initial conditions.</p>
-<p>In other words, we build a polinomial representation of the relation
-<span class="math notranslate nohighlight">\(\mathbf y(T) = \mathbf f(\mathbf y(0), T)\)</span>. Writing the initial
-conditions as
-<span class="math notranslate nohighlight">\(\mathbf y(0) = \overline {\mathbf y}(0) + \mathbf {dy}\)</span>, our HOTM
-will be written as:</p>
+<p>which describe, in non dimensional units, the Keplerian motion of a mass point object around some primary body. We show how we can build a high order Taylor map (HOTM, indicated with <span class="math notranslate nohighlight">\(\mathcal M\)</span>) representing the final state of the system at the time <span class="math notranslate nohighlight">\(T\)</span> as a function of the initial conditions.</p>
+<p>In other words, we build a polinomial representation of the relation <span class="math notranslate nohighlight">\(\mathbf y(T) = \mathbf f(\mathbf y(0), T)\)</span>. Writing the initial conditions as <span class="math notranslate nohighlight">\(\mathbf y(0) = \overline {\mathbf y}(0) + \mathbf {dy}\)</span>, our HOTM will be written as:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf y(T) = \mathcal M(\mathbf {dy})\]</div>
-<p>and will be valid in a neighbourhood of
-<span class="math notranslate nohighlight">\(\overline {\mathbf y}(0)\)</span>.</p>
+<p>and will be valid in a neighbourhood of <span class="math notranslate nohighlight">\(\overline {\mathbf y}(0)\)</span>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -383,8 +405,7 @@ will be written as:</p>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -409,8 +430,7 @@ will be written as:</p>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -423,8 +443,7 @@ will be written as:</p>
 <div class="section" id="We-perform-the-numerical-integration-using-floats-(the-standard-way)">
 <h2>We perform the numerical integration using floats (the standard way)<a class="headerlink" href="#We-perform-the-numerical-integration-using-floats-(the-standard-way)" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -441,8 +460,7 @@ will be written as:</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -458,8 +476,7 @@ will be written as:</p>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -478,8 +495,7 @@ will be written as:</p>
 <div class="section" id="We-perform-the-numerical-integration-using-gduals-(to-get-a-HOTM)">
 <h2>We perform the numerical integration using gduals (to get a HOTM)<a class="headerlink" href="#We-perform-the-numerical-integration-using-gduals-(to-get-a-HOTM)" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -491,8 +507,7 @@ will be written as:</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -514,8 +529,7 @@ will be written as:</p>
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -543,8 +557,7 @@ xf (latex):
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -552,8 +565,7 @@ xf (latex):
 \[ 456.247{dvt}^{3}-0.00244413{dt}^{3}+32.5178{dr}{dt}^{3}{dvt}+9.72205{dr}{dt}^{3}{dvr}-98350.9{dr}^{2}{dvr}^{3}+95097.4{dr}^{3}{dt}{dvt}+3.44559{dt}^{3}{dvt}-14318.7{dvt}^{4}+680.557{dr}{dvt}+3059.27{dr}{dt}{dvr}{dvt}-501710{dr}{dvt}^{4}-2.01229{dvt}-4.00992{dr}-58.3323{dr}{dt}{dvr}+2119.32{dr}^{2}{dvr}-1040.11{dvr}^{2}{dvt}^{2}-93373.3{dr}^{2}{dvr}{dvt}-61205.4{dr}^{3}{dvr}-185943{dr}^{4}+1.00615{dt}^{2}{dvt}+\ldots+\mathcal{O}\left(6\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -582,8 +594,7 @@ Final y from the float integration 0.014664786455132996
 <div class="section" id="We-visualize-the-HOTM">
 <h2>We visualize the HOTM<a class="headerlink" href="#We-visualize-the-HOTM" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -617,8 +628,7 @@ Final y from the float integration 0.014664786455132996
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -648,8 +658,7 @@ Final y from the float integration 0.014664786455132996
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -668,8 +677,7 @@ Final y from the float integration 0.014664786455132996
 <div class="section" id="How-much-faster-is-now-to-evaluate-the-Map-rather-than-perform-a-new-numerical-integration?">
 <h2>How much faster is now to evaluate the Map rather than perform a new numerical integration?<a class="headerlink" href="#How-much-faster-is-now-to-evaluate-the-Map-rather-than-perform-a-new-numerical-integration?" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -678,8 +686,7 @@ Final y from the float integration 0.014664786455132996
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -696,8 +703,7 @@ Final y from the float integration 0.014664786455132996
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -706,8 +712,7 @@ Final y from the float integration 0.014664786455132996
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -724,8 +729,7 @@ Final y from the float integration 0.014664786455132996
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -748,8 +752,7 @@ Final y from the float integration 0.014664786455132996
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -808,7 +811,7 @@ Final y from the float integration 0.014664786455132996
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -818,7 +821,10 @@ Final y from the float integration 0.014664786455132996
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../None"></script>
 
   
 

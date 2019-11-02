@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Map (series) inversion &mdash; audi 1.3 documentation</title>
+  <title>Map (series) inversion &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="../index.html"/>
+    <link rel="top" title="audi 1.7 documentation" href="../index.html"/>
         <link rel="prev" title="High Order Taylor Maps II" href="example13.html"/> 
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -96,7 +96,6 @@
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul class="current">
@@ -109,13 +108,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#The-Double-Pendulum-end-point">The Double Pendulum end-point</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Compute-the-inverse-map">Compute the inverse map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute-\theta-from-x">Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#The-Kepler’s-Equation">The Kepler’s Equation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Define-our-variables">Define our variables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Invert-the-map">Invert the map</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Compute--from-">Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute-E-from-M">Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span></a></li>
 </ul>
 </li>
 </ul>
@@ -238,18 +237,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 9ex;
+    min-width: 7ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -289,9 +288,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -299,7 +298,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -348,17 +347,49 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 </style>
 <div class="section" id="Map-(series)-inversion">
 <h1>Map (series) inversion<a class="headerlink" href="#Map-(series)-inversion" title="Permalink to this headline">¶</a></h1>
 <p>(by Dario Izzo)</p>
-<p>In this notebook we show how to use the map inversion algorithm to
-locally invert systems of non linear equations.</p>
+<p>In this notebook we show how to use the map inversion algorithm to locally invert systems of non linear equations.</p>
 <div class="section" id="Importing-stuff">
 <h2>Importing stuff<a class="headerlink" href="#Importing-stuff" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -375,12 +406,9 @@ locally invert systems of non linear equations.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}x = l_1 sin(\theta_1) + l_2 sin(\theta_2) \\
 y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
-<p>We will develop a model for the inversion of this system of equations,
-so that <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> can be expressed as a
-function of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span></p>
+<p>We will develop a model for the inversion of this system of equations, so that <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> can be expressed as a function of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span></p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -392,18 +420,16 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
+<div class="output_area rendered_html docutils container">
 <img src="http://www.physicsandbox.com/assets/images/pendulum.jpg"/></div>
 </div>
 <div class="section" id="Define-our-variables">
 <h3>Define our variables<a class="headerlink" href="#Define-our-variables" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -423,8 +449,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -434,8 +459,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -443,8 +467,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 \[ 1.27409{d\theta_2}+2.63265e-06{d\theta_1}^{9}-0.000410445{d\theta_1}^{6}+3.51104e-06{d\theta_2}^{9}-0.159223{d\theta_1}^{3}+0.0372501+0.000358709{d\theta_2}^{6}-0.000252795{d\theta_2}^{7}-0.212348{d\theta_2}^{3}-2.39332e-08{d\theta_1}^{11}+7.32937e-06{d\theta_1}^{8}+0.00796114{d\theta_1}^{5}-0.0107613{d\theta_2}^{4}-0.14776{d\theta_1}^{2}+0.0106174{d\theta_2}^{5}-8.14374e-08{d\theta_1}^{10}-6.40551e-06{d\theta_2}^{8}-0.000189551{d\theta_1}^{7}+0.0123133{d\theta_1}^{4}+0.955336{d\theta_1}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -454,8 +477,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -466,8 +488,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 <div class="section" id="Compute-the-inverse-map">
 <h3>Compute the inverse map<a class="headerlink" href="#Compute-the-inverse-map" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -479,8 +500,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -490,8 +510,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -499,8 +518,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 \[ -33.3889{dp0}^{2}{dp1}^{2}+2.97638{dp0}^{2}{dp1}-1.53985e+08{dp0}^{2}{dp1}^{8}+7.49742{dp0}^{4}{dp1}-1.18854{dp0}^{8}-450.043{dp1}^{4}-0.461981{dp0}^{2}-60579.9{dp0}{dp1}^{6}+13499.7{dp0}^{7}{dp1}^{3}-19.2519{dp0}^{3}{dp1}^{2}+4.30881e+06{dp0}^{6}{dp1}^{5}+1.03732{dp0}^{3}{dp1}-2.89428e+08{dp0}^{3}{dp1}^{8}+4.30674{dp0}^{5}{dp1}-0.913559{dp0}^{9}+7.34785e+07{dp1}^{9}-5141.9{dp0}^{3}{dp1}^{4}-0.0793933{dp0}^{3}-45079.9{dp0}^{5}{dp1}^{4}-47904.3{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -510,8 +528,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -519,11 +536,10 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 \[ 25.7695{dp0}^{2}{dp1}^{2}-2.34715{dp0}^{2}{dp1}+1.18575e+08{dp0}^{2}{dp1}^{8}-5.78329{dp0}^{4}{dp1}+0.917051{dp0}^{8}+347.27{dp1}^{4}+0.343531{dp0}^{2}+46667.1{dp0}{dp1}^{6}-10399{dp0}^{7}{dp1}^{3}+14.7909{dp0}^{3}{dp1}^{2}-3.3184e+06{dp0}^{6}{dp1}^{5}-0.872053{dp0}^{3}{dp1}+2.22845e+08{dp0}^{3}{dp1}^{8}-3.30875{dp0}^{5}{dp1}+0.704389{dp0}^{9}-5.65823e+07{dp1}^{9}+3962.12{dp0}^{3}{dp1}^{4}+0.00876767{dp0}^{3}+34726{dp0}^{5}{dp1}^{4}+36914.5{dp1}^{6}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
-<div class="section" id="Compute--from-">
-<h3>Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Compute-\theta-from-x">
+<h3>Compute <span class="math notranslate nohighlight">\(\theta\)</span> from <span class="math notranslate nohighlight">\(x\)</span><a class="headerlink" href="#Compute-\theta-from-x" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -534,8 +550,7 @@ function of <span class="math notranslate nohighlight">\(x\)</span> and <span cl
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -554,8 +569,7 @@ y nominal is:  -2.22942304031922
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -575,8 +589,7 @@ y nominal is:  -2.22942304031922
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -595,8 +608,7 @@ Error in y:  1.7152856912616699e-10
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -605,8 +617,7 @@ Error in y:  1.7152856912616699e-10
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -625,8 +636,7 @@ Error in y:  1.7152856912616699e-10
 <div class="section" id="Define-our-variables">
 <h3>Define our variables<a class="headerlink" href="#Define-our-variables" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -642,8 +652,7 @@ Error in y:  1.7152856912616699e-10
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -653,8 +662,7 @@ Error in y:  1.7152856912616699e-10
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -665,8 +673,7 @@ Error in y:  1.7152856912616699e-10
 <div class="section" id="Invert-the-map">
 <h3>Invert the map<a class="headerlink" href="#Invert-the-map" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -680,8 +687,7 @@ Error in y:  1.7152856912616699e-10
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -691,8 +697,7 @@ Error in y:  1.7152856912616699e-10
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -700,11 +705,10 @@ Error in y:  1.7152856912616699e-10
 \[ -20{dp0}^{3}{dp1}^{8}+0.00833333{dp0}^{5}{dp1}-3.33333{dp0}^{3}{dp1}^{4}+2.8{dp0}^{5}{dp1}^{4}+0.133333{dp0}^{5}{dp1}^{2}+{dp0}{dp1}^{10}-1.66667{dp0}^{3}{dp1}^{3}+0.758333{dp0}^{5}{dp1}^{3}+0.000705467{dp0}^{9}{dp1}^{2}+{dp0}{dp1}^{8}-0.000198413{dp0}^{7}{dp1}+2.75573e-06{dp0}^{9}{dp1}-1.07937{dp0}^{7}{dp1}^{4}-0.0126984{dp0}^{7}{dp1}^{2}+{dp0}{dp1}^{6}+{dp0}{dp1}^{2}-14{dp0}^{3}{dp1}^{7}+8.05{dp0}^{5}{dp1}^{5}-0.162698{dp0}^{7}{dp1}^{3}-5.83333{dp0}^{3}{dp1}^{5}+\ldots+\mathcal{O}\left(12\right) \]</div></div>
 </div>
 </div>
-<div class="section" id="Compute--from-">
-<h3>Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span><a class="headerlink" href="#Compute--from-" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Compute-E-from-M">
+<h3>Compute <span class="math notranslate nohighlight">\(E\)</span> from <span class="math notranslate nohighlight">\(M\)</span><a class="headerlink" href="#Compute-E-from-M" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -791,7 +795,7 @@ Error in y:  1.7152856912616699e-10
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -801,7 +805,10 @@ Error in y:  1.7152856912616699e-10
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../None"></script>
 
   
 

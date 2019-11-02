@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation (C++ header only library) &mdash; audi 1.3 documentation</title>
+  <title>Packages &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,9 +33,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="index.html"/>
+    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
         <link rel="up" title="Installation guide" href="installation.html"/>
-        <link rel="next" title="Installation (Python package)" href="install_p.html"/>
+        <link rel="next" title="Python bindings" href="install_p.html"/>
         <link rel="prev" title="Installation guide" href="installation.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -90,8 +90,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="installation.html">Installation guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation (C++ header only library)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install_p.html">Installation (Python package)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Packages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conda">Conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pip">Pip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#from-source">From source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#c-header-only-library">C++ header only library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="install_p.html">Python bindings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
@@ -102,7 +110,6 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/mp_gdual.html">Quadruple precision computations (new in 1.3)</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -157,7 +164,7 @@
         
           <li><a href="installation.html">Installation guide</a> &raquo;</li>
         
-      <li>Installation (C++ header only library)</li>
+      <li>Packages</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -176,15 +183,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation-c-header-only-library">
-<span id="installation-audi"></span><h1>Installation (C++ header only library)<a class="headerlink" href="#installation-c-header-only-library" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="packages">
+<span id="installation-audi"></span><h1>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="conda">
+<h2>Conda<a class="headerlink" href="#conda" title="Permalink to this headline">¶</a></h2>
+<p>audi is available in the <a class="reference external" href="https://conda.io/en/latest/">conda</a> package manager from the
+<a class="reference external" href="https://conda-forge.org/">conda-forge</a> channel. Two
+packages are available:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://anaconda.org/conda-forge/audi">audi</a>, which contains the header only library.</p></li>
+<li><p><a class="reference external" href="https://anaconda.org/conda-forge/pyaudi">pyaudi</a>, which contains the python bindings.</p></li>
+</ul>
+<p>In order to install obake via audi, you just need
+to add <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> to the channels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> conda config --add channels conda-forge
+<span class="gp">$</span> conda install audi pyaudi
+</pre></div>
+</div>
+<p>Please refer to the <a class="reference external" href="https://conda.io/en/latest/">conda documentation</a> for instructions on how to setup and manage
+your conda installation.</p>
+</div>
+<div class="section" id="pip">
+<h2>Pip<a class="headerlink" href="#pip" title="Permalink to this headline">¶</a></h2>
+<p>audi is also available in the Python Package Index  but only for certain architectures.
+You can check the <a class="reference external" href="https://pypi.org/project/pyaudi">audi PyPi web page</a> to see if yours is included.</p>
+</div>
+</div>
+<div class="section" id="from-source">
+<h1>From source<a class="headerlink" href="#from-source" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="c-header-only-library">
+<h2>C++ header only library<a class="headerlink" href="#c-header-only-library" title="Permalink to this headline">¶</a></h2>
 <p>Audi is a header only library which has the following third party dependencies</p>
 <ul class="simple">
-<li>The <a class="reference external" href="http://www.boost.org/">boost</a> C++ libraries: the following boost libraries are necessary: boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system</li>
-<li><a class="reference external" href="http://bluescarni.github.io/piranha/index.html">piranha</a>: piranha headers must be found in the system</li>
-<li><a class="reference external" href="http://www.mpfr.org/">GNU MPFR library</a>: needed by piranha</li>
-<li><a class="reference external" href="https://gmplib.org/">The GMP multiprecision library</a>: needed by piranha</li>
-<li><a class="reference external" href="https://eigen.tuxfamily.org/">Eigen linear algebra library</a>: The Eigen headers must be found in the system</li>
+<li><p>The <a class="reference external" href="http://www.boost.org/">boost</a> C++ libraries: the following boost libraries are necessary: boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system</p></li>
+<li><p><a class="reference external" href="https://github.com/bluescarni/obake">obake</a></p></li>
+<li><p><a class="reference external" href="https://eigen.tuxfamily.org/">Eigen linear algebra library</a>: The Eigen headers must be found in the system</p></li>
 </ul>
 <p>After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest Audi version via git:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/darioizzo/audi.git
@@ -192,15 +225,17 @@
 </div>
 <p>and configure your build using CMake.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The option AUDI_BUILD_AUDI should be selected, while the option AUDI_BUILD_PYAUDI should be deactivated. You may also build the test by activatin
-the option AUTI_BUILD_TESTS.</p>
+<p class="admonition-title">Note</p>
+<p>The option AUDI_BUILD_AUDI should be selected, while the option AUDI_BUILD_PYAUDI should be deactivated.
+You may also build the test by activating the option AUTI_BUILD_TESTS.</p>
 </div>
 <p>When done, type (in your build directory):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make install
 </pre></div>
 </div>
-<p>The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory. To check that all went well compile the <a class="reference internal" href="quickstart.html#getting-started"><span class="std std-ref">quick-start example</span></a>.</p>
+<p>The headers will be installed in the CMAKE_INSTALL_PREFIX/include directory.
+To check that all went well compile the <a class="reference internal" href="quickstart.html#getting-started"><span class="std std-ref">quick-start example</span></a>.</p>
+</div>
 </div>
 
 
@@ -210,7 +245,7 @@ the option AUTI_BUILD_TESTS.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="install_p.html" class="btn btn-neutral float-right" title="Installation (Python package)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install_p.html" class="btn btn-neutral float-right" title="Python bindings" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="installation.html" class="btn btn-neutral" title="Installation guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -244,7 +279,7 @@ the option AUTI_BUILD_TESTS.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -254,7 +289,10 @@ the option AUTI_BUILD_TESTS.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="None"></script>
 
   
 

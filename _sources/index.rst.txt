@@ -11,7 +11,7 @@ across all application ranges (low/high order of derivation, one variable,
 many variables, sparse/dense cases).
 
 Audi is internally powered by the truncated polynomial multiplication algorithm
-of the open source project `Piranha <https://github.com/bluescarni/piranha>`_ some details of which are described in:
+of the open source project `obake <https://github.com/bluescarni/obake>`_ some details of which are described in:
 
 Biscani, Francesco. `Parallel sparse polynomial multiplication on modern hardware architectures. <http://dl.acm.org/citation.cfm?id=2442845>`_  Proceedings of the 37th International Symposium on Symbolic and Algebraic Computation. ACM, 2012.
 
@@ -19,10 +19,10 @@ Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson se
 
 .. note::
 
-   Audi is thread-safe and, when possible, makes use of Piranha fine-grained parallelization of the truncated polynomial multiplication.
+   Audi is thread-safe and, when possible, makes use of obake fine-grained parallelization of the truncated polynomial multiplication.
    The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.
 
-Audi is open source (GPL3) and its code available in github <https://github.com/darioizzo/audi>`_
+Audi is open source (GPL3) and its code available in `github <https://github.com/darioizzo/audi>`_
 
 -----------------------------------------------
 
@@ -45,8 +45,6 @@ Audi is open source (GPL3) and its code available in github <https://github.com/
    notebooks/example00.ipynb
    notebooks/example01.ipynb
    notebooks/vectorized_double.ipynb
-   notebooks/mp_gdual.ipynb
-
 
 .. toctree::
    :maxdepth: 2

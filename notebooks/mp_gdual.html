@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quadruple precision computations (new in 1.3) &mdash; audi 1.3 documentation</title>
+  <title>Quadruple precision computations (new in 1.3) &mdash; audi 1.7 documentation</title>
   
 
   
@@ -33,9 +33,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="audi 1.3 documentation" href="../index.html"/>
-        <link rel="next" title="Differential Intelligence" href="example10.html"/>
-        <link rel="prev" title="Using vectorized doubles" href="vectorized_double.html"/> 
+    <link rel="top" title="audi 1.7 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -64,7 +62,7 @@
             
             
               <div class="version">
-                1.3
+                1.7
               </div>
             
           
@@ -93,15 +91,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Quadruple precision computations (new in 1.3)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Qudruple-precision-floats">Qudruple precision floats</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Qudruple-precision-gdual">Qudruple precision gdual</a></li>
-</ul>
-</li>
 </ul>
 <p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
@@ -228,18 +221,18 @@ div.nblast {
 
 /* input prompt */
 div.nbinput div.prompt pre {
-    color: #303F9F;
+    color: #307FC1;
 }
 
 /* output prompt */
 div.nboutput div.prompt pre {
-    color: #D84315;
+    color: #BF5B3D;
 }
 
 /* all prompts */
 div.nbinput div.prompt,
 div.nboutput div.prompt {
-    min-width: 9ex;
+    min-width: 7ex;
     padding-top: 0.4em;
     padding-right: 0.4em;
     text-align: right;
@@ -279,9 +272,9 @@ div.nboutput div.output_area {
 
 /* input area */
 div.nbinput div.input_area {
-    border: 1px solid #cfcfcf;
+    border: 1px solid #e0e0e0;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #f5f5f5;
 }
 
 /* override MathJax center alignment in output cells */
@@ -289,7 +282,7 @@ div.nboutput div[class*=MathJax] {
     text-align: left !important;
 }
 
-/* override sphinx.ext.pngmath center alignment in output cells */
+/* override sphinx.ext.imgmath center alignment in output cells */
 div.nboutput div.math p {
     text-align: left;
 }
@@ -338,18 +331,48 @@ div.nboutput div.output_area.stderr {
 
 .ansi-bold { font-weight: bold; }
 .ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
 </style>
 <div class="section" id="Quadruple-precision-computations-(new-in-1.3)">
 <h1>Quadruple precision computations (new in 1.3)<a class="headerlink" href="#Quadruple-precision-computations-(new-in-1.3)" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="Qudruple-precision-floats">
 <h2>Qudruple precision floats<a class="headerlink" href="#Qudruple-precision-floats" title="Permalink to this headline">¶</a></h2>
-<p>The class real128 in pyaudi ia a multiple precision float, basically
-wrapping the GNU C++ *__float128* type. It can be used outside of the
-whole differential algebra machinery (the gduals) to perform quadruple
-precision computations</p>
+<p>The class real128 in pyaudi ia a multiple precision float, basically wrapping the GNU C++ *__float128* type. It can be used outside of the whole differential algebra machinery (the gduals) to perform quadruple precision computations</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -359,8 +382,7 @@ precision computations</p>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -379,8 +401,7 @@ precision computations</p>
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -398,8 +419,7 @@ precision computations</p>
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -424,8 +444,7 @@ Quad precision:          3.14159265358979323846264338327950280e+00
 <h2>Qudruple precision gdual<a class="headerlink" href="#Qudruple-precision-gdual" title="Permalink to this headline">¶</a></h2>
 <p>The gdual can also perform computations in quadruple precision.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -435,8 +454,7 @@ Quad precision:          3.14159265358979323846264338327950280e+00
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -460,20 +478,16 @@ A quadruple precision gdual computation:
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="math notranslate nohighlight">
 \[ -4.35605126899062478098382207778725168e-08{dy}-3.07827623008670817856190093496965737e-08{dx}+1.13010764054002057997221799187876804e-07{dy}^{2}+9.23482869026012453568570280490897241e-09+1.45201708966354159366127402592908378e-07{dx}{dy}+5.64350642182563166069681838077770461e-08{dx}^{2}+\mathcal{O}\left(3\right) \]</div></div>
 </div>
-<p>All quantities, that is the function value and its derivatives are in
-quadruple precision. Lets extract
-<span class="math notranslate nohighlight">\(\frac{\partial^2 f}{\partial x \partial y}\)</span>:</p>
+<p>All quantities, that is the function value and its derivatives are in quadruple precision. Lets extract <span class="math notranslate nohighlight">\(\frac{\partial^2 f}{\partial x \partial y}\)</span>:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -493,8 +507,7 @@ type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -505,11 +518,10 @@ type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
+<div class="output_area rendered_html docutils container">
 <img src="http://images6.fanpop.com/image/photos/38700000/That-s-All-Folks-the-looney-tunes-show-38740983-500-281.jpg"/></div>
 </div>
 </div>
@@ -519,15 +531,6 @@ type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="example10.html" class="btn btn-neutral float-right" title="Differential Intelligence" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="vectorized_double.html" class="btn btn-neutral" title="Using vectorized doubles" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -556,7 +559,7 @@ type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.3',
+            VERSION:'1.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -566,7 +569,10 @@ type:  &lt;class &#39;pyaudi.core.real128&#39;&gt;
       <script type="text/javascript" src="../_static/jquery.js"></script>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../None"></script>
 
   
 
