@@ -1,5 +1,15 @@
-set(_AUDI_REQUIRED_BOOST_LIBS)
-list(APPEND _AUDI_REQUIRED_BOOST_LIBS timer chrono serialization system unit_test_framework)
+# Run a first pass for finding the headers only,
+# and establishing the Boost version.
+set(_AUDI_BOOST_MINIMUM_VERSION 1.60.0)
+find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} QUIET REQUIRED)
+
+set(_AUDI_REQUIRED_BOOST_LIBS serialization timer chrono system)
+
+# Add the unit test framework, if needed.
+if(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK)
+    list(APPEND _AUDI_REQUIRED_BOOST_LIBS unit_test_framework)
+endif()
+
 if(_AUDI_FIND_BOOST_PYTHON)
     # NOTE: since Boost 1.67, the naming of the Boost.Python library has changed to include the
     # major and minor python version as a suffix. See the release notes:
@@ -7,15 +17,11 @@ if(_AUDI_FIND_BOOST_PYTHON)
     if(${Boost_MAJOR_VERSION} GREATER 1 OR (${Boost_MAJOR_VERSION} EQUAL 1 AND ${Boost_MINOR_VERSION} GREATER 66))
         list(APPEND _AUDI_REQUIRED_BOOST_LIBS "python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}")
     else()
-        if(${PYTHON_VERSION_MAJOR} EQUAL 2)
-            list(APPEND _AUDI_REQUIRED_BOOST_LIBS python)
-        else()
-            list(APPEND _AUDI_REQUIRED_BOOST_LIBS python3)
-        endif()
+        list(APPEND _AUDI_REQUIRED_BOOST_LIBS python3)
     endif()
 endif()
 message(STATUS "Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
-find_package(Boost 1.55.0 REQUIRED COMPONENTS "${_AUDI_REQUIRED_BOOST_LIBS}")
+find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} REQUIRED COMPONENTS ${_AUDI_REQUIRED_BOOST_LIBS})
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not all requested Boost components were found, exiting.")
 endif()
@@ -50,3 +56,6 @@ foreach(_AUDI_BOOST_COMPONENT ${_AUDI_REQUIRED_BOOST_LIBS})
             IMPORTED_LOCATION "${Boost_${_AUDI_BOOST_UPPER_COMPONENT}_LIBRARY}")
     endif()
 endforeach()
+
+unset(_AUDI_BOOST_MINIMUM_VERSION)
+unset(_AUDI_REQUIRED_BOOST_LIBS)

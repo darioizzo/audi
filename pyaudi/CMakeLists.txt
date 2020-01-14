@@ -1,48 +1,45 @@
+# Python version check.
+if(${PYTHON_VERSION_MAJOR} LESS 2 OR (${PYTHON_VERSION_MAJOR} EQUAL 2 AND ${PYTHON_VERSION_MINOR} LESS 7))
+    message(FATAL_ERROR "Minimum supported Python version is 2.7.")
+endif()
+
+# Setting the rpath
 if(UNIX)
-# On unix platforms, we set the rpath of the pyaudi libraries
-# to the lib subdirectory of the install prefix. This allows
-# to install pyaudi in nonstandard locations (e.g., ~/.local)
-# without having to muck around with library search paths.
-set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+    # On unix platforms, we set the rpath of the pygmo libraries
+    # to the lib subdirectory of the install prefix. This allows
+    # to install pygmo in nonstandard locations (e.g., ~/.local)
+    # without having to muck around with library search paths.
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif()
 
-# The name of the BP target to link to depends on the Boost and Python versions.
-# NOTE: since Boost 1.67, the naming of the Boost.Python library has changed to include the
-# major and minor python version as a suffix. See the release notes:
-# https://www.boost.org/users/history/version_1_67_0.html
-if(${Boost_MAJOR_VERSION} GREATER 1 OR (${Boost_MAJOR_VERSION} EQUAL 1 AND ${Boost_MINOR_VERSION} GREATER 66))
-    set(PYAUDI_BP_TARGET "Boost::python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR}")
-else()
-    if(${PYTHON_VERSION_MAJOR} EQUAL 2)
-        set(PYAUDI_BP_TARGET "Boost::python")
-    else()
-        set(PYAUDI_BP_TARGET "Boost::python3")
-    endif()
-endif()
+# Create the module
+YACMA_PYTHON_MODULE(core core.cpp docstrings.cpp)
 
-# Boost.Python version 1.64 (and possibly later?) has issues with default hidden visibility.
-if(${Boost_MAJOR_VERSION} GREATER 1 OR (${Boost_MAJOR_VERSION} EQUAL 1 AND ${Boost_MINOR_VERSION} GREATER 63))
-list(FIND AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden" _PYAUDI_HAS_VHIDDEN)
-if (NOT ${_PYAUDI_HAS_VHIDDEN} EQUAL -1)
-	message(STATUS "Removing the '-fvisibility=hidden' flag for Boost.Python > 1.63.")
-	list(REMOVE_ITEM AUDI_CXX_FLAGS_DEBUG "-fvisibility=hidden")
-	list(REMOVE_ITEM AUDI_CXX_FLAGS_RELEASE "-fvisibility=hidden")
-endif()
-endif()
+# Finding audi 
+#NOTE: for the time being, require that audi/pyaudi versions are matching exactly.
+find_package(audi ${AUDI_PROJECT_VERSION} EXACT REQUIRED)
+
+# Finding pybind11
+find_package(pybind11 REQUIRED)
 
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
-target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking YACMA::PythonModule Audi::audi)
+target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking YACMA::PythonModule Audi::audi )
 target_include_directories(pyaudi INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
 $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFACE:include>)
 
 # Setup of the pyaudi core module.
-YACMA_PYTHON_MODULE(core core.cpp docstrings.cpp)
 target_link_libraries(core PRIVATE ${PYAUDI_BP_TARGET} pyaudi)
 target_compile_options(core PRIVATE "$<$<CONFIG:DEBUG>:${AUDI_CXX_FLAGS_DEBUG}>" "$<$<CONFIG:RELEASE>:${AUDI_CXX_FLAGS_RELEASE}>")
+target_include_directories(core SYSTEM PRIVATE "${pybind11_INCLUDE_DIR}")
+target_compile_definitions(core PRIVATE "${pybind11_DEFINITIONS}")
+
 set_property(TARGET core PROPERTY CXX_STANDARD 17)
 set_property(TARGET core PROPERTY CXX_STANDARD_REQUIRED YES)
 set_property(TARGET core PROPERTY CXX_EXTENSIONS NO)
+
+# Helper file with version number.
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)   
 
 # Setup the installation path.
 set(PYAUDI_INSTALL_PATH "${YACMA_PYTHON_MODULES_INSTALL_PATH}/pyaudi")

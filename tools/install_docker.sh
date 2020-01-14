@@ -14,14 +14,6 @@ elif [[ ${AUDI_BUILD} == *36 ]]; then
 	PYTHON_DIR="cp36-cp36m"
 	BOOST_PYTHON_LIBRARY_NAME="libboost_python36.so"
 	PYTHON_VERSION="36"
-elif [[ ${AUDI_BUILD} == *27mu ]]; then
-	PYTHON_DIR="cp27-cp27mu"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python27mu.so"
-	PYTHON_VERSION="27"
-elif [[ ${AUDI_BUILD} == *27 ]]; then
-	PYTHON_DIR="cp27-cp27m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python27.so"
-	PYTHON_VERSION="27"
 else
 	echo "Invalid build type: ${AUDI_BUILD}"
 	exit 1
