@@ -18,7 +18,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(core, m)
 {
     m.def(
-        "exp", [](const gdual_d &d) { return exp(d); }, "Exponential (gdual_double).");
+        "exp", [](const gdual_d &d) { return exp(d); }, "Exponential (gdual_d).");
     m.def(
         "log", [](const gdual_d &d) { return log(d); }, "Natural logarithm (gdual_d).");
     m.def(
