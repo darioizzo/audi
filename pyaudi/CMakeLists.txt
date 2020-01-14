@@ -24,7 +24,7 @@ find_package(pybind11 REQUIRED)
 
 # Setup of the header-only pyaudi library.
 add_library(pyaudi INTERFACE)
-target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking YACMA::PythonModule Audi::audi )
+target_link_libraries(pyaudi INTERFACE ${PYAUDI_BP_TARGET} Boost::disable_autolinking Audi::audi )
 target_include_directories(pyaudi INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>
 $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/pyaudi> $<INSTALL_INTERFACE:include>)
 
@@ -39,7 +39,7 @@ set_property(TARGET core PROPERTY CXX_STANDARD_REQUIRED YES)
 set_property(TARGET core PROPERTY CXX_EXTENSIONS NO)
 
 # Helper file with version number.
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)   
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)   
 
 # Setup the installation path.
 set(PYAUDI_INSTALL_PATH "${YACMA_PYTHON_MODULES_INSTALL_PATH}/pyaudi")
