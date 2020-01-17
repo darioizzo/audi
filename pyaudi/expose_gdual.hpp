@@ -31,37 +31,6 @@ namespace py = pybind11;
 namespace pyaudi
 {
 
-// For non vectorized_double we do not perform any conversion on in-out types
-template <typename T>
-inline void expose_subs(py::class_<gdual<T>> th)
-{
-    th.def(
-        "subs", [](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
-        "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def(
-        "subs", [](gdual<T> &gd, const std::string &sym, const gdual<T> &in) { return gd.subs(sym, in); },
-        "Substitutes a symbol with a gdual");
-}
-
-// For vectorized double we perform conversion from and to lists so we need a different active template
-template <>
-inline void expose_subs(py::class_<gdual<vectorized<double>>> th)
-{
-    th.def(
-        "subs",
-        [](gdual<vectorized<double>> &gd, const std::string &sym, const std::vector<double> &in) {
-            return gd.subs(sym, in);
-        },
-        "Substitutes a symbol with a value (does not remove symbol from symbol set)");
-    th.def(
-        "subs",
-        [](gdual<vectorized<double>> &gd, const std::string &sym, const gdual<vectorized<double>> &in) {
-            return gd.subs(sym, in);
-        },
-        "Substitutes a symbol with a gdual");
-}
-
-// This is the interface common across types
 template <typename T>
 py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
 {
@@ -135,16 +104,19 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
               .def(py::self < py::self)
               .def(py::self > py::self)
               .def(
-                  "__pow__", +[](const gdual<T> &gd, double x) { return pow(gd, x); },
+                  "__pow__", [](const gdual<T> &gd, double x) { return pow(gd, x); },
                   ("Exponentiation (gdual_" + type + ", double).").c_str())
               .def(
-                  "__pow__", +[](const gdual<T> &base, const gdual<T> &gd) { return pow(base, gd); },
+                  "__pow__", [](const gdual<T> &base, const gdual<T> &gd) { return pow(base, gd); },
                   ("Exponentiation (gdual_" + type + ", gdual_" + type + ").").c_str())
               .def(
-                  "__rpow__", +[](const gdual<T> &gd, double x) { return pow(x, gd); },
+                  "__rpow__", [](const gdual<T> &gd, double x) { return pow(x, gd); },
                   ("Exponentiation (double, gdual_" + type + ").").c_str())
               .def_property_readonly("constant_cf", &gdual<T>::constant_cf, "Constant term of the polynomial")
-              .def("evaluate", &gdual<T>::evaluate, "Evaluates the Taylor polynomial")
+              .def(
+                  "evaluate",
+                  [](const gdual<T> &g, const py::dict &in) { return g.evaluate(pyaudi::py_dict_to_obake_sm<double>(in)); },
+                  "Evaluates the Taylor polynomial")
               .def(
                   "find_cf", [](const gdual<T> &g, const std::vector<int> &v) { return g.find_cf(v); },
                   "Find the coefficient of the Taylor expansion")
@@ -158,8 +130,13 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                       return g.get_derivative(dict);
                   },
                   "Finds the derivative (i.e. the coefficient of the Taylor expansion discounted of a factorial "
-                  "factor");
-    expose_subs<T>(th);
+                  "factor")
+              .def(
+                  "subs", [](gdual<T> &gd, const std::string &sym, const T &in) { return gd.subs(sym, in); },
+                  "Substitutes a symbol with a value (does not remove symbol from symbol set)")
+              .def(
+                  "subs", [](gdual<T> &gd, const std::string &sym, const gdual<T> &in) { return gd.subs(sym, in); },
+                  "Substitutes a symbol with a gdual");
     return th;
 }
 } // namespace pyaudi
