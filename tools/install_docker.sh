@@ -8,11 +8,9 @@ set -e
 
 if [[ ${AUDI_BUILD} == *37 ]]; then
 	PYTHON_DIR="cp37-cp37m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python37.so"
 	PYTHON_VERSION="37"
 elif [[ ${AUDI_BUILD} == *36 ]]; then
 	PYTHON_DIR="cp36-cp36m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python36.so"
 	PYTHON_VERSION="36"
 else
 	echo "Invalid build type: ${AUDI_BUILD}"
@@ -47,7 +45,6 @@ cmake -DBoost_NO_BOOST_CMAKE=ON \
       -DCMAKE_BUILD_TYPE=Release \
 	  -DAUDI_BUILD_AUDI=no \
 	  -DAUDI_BUILD_PYAUDI=yes \
-	  -DBoost_PYTHON${PYTHON_VERSION}_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIBRARY_NAME} \
 	  -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
 
