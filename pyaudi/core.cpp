@@ -242,10 +242,9 @@ PYBIND11_MODULE(core, m)
         "abs", [](mppp::real128 x) { return audi::abs(x); }, "Absolute value (mppp::real128).");
     m.def(
         "erf", [](mppp::real128 x) { return audi::erf(x); }, "Error function (mppp::real128).");
-
+#endif
     // Miscellanea functions
     m.def(
         "invert_map", [](const std::vector<gdual_d> &map_in, bool verbose) { return invert_map(map_in, verbose); },
         "Inverts a Taylor map (gdual_d)", py::arg("map"), py::arg("verbose") = false);
-#endif
 }
