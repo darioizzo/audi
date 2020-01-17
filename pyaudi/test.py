@@ -443,7 +443,7 @@ class test_gdual_vdouble(_ut.TestCase):
             c.find_cf([0])  # no symbols in constants
         with self.assertRaises(TypeError):
             c.find_cf(["x"])
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             x.find_cf(5)
         self.assertEqual(x.degree, 1)
         self.assertEqual(x.order, 3)
@@ -453,7 +453,7 @@ class test_gdual_vdouble(_ut.TestCase):
         self.assertEqual(c.order, 0)
         self.assertEqual(c.symbol_set, [])
         self.assertEqual(c.symbol_set_size, 0)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             gdual(1, "x", 2)
             gdual(1)
 

@@ -39,7 +39,7 @@ set_property(TARGET core PROPERTY CXX_STANDARD_REQUIRED YES)
 set_property(TARGET core PROPERTY CXX_EXTENSIONS NO)
 
 # Helper file with version number.
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)   
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/_version.py" @ONLY)   
 
 # Setup the installation path.
 set(PYAUDI_INSTALL_PATH "${YACMA_PYTHON_MODULES_INSTALL_PATH}/pyaudi")
