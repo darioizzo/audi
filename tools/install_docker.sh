@@ -38,7 +38,7 @@ cmake -DBoost_NO_BOOST_CMAKE=ON \
 make install
 cd ..
 
-# Compile and install pyaudi (build directory is created by .travis.yml)
+# Compile and install pyaudi 
 mkdir build_pyaudi
 cd build_pyaudi
 cmake -DBoost_NO_BOOST_CMAKE=ON \

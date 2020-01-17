@@ -52,6 +52,7 @@ jobs:
                         mppp ^
                         boost-cpp ^
                         boost ^
+                        pybind11 ^
                         python=3.7
           conda list
         displayName: "Install conda packages"
