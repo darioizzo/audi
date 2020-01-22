@@ -601,6 +601,32 @@ class test_utilities(_ut.TestCase):
         g0, g1 = invert_map(map = [f0, f1])
         g0, g1 = invert_map([f0, f1])
 
+class test_numpy_integration(_ut.TestCase):
+
+    def runTest(self):
+            self.test_function_methods()
+            self.test_numpy_calls()
+
+    def test_function_methods(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import exp, log, sin ,cos
+        x = gdual(0.5, "x", 11)
+        self.assertEqual(exp(x), x.exp())
+        self.assertEqual(log(x), x.log())
+        self.assertEqual(sin(x), x.sin())
+        self.assertEqual(cos(x), x.cos())
+
+    def test_numpy_calls(self):
+        from pyaudi import gdual_double as gdual
+        from pyaudi import exp, log, sin ,cos
+        import numpy as np
+        x = gdual(0.5, "x", 11)
+        self.assertEqual(np.exp(x), x.exp())
+        self.assertEqual(np.log(x), x.log())
+        self.assertEqual(np.sin(x), x.sin())
+        self.assertEqual(np.cos(x), x.cos())
+
+
 def run_test_suite():
     """Run the full test suite.
     This function must raise an exception if at least one test fails.
@@ -610,6 +636,8 @@ def run_test_suite():
     suite.addTest(test_function_calls())
     suite.addTest(test_gdual_vdouble())
     suite.addTest(test_utilities())
+    suite.addTest(test_numpy_integration())
+
 
     test_result = _ut.TextTestRunner(verbosity=2).run(suite)
     if len(test_result.failures) > 0 or len(test_result.errors) > 0:
