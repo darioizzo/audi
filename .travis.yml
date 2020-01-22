@@ -17,10 +17,6 @@ matrix:
     sudo: required
     services:
     - docker
-  - env: AUDI_BUILD="manylinux64Py27" DOCKER_IMAGE="pagmo2/manylinux2010_x86_64_with_deps"
-    sudo: required
-    services:
-    - docker
   - env: AUDI_BUILD="OSXDebug" AUDI_BUILD_TYPE="Debug"
     os: osx
     osx_image: xcode10.3

@@ -162,18 +162,17 @@ if(AUDI_BUILD_PYAUDI)
     # audi dependencies.
     include(YACMAPythonSetup)
     # Python version check.
-    if(${PYTHON_VERSION_MAJOR} LESS 2 OR (${PYTHON_VERSION_MAJOR} EQUAL 2 AND ${PYTHON_VERSION_MINOR} LESS 7))
-        message(FATAL_ERROR "Minimum supported Python version is 2.7.")
+    if(${PYTHON_VERSION_MAJOR} LESS 3)
+        message(FATAL_ERROR "Minimum supported Python version is 3.0")
     endif()
-
-    # NOTE: for the time being, require that audi/pyaudi versions are matching exactly.
-    find_package(audi ${AUDI_PROJECT_VERSION} EXACT REQUIRED)
-
-    # Internal variable that will be used to tell AudiFindBoost to locate Boost.Python.
-    set(_AUDI_FIND_BOOST_PYTHON TRUE)
 endif()
 
 # Boost setup (common to audi/pyaudi).
+if(AUDI_BUILD_TESTS)
+    # Internal variable that will be used to tell PagmoFindBoost to locate the
+    # Boost unit test framework, if tests are required.
+    set(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK TRUE)
+endif()
 include(AudiFindBoost)
 
 if(AUDI_BUILD_AUDI)
@@ -214,6 +213,9 @@ if(AUDI_BUILD_AUDI)
 
     # Builds the tests (performance in Release, the others in Debug)
     if(AUDI_BUILD_TESTS)
+        # Internal variable that will be used to tell PagmoFindBoost to locate the
+        # Boost unit test framework, if tests are required.
+        set(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK TRUE)
         add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
     endif()
 
@@ -241,8 +243,6 @@ if(AUDI_BUILD_AUDI)
 endif()
 
 if(AUDI_BUILD_PYAUDI)
-    # Configure version
-    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py.in" "${CMAKE_CURRENT_SOURCE_DIR}/pyaudi/_version.py" @ONLY)    
     # Add the pyaudi subdirectory.
     add_subdirectory("${CMAKE_SOURCE_DIR}/pyaudi")
     if(MINGW)

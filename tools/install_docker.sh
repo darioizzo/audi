@@ -8,24 +8,24 @@ set -e
 
 if [[ ${AUDI_BUILD} == *37 ]]; then
 	PYTHON_DIR="cp37-cp37m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python37.so"
 	PYTHON_VERSION="37"
 elif [[ ${AUDI_BUILD} == *36 ]]; then
 	PYTHON_DIR="cp36-cp36m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python36.so"
 	PYTHON_VERSION="36"
-elif [[ ${AUDI_BUILD} == *27mu ]]; then
-	PYTHON_DIR="cp27-cp27mu"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python27mu.so"
-	PYTHON_VERSION="27"
-elif [[ ${AUDI_BUILD} == *27 ]]; then
-	PYTHON_DIR="cp27-cp27m"
-	BOOST_PYTHON_LIBRARY_NAME="libboost_python27.so"
-	PYTHON_VERSION="27"
 else
 	echo "Invalid build type: ${AUDI_BUILD}"
 	exit 1
 fi
+
+# Install pybind11
+curl -L https://github.com/pybind/pybind11/archive/v2.4.3.tar.gz > v2.4.3
+tar xvf v2.4.3 > /dev/null 2>&1
+cd pybind11-2.4.3
+mkdir build
+cd build
+cmake ../ -DPYBIND11_TEST=OFF > /dev/null
+make install > /dev/null 2>&1
+cd ..
 
 # Install audi headers
 cd /audi
@@ -38,14 +38,13 @@ cmake -DBoost_NO_BOOST_CMAKE=ON \
 make install
 cd ..
 
-# Compile and install pyaudi (build directory is created by .travis.yml)
+# Compile and install pyaudi 
 mkdir build_pyaudi
 cd build_pyaudi
 cmake -DBoost_NO_BOOST_CMAKE=ON \
       -DCMAKE_BUILD_TYPE=Release \
 	  -DAUDI_BUILD_AUDI=no \
 	  -DAUDI_BUILD_PYAUDI=yes \
-	  -DBoost_PYTHON${PYTHON_VERSION}_LIBRARY_RELEASE=/usr/local/lib/${BOOST_PYTHON_LIBRARY_NAME} \
 	  -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
 make -j2 install
 
