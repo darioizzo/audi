@@ -115,7 +115,9 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
               .def_property_readonly("constant_cf", &gdual<T>::constant_cf, "Constant term of the polynomial")
               .def(
                   "evaluate",
-                  [](const gdual<T> &g, const py::dict &in) { return g.evaluate(pyaudi::py_dict_to_obake_sm<double>(in)); },
+                  [](const gdual<T> &g, const py::dict &in) {
+                      return g.evaluate(pyaudi::py_dict_to_obake_sm<double>(in));
+                  },
                   "Evaluates the Taylor polynomial")
               .def(
                   "find_cf", [](const gdual<T> &g, const std::vector<int> &v) { return g.find_cf(v); },
@@ -137,6 +139,50 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
               .def(
                   "subs", [](gdual<T> &gd, const std::string &sym, const gdual<T> &in) { return gd.subs(sym, in); },
                   "Substitutes a symbol with a gdual");
+
+    // Functions exposed as members of gduals so that numpy arithmetics (for example np.exp(x)) would also work
+    // with gduals.
+    th.def(
+          "exp", [](const gdual<T> &d) { return exp(d); }, "Exponential.")
+        .def(
+            "log", [](const gdual<T> &d) { return log(d); }, "Natural logarithm.")
+        .def(
+            "sqrt", [](const gdual<T> &d) { return sqrt(d); }, "Square root.")
+        .def(
+            "cbrt", [](const gdual<T> &d) { return cbrt(d); }, "Cubic root.")
+        .def(
+            "sin", [](const gdual<T> &d) { return sin(d); }, "Sine.")
+        .def(
+            "asin", [](const gdual<T> &d) { return asin(d); }, "Arc sine.")
+        .def(
+            "cos", [](const gdual<T> &d) { return cos(d); }, "Cosine.")
+        .def(
+            "acos", [](const gdual<T> &d) { return acos(d); }, "Arc cosine.")
+        .def(
+            "sin_and_cos", [](const gdual<T> &d) { return sin_and_cos(d); }, "Sine and Cosine at once.")
+        .def(
+            "tan", [](const gdual<T> &d) { return tan(d); }, "Tangent.")
+        .def(
+            "atan", [](const gdual<T> &d) { return atan(d); }, "Arc tangent.")
+        .def(
+            "sinh", [](const gdual<T> &d) { return sinh(d); }, "Hyperbolic sine.")
+        .def(
+            "asinh", [](const gdual<T> &d) { return asinh(d); }, "Inverse hyperbolic sine.")
+        .def(
+            "cosh", [](const gdual<T> &d) { return cosh(d); }, "Hyperbolic cosine.")
+        .def(
+            "acosh", [](const gdual<T> &d) { return acosh(d); }, "Inverse hyperbolic cosine.")
+        .def(
+            "sinh_and_cosh", [](const gdual<T> &d) { return sinh_and_cosh(d); },
+            "Hyperbolic sine and hyperbolic cosine at once.")
+        .def(
+            "tanh", [](const gdual<T> &d) { return tanh(d); }, "Hyperbolic tangent.")
+        .def(
+            "atanh", [](const gdual<T> &d) { return atanh(d); }, "Inverse hyperbolic arc tangent.")
+        .def(
+            "abs", [](const gdual<T> &d) { return abs(d); }, "Absolute value.")
+        .def(
+            "erf", [](const gdual<T> &d) { return erf(d); }, "Error function.");
     return th;
 }
 } // namespace pyaudi
