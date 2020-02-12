@@ -142,7 +142,7 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                   "Substitutes a symbol with a gdual");
 
     // Functions exposed as members of gduals so that numpy arithmetics (for example np.exp(x)) would also work
-    // with gduals.
+    // with gduals. We provide both arc- and a- inverse nomenclature as to be consistent to both numpy and our previous naming
     th.def(
           "exp", [](const gdual<T> &d) { return exp(d); }, "Exponential.")
         .def(
@@ -154,30 +154,37 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
         .def(
             "sin", [](const gdual<T> &d) { return sin(d); }, "Sine.")
         .def(
+            "arcsin", [](const gdual<T> &d) { return asin(d); }, "Arc sine.")
+        .def(
             "asin", [](const gdual<T> &d) { return asin(d); }, "Arc sine.")
         .def(
             "cos", [](const gdual<T> &d) { return cos(d); }, "Cosine.")
         .def(
+            "arccos", [](const gdual<T> &d) { return acos(d); }, "Arc cosine.")
+        .def(
             "acos", [](const gdual<T> &d) { return acos(d); }, "Arc cosine.")
         .def(
-            "sin_and_cos", [](const gdual<T> &d) { return sin_and_cos(d); }, "Sine and Cosine at once.")
-        .def(
             "tan", [](const gdual<T> &d) { return tan(d); }, "Tangent.")
+        .def(
+            "arctan", [](const gdual<T> &d) { return atan(d); }, "Arc tangent.")
         .def(
             "atan", [](const gdual<T> &d) { return atan(d); }, "Arc tangent.")
         .def(
             "sinh", [](const gdual<T> &d) { return sinh(d); }, "Hyperbolic sine.")
         .def(
+            "arcsinh", [](const gdual<T> &d) { return asinh(d); }, "Inverse hyperbolic sine.")
+        .def(
             "asinh", [](const gdual<T> &d) { return asinh(d); }, "Inverse hyperbolic sine.")
         .def(
             "cosh", [](const gdual<T> &d) { return cosh(d); }, "Hyperbolic cosine.")
         .def(
+            "arccosh", [](const gdual<T> &d) { return acosh(d); }, "Inverse hyperbolic cosine.")
+        .def(
             "acosh", [](const gdual<T> &d) { return acosh(d); }, "Inverse hyperbolic cosine.")
         .def(
-            "sinh_and_cosh", [](const gdual<T> &d) { return sinh_and_cosh(d); },
-            "Hyperbolic sine and hyperbolic cosine at once.")
-        .def(
             "tanh", [](const gdual<T> &d) { return tanh(d); }, "Hyperbolic tangent.")
+        .def(
+            "arctanh", [](const gdual<T> &d) { return atanh(d); }, "Inverse hyperbolic arc tangent.")
         .def(
             "atanh", [](const gdual<T> &d) { return atanh(d); }, "Inverse hyperbolic arc tangent.")
         .def(
