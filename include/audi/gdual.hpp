@@ -370,7 +370,7 @@ public:
     {
         check_var_name(var_name);
         auto new_p = obake::integrate(m_p, "d" + var_name);
-        new_p = obake::truncate_degree(new_p, static_cast<int>(m_order));
+        obake::truncate_degree(new_p, static_cast<int>(m_order));
         return gdual(std::move(new_p), m_order);
     }
 
@@ -428,8 +428,8 @@ public:
     gdual subs(const std::string &sym, const gdual &val) const
     {
         auto new_p = obake::subs(m_p, obake::symbol_map<decltype(val.m_p)>{{sym, val.m_p}});
-        auto new_p2 = obake::truncate_degree(new_p, static_cast<decltype(obake::degree(m_p))>(m_order));
-        new_p = obake::trim(new_p2);
+        obake::truncate_degree(new_p, static_cast<decltype(obake::degree(m_p))>(m_order));
+        new_p = obake::trim(new_p);
         return gdual(std::move(new_p), m_order);
     }
 
@@ -448,7 +448,8 @@ public:
                 "When trimming a gdual the trim tolerance must be positive, you seem to have used a negative value: "
                 + std::to_string(epsilon));
         }
-        auto new_p = obake::filter(m_p, [epsilon](const auto &p) { return !(audi::abs(p.second) < epsilon); });
+        auto new_p = m_p;
+        obake::filter(new_p, [epsilon](const auto &p) { return !(audi::abs(p.second) < epsilon); });
         return gdual(std::move(new_p), m_order);
     }
 
@@ -468,7 +469,8 @@ public:
         if (order > m_order) {
             throw std::invalid_argument("requested order is beyond the truncation order.");
         }
-        auto res = obake::filter(m_p, [order, &ss = m_p.get_symbol_set()](const auto &p) {
+        auto res = m_p;
+        obake::filter(res, [order, &ss = m_p.get_symbol_set()](const auto &p) {
             return static_cast<unsigned>(obake::key_degree(p.first, ss)) == order;
         });
         return gdual(std::move(res), order);
