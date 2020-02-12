@@ -695,11 +695,24 @@ public:
         return true;
     }
 
+    /// Info on the gdual
+    /**
+     * Will assemble a string containing information on the gdual.
+     * It uses the obake streaming operator for the type obake::series. Refer to that
+     * documentation for further details 
+     */
+    std::string info() const
+    {
+        std::ostringstream ss;
+        ss << m_p << "\n";
+        ss << "Order: " << get_order() << "\n";
+        ss << "Degree: " << degree() << "\n";
+        return ss.str();
+    }
+
     /// Overloaded stream operator
     /**
      * Will direct to stream a human-readable representation of the generalized dual number.
-     * It uses the obake overload for the type obake::series. Refer to that
-     * documentation for further details
      *
      * \note The print order of the terms will be undefined.
      *
@@ -711,7 +724,7 @@ public:
      */
     friend std::ostream &operator<<(std::ostream &os, const gdual &d)
     {
-        os << d.m_p;
+        obake::detail::series_stream_terms_impl<false>(os, d.m_p);
         return os;
     }
 
