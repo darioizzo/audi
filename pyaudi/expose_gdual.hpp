@@ -182,7 +182,17 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
         .def(
             "abs", [](const gdual<T> &d) { return abs(d); }, "Absolute value.")
         .def(
-            "erf", [](const gdual<T> &d) { return erf(d); }, "Error function.");
+            "erf", [](const gdual<T> &d) { return erf(d); }, "Error function.")
+        .def(
+            "log10", [](const gdual<T> &d) { return log(d) / std::log(10.); }, "Base 10 Logarithm.")
+        .def(
+            "log2", [](const gdual<T> &d) { return log(d) / std::log(2); }, "Base 2 Logarithm.")
+        .def(
+            "log1p", [](const gdual<T> &d) { return log(d + 1.0); }, "log(x)+1, inverse of expm1")
+        .def(
+            "expm1", [](const gdual<T> &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p")
+        .def(
+            "erfc", [](const gdual<T> &d) { return 1.0 - erf(d); }, "Error Function Complement");
     return th;
 }
 } // namespace pyaudi

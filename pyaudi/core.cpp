@@ -56,6 +56,16 @@ PYBIND11_MODULE(core, m)
         "abs", [](double x) { return std::abs(x); }, "Absolute value (double).");
     m.def(
         "erf", [](double x) { return std::erf(x); }, "Error function (double).");
+    m.def(
+        "log10", [](double x) { return std::log10(x); }, "Base 10 Logarithm (double).");
+    m.def(
+        "log2", [](double x) { return std::log2(x); }, "Base 2 Logarithm (double).");
+    m.def(
+        "log1p", [](double x) { return std::log1p(x); }, "log(x)+1, inverse of expm1 (double).");
+    m.def(
+        "expm1", [](double x) { return std::expm1(x); }, "exp(x) - 1, inverse of log1p (double).");
+    m.def(
+        "erfc", [](double x) { return std::erfc(x); }, "Error Function Complement (double).");
 
     // We expose the gdual<double> basic arithmetic
     pyaudi::expose_gdual<double>(m, "double");
@@ -101,6 +111,16 @@ PYBIND11_MODULE(core, m)
         "abs", [](const gdual_d &d) { return abs(d); }, "Absolute value (gdual_d).");
     m.def(
         "erf", [](const gdual_d &d) { return erf(d); }, "Error function (gdual_d).");
+    m.def(
+        "log10", [](const gdual_d &d) { return log(d) / std::log(10); }, "Base 10 Logarithm (gdual_d).");
+    m.def(
+        "log2", [](const gdual_d &d) { return log(d) / std::log(2); }, "Base 2 Logarithm (gdual_d).");
+    m.def(
+        "log1p", [](const gdual_d &d) { return log(d + 1.0); }, "log(x)+1, inverse of expm1 (gdual_d).");
+    m.def(
+        "expm1", [](const gdual_d &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p (gdual_d).");
+    m.def(
+        "erfc", [](const gdual_d &d) { return 1.0 - erf(d); }, "Error Function Complement (gdual_d).");
 
     // We expose the class gdual<vectorized<double>> or gdual_v basic arithmetic. Two constructors are added to allow
     // construction from vector::double
@@ -109,7 +129,7 @@ PYBIND11_MODULE(core, m)
         .def(py::init<std::vector<double>, const std::string &, unsigned int>());
     // ... and functions
     m.def(
-        "exp", [](const gdual_v &d) { return exp(d); }, "Exponential (gdual_vdouble).");
+        "exp", [](const gdual_v &d) { return exp(d); }, "Exponential (gdual_v).");
     m.def(
         "log", [](const gdual_v &d) { return log(d); }, "Natural logarithm (gdual_v).");
     m.def(
@@ -149,6 +169,16 @@ PYBIND11_MODULE(core, m)
         "abs", [](const gdual_v &d) { return abs(d); }, "Absolute value (gdual_v).");
     m.def(
         "erf", [](const gdual_v &d) { return erf(d); }, "Error function (gdual_v).");
+    m.def(
+        "log10", [](const gdual_v &d) { return log(d) / std::log(10); }, "Base 10 Logarithm (gdual_v).");
+    m.def(
+        "log2", [](const gdual_v &d) { return log(d) / std::log(2); }, "Base 2 Logarithm (gdual_v).");
+    m.def(
+        "log1p", [](const gdual_v &d) { return log(d + 1.0); }, "log(x)+1, inverse of expm1 (gdual_v).");
+    m.def(
+        "expm1", [](const gdual_v &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p (gdual_v).");
+    m.def(
+        "erfc", [](const gdual_v &d) { return 1.0 - erf(d); }, "Error Function Complement (gdual_v).");
 
 #if defined(AUDI_WITH_QUADMATH)
     // Init the interface between real128 ed mpmath
@@ -201,6 +231,16 @@ PYBIND11_MODULE(core, m)
         "abs", [](const gdual_mp &d) { return abs(d); }, "Absolute value (gdual_real128).");
     m.def(
         "erf", [](const gdual_mp &d) { return erf(d); }, "Error function (gdual_real128).");
+    m.def(
+        "log10", [](const gdual_mp &d) { return log(d) / audi::log(mppp::real128("10")); }, "Base 10 Logarithm (gdual_mp).");
+    m.def(
+        "log2", [](const gdual_mp &d) { return log(d) / audi::log(mppp::real128("2")); }, "Base 2 Logarithm (gdual_mp).");
+    m.def(
+        "log1p", [](const gdual_mp &d) { return log(d + 1.0); }, "log(x)+1, inverse of expm1 (gdual_mp).");
+    m.def(
+        "expm1", [](const gdual_mp &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p (gdual_mp).");
+    m.def(
+        "erfc", [](const gdual_mp &d) { return 1.0 - erf(d); }, "Error Function Complement (gdual_mp).");
 
     // We expose simple mathematical functions to work on mppp::real128
     m.def(
@@ -232,9 +272,6 @@ PYBIND11_MODULE(core, m)
     m.def(
         "acosh", [](mppp::real128 x) { return audi::acosh(x); }, "Inverse hyperbolic cosine (mppp::real128).");
     m.def(
-        "sinh_and_cosh", [](const gdual_v &d) { return sinh_and_cosh(d); },
-        "Hyperbolic sine and hyperbolic cosine at once (gdual_v).");
-    m.def(
         "tanh", [](mppp::real128 x) { return audi::tanh(x); }, "Hyperbolic tangent (mppp::real128).");
     m.def(
         "atanh", [](mppp::real128 x) { return audi::atanh(x); }, "Inverse hyperbolic arc tangent (mppp::real128).");
@@ -242,6 +279,18 @@ PYBIND11_MODULE(core, m)
         "abs", [](mppp::real128 x) { return audi::abs(x); }, "Absolute value (mppp::real128).");
     m.def(
         "erf", [](mppp::real128 x) { return audi::erf(x); }, "Error function (mppp::real128).");
+    m.def(
+        "log10", [](mppp::real128 x) { return audi::log(x) / audi::log(mppp::real128("10")); },
+        "Base 10 Logarithm (gdual_v).");
+    m.def(
+        "log2", [](mppp::real128 x) { return audi::log(x) / audi::log(mppp::real128("2")); },
+        "Base 2 Logarithm (gdual_v).");
+    m.def(
+        "log1p", [](mppp::real128 x) { return audi::log(x + 1.0); }, "log(x)+1, inverse of expm1 (gdual_v).");
+    m.def(
+        "expm1", [](mppp::real128 x) { return audi::exp(x) - 1.0; }, "exp(x) - 1, inverse of log1p (gdual_v).");
+    m.def(
+        "erfc", [](mppp::real128 x) { return 1.0 - audi::erf(x); }, "Error Function Complement (gdual_v).");
 #endif
     // Miscellanea functions
     m.def(
