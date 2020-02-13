@@ -488,6 +488,7 @@ public:
     {
         return obake::evaluate(m_p, dict);
     }
+
     /// Current degree
     /**
      * Returns the current degree of the polynomial represented as an audi::gdual.
