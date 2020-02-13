@@ -12,10 +12,11 @@ int main()
     auto f2 = audi::sin(z);
     std::cout << "Full map: " << f << std::endl;
     auto g = f.extract_terms(2);
-    std::cout << "Only order 3: " << g << std::endl;
+    std::cout << "Only order 2: " << g << std::endl;
     // Map concatenation
     std::cout << "\n\nFull map (x,y): " << f << std::endl;
     std::cout << "Full map (z): " << f2 << std::endl;
     auto new_f = f.subs("dy", f2);
     std::cout << "Full map (x,z): " << new_f << std::endl;
+    std::cout << new_f.info() << std::endl;
 }

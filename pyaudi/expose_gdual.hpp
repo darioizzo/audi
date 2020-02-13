@@ -77,6 +77,7 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
               .def_property_readonly("symbol_set_size", &gdual<T>::get_symbol_set_size)
               .def_property_readonly("degree", &gdual<T>::degree, gdual_degree_docstring().c_str())
               .def_property_readonly("order", &gdual<T>::get_order, "truncation order (>= degree)")
+              .def("info", &gdual<T>::info, "Full information on the gdual")
               .def("extend_symbol_set", &gdual<T>::extend_symbol_set, "Extends the symbol set")
               .def("integrate", &gdual<T>::template integrate<>, "Integrate with respect to argument")
               .def("partial", &gdual<T>::template partial<>, "Partial derivative with respect to argument")
@@ -141,7 +142,7 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
                   "Substitutes a symbol with a gdual");
 
     // Functions exposed as members of gduals so that numpy arithmetics (for example np.exp(x)) would also work
-    // with gduals.
+    // with gduals. We provide both arc- and a- inverse nomenclature as to be consistent to both numpy and our previous naming
     th.def(
           "exp", [](const gdual<T> &d) { return exp(d); }, "Exponential.")
         .def(
@@ -153,36 +154,53 @@ py::class_<gdual<T>> expose_gdual(const py::module &m, std::string type)
         .def(
             "sin", [](const gdual<T> &d) { return sin(d); }, "Sine.")
         .def(
+            "arcsin", [](const gdual<T> &d) { return asin(d); }, "Arc sine.")
+        .def(
             "asin", [](const gdual<T> &d) { return asin(d); }, "Arc sine.")
         .def(
             "cos", [](const gdual<T> &d) { return cos(d); }, "Cosine.")
         .def(
+            "arccos", [](const gdual<T> &d) { return acos(d); }, "Arc cosine.")
+        .def(
             "acos", [](const gdual<T> &d) { return acos(d); }, "Arc cosine.")
         .def(
-            "sin_and_cos", [](const gdual<T> &d) { return sin_and_cos(d); }, "Sine and Cosine at once.")
-        .def(
             "tan", [](const gdual<T> &d) { return tan(d); }, "Tangent.")
+        .def(
+            "arctan", [](const gdual<T> &d) { return atan(d); }, "Arc tangent.")
         .def(
             "atan", [](const gdual<T> &d) { return atan(d); }, "Arc tangent.")
         .def(
             "sinh", [](const gdual<T> &d) { return sinh(d); }, "Hyperbolic sine.")
         .def(
+            "arcsinh", [](const gdual<T> &d) { return asinh(d); }, "Inverse hyperbolic sine.")
+        .def(
             "asinh", [](const gdual<T> &d) { return asinh(d); }, "Inverse hyperbolic sine.")
         .def(
             "cosh", [](const gdual<T> &d) { return cosh(d); }, "Hyperbolic cosine.")
         .def(
+            "arccosh", [](const gdual<T> &d) { return acosh(d); }, "Inverse hyperbolic cosine.")
+        .def(
             "acosh", [](const gdual<T> &d) { return acosh(d); }, "Inverse hyperbolic cosine.")
         .def(
-            "sinh_and_cosh", [](const gdual<T> &d) { return sinh_and_cosh(d); },
-            "Hyperbolic sine and hyperbolic cosine at once.")
-        .def(
             "tanh", [](const gdual<T> &d) { return tanh(d); }, "Hyperbolic tangent.")
+        .def(
+            "arctanh", [](const gdual<T> &d) { return atanh(d); }, "Inverse hyperbolic arc tangent.")
         .def(
             "atanh", [](const gdual<T> &d) { return atanh(d); }, "Inverse hyperbolic arc tangent.")
         .def(
             "abs", [](const gdual<T> &d) { return abs(d); }, "Absolute value.")
         .def(
-            "erf", [](const gdual<T> &d) { return erf(d); }, "Error function.");
+            "erf", [](const gdual<T> &d) { return erf(d); }, "Error function.")
+        .def(
+            "log10", [](const gdual<T> &d) { return log(d) / std::log(10.); }, "Base 10 Logarithm.")
+        .def(
+            "log2", [](const gdual<T> &d) { return log(d) / std::log(2); }, "Base 2 Logarithm.")
+        .def(
+            "log1p", [](const gdual<T> &d) { return log(d + 1.0); }, "log(x)+1, inverse of expm1")
+        .def(
+            "expm1", [](const gdual<T> &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p")
+        .def(
+            "erfc", [](const gdual<T> &d) { return 1.0 - erf(d); }, "Error Function Complement");
     return th;
 }
 } // namespace pyaudi
