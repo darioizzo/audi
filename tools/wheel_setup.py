@@ -4,7 +4,7 @@ from distutils import util
 import sys
 
 NAME = 'pyaudi'
-VERSION = '@audi_VERSION@'
+VERSION = '@pyaudi_VERSION@'
 DESCRIPTION = 'Implementation of a high-order automated differentiation system using generalized dual numbers. Implementation of a differential algebra.'
 LONG_DESCRIPTION = 'Implementation of a high-order automated differentiation system using generalized dual numbers. Implementation of a differential algebra.'
 URL = 'https://github.com/darioizzo/audi'
@@ -42,14 +42,6 @@ class BinaryDistribution(Distribution):
     def has_ext_modules(foo):
         return True
 
-# Setup the list of external dlls.
-import os
-if os.name == 'nt':
-    mingw_wheel_libs = 'mingw_wheel_libs_python{}{}.txt'.format(
-        sys.version_info[0], sys.version_info[1])
-    l = open(mingw_wheel_libs, 'r').readlines()
-    DLL_LIST = [os.path.basename(_[:-1]) for _ in l]
-
 setup(name=NAME,
       version=VERSION,
       description=DESCRIPTION,
@@ -64,6 +56,5 @@ setup(name=NAME,
       install_requires=INSTALL_REQUIRES,
       packages=['pyaudi'],
       # Include pre-compiled extension
-      package_data={'pyaudi': ['core.pyd'] + \
-                    DLL_LIST if os.name == 'nt' else ['core.so']},
+      package_data={'pyaudi': ['core.pyd', 'core.so']},
       distclass=BinaryDistribution)
