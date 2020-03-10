@@ -6,7 +6,10 @@ set -x
 # Exit on error.
 set -e
 
-if [[ ${AUDI_BUILD} == *37 ]]; then
+if [[ ${AUDI_BUILD} == *38 ]]; then
+	PYTHON_DIR="cp38-cp38"
+	PYTHON_VERSION="38"
+elif [[ ${AUDI_BUILD} == *37 ]]; then
 	PYTHON_DIR="cp37-cp37m"
 	PYTHON_VERSION="37"
 elif [[ ${AUDI_BUILD} == *36 ]]; then
