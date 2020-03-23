@@ -21,12 +21,14 @@ else
 fi
 
 # Install pybind11
-curl -L https://github.com/pybind/pybind11/archive/v2.4.3.tar.gz > v2.4.3
-tar xvf v2.4.3 > /dev/null 2>&1
-cd pybind11-2.4.3
+
+git clone https://github.com/pybind/pybind11.git
+cd pybind11
+git checkout 4f72ef846fe8453596230ac285eeaa0ce3278bb4
 mkdir build
 cd build
-cmake ../ -DPYBIND11_TEST=OFF > /dev/null
+pwd
+cmake ../ -DPYBIND11_TEST=NO > /dev/null
 make install > /dev/null 2>&1
 cd ..
 
