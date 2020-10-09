@@ -188,6 +188,50 @@ void test_math()
             BOOST_CHECK(retval == (vectorized<T>{T(24.), T(44.), T(64.)}));
         }
     }
+
+{
+        // testing the behaviour of vectorized size promotion
+        vectorized<T> x1{T(10.), T(20.), T(30.)};
+        vectorized<T> x2{T(2.), T(2.), T(2.)};
+        vectorized<T> x3{T(4.), T(4.), T(4.)};
+        BOOST_CHECK(x1 + x2 == (vectorized<T>{T(12.), T(22.), T(32.)}));
+        BOOST_CHECK(x1 - x2 == (vectorized<T>{T(8.), T(18.), T(28.)}));
+        BOOST_CHECK(x1 * x2 == (vectorized<T>{T(20.), T(40.), T(60.)}));
+        BOOST_CHECK(x1 / x2 == (vectorized<T>{T(5.), T(10.), T(15.)}));
+
+        {
+            auto retval = x1;
+            fma3(retval, x2, x3);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(18.), T(28.), T(38.)}));
+
+            retval = x1;
+            fma3(retval, x3, x2);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(18.), T(28.), T(38.)}));
+
+            retval = x2;
+            fma3(retval, x1, x3);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(42.), T(82.), T(122.)}));
+
+            retval = x2;
+            fma3(retval, x3, x1);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(42.), T(82.), T(122.)}));
+
+            retval = x3;
+            fma3(retval, x1, x2);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(24.), T(44.), T(64.)}));
+
+            retval = x3;
+            fma3(retval, x2, x1);
+            std::cout << retval << std::endl;
+            BOOST_CHECK(retval == (vectorized<T>{T(24.), T(44.), T(64.)}));
+        }
+    }
+
 }
 
 BOOST_AUTO_TEST_CASE(construction)
