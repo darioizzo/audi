@@ -433,14 +433,12 @@ inline std::size_t byte_size(const vectorized<T> &c) noexcept
 template <typename T>
 inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T> &y)
 {
-    const auto x_size = x.size(), y_size = y.size();
-
+    const auto x_size = x.size(), y_size = y.size(), ret_size = ret.size();
     constexpr auto use_fma = obake::is_mult_addable_v<T &, const T &, const T &>;
 
-    if (x_size == y_size) {
-        ret.resize(x_size);
+    // Most frequent case: all dimensions are equal case: n,n,n
+    if ((x_size == y_size) && (x_size == ret_size)) {
         auto ret_it = ret.begin();
-
         for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
             if constexpr (use_fma) {
                 obake::fma3(*ret_it, x[i], y[i]);
@@ -448,32 +446,83 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
                 *ret_it += x[i] * y[i];
             }
         }
-    } else if (x_size == 1u) {
-        ret.resize(y_size);
-        auto ret_it = ret.begin();
-
-        const auto x0 = x[0];
-        for (decltype(x.size()) i = 0; i < y_size; ++i, ++ret_it) {
-            if constexpr (use_fma) {
-                obake::fma3(*ret_it, x0, y[i]);
-            } else {
-                *ret_it += x0 * y[i];
+    } else if (ret_size == 1u) { // We are in the case 1, .., ..
+        if (x_size == 1u) {      // We are in the case 1, 1, n with n > 1
+            ret.resize(y_size, ret[0]);
+            auto ret_it = ret.begin();
+            const auto x0 = x[0];
+            for (decltype(y.size()) i = 0; i < y_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x0, y[i]);
+                } else {
+                    *ret_it += x0 * y[i];
+                }
             }
-        }
-    } else if (y_size == 1u) {
-        ret.resize(x_size);
-        auto ret_it = ret.begin();
-
-        const auto y0 = y[0];
-        for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
-            if constexpr (use_fma) {
-                obake::fma3(*ret_it, x[i], y0);
-            } else {
-                *ret_it += x[i] * y0;
+        } else if (y_size == 1u) { // We are in the case 1, n, 1 with n > 1
+            ret.resize(x_size, ret[0]);
+            auto ret_it = ret.begin();
+            const auto y0 = y[0];
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x[i], y0);
+                } else {
+                    *ret_it += x[i] * y0;
+                }
             }
+        } // We are in the case 1, n, n with n > 1
+        else if (y_size == x_size) {
+            ret.resize(x_size, ret[0]);
+            auto ret_it = ret.begin();
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x[i], y[i]);
+                } else {
+                    *ret_it += x[i] * y[i];
+                }
+            }
+        } else {
+            throw std::invalid_argument("Coefficients of different sizes in fma3");
         }
-    } else {
-        throw std::invalid_argument("Coefficients of different sizes in fma3");
+    } else if (x_size == 1u) { // We are in the case n, 1
+        if (y_size == 1u) {    // We are in the case n, 1, 1
+            auto ret_it = ret.begin();
+            const auto x0 = x[0];
+            const auto y0 = y[0];
+            for (decltype(ret.size()) i = 0u; i < ret_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x0, y0);
+                } else {
+                    *ret_it += x0 * y0;
+                }
+            }
+        } else if (y_size == ret_size) { // We are in the case n, 1, n
+            auto ret_it = ret.begin();
+            const auto x0 = x[0];
+            for (decltype(y.size()) i = 0; i < y_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x0, y[i]);
+                } else {
+                    *ret_it += x0 * y[i];
+                }
+            }
+        } else {
+            throw std::invalid_argument("Coefficients of different sizes in fma3");
+        }
+
+    } else if (y_size == 1u) {    // We are in the case n, n, 1
+        if (ret_size == x_size) { // We are in the case n, n, 1
+            auto ret_it = ret.begin();
+            const auto y0 = y[0];
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
+                if constexpr (use_fma) {
+                    obake::fma3(*ret_it, x[i], y0);
+                } else {
+                    *ret_it += x[i] * y0;
+                }
+            }
+        } else {
+            throw std::invalid_argument("Coefficients of different sizes in fma3");
+        }
     }
 }
 

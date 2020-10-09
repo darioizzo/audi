@@ -18,7 +18,7 @@ inline ::obake::symbol_map<T> py_dict_to_obake_sm(const py::dict &d)
     typename ::obake::symbol_map<T>::sequence_type seq;
     seq.reserve(::obake::safe_cast<decltype(seq.size())>(py::len_hint(d)));
 
-    for (const auto &[k, v] : d) {
+    for (const auto [k, v] : d) {
         seq.emplace_back(k.template cast<::std::string>(), v.template cast<T>());
     }
 
