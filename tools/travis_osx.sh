@@ -14,7 +14,7 @@ bash miniconda.sh -b -p $HOME/miniconda
 conda config --add channels conda-forge
 conda config --set channel_priority strict
 
-conda_pkgs="cmake eigen nlopt ipopt boost boost-cpp tbb tbb-devel pybind11"
+conda_pkgs="cmake clang clangdev eigen obake-devel mppp boost-cpp python=3.7 pybind11"
 
 conda create -q -p $deps_dir -y
 source activate $deps_dir
