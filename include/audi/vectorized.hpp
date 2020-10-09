@@ -451,7 +451,7 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
             ret.resize(y_size, ret[0]);
             auto ret_it = ret.begin();
             const auto x0 = x[0];
-            for (decltype(x.size()) i = 0; i < y_size; ++i, ++ret_it) {
+            for (decltype(y.size()) i = 0; i < y_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
                     obake::fma3(*ret_it, x0, y[i]);
                 } else {
@@ -462,22 +462,22 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
             ret.resize(x_size, ret[0]);
             auto ret_it = ret.begin();
             const auto y0 = y[0];
-            for (decltype(y.size()) i = 0; i < x_size; ++i, ++ret_it) {
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
-                    obake::fma3(*ret_it, y0, x[i]);
+                    obake::fma3(*ret_it, x[i], y0);
                 } else {
-                    *ret_it += y0 * x[i];
+                    *ret_it += x[i] * y0;
                 }
             }
         } // We are in the case 1, n, n with n > 1
         else if (y_size == x_size) {
             ret.resize(x_size, ret[0]);
             auto ret_it = ret.begin();
-            for (decltype(y.size()) i = 0; i < x_size; ++i, ++ret_it) {
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
-                    obake::fma3(*ret_it, y[i], x[i]);
+                    obake::fma3(*ret_it, x[i], y[i]);
                 } else {
-                    *ret_it += y[i] * x[i];
+                    *ret_it += x[i] * y[i];
                 }
             }
         } else {
@@ -490,9 +490,9 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
             const auto y0 = y[0];
             for (decltype(ret.size()) i = 0u; i < ret_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
-                    obake::fma3(*ret_it, y0, x0);
+                    obake::fma3(*ret_it, x0, y0);
                 } else {
-                    *ret_it += y0 * x0;
+                    *ret_it += x0 * y0;
                 }
             }
         } else if (y_size == ret_size) { // We are in the case n, 1, n
@@ -500,9 +500,9 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
             const auto x0 = x[0];
             for (decltype(y.size()) i = 0; i < y_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
-                    obake::fma3(*ret_it, y[i], x0);
+                    obake::fma3(*ret_it, x0, y[i]);
                 } else {
-                    *ret_it += y[i] * x0;
+                    *ret_it += x0 * y[i];
                 }
             }
         } else {
@@ -515,9 +515,9 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
             const auto y0 = y[0];
             for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
-                    obake::fma3(*ret_it, y0, x[i]);
+                    obake::fma3(*ret_it, x[i], y0);
                 } else {
-                    *ret_it += y0 * x[i];
+                    *ret_it += x[i] * y0;
                 }
             }
         } else {
