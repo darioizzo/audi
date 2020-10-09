@@ -513,7 +513,7 @@ inline void fma3(vectorized<T> &ret, const vectorized<T> &x, const vectorized<T>
         if (ret_size == x_size) { // We are in the case n, n, 1
             auto ret_it = ret.begin();
             const auto y0 = y[0];
-            for (decltype(y.size()) i = 0; i < y_size; ++i, ++ret_it) {
+            for (decltype(x.size()) i = 0; i < x_size; ++i, ++ret_it) {
                 if constexpr (use_fma) {
                     obake::fma3(*ret_it, y0, x[i]);
                 } else {
