@@ -23,10 +23,8 @@ matrix:
     - docker
   - env: AUDI_BUILD="OSXDebug" AUDI_BUILD_TYPE="Debug"
     os: osx
-    osx_image: xcode10.3
   - env: AUDI_BUILD="OSXRelease" AUDI_BUILD_TYPE="Release"
     os: osx
-    osx_image: xcode10.3
 
 script:
   - if [[ "${AUDI_BUILD}" == OSX* ]]; then bash tools/travis_osx.sh; fi
