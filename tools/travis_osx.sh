@@ -6,41 +6,24 @@ set -x
 # Exit on error.
 set -e
 
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
+
 export deps_dir=$HOME/local
 export PATH="$HOME/miniconda/bin:$PATH"
 bash miniconda.sh -b -p $HOME/miniconda
-conda config --add channels conda-forge --force
+conda config --add channels conda-forge
+conda config --set channel_priority strict
 
-conda_pkgs="cmake>=3.3 clang clangdev eigen obake-devel mppp boost-cpp python=3.7"
+conda_pkgs="cmake eigen nlopt ipopt boost boost-cpp tbb tbb-devel pybind11"
 
-conda create -q -p $deps_dir -y $conda_pkgs
+conda create -q -p $deps_dir -y
 source activate $deps_dir
-
-export deps_dir=$HOME/local
-export PATH="$HOME/miniconda/bin:$PATH"
-export PATH="$deps_dir/bin:$PATH"
+conda install $conda_pkgs -y
 
 export CXX=clang++
 export CC=clang
 
 mkdir build
-
-# Install Pybind11 (making sure its the same used in our pipeline)
-export PYAUDI_BUILD_DIR=`pwd`
-git clone https://github.com/pybind/pybind11.git
-cd pybind11
-git checkout 4f72ef846fe8453596230ac285eeaa0ce3278bb4
-mkdir build
-cd build
-pwd
-cmake \
-    -DPYBIND11_TEST=NO \
-    -DCMAKE_INSTALL_PREFIX=$PYAUDI_BUILD_DIR \
-    -DCMAKE_PREFIX_PATH=$PYAUDI_BUILD_DIR \
-    ..
-make install
-cd ../..
 
 # Install audi
 cd build
