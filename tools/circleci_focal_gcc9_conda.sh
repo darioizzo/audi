@@ -19,10 +19,6 @@ conda config --set channel_priority strict
 conda create -y -q -p $deps_dir c-compiler cxx-compiler cmake eigen obake-devel mppp boost boost-cpp pybind11 python=3.10
 source activate $deps_dir
 
-export deps_dir=$HOME/local
-export PATH="$HOME/miniconda/bin:$PATH"
-export PATH="$deps_dir/bin:$PATH"
-
 # Create the build dir and cd into it.
 mkdir build
 
@@ -50,7 +46,6 @@ cmake \
     -DCMAKE_BUILD_TYPE=Debug \
     -DAUDI_BUILD_AUDI=no \
     -DAUDI_BUILD_PYAUDI=yes \
-    -Dpybind11_DIR=$PYAUDI_BUILD_DIR/share/cmake/pybind11/ \
     ..
 make -j2 VERBOSE=1 install
 python -c "import pyaudi.test; pyaudi.test.run_test_suite()"
