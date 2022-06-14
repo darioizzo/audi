@@ -7,17 +7,16 @@ set -x
 set -e
 
 # Core deps.
-sudo apt-get install build-essential
+sudo apt-get install wget
 
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+# Install conda+deps.
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
 export deps_dir=$HOME/local
 export PATH="$HOME/miniconda/bin:$PATH"
 bash miniconda.sh -b -p $HOME/miniconda
-conda config --add channels conda-forge --force
-
-conda_pkgs="cmake>=3.3 eigen obake-devel mppp boost boost-cpp python=3.7"
-
-conda create -q -p $deps_dir -y $conda_pkgs
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+conda create -y -q -p $deps_dir eigen obake-devel mppp boost boost-cpp pybind11 python=3.10
 source activate $deps_dir
 
 export deps_dir=$HOME/local
@@ -26,22 +25,6 @@ export PATH="$deps_dir/bin:$PATH"
 
 # Create the build dir and cd into it.
 mkdir build
-
-# Install Pybind11 (making sure its the same used in our pipeline)
-export PYAUDI_BUILD_DIR=`pwd`
-git clone https://github.com/pybind/pybind11.git
-cd pybind11
-git checkout 4f72ef846fe8453596230ac285eeaa0ce3278bb4
-mkdir build
-cd build
-pwd
-cmake \
-    -DPYBIND11_TEST=NO \
-    -DCMAKE_INSTALL_PREFIX=$PYAUDI_BUILD_DIR \
-    -DCMAKE_PREFIX_PATH=$PYAUDI_BUILD_DIR \
-    ..
-make install
-cd ../..
 
 # Install audi
 cd build
