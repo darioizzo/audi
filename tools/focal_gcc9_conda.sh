@@ -40,7 +40,7 @@ make -j2 VERBOSE=1 install
 ctest -j4 -V
 cd ..
 
-# Install pyaudi
+# Install pyaudi 
 mkdir build_pyaudi
 cd build_pyaudi
 cmake \
