@@ -16,7 +16,7 @@ export PATH="$HOME/miniconda/bin:$PATH"
 bash miniconda.sh -b -p $HOME/miniconda
 conda config --add channels conda-forge
 conda config --set channel_priority strict
-conda create -y -q -p $deps_dir eigen obake-devel mppp boost boost-cpp pybind11 python=3.10
+conda create -y -q -p $deps_dir c-compiler cxx-compiler cmake eigen obake-devel mppp boost boost-cpp pybind11 python=3.10
 source activate $deps_dir
 
 export deps_dir=$HOME/local
