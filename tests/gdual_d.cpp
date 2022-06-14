@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(subs)
     // Testing the substitution symbol->value. The Taylor expansion of sin(0+dx) evaluated in dx=1 is
     // compared against the value of sin(1)
     {
-        gdual<double, obake::packed_monomial<unsigned long long>> x(0, "x", 100);
+        gdual<double, obake::packed_monomial<std::uint64_t>> x(0, "x", 100);
         auto sx = sin(x);
         auto sx1 = sx.subs("dx", 1.);
         std::cout << sx << std::endl;

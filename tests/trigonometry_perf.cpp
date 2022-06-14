@@ -7,8 +7,6 @@
 
 #include <boost/optional.hpp>
 
-#include <tbb/task_scheduler_init.h>
-
 #include <audi/functions.hpp>
 #include <audi/gdual.hpp>
 
@@ -85,11 +83,6 @@ void scalable_test_sin_over_cos(int m, int n)
 
 BOOST_AUTO_TEST_CASE(trigonometry_perf)
 {
-    boost::optional<tbb::task_scheduler_init> tinit;
-    if (boost::unit_test::framework::master_test_suite().argc > 1) {
-        tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
-    }
-
     unsigned int low = 9, high = 10;
 
     // sin and cos
