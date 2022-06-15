@@ -10,8 +10,6 @@
 
 #include <boost/optional.hpp>
 
-#include <tbb/task_scheduler_init.h>
-
 using namespace audi;
 
 void scalable_test(int m, int n, gdual<double> (*func)(const gdual<double> &d), double param)
@@ -33,10 +31,6 @@ void scalable_test(int m, int n, gdual<double> (*func)(const gdual<double> &d), 
 
 BOOST_AUTO_TEST_CASE(functions_from_derivative_vs_nilpotency)
 {
-    boost::optional<tbb::task_scheduler_init> tinit;
-    if (boost::unit_test::framework::master_test_suite().argc > 1) {
-        tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
-    }
 
     unsigned int low = 9, high = 10;
 

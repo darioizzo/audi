@@ -5,8 +5,6 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/timer/timer.hpp>
 
-#include <tbb/task_scheduler_init.h>
-
 #include <boost/optional.hpp>
 
 #include <obake/polynomials/packed_monomial.hpp>
@@ -15,7 +13,7 @@
 #include <audi/gdual.hpp>
 
 using namespace audi;
-using gdual_d = gdual<double, obake::packed_monomial<unsigned long long>>;
+using gdual_d = gdual<double, obake::packed_monomial<std::uint64_t>>;
 
 void scalable_mul(unsigned int m, unsigned int n)
 {
@@ -44,10 +42,6 @@ void scalable_mul(unsigned int m, unsigned int n)
 
 BOOST_AUTO_TEST_CASE(multiplication_performance)
 {
-    boost::optional<tbb::task_scheduler_init> tinit;
-    if (boost::unit_test::framework::master_test_suite().argc > 1) {
-        tinit.emplace(boost::lexical_cast<unsigned>(boost::unit_test::framework::master_test_suite().argv[1u]));
-    }
     std::cout << "Testing multiplication of (1 + x1 + .. + xn)^m * (1 - x1 - .. - xn)^m: " << std::endl;
     for (auto m = 10u; m < 11u; ++m) {
         for (auto n = 10u; n < 11u; ++n) {

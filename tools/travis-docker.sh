@@ -20,18 +20,6 @@ else
 	exit 1
 fi
 
-# Install pybind11
-
-git clone https://github.com/pybind/pybind11.git
-cd pybind11
-git checkout 4f72ef846fe8453596230ac285eeaa0ce3278bb4
-mkdir build
-cd build
-pwd
-cmake ../ -DPYBIND11_TEST=NO > /dev/null
-make install > /dev/null 2>&1
-cd ..
-
 # Install audi headers
 cd /audi
 mkdir build_audi
