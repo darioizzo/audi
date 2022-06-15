@@ -47,4 +47,4 @@ cmake `
 
 cmake --build . --target install --config Release
 
-python -c "from dcgpy import test; test.run_test_suite(); import pygmo; pygmo.mp_island.shutdown_pool(); pygmo.mp_bfe.shutdown_pool()"
+python -c "from pyaudi import test; test.run_test_suite();"
