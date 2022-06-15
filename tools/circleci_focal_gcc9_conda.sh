@@ -32,7 +32,7 @@ cmake \
     -DAUDI_BUILD_AUDI=yes \
     -DAUDI_BUILD_TESTS=yes \
     ..
-make -j2 VERBOSE=1 install
+make VERBOSE=1 install
 ctest -j4 -V
 cd ..
 
@@ -47,7 +47,7 @@ cmake \
     -DAUDI_BUILD_AUDI=no \
     -DAUDI_BUILD_PYAUDI=yes \
     ..
-make -j2 VERBOSE=1 install
+make VERBOSE=1 install
 python -c "import pyaudi.test; pyaudi.test.run_test_suite()"
 
 set +e
