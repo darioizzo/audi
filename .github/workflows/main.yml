@@ -21,13 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: bash tools/ubuntu-debug.sh
+        run: bash tools/gha-ubuntu-debug.sh
   osx-debug:
     runs-on: macos-10.15
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: bash tools/osx-.sh
+        run: bash tools/gha-osx-debug.sh
   windows-release:
     runs-on: windows-2019
     steps:
