@@ -25,9 +25,8 @@ cmake `
     -DCMAKE_PREFIX_PATH=C:\Miniconda\envs\audi `
     -DBoost_NO_BOOST_CMAKE=ON `
     -DCMAKE_INSTALL_PREFIX=C:\Miniconda\envs\audi `
-    -DAUDI_BUILD_AUDI=yes \
-    -DAUDI_BUILD_TESTS=yes \
-
+    -DAUDI_BUILD_AUDI=yes `
+    -DAUDI_BUILD_TESTS=yes ..
 
 cmake --build . --target install --config Release
 ctest -j4 -V -C Release
@@ -43,8 +42,8 @@ cmake `
     -DCMAKE_PREFIX_PATH=C:\Miniconda\envs\audi `
     -DBoost_NO_BOOST_CMAKE=ON `
     -DCMAKE_INSTALL_PREFIX=C:\Miniconda\envs\audi `
-    -DAUDI_BUILD_AUDI=no \
-    -DAUDI_BUILD_PYAUDI=yes \
+    -DAUDI_BUILD_AUDI=no `
+    -DAUDI_BUILD_PYAUDI=yes ..
 
 cmake --build . --target install --config Release
 
