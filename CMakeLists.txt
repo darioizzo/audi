@@ -1,5 +1,6 @@
-# CMake version check.
-cmake_minimum_required(VERSION 3.8)
+# NOTE: this is the minimum version currently
+# required by audi.
+cmake_minimum_required(VERSION 3.18.0)
 
 # Set default build type to "Release".
 # NOTE: this should be done before the project command since the latter can set
@@ -184,11 +185,11 @@ if(AUDI_BUILD_AUDI)
     message(STATUS "Eigen version detected: ${EIGEN3_VERSION}")
     
     # obake setup.
-    find_package(obake REQUIRED)
+    find_package(obake REQUIRED CONFIG)
     message(STATUS "obake library found.")
 
     # mp++ setup.
-    find_package(mp++ REQUIRED)
+    find_package(mp++ REQUIRED CONFIG)
     message(STATUS "mp++ library found.")
 
     # Setup of the header-only audi library.

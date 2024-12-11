@@ -82,6 +82,7 @@ if(NOT _YACMACompilerLinkerSettingsRun)
     # Configuration bits specific for GCC.
     if(YACMA_COMPILER_IS_GNUCXX)
         _YACMA_CHECK_ENABLE_CXX_FLAG(-fdiagnostics-color=auto)
+        _YACMA_CHECK_ENABLE_CXX_FLAG(-Woverloaded-virtual)
         # New in GCC 9.
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Waddress-of-packed-member)
     endif()
@@ -109,16 +110,43 @@ if(NOT _YACMACompilerLinkerSettingsRun)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wc99-designator)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wreorder-init-list)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsizeof-pointer-div)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsizeof-array-div)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wxor-used-as-pow)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wfinal-dtor-non-final-class)
+        # New warnings in clang 11.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wpointer-to-int-cast)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wuninitialized-const-reference)
+        # New warnings in clang 13.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wunused-but-set-parameter)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wunused-but-set-variable)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wnull-pointer-subtraction)
+        # NOTE: this is a new flag in Clang 13 which seems to give
+        # incorrect warnings for UDLs.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wno-reserved-identifier)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Warray-bounds-pointer-arithmetic)
+        # New warnings in clang 14.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Warray-parameter)
+        # NOTE: clang 17 enables by default a new compiler flag called "-fassume-unique-vtables":
+        #
+        # https://releases.llvm.org/17.0.1/tools/clang/docs/ReleaseNotes.html#c-language-changes
+        #
+        # This flag however seems to be buggy:
+        #
+        # https://github.com/llvm/llvm-project/issues/71196
+        #
+        # On our part, in several projects we are experiencing Boost.serialization failures when
+        # (de)serialising derived objects through pointers to bases. Thus, we forcibly disable
+        # this new flag.
+        _YACMA_CHECK_ENABLE_CXX_FLAG(-fno-assume-unique-vtables)
     endif()
 
     # Common configuration for GCC, clang and Intel.
     if(YACMA_COMPILER_IS_CLANGXX OR YACMA_COMPILER_IS_INTELXX OR YACMA_COMPILER_IS_GNUCXX)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wall)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wextra)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wnon-virtual-dtor)
+        # NOTE: this flag has been superseded by "-Wdelete-non-virtual-dtor"
+        # (enabled by "-Wall"). See:
+        # https://gcc.gnu.org/pipermail/gcc-cvs/2022-November/374730.html
+        # _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wnon-virtual-dtor)
         # NOTE: this flag is a bit too chatty, let's disable it for the moment.
         #_YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wnoexcept)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wlogical-op)
@@ -135,11 +163,6 @@ if(NOT _YACMACompilerLinkerSettingsRun)
         # This is useful when the compiler decides the template backtrace is too verbose.
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-ftemplate-backtrace-limit=0)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-fstack-protector-all)
-        # A few suggestion flags.
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsuggest-attribute=pure)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsuggest-attribute=const)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsuggest-attribute=noreturn)
-        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsuggest-attribute=format)
         # From GCC 5.
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wodr)
         _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wsuggest-final-types)
@@ -173,6 +196,12 @@ if(NOT _YACMACompilerLinkerSettingsRun)
             message(STATUS "Activating the '-Wno-maybe-uninitialized' workaround for GCC.")
             _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wno-maybe-uninitialized)
         endif()
+        # From GCC 10.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wmismatched-tags)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wredundant-tags)
+        # From GCC 12.
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Warray-compare)
+        _YACMA_CHECK_ENABLE_DEBUG_CXX_FLAG(-Wmissing-requires)
     endif()
 
     # MSVC setup.

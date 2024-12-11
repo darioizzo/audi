@@ -2,7 +2,7 @@
 
 # Install conda environment
 conda config --set always_yes yes
-conda create --name audi cmake eigen obake-devel mppp boost boost-cpp pybind11 python=3.10
+conda create --name audi cmake eigen obake-devel mppp libboost-devel pybind11 python ninja numpy
 conda activate audi
 
 # Define environment variables for clang ...

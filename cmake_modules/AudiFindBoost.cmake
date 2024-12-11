@@ -1,7 +1,7 @@
 # Run a first pass for finding the headers only,
 # and establishing the Boost version.
 set(_AUDI_BOOST_MINIMUM_VERSION 1.60.0)
-find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} QUIET REQUIRED)
+find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} QUIET REQUIRED CONFIG)
 
 set(_AUDI_REQUIRED_BOOST_LIBS serialization timer chrono system)
 
@@ -11,7 +11,7 @@ if(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK)
 endif()
 
 message(STATUS "Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
-find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} REQUIRED COMPONENTS ${_AUDI_REQUIRED_BOOST_LIBS})
+find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} REQUIRED COMPONENTS ${_AUDI_REQUIRED_BOOST_LIBS} CONFIG)
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Not all requested Boost components were found, exiting.")
 endif()
