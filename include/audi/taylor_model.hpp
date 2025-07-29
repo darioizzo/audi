@@ -45,6 +45,25 @@ public:
     using var_map_d = std::unordered_map<std::string, double>;
     using var_map_i = std::unordered_map<std::string, int_d>;
 
+    void check_input_validity()
+    {
+        // For domain
+        auto domain_keys = m_domain | std::views::keys;
+        std::unordered_set<std::string> domain_set(domain_keys.begin(), domain_keys.end());
+
+        // For exp_point
+        auto exp_point_keys = m_exp | std::views::keys;
+        std::unordered_set<std::string> exp_point_set(exp_point_keys.begin(), exp_point_keys.end());
+
+        // For symbol set
+        auto symbol_vec = m_tpol.get_symbol_set(); // Materialize it
+        std::unordered_set<std::string> symbol_set(symbol_vec.begin(), symbol_vec.end());
+
+        if (domain_set != exp_point_set || exp_point_set != symbol_set) {
+            throw std::invalid_argument("Maps have different number of items.");
+        }
+    }
+
 private:
     // The Taylor polynomial
     audi::gdual<double> m_tpol;
@@ -58,24 +77,6 @@ private:
     var_map_d m_exp;
     // The domain
     var_map_i m_domain;
-
-    void check_input_validity()
-    {
-        // For domain
-        auto domain_keys = m_domain | std::views::keys;
-        std::unordered_set<std::string> domain_set(domain_keys.begin(), domain_keys.end());
-
-        // For exp_point
-        auto exp_point_keys = m_exp | std::views::keys;
-        std::unordered_set<std::string> exp_point_set(exp_point_keys.begin(), exp_point_keys.end());
-
-        // For symbol set
-        std::unordered_set<std::string> symbol_set(m_tpol.get_symbol_set().begin(), m_tpol.get_symbol_set().end());
-
-        if (domain_set != exp_point_set || exp_point_set != symbol_set) {
-            throw std::invalid_argument("Maps have different number of items.");
-        }
-    }
 
 public:
     /// Defaulted copy constructor.
@@ -104,32 +105,32 @@ public:
     /// Getters ///
     ///////////////
 
-    const audi::gdual<double>& get_tpol() const
+    const audi::gdual<double> &get_tpol() const
     {
         return m_tpol;
     }
 
-    const int_d& get_rem() const
+    const int_d &get_rem() const
     {
         return m_rem;
     }
 
-    const var_map_d& get_exp() const
+    const var_map_d &get_exp() const
     {
         return m_exp;
     }
 
-    const var_map_i& get_dom() const
+    const var_map_i &get_dom() const
     {
         return m_domain;
     }
 
-    const uint& get_order() const
+    const uint &get_order() const
     {
         return m_order;
     }
 
-    const uint& get_ndim() const
+    const uint &get_ndim() const
     {
         return m_ndim;
     }
@@ -221,27 +222,56 @@ private:
     }
 
 public:
-    ////////////////////////////////////
-    /// Overloaded addition operator ///
-    ////////////////////////////////////
+    //////////////////////////////////////
+    /// Overloaded arithmetic operator ///
+    //////////////////////////////////////
 
     template <typename T, typename U>
-    // TODO: This needs to become taylor_model_if_enabled to specify  exactly what types the + operator can accept
+    // TODO: This needs to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what types
+    // the + operator can accept
     friend taylor_model operator+(const T &d1, const U &d2)
     {
         return add(d1, d2);
     }
 
+    /////////////////////////////////
+    /// Overloaded other operator ///
+    /////////////////////////////////
+
     friend std::ostream &operator<<(std::ostream &os, const taylor_model &tm)
     {
-        os << "Taylor Polynomial:\n" << tm.get_tpol(); // << "\nRemainder Bound: " << tm.get_rem().lower() << tm.get_rem().upper();
-           // << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
+        os << "Taylor Polynomial:\n"
+           << tm.get_tpol(); // << "\nRemainder Bound: " << tm.get_rem().lower() << tm.get_rem().upper();
+                             // << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
         return os;
     }
 
+    template <typename T>
+    bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b) const
+    {
+        return a.lower() == b.lower() && a.upper() == b.upper();
+    }
+
+    template <typename T>
+    bool map_interval_equal(const std::unordered_map<std::string, T> &a,
+                            const std::unordered_map<std::string, T> &b) const
+    {
+        if (a.size() != b.size()) return false;
+        for (const auto &[key, val_a] : a) {
+            auto it = b.find(key);
+            if (it == b.end() || !interval_equal<T>(val_a, it->second)) return false;
+        }
+        return true;
+    }
+
+    bool operator==(const taylor_model &other) const
+    {
+
+        return m_tpol == other.m_tpol && interval_equal<double>(m_rem, other.m_rem)
+               && map_interval_equal<double>(m_exp, other.m_exp) && map_interval_equal<int_d>(m_domain, other.m_domain);
+    }
 
 }; // end of taylor_model class
-
 
 } // end of namespace audi
 
