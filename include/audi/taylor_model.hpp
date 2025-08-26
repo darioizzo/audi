@@ -246,29 +246,48 @@ public:
         return os;
     }
 
+    // Compare scalars
     template <typename T>
-    bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b) const
-    {
-        return a.lower() == b.lower() && a.upper() == b.upper();
+    bool interval_equal(const T &a, const T &b) const {
+        if constexpr (std::is_floating_point_v<T>) {
+            auto eps = std::numeric_limits<T>::epsilon() * 10;
+            return std::fabs(a - b) < eps;
+        } else {
+            return a == b;
+        }
     }
 
+    // Compare intervals
+    template <typename T>
+    bool interval_equal(const boost::numeric::interval<T> &a,
+                        const boost::numeric::interval<T> &b) const {
+        if constexpr (std::is_floating_point_v<T>) {
+            auto eps = std::numeric_limits<T>::epsilon() * 10;
+            return std::fabs(a.lower() - b.lower()) < eps &&
+                   std::fabs(a.upper() - b.upper()) < eps;
+        } else {
+            return a.lower() == b.lower() && a.upper() == b.upper();
+        }
+    }
+
+    // Generic map comparison
     template <typename T>
     bool map_interval_equal(const std::unordered_map<std::string, T> &a,
-                            const std::unordered_map<std::string, T> &b) const
-    {
+                            const std::unordered_map<std::string, T> &b) const {
         if (a.size() != b.size()) return false;
         for (const auto &[key, val_a] : a) {
             auto it = b.find(key);
-            if (it == b.end() || !interval_equal<T>(val_a, it->second)) return false;
+            if (it == b.end() || !interval_equal(val_a, it->second)) return false;
         }
         return true;
     }
 
     bool operator==(const taylor_model &other) const
     {
-
-        return m_tpol == other.m_tpol && interval_equal<double>(m_rem, other.m_rem)
-               && map_interval_equal<double>(m_exp, other.m_exp) && map_interval_equal<int_d>(m_domain, other.m_domain);
+        return m_tpol == other.m_tpol
+            && interval_equal(m_rem, other.m_rem)
+            && map_interval_equal(m_exp, other.m_exp)
+            && map_interval_equal(m_domain, other.m_domain);
     }
 
 }; // end of taylor_model class
