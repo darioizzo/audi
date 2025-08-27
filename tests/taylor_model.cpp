@@ -1,4 +1,5 @@
 #define BOOST_TEST_MODULE taylor_models_test
+
 #include <boost/math/constants/constants.hpp>
 #include <boost/numeric/interval.hpp>
 #include <boost/numeric/interval/utility.hpp>
@@ -8,8 +9,7 @@
 #include <vector>
 
 #include "helpers.hpp"
-#include <audi/functions.hpp>
-#include <audi/gdual.hpp>
+#include <audi/audi.hpp>
 #include <audi/io.hpp>
 #include <audi/taylor_model.hpp>
 
