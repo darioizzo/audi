@@ -15,10 +15,12 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_small)
     std::vector<int> limits = {2, 1};
     auto combos = generate_combinations(limits);
 
-    BOOST_CHECK_EQUAL(combos.size(), 6);
+    BOOST_CHECK_EQUAL(combos.size(), 5);
     BOOST_CHECK(combos[0] == std::vector<int>({0, 0}));
     BOOST_CHECK(combos[1] == std::vector<int>({0, 1}));
-    BOOST_CHECK(combos[5] == std::vector<int>({2, 1}));
+    BOOST_CHECK(combos[2] == std::vector<int>({1, 0}));
+    BOOST_CHECK(combos[3] == std::vector<int>({1, 1}));
+    BOOST_CHECK(combos[4] == std::vector<int>({2, 0}));
 }
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -29,7 +31,6 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_empty_limits)
     auto combos = generate_combinations(limits);
 
     BOOST_CHECK_EQUAL(combos.size(), 0);
-    BOOST_CHECK(combos[0].empty());
 }
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -39,9 +40,11 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_multidim)
     std::vector<int> limits = {1, 1, 1}; // 2*2*2 = 8 combos
     auto combos = generate_combinations(limits);
 
-    BOOST_CHECK_EQUAL(combos.size(), 8);
-    BOOST_CHECK(combos.front() == std::vector<int>({0, 0, 0}));
-    BOOST_CHECK(combos.back() == std::vector<int>({1, 1, 1}));
+    BOOST_CHECK_EQUAL(combos.size(), 4);
+    BOOST_CHECK(combos[0] == std::vector<int>({0, 0, 0}));
+    BOOST_CHECK(combos[1] == std::vector<int>({0, 0, 1}));
+    BOOST_CHECK(combos[2] == std::vector<int>({0, 1, 0}));
+    BOOST_CHECK(combos[3] == std::vector<int>({1, 0, 0}));
 }
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -71,17 +74,15 @@ BOOST_AUTO_TEST_CASE(test_get_poly_multidim)
 
     auto [coeffs, exps] = get_poly(poly);
 
-    // Should contain (1, [1,0]), (2, [0,1]), (3, [1,1])
-    bool found_x = false, found_y = false, found_xy = false;
+    // Should contain (6, [0,0]), (5, [0,1]), (4, [1,0], (3, [1,1])
+    bool corresponding_coeff = true;
+    std::vector<double> exp_coeffs = {6.0, 5.0, 4.0, 3.0};
+    std::vector<std::vector<int>> exp_exps = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     for (size_t i = 0; i < coeffs.size(); ++i) {
-        if (exps[i] == std::vector<int>({1, 0}) && coeffs[i] == 1.0) found_x = true;
-        if (exps[i] == std::vector<int>({0, 1}) && coeffs[i] == 2.0) found_y = true;
-        if (exps[i] == std::vector<int>({1, 1}) && coeffs[i] == 3.0) found_xy = true;
+        if (exps[i] != exp_exps[i] || coeffs[i] != exp_coeffs[i]) corresponding_coeff=false;
     }
 
-    BOOST_CHECK(found_x);
-    BOOST_CHECK(found_y);
-    BOOST_CHECK(found_xy);
+    BOOST_CHECK_EQUAL(corresponding_coeff, true);
 }
 BOOST_AUTO_TEST_SUITE_END()
 

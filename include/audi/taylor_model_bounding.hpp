@@ -8,6 +8,7 @@
 std::vector<std::vector<int>> generate_combinations(const std::vector<int>& limits) {
     if (limits.empty()) return {};
 
+    int cap = *std::max_element(limits.begin(), limits.end());
     std::vector<std::vector<int>> result = {{}};
 
     for (int limit : limits) {
@@ -16,8 +17,12 @@ std::vector<std::vector<int>> generate_combinations(const std::vector<int>& limi
             for (int i = 0; i <= limit; ++i) {
                 auto copy = comb;
                 copy.push_back(i);
-                tmp.push_back(copy);
-            }
+
+                // Check sum of indices
+                int s = std::accumulate(copy.begin(), copy.end(), 0);
+                if (s <= cap) {
+                    tmp.push_back(std::move(copy));
+                }    }
         }
         result = std::move(tmp);
     }
@@ -29,6 +34,7 @@ std::vector<std::vector<int>> generate_combinations(const std::vector<int>& limi
 template <typename T>
 std::pair<std::vector<T>, std::vector<std::vector<int>>> get_poly(const audi::gdual<T> &tpol)
 {
+
     auto ndim = tpol.get_symbol_set_size();
 
     std::vector<std::vector<int>> combs;
