@@ -9,7 +9,6 @@
 #include <audi/io.hpp>
 #include <audi/taylor_model_bounding.hpp>
 
-BOOST_AUTO_TEST_SUITE(test1)
 BOOST_AUTO_TEST_CASE(test_generate_combinations_small)
 {
     std::vector<int> limits = {2, 1};
@@ -22,9 +21,7 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_small)
     BOOST_CHECK(combos[3] == std::vector<int>({1, 1}));
     BOOST_CHECK(combos[4] == std::vector<int>({2, 0}));
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test2)
 BOOST_AUTO_TEST_CASE(test_generate_combinations_empty_limits)
 {
     std::vector<int> limits;
@@ -32,9 +29,7 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_empty_limits)
 
     BOOST_CHECK_EQUAL(combos.size(), 0);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test3)
 BOOST_AUTO_TEST_CASE(test_generate_combinations_multidim)
 {
     std::vector<int> limits = {1, 1, 1}; // 2*2*2 = 8 combos
@@ -46,9 +41,7 @@ BOOST_AUTO_TEST_CASE(test_generate_combinations_multidim)
     BOOST_CHECK(combos[2] == std::vector<int>({0, 1, 0}));
     BOOST_CHECK(combos[3] == std::vector<int>({1, 0, 0}));
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test4)
 BOOST_AUTO_TEST_CASE(test_get_poly_univariate)
 {
     audi::gdual<double> poly(1.0, "x", 3);
@@ -62,9 +55,7 @@ BOOST_AUTO_TEST_CASE(test_get_poly_univariate)
 
     BOOST_CHECK(!coeffs.empty());
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test6)
 BOOST_AUTO_TEST_CASE(test_get_poly_multidim)
 {
     using namespace audi;
@@ -79,25 +70,21 @@ BOOST_AUTO_TEST_CASE(test_get_poly_multidim)
     std::vector<double> exp_coeffs = {6.0, 5.0, 4.0, 3.0};
     std::vector<std::vector<int>> exp_exps = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     for (size_t i = 0; i < coeffs.size(); ++i) {
-        if (exps[i] != exp_exps[i] || coeffs[i] != exp_coeffs[i]) corresponding_coeff=false;
+        if (exps[i] != exp_exps[i] || coeffs[i] != exp_coeffs[i]) corresponding_coeff = false;
     }
 
     BOOST_CHECK_EQUAL(corresponding_coeff, true);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test7)
 BOOST_AUTO_TEST_CASE(test_get_ndim_valid)
 {
     std::vector<double> coeffs = {1.0, 2.0, 3.0};
     std::vector<std::vector<int>> exps = {{2, 3, 1}, {4, 1, 5}, {3, 2, 2}};
 
-    int ndim = get_ndim(coeffs, exps);
+    uint ndim = get_ndim(coeffs, exps);
     BOOST_CHECK_EQUAL(ndim, 3);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test8)
 BOOST_AUTO_TEST_CASE(test_get_ndim_inconsistent_coeffs_exps)
 {
     std::vector<double> coeffs = {1.0, 2.0};
@@ -105,37 +92,70 @@ BOOST_AUTO_TEST_CASE(test_get_ndim_inconsistent_coeffs_exps)
 
     BOOST_CHECK_THROW(get_ndim(coeffs, exps), std::invalid_argument);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test9)
 BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_greater_than_1)
 {
     std::vector<std::vector<int>> exps = {{2, 3, 1}, {4, 1, 5}, {3, 2, 2}};
-    int ndim = 3;
+    uint ndim = 3;
     std::vector<int> max_degrees = get_max_degrees(exps, ndim);
 
     std::vector<int> expected = {4, 3, 5};
     BOOST_CHECK_EQUAL_COLLECTIONS(max_degrees.begin(), max_degrees.end(), expected.begin(), expected.end());
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test10)
 BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_1)
 {
     std::vector<std::vector<int>> exps = {{2, 3, 1, 4}};
-    int ndim = 1;
+    uint ndim = 1;
     std::vector<int> max_degrees = get_max_degrees(exps, ndim);
 
     BOOST_CHECK_EQUAL(max_degrees.size(), 1);
     BOOST_CHECK_EQUAL(max_degrees[0], 4);
 }
-BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test11)
 BOOST_AUTO_TEST_CASE(test_get_max_degrees_empty)
 {
     std::vector<std::vector<int>> exps;
-    int ndim = 2;
+    uint ndim = 2;
     BOOST_CHECK_THROW(get_max_degrees(exps, ndim), std::invalid_argument);
 }
-BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_CASE(test_get_coefficient_found)
+{
+    std::vector<double> coeffs = {22.0, 16.0};
+    std::vector<std::vector<int>> exps = {{1, 2}, {4, 3}};
+
+    double c1 = get_coefficient<double>({1, 2}, coeffs, exps);
+    double c2 = get_coefficient<double>({4, 3}, coeffs, exps);
+
+    BOOST_CHECK_EQUAL(c1, 22.0);
+    BOOST_CHECK_EQUAL(c2, 16.0);
+}
+
+BOOST_AUTO_TEST_CASE(test_get_coefficient_not_found)
+{
+    std::vector<double> coeffs = {22.0, 16.0};
+    std::vector<std::vector<int>> exps = {{1, 2}, {4, 3}};
+
+    double c = get_coefficient<double>({0, 0}, coeffs, exps);
+    BOOST_CHECK_EQUAL(c, 0.0); // default return
+}
+
+BOOST_AUTO_TEST_CASE(test_a_matrix_2d)
+{
+    std::vector<double> coeffs = {22.0, 16.0};
+    std::vector<std::vector<int>> exps = {{1, 2}, {4, 3}};
+
+    auto vec_A = get_a_matrix_vec(coeffs, exps);
+
+    std::vector<std::vector<double>> expected = {
+        {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 22.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 16.0}};
+
+    BOOST_CHECK_EQUAL(vec_A.size(), expected.size());
+    for (size_t i = 0; i < expected.size(); ++i) {
+        BOOST_CHECK_EQUAL(vec_A[i].size(), expected[i].size());
+        for (size_t j = 0; j < expected[i].size(); ++j) {
+            BOOST_CHECK_CLOSE(vec_A[i][j], expected[i][j], 1e-12);
+        }
+    }
+}
