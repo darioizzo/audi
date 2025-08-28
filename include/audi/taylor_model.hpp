@@ -12,11 +12,15 @@
 #include <audi/detail/overloads_vectorized.hpp> //for audi::abs
 #include <audi/gdual.hpp>
 
+#include <audi/taylor_model_bounding.hpp>
+
 /// Root namespace for AuDi symbols
 namespace audi
 {
 
 using int_d = boost::numeric::interval<double>;
+using var_map_d = std::unordered_map<std::string, double>;
+using var_map_i = std::unordered_map<std::string, int_d>;
 
 /// Taylor model class.
 /**
@@ -26,9 +30,6 @@ class taylor_model
 {
 
 public:
-    using var_map_d = std::unordered_map<std::string, double>;
-    using var_map_i = std::unordered_map<std::string, int_d>;
-
     void check_input_validity()
     {
         // For domain
@@ -63,11 +64,15 @@ private:
     var_map_i m_domain;
 
 public:
-    /// Defaulted copy constructor.
+    /// Defaulted copy constructor & assignment
     taylor_model(const taylor_model &) = default;
-    /// Defaulted move constructor.
+    taylor_model &operator=(const taylor_model &) = default;
+
+    /// Defaulted move constructor & assignment
     taylor_model(taylor_model &&) = default;
-    /// Default constuctor
+    taylor_model &operator=(taylor_model &&) = default;
+
+    /// Default constructor
     taylor_model() : m_tpol(0.), m_order(0u), m_rem(0.) {}
     ~taylor_model() {}
 
@@ -186,14 +191,41 @@ private:
         audi::gdual<T> temp(0.0, "temp", new_order);
 
         // Substitute poly into temp
-        return temp.subs({{"dtemp", poly}});
+        return temp.subs("dtemp", poly);
     }
 
     template <typename T>
-    boost::numeric::interval<T> get_bounds()
+    int_d get_bounds(const audi::gdual<T> &tpol, var_map_d &exp_points, var_map_i &domain)
     {
+        // Build shifted domain relative to expansion points
+        var_map_i domain_shifted;
 
-        //
+        auto [coeffs, exps] = audi::get_poly(tpol);
+
+        for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
+            std::string var_name = tpol.get_symbol_set()[i];
+
+            T a_shifted = domain.at(var_name).lower() - exp_points.at(var_name);
+            T b_shifted = domain.at(var_name).upper() - exp_points.at(var_name);
+            domain_shifted[var_name] = int_d(a_shifted, b_shifted);
+        }
+
+        // Compute Bernstein patch using generalbox (takes var_map_i directly)
+        std::vector<std::vector<T>> bern_patch
+            = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
+
+        // Extract min and max values
+        T min_val = bern_patch[0][0];
+        T max_val = bern_patch[0][0];
+
+        for (const auto &row : bern_patch) {
+            for (T val : row) {
+                min_val = std::min(min_val, val);
+                max_val = std::max(max_val, val);
+            }
+        }
+
+        return int_d(min_val, max_val);
     }
 
     //////////////////////////////////////////////
@@ -271,35 +303,8 @@ private:
     }
 
     // // Multiplication
-    template <typename T>
-    static taylor_model multiply(const T &d1, const taylor_model &d2)
-    {
-        return taylor_model(d1 * d2.m_tpol, d1 * d2.m_rem, d2.m_exp, d2.m_domain);
-    }
 
-    template <typename T>
-    static taylor_model multiply(const taylor_model &d1, const T &d2)
-    {
-        return taylor_model(d1.m_tpol * d2, d1.m_rem * d2, d1.m_exp, d1.m_domain);
-    }
-
-    template <typename T>
-    static taylor_model multiply(const boost::numeric::interval<T> &d1, const taylor_model &d2)
-    {
-        audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
-        return tm_one * d2;
-    }
-
-    template <typename T>
-    static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
-    {
-        audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
-        return d1 * tm_one;
-    }
-
-    template <typename T>
+    // TODO: Should be templated as well I guess, but raises error with ambiguity
     static taylor_model multiply(const taylor_model &d1, const taylor_model &d2)
     {
 
@@ -311,10 +316,10 @@ private:
         // Get untruncated polynomial product
         uint new_order = d1.m_tpol.get_order() + d2.m_tpol.get_order();
 
-        audi::gdual<T> d1_ho = get_increased_order(d1.m_tpol, new_order);
-        audi::gdual<T> d2_ho = get_increased_order(d2.m_tpol, new_order);
+        audi::gdual<double> d1_ho = get_increased_order(d1.m_tpol, new_order);
+        audi::gdual<double> d2_ho = get_increased_order(d2.m_tpol, new_order);
 
-        audi::gdual<T> polynomial_product = d1_ho * d2_ho;
+        audi::gdual<double> polynomial_product = d1_ho * d2_ho;
 
         // Get agreeable polynomial
         const uint agreeable_degree = std::max(d1.m_tpol.get_order(), d2.m_tpol.get_order());
@@ -326,7 +331,7 @@ private:
 
         audi::gdual<double> pol_e = polynomial_product - agreeable_pol;
 
-        boost::numeric::interval<double> pol_e_bounds;
+        int_d pol_e_bounds;
         if (pol_e.is_zero(1e-16)) {
             pol_e_bounds = boost::numeric::interval<double>(0.0, 0.0);
         } else {
@@ -334,8 +339,8 @@ private:
             std::vector<std::string> symbs_e = pol_e.get_symbol_set();
 
             // extract relevant domain and expansion points
-            std::map<std::string, boost::numeric::interval<double>> domain_e;
-            std::map<std::string, double> exp_point_e;
+            var_map_i domain_e;
+            var_map_d exp_point_e;
             for (const auto &sym : symbs_e) {
                 domain_e[sym] = new_domain[sym];
                 exp_point_e[sym] = new_exp[sym];
@@ -348,6 +353,34 @@ private:
         //     = pol_e_bounds + d1.get_bounds() * d2.m_rem + d1.m_rem * d2.get_bounds() + d1.m_rem * d2.m_rem;
         //
         // return taylor_model(agreeable_pol, interval_of_bounds, new_exp, new_domain);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const T &d1, const taylor_model &d2)
+    {
+        return taylor_model(d1 * d2.m_tpol, int_d(d1) * d2.m_rem, d2.m_exp, d2.m_domain);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const taylor_model &d1, const T &d2)
+    {
+        return taylor_model(d1.m_tpol * d2, d1.m_rem * int_d(d2), d1.m_exp, d1.m_domain);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    {
+        audi::gdual<T> gd_one(1.0);
+        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
+        return tm_one * d2;
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    {
+        audi::gdual<T> gd_one(1.0);
+        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
+        return d1 * tm_one;
     }
 
 public:
