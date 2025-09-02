@@ -22,6 +22,33 @@ using int_d = boost::numeric::interval<double>;
 using var_map_d = std::unordered_map<std::string, double>;
 using var_map_i = std::unordered_map<std::string, int_d>;
 
+std::ostream &operator<<(std::ostream &os, const var_map_d &m)
+{
+    os << "{";
+    bool first = true;
+    for (const auto &[key, value] : m) {
+        if (!first) os << ", ";
+        os << key << ": " << value;
+        first = false;
+    }
+    os << "}";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const var_map_i &m)
+{
+    os << "{";
+    bool first = true;
+    for (const auto &[key, value] : m) {
+        if (!first) os << ", ";
+        os << key << ":" << "[" << value.lower() << ", " << value.upper() << "]";
+
+        first = false;
+    }
+    os << "}";
+    return os;
+}
+
 /// Taylor model class.
 /**
  *
@@ -40,11 +67,7 @@ public:
         auto exp_point_keys = m_exp | std::views::keys;
         std::unordered_set<std::string> exp_point_set(exp_point_keys.begin(), exp_point_keys.end());
 
-        // For symbol set
-        auto symbol_vec = m_tpol.get_symbol_set(); // Materialize it
-        std::unordered_set<std::string> symbol_set(symbol_vec.begin(), symbol_vec.end());
-
-        if (domain_set != exp_point_set || exp_point_set != symbol_set) {
+        if (domain_set != exp_point_set) {
             throw std::invalid_argument("Maps have different number of items.");
         }
     }
@@ -88,6 +111,16 @@ public:
         m_domain = domain;
 
         check_input_validity();
+    }
+
+    taylor_model(double constant)
+    {
+        m_tpol = audi::gdual<double>(constant);
+        m_order = m_tpol.get_order();
+        m_ndim = static_cast<uint>(m_tpol.get_symbol_set_size());
+        m_rem = int_d(0.0);
+        m_exp = {};
+        m_domain = {};
     }
 
     ///////////////
@@ -170,7 +203,7 @@ private:
             auto it_b = b.find(key);
 
             if (it_a != a.end() && it_b != b.end()) {
-                if (it_a->second != it_b->second) {
+                if (!interval_equal(it_a->second, it_b->second)) {
                     throw std::runtime_error("Conflicting values for key: " + key);
                 }
                 result[key] = it_a->second;
@@ -184,6 +217,7 @@ private:
         return result;
     }
 
+public:
     template <typename T>
     static audi::gdual<T> get_increased_order(const audi::gdual<T> &poly, uint new_order)
     {
@@ -194,38 +228,67 @@ private:
         return temp.subs("dtemp", poly);
     }
 
+    static taylor_model identity()
+    {
+        taylor_model tm;
+        tm.m_tpol = audi::gdual<double>(1.0);
+        tm.m_order = 0u;
+        tm.m_ndim = 0u;
+        tm.m_rem = 0.0;
+        tm.m_exp = {};
+        tm.m_domain = {};
+        return tm;
+    }
+
     template <typename T>
-    int_d get_bounds(const audi::gdual<T> &tpol, var_map_d &exp_points, var_map_i &domain)
+    static std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
+    {
+        std::vector<T> ret;
+        for (const auto &v : orig)
+            ret.insert(ret.end(), v.begin(), v.end());
+        return ret;
+    }
+
+    int_d get_bounds() const
+    {
+        return get_bounds(m_tpol, m_exp, m_domain);
+    }
+
+private:
+    template <typename T>
+    static int_d get_bounds(const audi::gdual<T> &tpol, const var_map_d &exp_points, const var_map_i &domain)
     {
         // Build shifted domain relative to expansion points
         var_map_i domain_shifted;
 
         auto [coeffs, exps] = audi::get_poly(tpol);
+        auto ndim = audi::get_ndim(coeffs, exps); // necessary because static function
 
-        for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
-            std::string var_name = tpol.get_symbol_set()[i];
+        std::vector<T> flat;
+        if (ndim > 1) {
 
-            T a_shifted = domain.at(var_name).lower() - exp_points.at(var_name);
-            T b_shifted = domain.at(var_name).upper() - exp_points.at(var_name);
-            domain_shifted[var_name] = int_d(a_shifted, b_shifted);
-        }
+            for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
+                std::string var_name = tpol.get_symbol_set()[i];
 
-        // Compute Bernstein patch using generalbox (takes var_map_i directly)
-        std::vector<std::vector<T>> bern_patch
-            = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
-
-        // Extract min and max values
-        T min_val = bern_patch[0][0];
-        T max_val = bern_patch[0][0];
-
-        for (const auto &row : bern_patch) {
-            for (T val : row) {
-                min_val = std::min(min_val, val);
-                max_val = std::max(max_val, val);
+                T a_shifted = domain.at(var_name).lower() - exp_points.at(var_name);
+                T b_shifted = domain.at(var_name).upper() - exp_points.at(var_name);
+                domain_shifted[var_name] = int_d(a_shifted, b_shifted);
             }
+
+            // Compute Bernstein patch using generalbox (takes var_map_i directly)
+            std::vector<std::vector<T>> bern_patch
+                = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
+
+            flat = flatten(bern_patch); // flatten the nested vector
+        } else if (ndim == 1) {
+            flat = get_bernstein_coefficients(coeffs, exps, ndim);
+        } else {
+            throw std::runtime_error("The dimension cannot be negative.");
         }
 
-        return int_d(min_val, max_val);
+        auto [min_val, max_val] = std::minmax_element(flat.begin(), flat.end());
+
+        return int_d(*min_val, *max_val);
     }
 
     //////////////////////////////////////////////
@@ -233,13 +296,22 @@ private:
     //////////////////////////////////////////////
 
     // Addition
-    template <typename T>
+    static taylor_model add(const taylor_model &d1, const taylor_model &d2)
+    {
+
+        // Get union of domains
+        var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
+        var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
+        return taylor_model(d1.m_tpol + d2.m_tpol, d1.m_rem + d2.m_rem, new_exp, new_domain);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model add(const T &d1, const taylor_model &d2)
     {
         return taylor_model(d1 + d2.m_tpol, d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
-    template <typename T>
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model add(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol + d2, d1.m_rem, d1.m_exp, d1.m_domain);
@@ -257,24 +329,23 @@ private:
         return taylor_model(d1.m_tpol, d1.m_rem + d2, d1.m_exp, d1.m_domain);
     }
 
-    template <typename T>
-    static taylor_model add(const taylor_model &d1, const taylor_model &d2)
+    // Subtraction
+    static taylor_model sub(const taylor_model &d1, const taylor_model &d2)
     {
 
         // Get union of domains
         var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
         var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
-        return taylor_model(d1.m_tpol + d2.m_tpol, d1.m_rem + d2.m_rem, new_exp, new_domain);
+        return taylor_model(d1.m_tpol - d2.m_tpol, d1.m_rem - d2.m_rem, new_exp, new_domain);
     }
 
-    // Subtraction
-    template <typename T>
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model sub(const T &d1, const taylor_model &d2)
     {
         return taylor_model(d1 - d2.m_tpol, d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
-    template <typename T>
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model sub(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol - d2, d1.m_rem, d1.m_exp, d1.m_domain);
@@ -292,16 +363,6 @@ private:
         return taylor_model(d1.m_tpol, d1.m_rem - d2, d1.m_exp, d1.m_domain);
     }
 
-    template <typename T>
-    static taylor_model sub(const taylor_model &d1, const taylor_model &d2)
-    {
-
-        // Get union of domains
-        var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
-        var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
-        return taylor_model(d1.m_tpol - d2.m_tpol, d1.m_rem - d2.m_rem, new_exp, new_domain);
-    }
-
     // // Multiplication
 
     // TODO: Should be templated as well I guess, but raises error with ambiguity
@@ -311,7 +372,6 @@ private:
         // Get union of domains
         var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
         var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
-        return taylor_model();
 
         // Get untruncated polynomial product
         uint new_order = d1.m_tpol.get_order() + d2.m_tpol.get_order();
@@ -346,13 +406,13 @@ private:
                 exp_point_e[sym] = new_exp[sym];
             }
 
-            // pol_e_bounds = get_bounds(pol_e, exp_point_e, domain_e);
+            pol_e_bounds = get_bounds(pol_e, exp_point_e, domain_e);
         }
 
-        // interval_of_product
-        //     = pol_e_bounds + d1.get_bounds() * d2.m_rem + d1.m_rem * d2.get_bounds() + d1.m_rem * d2.m_rem;
-        //
-        // return taylor_model(agreeable_pol, interval_of_bounds, new_exp, new_domain);
+        int_d interval_of_product
+            = pol_e_bounds + d1.get_bounds() * d2.m_rem + d1.m_rem * d2.get_bounds() + d1.m_rem * d2.m_rem;
+
+        return taylor_model(agreeable_pol, interval_of_product, new_exp, new_domain);
     }
 
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
@@ -378,7 +438,7 @@ private:
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
-        audi::gdual<T> gd_one(1.0);
+        audi::gdual<T> gd_one(1.0, "x", 0);
         const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
         return d1 * tm_one;
     }
@@ -416,14 +476,14 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const taylor_model &tm)
     {
         os << "Taylor Polynomial:\n"
-           << tm.get_tpol(); // << "\nRemainder Bound: " << tm.get_rem().lower() << tm.get_rem().upper();
-                             // << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
+           << tm.get_tpol() << "\nRemainder Bound: [" << tm.get_rem().lower() << ", " << tm.get_rem().upper() << "]"
+           << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
         return os;
     }
 
     // Compare scalars
     template <typename T>
-    bool interval_equal(const T &a, const T &b) const
+    static bool interval_equal(const T &a, const T &b)
     {
         if constexpr (std::is_floating_point_v<T>) {
             auto eps = std::numeric_limits<T>::epsilon() * 10;
@@ -435,7 +495,7 @@ public:
 
     // Compare intervals
     template <typename T>
-    bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b) const
+    static bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b)
     {
         if constexpr (std::is_floating_point_v<T>) {
             auto eps = std::numeric_limits<T>::epsilon() * 10;
@@ -447,21 +507,62 @@ public:
 
     // Generic map comparison
     template <typename T>
-    bool map_interval_equal(const std::unordered_map<std::string, T> &a,
-                            const std::unordered_map<std::string, T> &b) const
+    static bool map_interval_equal(const std::unordered_map<std::string, T> &a,
+                                   const std::unordered_map<std::string, T> &b)
     {
         if (a.size() != b.size()) return false;
         for (const auto &[key, val_a] : a) {
             auto it = b.find(key);
-            if (it == b.end() || !interval_equal(val_a, it->second)) return false;
+            if (it == b.end() || !taylor_model::interval_equal(val_a, it->second)) return false;
+        }
+        return true;
+    }
+
+    // Generic map comparison
+    template <typename T>
+    static bool map_equal(const std::unordered_map<std::string, T> &a, const std::unordered_map<std::string, T> &b)
+    {
+        if (a.size() != b.size()) return false;
+        for (const auto &[key, val_a] : a) {
+            auto it = b.find(key);
+            if (it == b.end() || !(val_a == it->second)) return false;
         }
         return true;
     }
 
     bool operator==(const taylor_model &other) const
     {
-        return m_tpol == other.m_tpol && interval_equal(m_rem, other.m_rem) && map_interval_equal(m_exp, other.m_exp)
+        return m_tpol == other.m_tpol && interval_equal(m_rem, other.m_rem) && map_equal(m_exp, other.m_exp)
                && map_interval_equal(m_domain, other.m_domain);
+    }
+
+    ///////////////////////////////////
+    /// Custom arithmetic functions ///
+    ///////////////////////////////////
+
+    // pow method
+    taylor_model pow(int exponent) const
+    {
+        if (exponent < 0) {
+            throw std::invalid_argument("Negative integer exponents are not supported yet.");
+        }
+
+        if (exponent == 0) {
+            return taylor_model::identity();
+        }
+
+        taylor_model product = 1.0 * (*this); // like "1"
+        if (exponent > 1) {
+            for (int i = 1; i < exponent; ++i) {
+                product = product * (*this);
+            }
+        } else if (exponent < 0) {
+            throw std::logic_error("Not yet implemented.");
+            // for (int i = 0; i < exponent + 1; ++i) {
+            //     product = product * 1 / (*this);
+            // }
+        }
+        return product;
     }
 
 }; // end of taylor_model class

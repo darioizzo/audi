@@ -80,19 +80,23 @@ std::pair<std::vector<T>, std::vector<std::vector<int>>> get_poly(const audi::gd
 uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<int>> &exps)
 {
     if (coeffs.empty() || exps.empty()) {
-        throw std::invalid_argument("Coefficients and exponents cannot be empty.");
+        return 0;
     }
+    //     throw std::invalid_argument("Coefficients and exponents cannot be empty.");
+    // } else if (!coeffs.empty() && exps.empty()) {
+    // }
 
     // number of terms must match
-    if (coeffs.size() != exps.size()) {
+    if (coeffs.size() != exps.size() && coeffs.size() != 0 && exps.size() != 0) {
         throw std::invalid_argument("Number of coefficients and number of exponent rows must match.");
     }
 
-    // check all rows in exps have the same length
     size_t ndim = exps[0].size();
-    if (ndim == 0) {
-        throw std::invalid_argument("Exponent rows cannot be empty.");
-    }
+
+    // // check all rows in exps have the same length
+    // if (ndim == 0) {
+    //     throw std::invalid_argument("Exponent rows cannot be empty.");
+    // }
 
     for (const auto &row : exps) {
         if (row.size() != ndim) {
@@ -105,9 +109,9 @@ uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<i
 
 std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents, uint ndim)
 {
-    if (exponents.empty()) {
-        throw std::invalid_argument("Exponents array cannot be empty.");
-    }
+    // if (exponents.empty()) {
+    //     throw std::invalid_argument("Exponents array cannot be empty.");
+    // }
 
     if (ndim > 1) {
         size_t cols = exponents[0].size();
@@ -130,6 +134,8 @@ std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents,
             }
         }
         return {max_degree}; // single element vector
+    } else if (ndim == 0) {
+        return {0};
     } else {
         throw std::invalid_argument("ndim must be >= 1");
     }
@@ -203,6 +209,17 @@ unsigned long long binomial(int n, int k)
         res /= static_cast<unsigned long long>(i);
     }
     return res;
+}
+
+unsigned long long binom_product(const std::vector<int> &n, const std::vector<int> &k)
+{
+
+    if (n.size() != k.size()) throw std::runtime_error("Binomial lists must be of equal size.");
+    unsigned long long result = 1;
+    for (std::size_t i = 0; i < n.size(); ++i) {
+        result *= binomial(n[i], k[i]);
+    }
+    return result;
 }
 
 std::vector<std::vector<double>> get_d_acc_matrix(const std::vector<int> &max_degrees, int dim)
@@ -394,18 +411,24 @@ std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vect
         shape_nd.push_back(deg + 1);
     }
 
+    std::vector<std::vector<double>> D_acc;
+    std::vector<std::vector<double>> Q;
+    std::vector<std::vector<double>> temp;
+    std::vector<std::vector<double>> lam_2d_next_uncycled;
+    std::vector<int> old_shape_nd;
+    std::vector<std::vector<double>> cycled_lam;
     for (int dim = 0; dim < static_cast<int>(ndim); ++dim) {
         // lam_2d_next_uncycled = D_acc(dim) * Q(dim) * L_dict[dim]
-        auto D_acc = get_d_acc_matrix(max_degrees, dim);
-        auto Q = get_q_matrix(max_degrees, domain, dim);
-        auto temp = matmul(D_acc, Q);
-        auto lam_2d_next_uncycled = matmul(temp, L_dict[dim]);
+        D_acc = get_d_acc_matrix(max_degrees, dim);
+        Q = get_q_matrix(max_degrees, domain, dim);
+        temp = matmul(D_acc, Q);
+        lam_2d_next_uncycled = matmul(temp, L_dict[dim]);
 
         // Cycle order
-        auto old_shape_nd = shape_nd;
+        old_shape_nd = shape_nd;
         shape_nd = shift_indices(shape_nd);
 
-        auto cycled_lam = get_cycled_2d_array_vec(lam_2d_next_uncycled, max_degrees, dim);
+        cycled_lam = get_cycled_2d_array_vec(lam_2d_next_uncycled, max_degrees, dim);
 
         L_dict[dim + 1] = cycled_lam;
     }
@@ -452,6 +475,32 @@ std::vector<std::vector<T>> get_titi_bernstein_patch_ndim_generalbox(const std::
     }
 
     return L_dict[static_cast<int>(ndim)];
+}
+
+// For univariate functions, calculate the bernstein coefficients exhaustively (no guarantee for the
+// best performance but same method as matrix one.
+
+template <typename T>
+std::vector<T> get_bernstein_coefficients(const std::vector<T> coeffs, const std::vector<std::vector<int>> exponents,
+                                          uint ndim)
+{
+
+    std::vector<int> max_degrees = get_max_degrees(exponents, ndim);
+    std::vector<std::vector<int>> bernstein_combs = generate_combinations(max_degrees);
+
+    std::vector<T> b_coeffs(bernstein_combs.size(), 0.0);
+    for (int i = 0; i < static_cast<int>(bernstein_combs.size()); ++i) {
+        std::vector<int> b_comb = bernstein_combs[i];
+        std::vector<std::vector<int>> current_coeff_combs = generate_combinations(b_comb);
+
+        double b_coeff = 0;
+        for (std::vector<int> &comb : current_coeff_combs) {
+            b_coeff += get_coefficient(comb, coeffs, exponents) * static_cast<double>(binom_product(b_comb, comb))
+                       / static_cast<double>(binom_product(max_degrees, comb));
+        }
+        b_coeffs[i] = b_coeff;
+    }
+    return b_coeffs;
 }
 
 } // namespace audi

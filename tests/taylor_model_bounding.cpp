@@ -9,9 +9,6 @@
 #include <audi/io.hpp>
 #include <audi/taylor_model_bounding.hpp>
 
-using int_d = boost::numeric::interval<double>;
-using var_map_i = std::unordered_map<std::string, int_d>;
-
 BOOST_AUTO_TEST_CASE(test_generate_combinations_small)
 {
     std::vector<int> limits = {2, 1};
@@ -139,13 +136,6 @@ BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_1)
     BOOST_CHECK_EQUAL(max_degrees[0], 4);
 }
 
-BOOST_AUTO_TEST_CASE(test_get_max_degrees_empty)
-{
-    std::vector<std::vector<int>> exps;
-    uint ndim = 2;
-    BOOST_CHECK_THROW(audi::get_max_degrees(exps, ndim), std::invalid_argument);
-}
-
 BOOST_AUTO_TEST_CASE(test_get_coefficient_found)
 {
     std::vector<double> coeffs = {22.0, 16.0};
@@ -269,9 +259,9 @@ BOOST_AUTO_TEST_CASE(test_transpose)
 
 BOOST_AUTO_TEST_CASE(test_build_dim_to_var_map)
 {
-    var_map_i domain;
-    domain["x"] = int_d(0.0, 1.0);
-    domain["y"] = int_d(2.0, 3.0);
+    audi::var_map_i domain;
+    domain["x"] = audi::int_d(0.0, 1.0);
+    domain["y"] = audi::int_d(2.0, 3.0);
 
     auto dim_map = audi::build_dim_to_var_map(domain);
 
@@ -285,9 +275,9 @@ BOOST_AUTO_TEST_CASE(test_build_dim_to_var_map)
 
 BOOST_AUTO_TEST_CASE(test_get_q_matrix)
 {
-    var_map_i domain;
-    domain["x"] = int_d(0.0, 2.0);
-    domain["y"] = int_d(1.0, 3.0);
+    audi::var_map_i domain;
+    domain["x"] = audi::int_d(0.0, 2.0);
+    domain["y"] = audi::int_d(1.0, 3.0);
     std::vector<int> max_degrees = {2, 2};
 
     // Case 1: a == 0.0 → should return D(b)
@@ -358,6 +348,7 @@ BOOST_AUTO_TEST_CASE(test_a_matrix_vec_and_cycle)
     BOOST_CHECK_EQUAL(cycled[0].size(), 6);
 }
 
+// from Titi (2018) "Matrix methods for tensorial Bernstein form"
 BOOST_AUTO_TEST_CASE(test_lambda_generalbox_known_case)
 {
     // coefficients
@@ -367,7 +358,7 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_known_case)
     std::vector<std::vector<int>> exps{{1, 2}, {4, 3}};
 
     // domain [0,1] for x and y
-    var_map_i domain{{"x", int_d(0.0, 1.0)}, {"y", int_d(0.0, 1.0)}};
+    audi::var_map_i domain{{"x", audi::int_d(0.0, 1.0)}, {"y", audi::int_d(0.0, 1.0)}};
 
     auto Lambda = audi::get_titi_base_lambda_generalbox(coeffs, exps, domain);
 
@@ -387,6 +378,7 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_known_case)
     }
 }
 
+// Mag 6 sub-problem from Titi (2018) "Matrix methods for tensorial Bernstein form"
 BOOST_AUTO_TEST_CASE(test_lambda_generalbox_selective)
 {
     std::vector<double> coeffs{2.0, 2.0, 2.0, 2.0, 2.0, 2.0, -1.0};
@@ -394,8 +386,9 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_selective)
     std::vector<std::vector<int>> exps{{0, 0, 0, 2, 0, 0}, {0, 0, 2, 0, 0, 0}, {0, 0, 0, 0, 2, 0}, {2, 0, 0, 0, 0, 0},
                                        {0, 2, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 2}, {0, 0, 0, 0, 0, 1}};
 
-    var_map_i domain{{"x1", int_d(-5.0, 5.0)}, {"x2", int_d(-5.0, 5.0)}, {"x3", int_d(-5.0, 5.0)},
-                     {"x4", int_d(-5.0, 5.0)}, {"x5", int_d(-5.0, 5.0)}, {"x6", int_d(-5.0, 5.0)}};
+    audi::var_map_i domain{{"x1", audi::int_d(-5.0, 5.0)}, {"x2", audi::int_d(-5.0, 5.0)},
+                           {"x3", audi::int_d(-5.0, 5.0)}, {"x4", audi::int_d(-5.0, 5.0)},
+                           {"x5", audi::int_d(-5.0, 5.0)}, {"x6", audi::int_d(-5.0, 5.0)}};
 
     auto Lambda = audi::get_titi_base_lambda_generalbox(coeffs, exps, domain);
 
@@ -413,6 +406,7 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_selective)
     BOOST_CHECK_CLOSE(Lambda[2][36], 0.0, 1e-6); // another zero check
 }
 
+// Worked out example from Titi (2018) "Matrix methods for tensorial Bernstein form"
 BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_full_matrix)
 {
     // Coefficients and exponents
@@ -420,10 +414,11 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_full_matrix)
     std::vector<std::vector<int>> exps = {{0, 0}, {4, 0}, {0, 1}, {2, 1}, {0, 4}, {2, 0}, {1, 2}, {0, 2}, {1, 0}};
 
     // Domain
-    var_map_i domain = {{"x", int_d(-5.0, 5.0)}, {"y", int_d(-5.0, 5.0)}};
+    audi::var_map_i domain = {{"x", audi::int_d(-5.0, 5.0)}, {"y", audi::int_d(-5.0, 5.0)}};
 
     // Compute Lambda patch
-    std::vector<std::vector<double>> lambda_patch = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
+    std::vector<std::vector<double>> lambda_patch
+        = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
 
     // Expected Bernstein patch
     std::vector<std::vector<double>> expected_patch
@@ -446,6 +441,7 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_full_matrix)
     }
 }
 
+// L.V. 3 problem from Titi (2018) "Matrix methods for tensorial Bernstein form"
 BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_3d_example)
 {
     // Coefficients and exponents
@@ -453,10 +449,12 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_3d_example)
     std::vector<std::vector<int>> exps = {{0, 0, 0}, {1, 2, 0}, {1, 0, 0}, {1, 0, 2}};
 
     // Domain
-    var_map_i domain = {{"x", int_d(-1.5, 2.0)}, {"y", int_d(-1.5, 2.0)}, {"z", int_d(-1.5, 2.0)}};
+    audi::var_map_i domain
+        = {{"x", audi::int_d(-1.5, 2.0)}, {"y", audi::int_d(-1.5, 2.0)}, {"z", audi::int_d(-1.5, 2.0)}};
 
     // Compute Lambda patch
-    std::vector<std::vector<double>> lambda_patch = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
+    std::vector<std::vector<double>> lambda_patch
+        = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
 
     // Expected Bernstein patch
     std::vector<std::vector<double>> expected_patch = {{-4.1, 3.775, -6.725, 3.775, 11.65, 1.15, -6.725, 1.15, -9.35},
@@ -475,8 +473,10 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_3d_example)
     }
 }
 
+// Mag 6 problem from Titi (2018) "Matrix methods for tensorial Bernstein form"
 BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_6d_example_partial)
 {
+
     // Coefficients and exponents
     std::vector<double> coeffs = {2.0, 2.0, 2.0, 2.0, 2.0, 2.0, -1.0};
     std::vector<std::vector<int>> exps
@@ -484,11 +484,13 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_6d_example_partial)
            {0, 2, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 2}, {0, 0, 0, 0, 0, 1}};
 
     // Domain
-    var_map_i domain = {{"x1", int_d(-5.0, 5.0)}, {"x2", int_d(-5.0, 5.0)}, {"x3", int_d(-5.0, 5.0)},
-                        {"x4", int_d(-5.0, 5.0)}, {"x5", int_d(-5.0, 5.0)}, {"x6", int_d(-5.0, 5.0)}};
+    audi::var_map_i domain
+        = {{"x1", audi::int_d(-5.0, 5.0)}, {"x2", audi::int_d(-5.0, 5.0)}, {"x3", audi::int_d(-5.0, 5.0)},
+           {"x4", audi::int_d(-5.0, 5.0)}, {"x5", audi::int_d(-5.0, 5.0)}, {"x6", audi::int_d(-5.0, 5.0)}};
 
     // Compute Lambda patch
-    std::vector<std::vector<double>> lambda_patch = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
+    std::vector<std::vector<double>> lambda_patch
+        = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain);
 
     // Select a few elements to test (row, col, expected value)
     struct ElemCheck {
@@ -497,10 +499,9 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_6d_example_partial)
         double value;
     };
     std::vector<ElemCheck> checks = {
-        {0, 0, 305.0},  {0, 9, 205.0},  {0, 18, 305.0}, {0, 27, 205.0}, {0, 36, 105.0},
-        {0, 45, 205.0}, {0, 54, 305.0}, {0, 63, 205.0}, {0, 72, 305.0}, {0, 81, 200.0},
-        {0, 4, 105.0},  {0, 13, 5.0},  {0, 22, 105.0}, {0, 31, 5.0}, {0, 40, -95.0},
-        {0, 49, 5.0}, {0, 58, 105.0}, {0, 67, 5.0}, {0, 76, 105.0}, {0, 85, 0.0},
+        {0, 0, 305.0},  {0, 9, 205.0},  {0, 18, 305.0}, {0, 27, 205.0}, {0, 36, 105.0}, {0, 45, 205.0}, {0, 54, 305.0},
+        {0, 63, 205.0}, {0, 72, 305.0}, {0, 81, 200.0}, {0, 4, 105.0},  {0, 13, 5.0},   {0, 22, 105.0}, {0, 31, 5.0},
+        {0, 40, -95.0}, {0, 49, 5.0},   {0, 58, 105.0}, {0, 67, 5.0},   {0, 76, 105.0}, {0, 85, 0.0},
     };
 
     // Tolerance for floating-point comparison
