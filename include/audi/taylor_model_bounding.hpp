@@ -11,7 +11,11 @@
 
 #include <audi/gdual.hpp>
 
-using int_d = boost::numeric::interval<double>;
+// using int_d = boost::numeric::interval<double>;
+using int_d = boost::numeric::interval<
+    double, boost::numeric::interval_lib::policies<
+                boost::numeric::interval_lib::save_state<boost::numeric::interval_lib::rounded_transc_std<double>>,
+                boost::numeric::interval_lib::checking_no_nan<double>>>;
 using var_map_d = std::unordered_map<std::string, double>;
 using var_map_i = std::unordered_map<std::string, int_d>;
 
@@ -354,6 +358,9 @@ std::vector<std::vector<double>> get_cycled_2d_array_vec(const std::vector<std::
     int num_rows = static_cast<int>(arr.size());
     int num_cols = static_cast<int>(arr[0].size());
     int ndim = static_cast<int>(max_degrees.size());
+    if (ndim == 1) {
+        return arr;
+    }
 
     int next_dim = (dim + 1) % ndim;
 
@@ -415,7 +422,6 @@ std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vect
     std::vector<std::vector<double>> Q;
     std::vector<std::vector<double>> temp;
     std::vector<std::vector<double>> lam_2d_next_uncycled;
-    std::vector<int> old_shape_nd;
     std::vector<std::vector<double>> cycled_lam;
     for (int dim = 0; dim < static_cast<int>(ndim); ++dim) {
         // lam_2d_next_uncycled = D_acc(dim) * Q(dim) * L_dict[dim]
@@ -425,7 +431,6 @@ std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vect
         lam_2d_next_uncycled = matmul(temp, L_dict[dim]);
 
         // Cycle order
-        old_shape_nd = shape_nd;
         shape_nd = shift_indices(shape_nd);
 
         cycled_lam = get_cycled_2d_array_vec(lam_2d_next_uncycled, max_degrees, dim);
@@ -480,28 +485,28 @@ std::vector<std::vector<T>> get_titi_bernstein_patch_ndim_generalbox(const std::
 // For univariate functions, calculate the bernstein coefficients exhaustively (no guarantee for the
 // best performance but same method as matrix one.
 
-template <typename T>
-std::vector<T> get_bernstein_coefficients(const std::vector<T> coeffs, const std::vector<std::vector<int>> exponents,
-                                          uint ndim)
-{
-
-    std::vector<int> max_degrees = get_max_degrees(exponents, ndim);
-    std::vector<std::vector<int>> bernstein_combs = generate_combinations(max_degrees);
-
-    std::vector<T> b_coeffs(bernstein_combs.size(), 0.0);
-    for (int i = 0; i < static_cast<int>(bernstein_combs.size()); ++i) {
-        std::vector<int> b_comb = bernstein_combs[i];
-        std::vector<std::vector<int>> current_coeff_combs = generate_combinations(b_comb);
-
-        double b_coeff = 0;
-        for (std::vector<int> &comb : current_coeff_combs) {
-            b_coeff += get_coefficient(comb, coeffs, exponents) * static_cast<double>(binom_product(b_comb, comb))
-                       / static_cast<double>(binom_product(max_degrees, comb));
-        }
-        b_coeffs[i] = b_coeff;
-    }
-    return b_coeffs;
-}
+// template <typename T>
+// std::vector<T> get_bernstein_coefficients(const std::vector<T> coeffs, const std::vector<std::vector<int>> exponents,
+//                                           uint ndim)
+// {
+//
+//     std::vector<int> max_degrees = get_max_degrees(exponents, ndim);
+//     std::vector<std::vector<int>> bernstein_combs = generate_combinations(max_degrees);
+//
+//     std::vector<T> b_coeffs(bernstein_combs.size(), 0.0);
+//     for (int i = 0; i < static_cast<int>(bernstein_combs.size()); ++i) {
+//         std::vector<int> b_comb = bernstein_combs[i];
+//         std::vector<std::vector<int>> current_coeff_combs = generate_combinations(b_comb);
+//
+//         double b_coeff = 0;
+//         for (std::vector<int> &comb : current_coeff_combs) {
+//             b_coeff += get_coefficient(comb, coeffs, exponents) * static_cast<double>(binom_product(b_comb, comb))
+//                        / static_cast<double>(binom_product(max_degrees, comb));
+//         }
+//         b_coeffs[i] = b_coeff;
+//     }
+//     return b_coeffs;
+// }
 
 } // namespace audi
 

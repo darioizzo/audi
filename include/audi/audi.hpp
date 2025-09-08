@@ -15,6 +15,7 @@
 #include <audi/invert_map.hpp>
 #include <audi/vectorized.hpp>
 #include <audi/taylor_model.hpp>
+#include <audi/taylor_model_functions.hpp>
 #include <audi/taylor_model_bounding.hpp>
 
 namespace audi

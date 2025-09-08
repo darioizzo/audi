@@ -9,6 +9,9 @@
 #include <audi/io.hpp>
 #include <audi/taylor_model_bounding.hpp>
 
+using var_map_d = std::unordered_map<std::string, double>;
+using var_map_i = std::unordered_map<std::string, int_d>;
+
 BOOST_AUTO_TEST_CASE(test_generate_combinations_small)
 {
     std::vector<int> limits = {2, 1};
@@ -259,9 +262,9 @@ BOOST_AUTO_TEST_CASE(test_transpose)
 
 BOOST_AUTO_TEST_CASE(test_build_dim_to_var_map)
 {
-    audi::var_map_i domain;
-    domain["x"] = audi::int_d(0.0, 1.0);
-    domain["y"] = audi::int_d(2.0, 3.0);
+    var_map_i domain;
+    domain["x"] = int_d(0.0, 1.0);
+    domain["y"] = int_d(2.0, 3.0);
 
     auto dim_map = audi::build_dim_to_var_map(domain);
 
@@ -275,9 +278,9 @@ BOOST_AUTO_TEST_CASE(test_build_dim_to_var_map)
 
 BOOST_AUTO_TEST_CASE(test_get_q_matrix)
 {
-    audi::var_map_i domain;
-    domain["x"] = audi::int_d(0.0, 2.0);
-    domain["y"] = audi::int_d(1.0, 3.0);
+    var_map_i domain;
+    domain["x"] = int_d(0.0, 2.0);
+    domain["y"] = int_d(1.0, 3.0);
     std::vector<int> max_degrees = {2, 2};
 
     // Case 1: a == 0.0 → should return D(b)
@@ -358,7 +361,7 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_known_case)
     std::vector<std::vector<int>> exps{{1, 2}, {4, 3}};
 
     // domain [0,1] for x and y
-    audi::var_map_i domain{{"x", audi::int_d(0.0, 1.0)}, {"y", audi::int_d(0.0, 1.0)}};
+    var_map_i domain{{"x", int_d(0.0, 1.0)}, {"y", int_d(0.0, 1.0)}};
 
     auto Lambda = audi::get_titi_base_lambda_generalbox(coeffs, exps, domain);
 
@@ -386,9 +389,8 @@ BOOST_AUTO_TEST_CASE(test_lambda_generalbox_selective)
     std::vector<std::vector<int>> exps{{0, 0, 0, 2, 0, 0}, {0, 0, 2, 0, 0, 0}, {0, 0, 0, 0, 2, 0}, {2, 0, 0, 0, 0, 0},
                                        {0, 2, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 2}, {0, 0, 0, 0, 0, 1}};
 
-    audi::var_map_i domain{{"x1", audi::int_d(-5.0, 5.0)}, {"x2", audi::int_d(-5.0, 5.0)},
-                           {"x3", audi::int_d(-5.0, 5.0)}, {"x4", audi::int_d(-5.0, 5.0)},
-                           {"x5", audi::int_d(-5.0, 5.0)}, {"x6", audi::int_d(-5.0, 5.0)}};
+    var_map_i domain{{"x1", int_d(-5.0, 5.0)}, {"x2", int_d(-5.0, 5.0)}, {"x3", int_d(-5.0, 5.0)},
+                     {"x4", int_d(-5.0, 5.0)}, {"x5", int_d(-5.0, 5.0)}, {"x6", int_d(-5.0, 5.0)}};
 
     auto Lambda = audi::get_titi_base_lambda_generalbox(coeffs, exps, domain);
 
@@ -414,7 +416,7 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_full_matrix)
     std::vector<std::vector<int>> exps = {{0, 0}, {4, 0}, {0, 1}, {2, 1}, {0, 4}, {2, 0}, {1, 2}, {0, 2}, {1, 0}};
 
     // Domain
-    audi::var_map_i domain = {{"x", audi::int_d(-5.0, 5.0)}, {"y", audi::int_d(-5.0, 5.0)}};
+    var_map_i domain = {{"x", int_d(-5.0, 5.0)}, {"y", int_d(-5.0, 5.0)}};
 
     // Compute Lambda patch
     std::vector<std::vector<double>> lambda_patch
@@ -449,8 +451,7 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_3d_example)
     std::vector<std::vector<int>> exps = {{0, 0, 0}, {1, 2, 0}, {1, 0, 0}, {1, 0, 2}};
 
     // Domain
-    audi::var_map_i domain
-        = {{"x", audi::int_d(-1.5, 2.0)}, {"y", audi::int_d(-1.5, 2.0)}, {"z", audi::int_d(-1.5, 2.0)}};
+    var_map_i domain = {{"x", int_d(-1.5, 2.0)}, {"y", int_d(-1.5, 2.0)}, {"z", int_d(-1.5, 2.0)}};
 
     // Compute Lambda patch
     std::vector<std::vector<double>> lambda_patch
@@ -484,9 +485,8 @@ BOOST_AUTO_TEST_CASE(test_titi_bernstein_patch_ndim_6d_example_partial)
            {0, 2, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 2}, {0, 0, 0, 0, 0, 1}};
 
     // Domain
-    audi::var_map_i domain
-        = {{"x1", audi::int_d(-5.0, 5.0)}, {"x2", audi::int_d(-5.0, 5.0)}, {"x3", audi::int_d(-5.0, 5.0)},
-           {"x4", audi::int_d(-5.0, 5.0)}, {"x5", audi::int_d(-5.0, 5.0)}, {"x6", audi::int_d(-5.0, 5.0)}};
+    var_map_i domain = {{"x1", int_d(-5.0, 5.0)}, {"x2", int_d(-5.0, 5.0)}, {"x3", int_d(-5.0, 5.0)},
+                        {"x4", int_d(-5.0, 5.0)}, {"x5", int_d(-5.0, 5.0)}, {"x6", int_d(-5.0, 5.0)}};
 
     // Compute Lambda patch
     std::vector<std::vector<double>> lambda_patch

@@ -2,7 +2,9 @@
 #define AUDI_TM_HPP
 
 #include <boost/numeric/interval.hpp>
+#include <boost/numeric/interval/utility.hpp>
 #include <cassert>
+#include <optional>
 #include <ranges>
 #include <unordered_map>
 #include <unordered_set>
@@ -14,13 +16,17 @@
 
 #include <audi/taylor_model_bounding.hpp>
 
+// using int_d = boost::numeric::interval<double>;
+using int_d = boost::numeric::interval<
+    double, boost::numeric::interval_lib::policies<
+                boost::numeric::interval_lib::save_state<boost::numeric::interval_lib::rounded_transc_std<double>>,
+                boost::numeric::interval_lib::checking_no_nan<double>>>;
+using var_map_d = std::unordered_map<std::string, double>;
+using var_map_i = std::unordered_map<std::string, int_d>;
+
 /// Root namespace for AuDi symbols
 namespace audi
 {
-
-using int_d = boost::numeric::interval<double>;
-using var_map_d = std::unordered_map<std::string, double>;
-using var_map_i = std::unordered_map<std::string, int_d>;
 
 std::ostream &operator<<(std::ostream &os, const var_map_d &m)
 {
@@ -69,6 +75,12 @@ public:
 
         if (domain_set != exp_point_set) {
             throw std::invalid_argument("Maps have different number of items.");
+        }
+
+        for (const std::string &key : domain_set) {
+            if (!boost::numeric::in(m_exp.find(key)->second, m_domain.find(key)->second)) {
+                throw std::domain_error("The expansion point falls outside of the valid domain.");
+            }
         }
     }
 
@@ -240,6 +252,18 @@ public:
         return tm;
     }
 
+    static taylor_model identity(int_d rem, var_map_d exp, var_map_i domain)
+    {
+        taylor_model tm;
+        tm.m_tpol = audi::gdual<double>(1.0);
+        tm.m_order = 0u;
+        tm.m_ndim = 0u;
+        tm.m_rem = rem;
+        tm.m_exp = exp;
+        tm.m_domain = domain;
+        return tm;
+    }
+
     template <typename T>
     static std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
     {
@@ -254,7 +278,6 @@ public:
         return get_bounds(m_tpol, m_exp, m_domain);
     }
 
-private:
     template <typename T>
     static int_d get_bounds(const audi::gdual<T> &tpol, const var_map_d &exp_points, const var_map_i &domain)
     {
@@ -265,7 +288,7 @@ private:
         auto ndim = audi::get_ndim(coeffs, exps); // necessary because static function
 
         std::vector<T> flat;
-        if (ndim > 1) {
+        if (ndim > 1 || ndim == 1) {
 
             for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
                 std::string var_name = tpol.get_symbol_set()[i];
@@ -280,8 +303,8 @@ private:
                 = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
 
             flat = flatten(bern_patch); // flatten the nested vector
-        } else if (ndim == 1) {
-            flat = get_bernstein_coefficients(coeffs, exps, ndim);
+            // } else if (ndim == 1) {
+            //     flat = get_bernstein_coefficients(coeffs, exps, ndim);
         } else {
             throw std::runtime_error("The dimension cannot be negative.");
         }
@@ -295,6 +318,7 @@ private:
     /// Static member functions for arithmetic ///
     //////////////////////////////////////////////
 
+private:
     // Addition
     static taylor_model add(const taylor_model &d1, const taylor_model &d2)
     {
@@ -393,7 +417,7 @@ private:
 
         int_d pol_e_bounds;
         if (pol_e.is_zero(1e-16)) {
-            pol_e_bounds = boost::numeric::interval<double>(0.0, 0.0);
+            pol_e_bounds = int_d(0.0, 0.0);
         } else {
             // extract symbols used in pol_e
             std::vector<std::string> symbs_e = pol_e.get_symbol_set();
@@ -443,6 +467,54 @@ private:
         return d1 * tm_one;
     }
 
+    // Division
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const T &d1, const taylor_model &d2)
+    {
+        if (boost::numeric::zero_in(d2.get_bounds() + d2.get_rem())) {
+            throw std::runtime_error("The range of the function is not a subset of the positive Real numbers, and "
+                                     "therefore is ill-defined when performing a log operation.");
+        }
+        double const_term = d2.get_tpol().constant_cf();
+        audi::gdual<double> f_bar = d2.get_tpol() - const_term;
+        int_d f_bar_bounds = d2.get_bounds(f_bar, d2.get_exp(), d2.get_dom());
+        int_d f_bar_remainder = d2.get_rem();
+        int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
+        int k = d2.get_tpol().get_order();
+        int_d total_rem_bound
+            = std::pow(-1, k + 1) * boost::numeric::pow(f_bar_remainder_bounds, k + 1) / std::pow(const_term, k + 2)
+              * (int_d(1)
+                 / boost::numeric::pow(int_d(1.0) + f_bar_remainder_bounds / const_term * int_d(0.0, 1.0), k + 2));
+        return taylor_model(d1 / d2.get_tpol(), total_rem_bound, d2.get_exp(), d2.get_dom());
+    }
+
+    static taylor_model div(const taylor_model &d1, const taylor_model &d2)
+    {
+        return d1 * (1 / d2);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const taylor_model &d1, const T &d2)
+    {
+        return taylor_model(d1.m_tpol / d2, d1.m_rem / int_d(d2), d1.m_exp, d1.m_domain);
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    {
+        audi::gdual<T> gd_one(1.0);
+        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
+        return tm_one * d2;
+    }
+
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    {
+        audi::gdual<T> gd_one(1.0, "x", 0);
+        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
+        return d1 * tm_one;
+    }
+
 public:
     //////////////////////////////////////
     /// Overloaded arithmetic operator ///
@@ -463,10 +535,21 @@ public:
         return sub(d1, d2);
     }
 
+    taylor_model operator-() const
+    {
+        return sub(0.0, *this);
+    }
+
     template <typename T, typename U>
     friend taylor_model operator*(const T &d1, const U &d2)
     {
         return multiply(d1, d2);
+    }
+
+    template <typename T, typename U>
+    friend taylor_model operator/(const T &d1, const U &d2)
+    {
+        return div(d1, d2);
     }
 
     /////////////////////////////////
@@ -482,50 +565,61 @@ public:
     }
 
     // Compare scalars
-    template <typename T>
-    static bool interval_equal(const T &a, const T &b)
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static bool interval_equal(const T &a, const T &b, std::optional<double> tol = std::nullopt)
     {
         if constexpr (std::is_floating_point_v<T>) {
-            auto eps = std::numeric_limits<T>::epsilon() * 10;
-            return std::fabs(a - b) < eps;
+            if (!tol.has_value()) {
+                tol = std::numeric_limits<T>::epsilon() * 10;
+            }
+            return std::fabs(a - b) < tol;
         } else {
             return a == b;
         }
     }
 
     // Compare intervals
-    template <typename T>
-    static bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b)
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b,
+                               std::optional<double> tol = std::nullopt)
     {
         if constexpr (std::is_floating_point_v<T>) {
-            auto eps = std::numeric_limits<T>::epsilon() * 10;
-            return std::fabs(a.lower() - b.lower()) < eps && std::fabs(a.upper() - b.upper()) < eps;
+            if (!tol.has_value()) {
+                tol = std::numeric_limits<T>::epsilon() * 10;
+            }
+            return std::fabs(a.lower() - b.lower()) < tol && std::fabs(a.upper() - b.upper()) < tol;
         } else {
             return a.lower() == b.lower() && a.upper() == b.upper();
         }
     }
 
     // Generic map comparison
-    template <typename T>
-    static bool map_interval_equal(const std::unordered_map<std::string, T> &a,
-                                   const std::unordered_map<std::string, T> &b)
+    static bool map_interval_equal(const std::unordered_map<std::string, int_d> &a,
+                                   const std::unordered_map<std::string, int_d> &b,
+                                   std::optional<double> tol = std::nullopt)
     {
         if (a.size() != b.size()) return false;
         for (const auto &[key, val_a] : a) {
             auto it = b.find(key);
-            if (it == b.end() || !taylor_model::interval_equal(val_a, it->second)) return false;
+            if (it == b.end() || !taylor_model::interval_equal(val_a, it->second, tol)) return false;
         }
         return true;
     }
 
     // Generic map comparison
-    template <typename T>
-    static bool map_equal(const std::unordered_map<std::string, T> &a, const std::unordered_map<std::string, T> &b)
+    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static bool map_equal(const std::unordered_map<std::string, T> &a, const std::unordered_map<std::string, T> &b,
+                          std::optional<double> tol = std::nullopt)
     {
         if (a.size() != b.size()) return false;
         for (const auto &[key, val_a] : a) {
             auto it = b.find(key);
-            if (it == b.end() || !(val_a == it->second)) return false;
+
+            if (!tol.has_value()) {
+                if (it == b.end() || !(val_a == it->second)) return false;
+            } else {
+                if (it == b.end() || !(std::abs(val_a - it->second) < tol)) return false;
+            }
         }
         return true;
     }
@@ -534,35 +628,6 @@ public:
     {
         return m_tpol == other.m_tpol && interval_equal(m_rem, other.m_rem) && map_equal(m_exp, other.m_exp)
                && map_interval_equal(m_domain, other.m_domain);
-    }
-
-    ///////////////////////////////////
-    /// Custom arithmetic functions ///
-    ///////////////////////////////////
-
-    // pow method
-    taylor_model pow(int exponent) const
-    {
-        if (exponent < 0) {
-            throw std::invalid_argument("Negative integer exponents are not supported yet.");
-        }
-
-        if (exponent == 0) {
-            return taylor_model::identity();
-        }
-
-        taylor_model product = 1.0 * (*this); // like "1"
-        if (exponent > 1) {
-            for (int i = 1; i < exponent; ++i) {
-                product = product * (*this);
-            }
-        } else if (exponent < 0) {
-            throw std::logic_error("Not yet implemented.");
-            // for (int i = 0; i < exponent + 1; ++i) {
-            //     product = product * 1 / (*this);
-            // }
-        }
-        return product;
     }
 
 }; // end of taylor_model class
