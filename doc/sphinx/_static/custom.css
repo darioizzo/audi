@@ -1,0 +1,41 @@
+/* Stanford-like color scheme */
+.wy-side-nav-search,
+.wy-nav-top {
+    background: #8C1515 !important; /* Stanford Cardinal */
+}
+
+.wy-nav-content {
+    max-width: 1200px;  /* wider content area */
+}
+
+a {
+    color: #8C1515;
+}
+a:hover {
+    color: #b1040e;
+}
+
+/* Headers */
+h1, h2, h3, h4 {
+    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    color: #2e2d29;  /* near black */
+}
+
+/* Sidebar tweaks */
+.wy-side-nav-search input {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* target public functions in Breathe output */
+dl.member dt.func .access {
+    color: #5DADE2;  /* lightish blue */
+    font-weight: bold;
+}
+
+/* or all public members if Breathe uses `:public:` class */
+.public {
+    color: #5DADE2 !important;
+}
+
