@@ -15,74 +15,35 @@
 #include <audi/gdual.hpp>
 
 #include <audi/taylor_model_bounding.hpp>
-
-// using int_d = boost::numeric::interval<double>;
-using int_d = boost::numeric::interval<
-    double, boost::numeric::interval_lib::policies<
-                boost::numeric::interval_lib::save_state<boost::numeric::interval_lib::rounded_transc_std<double>>,
-                boost::numeric::interval_lib::checking_no_nan<double>>>;
-using var_map_d = std::unordered_map<std::string, double>;
-using var_map_i = std::unordered_map<std::string, int_d>;
+#include <audi/taylor_model_utilities.hpp>
 
 /// Root namespace for AuDi symbols
 namespace audi
 {
 
-std::ostream &operator<<(std::ostream &os, const var_map_d &m)
-{
-    os << "{";
-    bool first = true;
-    for (const auto &[key, value] : m) {
-        if (!first) os << ", ";
-        os << key << ": " << value;
-        first = false;
-    }
-    os << "}";
-    return os;
-}
-
-std::ostream &operator<<(std::ostream &os, const var_map_i &m)
-{
-    os << "{";
-    bool first = true;
-    for (const auto &[key, value] : m) {
-        if (!first) os << ", ";
-        os << key << ":" << "[" << value.lower() << ", " << value.upper() << "]";
-
-        first = false;
-    }
-    os << "}";
-    return os;
-}
-
 /// Taylor model class.
 /**
+ * This class represents a Taylor model, containing a generalized dual number in combination with an
+ * interval. This implementation is derived from Makino (1998) and is built on top of a gdual object
+ * representing the Taylor polynomial (generalized dual number) part of the Taylor model.
  *
+ * A key concept here is Taylor's theorem (formulation used from Makino (1998) p.80. Taylors theorem allows a
+ * quantitative estimate of the error that is to be expected when approximating a function by its Taylor polynomial
+ * Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the \f$(n+1)\f$st
+ * derivative a method that has sometimes been employed in interval calculations.
+ *
+ * As a result, you get \f$ \forall \vec{x} \in [\vec{a}, \vec{b}] \text{, a given order } n \text{, and an expansion point} \vec{x_o} \f$:
+ * 
+ * \f$ f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f} \f$
+ *
+ * where f is the function you're creating a Taylor model for, P is the Taylor polynomial, and I is
+ * the interval remainder.
+ * 
+ * TODO: multiply() needs to be templated as well, but raises error with ambiguity.
+ * TODO: operator+ etc. need to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what
+ * types the operators can accept
  */
-class taylor_model
-{
-
-public:
-    void check_input_validity()
-    {
-        // For domain
-        auto domain_keys = m_domain | std::views::keys;
-        std::unordered_set<std::string> domain_set(domain_keys.begin(), domain_keys.end());
-
-        // For exp_point
-        auto exp_point_keys = m_exp | std::views::keys;
-        std::unordered_set<std::string> exp_point_set(exp_point_keys.begin(), exp_point_keys.end());
-
-        if (domain_set != exp_point_set) {
-            throw std::invalid_argument("Maps have different number of items.");
-        }
-
-        for (const std::string &key : domain_set) {
-            if (!boost::numeric::in(m_exp.find(key)->second, m_domain.find(key)->second)) {
-                throw std::domain_error("The expansion point falls outside of the valid domain.");
-            }
-        }
-    }
+class taylor_model {
 
 private:
     // The Taylor polynomial
@@ -98,7 +59,43 @@ private:
     // The domain
     var_map_i m_domain;
 
+    void check_input_validity()
+    {
+        // For domain
+        auto domain_keys = m_domain | std::views::keys;
+        std::unordered_set<std::string> domain_set(domain_keys.begin(), domain_keys.end());
+
+        // For exp_point
+        auto exp_point_keys = m_exp | std::views::keys;
+        std::unordered_set<std::string> exp_point_set(exp_point_keys.begin(), exp_point_keys.end());
+
+        if (domain_set != exp_point_set) {
+            throw std::invalid_argument("Domain and expansion point maps have different items.");
+        }
+
+        for (const std::string &key : domain_set) {
+            auto exp_it = m_exp.find(key);
+            auto dom_it = m_domain.find(key);
+
+            if (exp_it == m_exp.end() || dom_it == m_domain.end()) {
+                throw std::invalid_argument("Key not found in expansion or domain map: " + key);
+            }
+
+            if (!boost::numeric::in(exp_it->second, dom_it->second)) {
+                throw std::invalid_argument("The expansion point falls outside of the valid domain for key: " + key);
+            }
+        }
+        // For ndim
+        if (domain_set.size() != m_ndim) {
+            throw std::invalid_argument("The number of variables in the domain is not equal to the dimension.");
+        }
+    }
+
 public:
+    ////////////////
+    /// Constructors
+    ////////////////
+
     /// Defaulted copy constructor & assignment
     taylor_model(const taylor_model &) = default;
     taylor_model &operator=(const taylor_model &) = default;
@@ -111,6 +108,7 @@ public:
     taylor_model() : m_tpol(0.), m_order(0u), m_rem(0.) {}
     ~taylor_model() {}
 
+    // Standard complete construction
     explicit taylor_model(const audi::gdual<double> &tpol, const int_d &rem_bound, const var_map_d &exp_point,
                           const var_map_i &domain)
     {
@@ -125,19 +123,48 @@ public:
         check_input_validity();
     }
 
+    // Construction of Taylor model representing a constant
     taylor_model(double constant)
     {
         m_tpol = audi::gdual<double>(constant);
-        m_order = m_tpol.get_order();
-        m_ndim = static_cast<uint>(m_tpol.get_symbol_set_size());
+        m_order = 0;
+        m_ndim = 0;
         m_rem = int_d(0.0);
         m_exp = {};
         m_domain = {};
     }
 
-    ///////////////
-    /// Getters ///
-    ///////////////
+    // Specific member function for a taylor model representing the constant 1.0
+    // Identical to taylor_model(1.0)
+    static taylor_model identity()
+    {
+        taylor_model tm;
+        tm.m_tpol = audi::gdual<double>(1.0);
+        tm.m_order = 0u;
+        tm.m_ndim = 0u;
+        tm.m_rem = 0.0;
+        tm.m_exp = {};
+        tm.m_domain = {};
+        return tm;
+    }
+
+    // Specific member function for a taylor model representing the constant 1.0 with custom remainder bound, and
+    // variables. Identical to taylor_model(1.0).
+    static taylor_model identity(int_d rem, var_map_d exp, var_map_i domain)
+    {
+        taylor_model tm;
+        tm.m_tpol = audi::gdual<double>(1.0);
+        tm.m_order = 0u;
+        tm.m_ndim = 0u;
+        tm.m_rem = rem;
+        tm.m_exp = exp;
+        tm.m_domain = domain;
+        return tm;
+    }
+
+    ///////////
+    /// Getters
+    ///////////
 
     const audi::gdual<double> &get_tpol() const
     {
@@ -169,9 +196,9 @@ public:
         return m_ndim;
     }
 
-    ///////////////
-    /// Setters ///
-    ///////////////
+    ///////////
+    /// Setters
+    ///////////
 
     void set_tpol(const audi::gdual<double> &tpol)
     {
@@ -198,7 +225,134 @@ public:
         check_input_validity();
     }
 
+    /////////////////
+    /// Miscellaneous
+    /////////////////
+
 private:
+    /// Increase the order of a gdual polynomial
+    /**
+     * Constructs a new gdual with the specified higher order and substitutes
+     * the given polynomial into it. This effectively increases the truncation
+     * order of the input gdual.
+     *
+     * @tparam T the coefficient type of the gdual
+     * @param poly the input gdual polynomial
+     * @param new_order the new truncation order to assign
+     *
+     * @return a gdual polynomial with the specified higher order
+     */
+    template <typename T>
+    static audi::gdual<T> get_increased_order(const audi::gdual<T> &poly, uint new_order)
+    {
+        // Create a dummy polynomial with a higher order
+        audi::gdual<T> temp(0.0, "temp", new_order);
+
+        // Substitute poly into temp
+        return temp.subs("dtemp", poly);
+    }
+
+    /// Flatten a nested vector
+    /**
+     * Converts a vector of vectors into a single vector by concatenating
+     * all inner vectors in order.
+     *
+     * @tparam T the element type of the vector
+     * @param orig the original nested vector
+     *
+     * @return a flat vector containing all elements of the inner vectors
+     */
+    template <typename T>
+    static std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
+    {
+        std::vector<T> ret;
+        for (const auto &v : orig)
+            ret.insert(ret.end(), v.begin(), v.end());
+        return ret;
+    }
+
+public:
+    /// Compute the bounds of the polynomial over the stored domain
+    /**
+     * Evaluates the current gdual polynomial over its associated domain
+     * and returns the interval containing its minimum and maximum values.
+     *
+     * @return an int_d interval representing the lower and upper bounds
+     */
+    int_d get_bounds() const
+    {
+        return get_bounds(m_tpol, m_exp, m_domain);
+    }
+
+    /// Compute the bounds of a gdual polynomial over a given domain
+    /**
+     * Computes the Bernstein enclosure of a gdual polynomial on a specified domain.
+     * The domain is shifted relative to the expansion points before evaluation.
+     * The result is the interval containing its minimum and maximum values.
+     *
+     * @tparam T the coefficient type of the gdual
+     * @param tpol the input gdual polynomial
+     * @param exp_points the expansion points (variable → double)
+     * @param domain the domain of variables as intervals (variable → int_d)
+     *
+     * @return an int_d interval representing the minimum and maximum polynomial values
+     */
+    template <typename T>
+    static int_d get_bounds(const audi::gdual<T> &tpol, const var_map_d &exp_points, const var_map_i &domain)
+    {
+        // Build shifted domain relative to expansion points
+        var_map_i domain_shifted;
+
+        auto [coeffs, exps] = audi::get_poly(tpol);
+        auto ndim = audi::get_ndim(coeffs, exps); // necessary because static function
+
+        std::vector<T> flat;
+        if (ndim > 1 || ndim == 1) {
+
+            for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
+                std::string var_name = tpol.get_symbol_set()[i];
+
+                T a_shifted = domain.at(var_name).lower() - exp_points.at(var_name);
+                T b_shifted = domain.at(var_name).upper() - exp_points.at(var_name);
+                domain_shifted[var_name] = int_d(a_shifted, b_shifted);
+            }
+
+            // Compute Bernstein patch using generalbox (takes var_map_i directly)
+            std::vector<std::vector<T>> bern_patch
+                = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
+
+            flat = flatten(bern_patch); // flatten the nested vector
+        } else {
+            throw std::runtime_error("The dimension cannot be negative.");
+        }
+
+        auto [min_val, max_val] = std::minmax_element(flat.begin(), flat.end());
+
+        return int_d(*min_val, *max_val);
+    }
+
+    //////////////////////////////////////////
+    /// Static member functions for arithmetic
+    //////////////////////////////////////////
+
+private:
+    /// Merge two maps with consistency checking
+    /**
+     * Combines two unordered maps into one by taking the union of their key–value pairs.
+     * If a key is present in both maps, the values must be equal (checked using
+     * `interval_equal`), otherwise a runtime error is thrown.
+     *
+     * If the key exists in only one map, that key–value pair is added directly.
+     *
+     * @tparam K the key type of the maps
+     * @tparam V the value type of the maps
+     * @param a the first unordered map
+     * @param b the second unordered map
+     *
+     * @throws std::runtime_error if a key is present in both maps with conflicting values
+     *
+     * @return a new unordered_map containing the merged key–value pairs
+     */
     template <typename K, typename V>
     static std::unordered_map<K, V> get_common_map(const std::unordered_map<K, V> &a, const std::unordered_map<K, V> &b)
     {
@@ -229,97 +383,26 @@ private:
         return result;
     }
 
-public:
-    template <typename T>
-    static audi::gdual<T> get_increased_order(const audi::gdual<T> &poly, uint new_order)
-    {
-        // Create a dummy polynomial with a higher order
-        audi::gdual<T> temp(0.0, "temp", new_order);
+    /// Add two objects, producing a new taylor_model
+    /**
+     * Adds a taylor_model to another object and returns the result as a new taylor_model.
+     * Supported combinations include:
+     *
+     * - taylor_model + taylor_model
+     * - scalar (arithmetic type) + taylor_model
+     * - taylor_model + scalar (arithmetic type)
+     * - interval + taylor_model
+     * - taylor_model + interval
+     *
+     * In all cases, the domains and expansion points are merged consistently.
+     *
+     * @param d1 the first operand
+     * @param d2 the second operand
+     *
+     * @return a new taylor_model representing the sum
+     */
 
-        // Substitute poly into temp
-        return temp.subs("dtemp", poly);
-    }
-
-    static taylor_model identity()
-    {
-        taylor_model tm;
-        tm.m_tpol = audi::gdual<double>(1.0);
-        tm.m_order = 0u;
-        tm.m_ndim = 0u;
-        tm.m_rem = 0.0;
-        tm.m_exp = {};
-        tm.m_domain = {};
-        return tm;
-    }
-
-    static taylor_model identity(int_d rem, var_map_d exp, var_map_i domain)
-    {
-        taylor_model tm;
-        tm.m_tpol = audi::gdual<double>(1.0);
-        tm.m_order = 0u;
-        tm.m_ndim = 0u;
-        tm.m_rem = rem;
-        tm.m_exp = exp;
-        tm.m_domain = domain;
-        return tm;
-    }
-
-    template <typename T>
-    static std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
-    {
-        std::vector<T> ret;
-        for (const auto &v : orig)
-            ret.insert(ret.end(), v.begin(), v.end());
-        return ret;
-    }
-
-    int_d get_bounds() const
-    {
-        return get_bounds(m_tpol, m_exp, m_domain);
-    }
-
-    template <typename T>
-    static int_d get_bounds(const audi::gdual<T> &tpol, const var_map_d &exp_points, const var_map_i &domain)
-    {
-        // Build shifted domain relative to expansion points
-        var_map_i domain_shifted;
-
-        auto [coeffs, exps] = audi::get_poly(tpol);
-        auto ndim = audi::get_ndim(coeffs, exps); // necessary because static function
-
-        std::vector<T> flat;
-        if (ndim > 1 || ndim == 1) {
-
-            for (size_t i = 0; i < tpol.get_symbol_set_size(); ++i) {
-                std::string var_name = tpol.get_symbol_set()[i];
-
-                T a_shifted = domain.at(var_name).lower() - exp_points.at(var_name);
-                T b_shifted = domain.at(var_name).upper() - exp_points.at(var_name);
-                domain_shifted[var_name] = int_d(a_shifted, b_shifted);
-            }
-
-            // Compute Bernstein patch using generalbox (takes var_map_i directly)
-            std::vector<std::vector<T>> bern_patch
-                = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
-
-            flat = flatten(bern_patch); // flatten the nested vector
-            // } else if (ndim == 1) {
-            //     flat = get_bernstein_coefficients(coeffs, exps, ndim);
-        } else {
-            throw std::runtime_error("The dimension cannot be negative.");
-        }
-
-        auto [min_val, max_val] = std::minmax_element(flat.begin(), flat.end());
-
-        return int_d(*min_val, *max_val);
-    }
-
-    //////////////////////////////////////////////
-    /// Static member functions for arithmetic ///
-    //////////////////////////////////////////////
-
-private:
-    // Addition
+    // Add two Taylor models
     static taylor_model add(const taylor_model &d1, const taylor_model &d2)
     {
 
@@ -329,31 +412,54 @@ private:
         return taylor_model(d1.m_tpol + d2.m_tpol, d1.m_rem + d2.m_rem, new_exp, new_domain);
     }
 
+    // Add value (double, int, etc.) to Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model add(const T &d1, const taylor_model &d2)
     {
         return taylor_model(d1 + d2.m_tpol, d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
+    // Add Taylor model to value (double, int, etc.)
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model add(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol + d2, d1.m_rem, d1.m_exp, d1.m_domain);
     }
 
+    // Add interval to Taylor model
     template <typename T>
     static taylor_model add(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
         return taylor_model(d2.m_tpol, d1 + d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
+    // Add Taylor model to interval
     template <typename T>
     static taylor_model add(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
         return taylor_model(d1.m_tpol, d1.m_rem + d2, d1.m_exp, d1.m_domain);
     }
 
-    // Subtraction
+    /// Subtract two objects, producing a new taylor_model
+    /**
+     * Subtracts a taylor_model from another object and returns the result as a new taylor_model.
+     * Supported combinations include:
+     *
+     * - taylor_model - taylor_model
+     * - scalar (arithmetic type) - taylor_model
+     * - taylor_model - scalar (arithmetic type)
+     * - interval - taylor_model
+     * - taylor_model - interval
+     *
+     * In all cases, the domains and expansion points are merged consistently.
+     *
+     * @param d1 the left operand
+     * @param d2 the right operand
+     *
+     * @return a new taylor_model representing the difference
+     */
+
+    // Subtract Taylor model from another Taylor model
     static taylor_model sub(const taylor_model &d1, const taylor_model &d2)
     {
 
@@ -363,33 +469,61 @@ private:
         return taylor_model(d1.m_tpol - d2.m_tpol, d1.m_rem - d2.m_rem, new_exp, new_domain);
     }
 
+    // Subtract Taylor model from value (double, int, etc.)
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model sub(const T &d1, const taylor_model &d2)
     {
         return taylor_model(d1 - d2.m_tpol, d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
+    // Subtract value (double, int, etc.) from Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model sub(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol - d2, d1.m_rem, d1.m_exp, d1.m_domain);
     }
 
+    // Subtract Taylor model from interval
     template <typename T>
     static taylor_model sub(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
         return taylor_model(d2.m_tpol, d1 - d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
+    // Subtract interval from Taylor model
     template <typename T>
     static taylor_model sub(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
         return taylor_model(d1.m_tpol, d1.m_rem - d2, d1.m_exp, d1.m_domain);
     }
 
-    // // Multiplication
+    /// Multiply two objects, producing a new taylor_model
+    /**
+     * Multiplies a taylor_model with another object and returns the result
+     * as a new taylor_model.
+     *
+     * Supported combinations include:
+     *
+     * - taylor_model × taylor_model
+     * - scalar (arithmetic type) × taylor_model
+     * - taylor_model × scalar (arithmetic type)
+     * - interval × taylor_model
+     * - taylor_model × interval
+     *
+     * For taylor_model × taylor_model:
+     * - A higher-order untruncated polynomial product is formed.
+     * - The result is truncated to the maximum degree of the operands.
+     * - The truncation error is enclosed in an interval remainder using bounds.
+     *
+     * In all cases, domains and expansion points are merged consistently.
+     *
+     * @param d1 the left operand
+     * @param d2 the right operand
+     *
+     * @return a new taylor_model representing the product
+     */
 
-    // TODO: Should be templated as well I guess, but raises error with ambiguity
+    // Multiply two Taylor models
     static taylor_model multiply(const taylor_model &d1, const taylor_model &d2)
     {
 
@@ -439,18 +573,21 @@ private:
         return taylor_model(agreeable_pol, interval_of_product, new_exp, new_domain);
     }
 
+    // Multiply value (double, int, etc.) with Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const T &d1, const taylor_model &d2)
     {
         return taylor_model(d1 * d2.m_tpol, int_d(d1) * d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
+    // Multiply Taylor model with value (double, int, etc.)
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol * d2, d1.m_rem * int_d(d2), d1.m_exp, d1.m_domain);
     }
 
+    // Multiply interval with Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
@@ -459,6 +596,7 @@ private:
         return tm_one * d2;
     }
 
+    // Multiply Taylor model with interval
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
@@ -467,13 +605,47 @@ private:
         return d1 * tm_one;
     }
 
-    // Division
+    /// Divide two objects, producing a new taylor_model
+    /**
+     * Divides a taylor_model by another object and returns the result as a new taylor_model.
+     *
+     * Supported combinations include:
+     *
+     * - scalar (arithmetic type) ÷ taylor_model
+     * - taylor_model ÷ taylor_model
+     * - taylor_model ÷ scalar (arithmetic type)
+     * - interval ÷ taylor_model
+     * - taylor_model ÷ interval
+     *
+     * For scalar ÷ taylor_model:
+     * - The denominator’s polynomial and remainder are analyzed to ensure that
+     *   zero is not contained in the range (division by zero is forbidden).
+     * - Bounds are computed for the remainder, and a validated enclosure of the
+     *   division is returned.
+     *
+     * In all cases, domains and expansion points are merged consistently.
+     *
+     * @param d1 the numerator
+     * @param d2 the denominator
+     *
+     * @throws std::runtime_error if the denominator’s range includes zero
+     *
+     * @return a new taylor_model representing the quotient
+     */
+
+    // Division between two Taylor models
+    static taylor_model div(const taylor_model &d1, const taylor_model &d2)
+    {
+        return d1 * (1 / d2);
+    }
+
+    // Division of value (double, int, etc.) by Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model div(const T &d1, const taylor_model &d2)
     {
         if (boost::numeric::zero_in(d2.get_bounds() + d2.get_rem())) {
-            throw std::runtime_error("The range of the function is not a subset of the positive Real numbers, and "
-                                     "therefore is ill-defined when performing a log operation.");
+            throw std::runtime_error("The range of the function includes 0, and "
+                                     "therefore is ill-defined when performing a division (cannot divide by 0).");
         }
         double const_term = d2.get_tpol().constant_cf();
         audi::gdual<double> f_bar = d2.get_tpol() - const_term;
@@ -488,17 +660,14 @@ private:
         return taylor_model(d1 / d2.get_tpol(), total_rem_bound, d2.get_exp(), d2.get_dom());
     }
 
-    static taylor_model div(const taylor_model &d1, const taylor_model &d2)
-    {
-        return d1 * (1 / d2);
-    }
-
+    // Division of Taylor model by value (double, int, etc.)
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model div(const taylor_model &d1, const T &d2)
     {
         return taylor_model(d1.m_tpol / d2, d1.m_rem / int_d(d2), d1.m_exp, d1.m_domain);
     }
 
+    // Division of interval by Taylor model
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model div(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
@@ -507,6 +676,7 @@ private:
         return tm_one * d2;
     }
 
+    // Division of Taylor model by interval
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model div(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
@@ -516,55 +686,177 @@ private:
     }
 
 public:
-    //////////////////////////////////////
-    /// Overloaded arithmetic operator ///
-    //////////////////////////////////////
+    //////////////////////////////////
+    /// Overloaded arithmetic operator
+    //////////////////////////////////
 
-    // TODO: These need to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what
-    // types the operators can accept
-
+    /// Overloaded addition operator
+    /**
+     * Adds two objects and returns the result as a taylor_model.
+     * This is equivalent to calling `add(d1, d2)`.
+     *
+     * @tparam T the type of the left operand
+     * @tparam U the type of the right operand
+     * @param d1 the left operand
+     * @param d2 the right operand
+     *
+     * @return a new taylor_model representing the sum
+     */
     template <typename T, typename U>
     friend taylor_model operator+(const T &d1, const U &d2)
     {
         return add(d1, d2);
     }
 
+    /// Add and assign operator
+    /**
+     * Adds an object to this taylor_model in place.
+     * This is equivalent to `*this = *this + d1`.
+     *
+     * @tparam T the type of the right operand
+     * @param d1 the right operand
+     *
+     * @return reference to this taylor_model after modification
+     */
+    /// Add and assignment operator
+    template <typename T>
+    auto operator+=(const T &d1) -> decltype(*this = *this + d1)
+    {
+        return *this = *this + d1;
+    }
+
+    /// Overloaded subtraction operator
+    /**
+     * Subtracts one object from another and returns the result as a taylor_model.
+     * This is equivalent to calling `sub(d1, d2)`.
+     *
+     * @tparam T the type of the left operand
+     * @tparam U the type of the right operand
+     * @param d1 the left operand
+     * @param d2 the right operand
+     *
+     * @return a new taylor_model representing the difference
+     */
     template <typename T, typename U>
     friend taylor_model operator-(const T &d1, const U &d2)
     {
         return sub(d1, d2);
     }
 
+    /// Subtract and assign operator
+    /**
+     * Subtracts an object from this taylor_model in place.
+     * This is equivalent to `*this = *this - d1`.
+     *
+     * @tparam T the type of the right operand
+     * @param d1 the right operand
+     *
+     * @return reference to this taylor_model after modification
+     */
+    template <typename T>
+    auto operator-=(const T &d1) -> decltype(*this = *this - d1)
+    {
+        return *this = *this - d1;
+    }
+
+    /// Unary negation operator
+    /**
+     * Returns the negation of this taylor_model.
+     * This is equivalent to `sub(0.0, *this)`.
+     *
+     * @return a new taylor_model representing the negated value
+     */
     taylor_model operator-() const
     {
         return sub(0.0, *this);
     }
 
+    /// Overloaded multiplication operator
+    /**
+     * Multiplies two objects and returns the result as a taylor_model.
+     * This is equivalent to calling `multiply(d1, d2)`.
+     *
+     * @tparam T the type of the left operand
+     * @tparam U the type of the right operand
+     * @param d1 the left operand
+     * @param d2 the right operand
+     *
+     * @return a new taylor_model representing the product
+     */
     template <typename T, typename U>
     friend taylor_model operator*(const T &d1, const U &d2)
     {
         return multiply(d1, d2);
     }
 
+    /// Multiply and assign operator
+    /**
+     * Multiplies this taylor_model by an object in place.
+     * This is equivalent to `*this = *this * d1`.
+     *
+     * @tparam T the type of the right operand
+     * @param d1 the right operand
+     *
+     * @return reference to this taylor_model after modification
+     */
+    template <typename T>
+    auto operator*=(const T &d1) -> decltype(*this = *this * d1)
+    {
+        return *this = *this * d1;
+    }
+
+    /// Overloaded division operator
+    /**
+     * Divides one object by another and returns the result as a taylor_model.
+     * This is equivalent to calling `div(d1, d2)`.
+     *
+     * @tparam T the type of the numerator
+     * @tparam U the type of the denominator
+     * @param d1 the numerator
+     * @param d2 the denominator
+     *
+     * @return a new taylor_model representing the quotient
+     */
     template <typename T, typename U>
     friend taylor_model operator/(const T &d1, const U &d2)
     {
         return div(d1, d2);
     }
 
-    /////////////////////////////////
-    /// Overloaded other operator ///
-    /////////////////////////////////
-
-    friend std::ostream &operator<<(std::ostream &os, const taylor_model &tm)
+    /// Divide and assign operator
+    /**
+     * Divides this taylor_model by an object in place.
+     * This is equivalent to `*this = *this / d1`.
+     *
+     * @tparam T the type of the right operand
+     * @param d1 the right operand (denominator)
+     *
+     * @return reference to this taylor_model after modification
+     */
+    template <typename T>
+    auto operator/=(const T &d1) -> decltype(*this = *this / d1)
     {
-        os << "Taylor Polynomial:\n"
-           << tm.get_tpol() << "\nRemainder Bound: [" << tm.get_rem().lower() << ", " << tm.get_rem().upper() << "]"
-           << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
-        return os;
+        return *this = *this / d1;
     }
 
-    // Compare scalars
+    /////////////////////////////////
+    /// Quantity comparison utilities
+    /////////////////////////////////
+
+    /// Compare two scalar values for equality
+    /**
+     * Checks whether two arithmetic values are equal within a specified tolerance.
+     * For floating-point types, if no tolerance is provided, a default of
+     * 10 × machine epsilon is used.
+     * For integral types, strict equality is used.
+     *
+     * @tparam T the scalar type (must be arithmetic)
+     * @param a the first value
+     * @param b the second value
+     * @param tol optional tolerance for floating-point comparison
+     *
+     * @return true if the values are considered equal, false otherwise
+     */
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static bool interval_equal(const T &a, const T &b, std::optional<double> tol = std::nullopt)
     {
@@ -578,7 +870,20 @@ public:
         }
     }
 
-    // Compare intervals
+    /// Compare two intervals for equality
+    /**
+     * Checks whether two boost::numeric::interval values are equal within a
+     * specified tolerance.
+     * For floating-point types, lower and upper bounds are compared with tolerance.
+     * For integral types, strict equality of bounds is used.
+     *
+     * @tparam T the interval bound type (must be arithmetic)
+     * @param a the first interval
+     * @param b the second interval
+     * @param tol optional tolerance for floating-point comparison
+     *
+     * @return true if both intervals are considered equal, false otherwise
+     */
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b,
                                std::optional<double> tol = std::nullopt)
@@ -593,7 +898,18 @@ public:
         }
     }
 
-    // Generic map comparison
+    /// Compare two maps of intervals for equality
+    /**
+     * Checks whether two unordered_maps mapping variable names to int_d intervals
+     * are equal within a specified tolerance.
+     * Both maps must have the same size and the same keys.
+     *
+     * @param a the first map
+     * @param b the second map
+     * @param tol optional tolerance for floating-point comparison of interval bounds
+     *
+     * @return true if the maps are considered equal, false otherwise
+     */
     static bool map_interval_equal(const std::unordered_map<std::string, int_d> &a,
                                    const std::unordered_map<std::string, int_d> &b,
                                    std::optional<double> tol = std::nullopt)
@@ -606,7 +922,20 @@ public:
         return true;
     }
 
-    // Generic map comparison
+    /// Compare two maps of scalar values for equality
+    /**
+     * Checks whether two unordered_maps mapping variable names to arithmetic values
+     * are equal within a specified tolerance.
+     * Both maps must have the same size and the same keys.
+     * If no tolerance is provided, strict equality is used.
+     *
+     * @tparam T the value type (must be arithmetic)
+     * @param a the first map
+     * @param b the second map
+     * @param tol optional tolerance for floating-point comparison
+     *
+     * @return true if the maps are considered equal, false otherwise
+     */
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static bool map_equal(const std::unordered_map<std::string, T> &a, const std::unordered_map<std::string, T> &b,
                           std::optional<double> tol = std::nullopt)
@@ -624,10 +953,59 @@ public:
         return true;
     }
 
+    /////////////////////////////
+    /// Overloaded other operator
+    /////////////////////////////
+
+    /// Stream insertion operator for taylor_model
+    /**
+     * Outputs the contents of a taylor_model to the given output stream in a
+     * human-readable format.
+     *
+     * @param os the output stream
+     * @param tm the taylor_model to output
+     *
+     * @return a reference to the output stream with the formatted contents inserted
+     */
+    friend std::ostream &operator<<(std::ostream &os, const taylor_model &tm)
+    {
+        os << "Taylor Polynomial:\n"
+           << tm.get_tpol() << "\nRemainder Bound: [" << tm.get_rem().lower() << ", " << tm.get_rem().upper() << "]"
+           << "\nExpansion Point: " << tm.get_exp() << "\nDomain: " << tm.get_dom();
+        return os;
+    }
+    /// Equality operator for taylor_model
+    /**
+     * Compares two taylor_model instances for equality.
+     * Two taylor_models are considered equal if:
+     * - Their polynomials are equal (`m_tpol`)
+     * - Their remainder intervals are equal (`interval_equal`)
+     * - Their expansion points are equal (`map_equal`)
+     * - Their domains are equal (`map_interval_equal`)
+     *
+     * @param other the taylor_model to compare with
+     *
+     * @return true if all components are equal, false otherwise
+     */
     bool operator==(const taylor_model &other) const
     {
         return m_tpol == other.m_tpol && interval_equal(m_rem, other.m_rem) && map_equal(m_exp, other.m_exp)
                && map_interval_equal(m_domain, other.m_domain);
+    }
+
+    /// Inequality operator for taylor_model
+    /**
+     * Compares two taylor_model instances for inequality.
+     * Returns the negation of the equality operator.
+     *
+     * @param other the taylor_model to compare with
+     *
+     * @return true if any component differs, false otherwise
+     */
+    bool operator!=(const taylor_model &other) const
+    {
+        return m_tpol != other.m_tpol || !interval_equal(m_rem, other.m_rem) || !map_equal(m_exp, other.m_exp)
+               || !map_interval_equal(m_domain, other.m_domain);
     }
 
 }; // end of taylor_model class

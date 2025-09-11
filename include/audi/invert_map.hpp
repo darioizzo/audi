@@ -138,6 +138,26 @@ static unsigned _(I n)
  * @throws std::invalid_argument if \p map_in is empty, if its linear part is not invertable, if the symbol set of the
  * map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
  * the gduals are not all the same.
+ *
+ *  * Example usage:
+ *
+ * @code{.cpp}
+ * gdual<double> x(0., "x1", 9);
+ * auto sinx = sin(x);
+ * auto asinx = asin(x);
+ * auto inv_sinx = invert_map({sinx});
+ * std::cout << "sin x:\t\t" << sinx << std::endl;
+ * std::cout << "asin x:\t\t" << asinx << std::endl;
+ * std::cout << "inv sinx:\t" << inv_sinx[0] << std::endl;
+ * @endcode
+ *
+ * The code above will produce the output:
+ *
+ * @code{.txt}
+ * sin x:        dx1+2.75573e-06*dx1**9-0.166667*dx1**3+0.00833333*dx1**5-0.000198413*dx1**7
+ * asin x:       dx1+0.0303819*dx1**9+0.166667*dx1**3+0.075*dx1**5+0.0446429*dx1**7
+ * inv sinx:     dp0+0.0303819*dp0**9+0.166667*dp0**3+0.075*dp0**5+0.0446429*dp0**7
+ * @endcode
  */
 template <typename Cf, typename Monomial>
 inline taylor_map<Cf, Monomial> invert_map(const taylor_map<Cf, Monomial> &map_in, bool verbose = false)

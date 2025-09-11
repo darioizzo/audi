@@ -10,6 +10,7 @@
 #include <vector>
 
 #include <audi/gdual.hpp>
+#include <audi/taylor_model_utilities.hpp>
 
 // using int_d = boost::numeric::interval<double>;
 using int_d = boost::numeric::interval<
@@ -22,6 +23,22 @@ using var_map_i = std::unordered_map<std::string, int_d>;
 namespace audi
 {
 
+/// Function for the combinations of given maximum indices
+/**
+ * Function gives either all possible combinations given a list of maximum limits, or (if
+ * cap_sum_indices = true), the total sum of the indices of a given combination are limited by the
+ * maximum index given by the input maximum indices.
+ *
+ * The cap_sum_indices defaults to off, and is generally only set to true when retrieving the
+ * polynomial from a gdual (to prevent a monomial from exceeding the degree of the gdual).
+ *
+ * @param limits std::vector<int> the maximum degree limits per dimension
+ * @param cap_sum_indices bool whether or not to limit the combinations by the maximum of the
+ * maximum degrees
+ *
+ * @return a nested vector of combinations MxN where M is the number of combinations, and N is the
+ * number of dimensions that then have a given degree.
+ */
 std::vector<std::vector<int>> generate_combinations(const std::vector<int> &limits, bool cap_sum_indices = false)
 {
     if (limits.empty()) return {};
@@ -49,7 +66,25 @@ std::vector<std::vector<int>> generate_combinations(const std::vector<int> &limi
     return result;
 }
 
-// Return type: pair of (coefficients, exponents)
+/// Extract the polynomial representation of a gdual
+/**
+ * Retrieves the coefficients and corresponding exponents of the nonzero monomials
+ * contained in a gdual.
+ *
+ * For univariate polynomials, the exponents are generated from 0 up to the degree
+ * of the gdual. For multivariate polynomials, all valid exponent combinations are
+ * generated such that the sum of indices does not exceed the degree of the `gdual`.
+ *
+ * @tparam T numeric type of the coefficients (e.g., `double`, `long double`)
+ *
+ * @param tpol the input truncated polynomial (`audi::gdual<T>`) from which the
+ * polynomial representation is extracted
+ *
+ * @return a pair `(coeffs, exponents)` where:
+ *   - `coeffs` is a vector of coefficients of type `T`
+ *   - `exponents` is a vector of integer vectors, each containing the exponents
+ *      of a corresponding monomial term in `coeffs`
+ */
 template <typename T>
 std::pair<std::vector<T>, std::vector<std::vector<int>>> get_poly(const audi::gdual<T> &tpol)
 {
@@ -81,14 +116,26 @@ std::pair<std::vector<T>, std::vector<std::vector<int>>> get_poly(const audi::gd
     return {coeffs, exponents};
 }
 
+/// Get the number of dimensions in a polynomial representation
+/**
+ * Determines the dimensionality of a polynomial given its coefficients and
+ * exponent matrix.
+ *
+ * @param coeffs vector of coefficients
+ * @param exps vector of exponent rows, each row representing the exponents
+ *             of a monomial term
+ *
+ * @return the number of dimensions (variables) of the polynomial
+ *
+ * @throws std::invalid_argument if the number of coefficients does not match
+ *         the number of exponent rows, or if exponent rows are inconsistent
+ *         in length
+ */
 uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<int>> &exps)
 {
     if (coeffs.empty() || exps.empty()) {
         return 0;
     }
-    //     throw std::invalid_argument("Coefficients and exponents cannot be empty.");
-    // } else if (!coeffs.empty() && exps.empty()) {
-    // }
 
     // number of terms must match
     if (coeffs.size() != exps.size() && coeffs.size() != 0 && exps.size() != 0) {
@@ -96,12 +143,6 @@ uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<i
     }
 
     size_t ndim = exps[0].size();
-
-    // // check all rows in exps have the same length
-    // if (ndim == 0) {
-    //     throw std::invalid_argument("Exponent rows cannot be empty.");
-    // }
-
     for (const auto &row : exps) {
         if (row.size() != ndim) {
             throw std::invalid_argument("All exponent rows must have the same length.");
@@ -111,12 +152,28 @@ uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<i
     return static_cast<uint>(ndim);
 }
 
+/// Get the maximum degree in each dimension
+/**
+ * Computes the maximum degree reached in each variable of a polynomial,
+ * given its exponent representation. The result is a vector of per-dimension
+ * maximum exponents.
+ *
+ * - For multivariate polynomials (`ndim > 1`), returns one maximum per variable.
+ * - For univariate polynomials (`ndim == 1`), returns a single-element vector
+ *   containing the maximum degree.
+ * - For zero-dimensional input (`ndim == 0`), returns `{0}`.
+ *
+ * @param exponents vector of exponent rows, each row representing the exponents
+ *                  of a monomial term
+ * @param ndim number of dimensions (variables) of the polynomial
+ *
+ * @return vector of maximum degrees, one per dimension
+ *
+ * @throws std::invalid_argument if exponent rows are inconsistent in length
+ *         or if `ndim < 0`
+ */
 std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents, uint ndim)
 {
-    // if (exponents.empty()) {
-    //     throw std::invalid_argument("Exponents array cannot be empty.");
-    // }
-
     if (ndim > 1) {
         size_t cols = exponents[0].size();
         std::vector<int> max_degrees(cols, 0);
@@ -145,7 +202,21 @@ std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents,
     }
 }
 
-// coefficients lookup by matching multi-index in exps
+/// Retrieve a coefficient by exponent combination
+/**
+ * Finds the coefficient of a monomial term in a polynomial representation
+ * given its exponent combination. If the exponent vector is not found in
+ * the exponent list, the coefficient is assumed to be zero.
+ *
+ * @tparam T numeric type of the coefficients (e.g., `double`, `long double`)
+ *
+ * @param comb exponent combination to look up (multi-index)
+ * @param coeffs vector of coefficients
+ * @param exps vector of exponent rows corresponding to the coefficients
+ *
+ * @return the coefficient corresponding to the given exponent combination,
+ *         or `0` if not found
+ */
 template <typename T>
 T get_coefficient(const std::vector<int> &comb, const std::vector<T> &coeffs, const std::vector<std::vector<int>> &exps)
 {
@@ -157,6 +228,27 @@ T get_coefficient(const std::vector<int> &comb, const std::vector<T> &coeffs, co
     return 0.0; // if not found, coefficient is zero
 }
 
+/// Construct the coefficient matrix representation of a polynomial
+/**
+ * Builds a 2D matrix `A` from a polynomial given in coefficient–exponent form.
+ *
+ * - The **rows** of `A` correspond to the degree of the first variable.
+ * - The **columns** of `A` represent the flattened index of all remaining variables.
+ *
+ * More precisely, the matrix has size:
+ *   - `(max_degrees[0] + 1)` rows
+ *   - `∏_{i=1..ndim-1} (max_degrees[i] + 1)` columns
+ *
+ * Each entry `A[i][j]` contains the coefficient of the monomial with multi-index
+ * `(i, *rest)` mapped into column index `j`.
+ *
+ * @tparam T numeric type of the coefficients (e.g., `double`, `long double`)
+ *
+ * @param coeffs vector of coefficients
+ * @param exps vector of exponent rows corresponding to the coefficients
+ *
+ * @return a 2D vector `A` holding the coefficients arranged as a matrix
+ */
 template <typename T>
 std::vector<std::vector<T>> get_a_matrix_vec(const std::vector<T> &coeffs, const std::vector<std::vector<int>> &exps)
 {
@@ -201,6 +293,22 @@ std::vector<std::vector<T>> get_a_matrix_vec(const std::vector<T> &coeffs, const
     return A;
 }
 
+/// Compute a binomial coefficient
+/**
+ * Computes the number of ways to choose `k` elements from `n` without repetition:
+ *
+ * \f[
+ *   \binom{n}{k} = \frac{n!}{k!(n-k)!}
+ * \f]
+ *
+ * Uses an iterative approach that avoids intermediate factorial computation
+ * and exploits the symmetry relation \f$\binom{n}{k} = \binom{n}{n-k}\f$.
+ *
+ * @param n nonnegative integer
+ * @param k integer satisfying \f$0 \leq k \leq n\f$
+ *
+ * @return the binomial coefficient as an unsigned long long
+ */
 unsigned long long binomial(int n, int k)
 {
     if (k < 0 || k > n) return 0;
@@ -215,6 +323,24 @@ unsigned long long binomial(int n, int k)
     return res;
 }
 
+/// Compute the product of binomial coefficients
+/**
+ * Given two vectors `n` and `k` of the same length, computes
+ * the product
+ *
+ * \f[
+ *   \prod_{i=1}^m \binom{n_i}{k_i}
+ * \f]
+ *
+ * where \f$m = n.size() = k.size()\f$.
+ *
+ * @param n vector of nonnegative integers
+ * @param k vector of nonnegative integers of the same size as `n`
+ *
+ * @return the product of binomial coefficients as an unsigned long long
+ *
+ * @throws std::runtime_error if `n` and `k` do not have the same size
+ */
 unsigned long long binom_product(const std::vector<int> &n, const std::vector<int> &k)
 {
 
@@ -226,9 +352,26 @@ unsigned long long binom_product(const std::vector<int> &n, const std::vector<in
     return result;
 }
 
+/// Construct the diagonal accumulation matrix for a given dimension
+/**
+ * Builds a diagonal matrix of size `(n+1) x (n+1)` where `n` is the maximum
+ * degree in the specified dimension. The diagonal entries are given by
+ *
+ * \f[
+ *   (D_{\text{acc}})_{kk} = \frac{1}{\binom{n}{k}}, \quad k = 0, \dots, n.
+ * \f]
+ *
+ * @param max_degrees vector of maximum degrees per dimension
+ * @param dim the dimension index to construct the matrix for
+ *
+ * @return a `(n+1) x (n+1)` diagonal matrix of scaling factors
+ *
+ * @throws std::out_of_range if `dim` is negative or not less than
+ *         `max_degrees.size()`
+ */
 std::vector<std::vector<double>> get_d_acc_matrix(const std::vector<int> &max_degrees, int dim)
 {
-    if (dim < 0 || dim >= static_cast<int>(max_degrees.size())) throw std::out_of_range("Dimension out of range");
+    if (dim < 0 || dim >= static_cast<int>(max_degrees.size())) throw std::out_of_range("Dimension out of range.");
 
     int n = max_degrees[static_cast<size_t>(dim)];
 
@@ -244,6 +387,27 @@ std::vector<std::vector<double>> get_d_acc_matrix(const std::vector<int> &max_de
     return d_acc;
 }
 
+/// Construct the diagonal evaluation matrix for a given dimension
+/**
+ * Builds a diagonal matrix of size `(n+1) x (n+1)` where `n` is the maximum
+ * degree in the specified dimension. The diagonal entries are
+ *
+ * \f[
+ *   (D)_{kk} =
+ *     \begin{cases}
+ *       1 & \text{if } k = 0, \\
+ *       t^k & \text{if } k \geq 1.
+ *     \end{cases}
+ * \f]
+ *
+ * This corresponds to evaluating powers of `t` up to the maximum degree.
+ *
+ * @param max_degrees vector of maximum degrees per dimension
+ * @param dim the dimension index to construct the matrix for
+ * @param t the evaluation point
+ *
+ * @return a `(n+1) x (n+1)` diagonal matrix of powers of `t`
+ */
 std::vector<std::vector<double>> get_d_matrix(const std::vector<int> &max_degrees, int dim, double t)
 {
     int n = max_degrees[static_cast<size_t>(dim)];
@@ -258,6 +422,26 @@ std::vector<std::vector<double>> get_d_matrix(const std::vector<int> &max_degree
     return D;
 }
 
+/// Construct the lower Pascal matrix for a given dimension
+/**
+ * Builds a lower-triangular Pascal matrix of size `(n+1) x (n+1)` where `n`
+ * is the maximum degree in the specified dimension. The entries are defined by
+ *
+ * \f[
+ *   P_{ij} =
+ *     \begin{cases}
+ *       \binom{i}{j} & \text{if } j \leq i, \\
+ *       0            & \text{if } j > i.
+ *     \end{cases}
+ * \f]
+ *
+ * This matrix encodes binomial coefficients in triangular form.
+ *
+ * @param max_degrees vector of maximum degrees per dimension
+ * @param dim the dimension index to construct the matrix for
+ *
+ * @return a `(n+1) x (n+1)` lower-triangular Pascal matrix
+ */
 std::vector<std::vector<double>> get_lower_pascal_matrix(const std::vector<int> &max_degrees, int dim)
 {
     int n = max_degrees[static_cast<size_t>(dim)];
@@ -273,38 +457,15 @@ std::vector<std::vector<double>> get_lower_pascal_matrix(const std::vector<int> 
     return P;
 }
 
-// matrix multiplication helper
-std::vector<std::vector<double>> matmul(const std::vector<std::vector<double>> &A,
-                                        const std::vector<std::vector<double>> &B)
-{
-    size_t m = A.size();
-    size_t n = B[0].size();
-    size_t p = A[0].size(); // must equal B.size()
-
-    std::vector<std::vector<double>> C(m, std::vector<double>(n, 0.0));
-    for (size_t i = 0; i < m; ++i) {
-        for (size_t j = 0; j < n; ++j) {
-            for (size_t k = 0; k < p; ++k) {
-                C[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-    return C;
-}
-
-// transpose helper
-std::vector<std::vector<double>> transpose(const std::vector<std::vector<double>> &M)
-{
-    size_t rows = M.size();
-    size_t cols = M[0].size();
-    std::vector<std::vector<double>> T(cols, std::vector<double>(rows, 0.0));
-    for (size_t i = 0; i < rows; ++i)
-        for (size_t j = 0; j < cols; ++j)
-            T[j][i] = M[i][j];
-    return T;
-}
-
-// dim_to_var map helper
+/// Build a dimension-to-variable mapping
+/**
+ * Constructs a mapping from dimension index to `(variable name, interval)`
+ * pairs based on the given domain.
+ *
+ * @param domain a mapping from variable name to its interval
+ *
+ * @return unordered map from dimension index (0-based) to `(var_name, interval)`
+ */
 std::unordered_map<int, std::pair<std::string, int_d>> build_dim_to_var_map(const var_map_i &domain)
 {
     std::unordered_map<int, std::pair<std::string, int_d>> dim_map;
@@ -316,6 +477,33 @@ std::unordered_map<int, std::pair<std::string, int_d>> build_dim_to_var_map(cons
     return dim_map;
 }
 
+/// Construct the Q-matrix for a given dimension
+/**
+ * Builds the Q-matrix (from Titi (2018)) associated with a given variable domain and maximum degree. This function
+ * basically maps the domain to [0, 1] for the subsequent matrix compuations.
+ *
+ * - If the lower bound `a` of the variable interval is zero, the matrix reduces
+ *   to a diagonal matrix \f$D(b)\f$ where diagonal entries are \f$b^k\f$.
+ * - Otherwise, the matrix is constructed as
+ *
+ * \f[
+ *   Q = D\!\left(\frac{b-a}{a}\right) \cdot P^T \cdot D(a),
+ * \f]
+ *
+ * where:
+ *   - `P` is the lower Pascal matrix of size `(n+1) x (n+1)`
+ *   - `D(x)` is the diagonal evaluation matrix with entries \f$x^k\f$
+ *   - `n = max_degrees[dim]`
+ *
+ * @param max_degrees vector of maximum degrees per dimension
+ * @param domain variable domain mapping (variable name → interval)
+ * @param dim the dimension index
+ *
+ * @return a `(n+1) x (n+1)` Q-matrix for the specified dimension
+ *
+ * @throws std::out_of_range if `dim` is invalid
+ * @throws std::runtime_error if `dim` is not found in the domain map
+ */
 std::vector<std::vector<double>> get_q_matrix(const std::vector<int> &max_degrees, const var_map_i &domain, int dim)
 {
     if (dim < 0 || dim >= static_cast<int>(max_degrees.size())) throw std::out_of_range("Dimension out of range");
@@ -344,6 +532,18 @@ std::vector<std::vector<double>> get_q_matrix(const std::vector<int> &max_degree
     }
 }
 
+/// Shift indices cyclically to the left
+/**
+ * Rotates a vector of indices one position to the left.
+ *
+ * Example:
+ * - Input: `{2, 3, 4}`
+ * - Output: `{3, 4, 2}`
+ *
+ * @param indices vector of indices
+ *
+ * @return shifted vector with elements rotated left by one
+ */
 std::vector<int> shift_indices(const std::vector<int> &indices)
 {
     if (indices.empty()) return {};
@@ -352,6 +552,21 @@ std::vector<int> shift_indices(const std::vector<int> &indices)
     return shifted;
 }
 
+/// Cycle a 2D array representation along dimensions
+/**
+ * Rearranges a 2D array representation of polynomial coefficients by cycling
+ * the role of dimensions. This operation effectively rotates the "leading"
+ * dimension used in the row index.
+ *
+ * If the number of dimensions is one, the input array is returned unchanged.
+ *
+ * @param arr 2D array of shape `(rows x cols)` representing coefficients
+ * @param max_degrees vector of maximum degrees per dimension
+ * @param dim the current dimension index to cycle
+ *
+ * @return a 2D array with cycled dimension ordering; new shape is
+ *         `(max_degrees[next_dim]+1, ∏_{m≠next_dim} (max_degrees[m]+1))`
+ */
 std::vector<std::vector<double>> get_cycled_2d_array_vec(const std::vector<std::vector<double>> &arr,
                                                          const std::vector<int> &max_degrees, int dim)
 {
@@ -398,6 +613,25 @@ std::vector<std::vector<double>> get_cycled_2d_array_vec(const std::vector<std::
     return cycled_arr;
 }
 
+/// Construct the base Lambda matrix for the general box domain
+/**
+ * Computes the base \f$\Lambda\f$ matrix representation for a polynomial
+ * expressed in the Bernstein basis over a general (non-unit) domain.
+ *
+ * Iteratively constructs \f$\Lambda\f$ by applying, for each dimension:
+ *  - diagonal accumulation matrix \f$D_{\text{acc}}\f$
+ *  - Q-matrix (interval scaling/translation)
+ *  - cycling of dimensions
+ *
+ * Intermediate Lambda matrices are stored in a dictionary by dimension.
+ *
+ * @param coeffs vector of polynomial coefficients
+ * @param exps exponent matrix (each row a monomial’s exponents)
+ * @param domain variable domain mapping (variable name → interval)
+ *
+ * @return the final \f$\Lambda\f$ matrix of shape
+ *         `∏ (deg_i+1) x ∏ (deg_i+1)` for all dimensions
+ */
 std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vector<double> &coeffs,
                                                                  const std::vector<std::vector<int>> &exps,
                                                                  const var_map_i &domain)
@@ -441,6 +675,22 @@ std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vect
     return L_dict[static_cast<int>(ndim)];
 }
 
+/// Construct the Bernstein patch for an n-dimensional polynomial (with a general box domain)
+/**
+ * Computes the Bernstein patch (control points) of a multivariate polynomial
+ * defined on a general hyper-rectangular domain. Uses audi::get_titi_base_lambda_generalbox(const std::vector<double>
+ * &coeffs, const std::vector<std::vector<int>> &exps, const var_map_i &domain) followed by repeated multiplication with
+ * lower Pascal matrices and cycling of dimensions.
+ *
+ * @tparam T numeric type of coefficients
+ *
+ * @param coeffs vector of polynomial coefficients
+ * @param exps exponent matrix (each row a monomial’s exponents)
+ * @param domain variable domain mapping (variable name → interval)
+ *
+ * @return a 2D array of control points in the Bernstein basis,
+ *         reshaped according to `(deg_1+1, deg_2+1, ..., deg_n+1)`
+ */
 template <typename T>
 std::vector<std::vector<T>> get_titi_bernstein_patch_ndim_generalbox(const std::vector<T> &coeffs,
                                                                      const std::vector<std::vector<int>> &exps,
@@ -481,32 +731,6 @@ std::vector<std::vector<T>> get_titi_bernstein_patch_ndim_generalbox(const std::
 
     return L_dict[static_cast<int>(ndim)];
 }
-
-// For univariate functions, calculate the bernstein coefficients exhaustively (no guarantee for the
-// best performance but same method as matrix one.
-
-// template <typename T>
-// std::vector<T> get_bernstein_coefficients(const std::vector<T> coeffs, const std::vector<std::vector<int>> exponents,
-//                                           uint ndim)
-// {
-//
-//     std::vector<int> max_degrees = get_max_degrees(exponents, ndim);
-//     std::vector<std::vector<int>> bernstein_combs = generate_combinations(max_degrees);
-//
-//     std::vector<T> b_coeffs(bernstein_combs.size(), 0.0);
-//     for (int i = 0; i < static_cast<int>(bernstein_combs.size()); ++i) {
-//         std::vector<int> b_comb = bernstein_combs[i];
-//         std::vector<std::vector<int>> current_coeff_combs = generate_combinations(b_comb);
-//
-//         double b_coeff = 0;
-//         for (std::vector<int> &comb : current_coeff_combs) {
-//             b_coeff += get_coefficient(comb, coeffs, exponents) * static_cast<double>(binom_product(b_comb, comb))
-//                        / static_cast<double>(binom_product(max_degrees, comb));
-//         }
-//         b_coeffs[i] = b_coeff;
-//     }
-//     return b_coeffs;
-// }
 
 } // namespace audi
 

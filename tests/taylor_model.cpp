@@ -151,25 +151,6 @@ BOOST_AUTO_TEST_CASE(comparison_of_construction_order)
     BOOST_CHECK_EQUAL(prod_ans, exp_ans);
 }
 
-BOOST_AUTO_TEST_CASE(increasing_order)
-{
-    uint order = 5;
-    audi::gdual_d x(0.0, "x", order);
-    audi::gdual_d y = audi::taylor_model::get_increased_order(x, 10);
-    BOOST_CHECK_EQUAL(y.get_order(), 10);
-}
-
-BOOST_AUTO_TEST_CASE(flatten)
-{
-    std::vector<std::vector<double>> vec = {{1, 2, 3}, {4, 5, 6}};
-    std::vector<double> exp_vec = {1, 2, 3, 4, 5, 6};
-
-    std::vector<double> prod_vec = audi::taylor_model::flatten(vec);
-    for (int i = 0; i < static_cast<int>(exp_vec.size()); ++i) {
-        BOOST_CHECK_EQUAL(prod_vec[i], exp_vec[i]);
-    }
-}
-
 BOOST_AUTO_TEST_CASE(get_bounds)
 {
     uint order = 5;

@@ -432,6 +432,16 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
     }
 }
 
+BOOST_AUTO_TEST_CASE(arcsine_derivative)
+{
+    int_d a = int_d(0.0, 0.5);
+    BOOST_CHECK_EQUAL(
+        audi::taylor_model::interval_equal(audi::asin_derivative(a, 0), boost::numeric::asin(a)), true);
+    BOOST_CHECK_EQUAL(audi::taylor_model::interval_equal(audi::asin_derivative(a, 1), int_d(1.0) / boost::numeric::sqrt(int_d(1.0) - a * a)), true);
+    BOOST_CHECK_EQUAL(audi::taylor_model::interval_equal(audi::asin_derivative(a, 2),
+                a * boost::numeric::pow(int_d(1.0) - a * a, 2) / boost::numeric::pow(int_d(1.0) - a * a, 3)), true);
+}
+
 BOOST_AUTO_TEST_CASE(inverse_sine)
 {
     // Checking that asin is the inverse of sin

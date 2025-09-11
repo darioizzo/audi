@@ -39,6 +39,7 @@ ADD_AUDI_TESTCASE(gdual_mp)
 ADD_AUDI_TESTCASE(taylor_model)
 ADD_AUDI_TESTCASE(taylor_model_bounding)
 ADD_AUDI_TESTCASE(taylor_model_functions)
+ADD_AUDI_TESTCASE(taylor_model_utilities)
 
 ADD_AUDI_PERFORMANCE_TESTCASE(multiplication)
 ADD_AUDI_PERFORMANCE_TESTCASE(division)
