@@ -32,18 +32,20 @@ namespace audi
  * Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the \f$(n+1)\f$st
  * derivative a method that has sometimes been employed in interval calculations.
  *
- * As a result, you get \f$ \forall \vec{x} \in [\vec{a}, \vec{b}] \text{, a given order } n \text{, and an expansion point} \vec{x_o} \f$:
- * 
+ * As a result, you get \f$ \forall \vec{x} \in [\vec{a}, \vec{b}] \text{, a given order } n \text{, and an expansion
+ * point} \vec{x_o} \f$:
+ *
  * \f$ f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f} \f$
  *
  * where f is the function you're creating a Taylor model for, P is the Taylor polynomial, and I is
  * the interval remainder.
- * 
+ *
  * TODO: multiply() needs to be templated as well, but raises error with ambiguity.
  * TODO: operator+ etc. need to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what
  * types the operators can accept
  */
-class taylor_model {
+class taylor_model
+{
 
 private:
     // The Taylor polynomial
@@ -219,7 +221,7 @@ public:
         check_input_validity();
     }
 
-    void set_domain(const var_map_i &domain)
+    void set_dom(const var_map_i &domain)
     {
         m_domain = domain;
         check_input_validity();
@@ -322,6 +324,8 @@ public:
                 = audi::get_titi_bernstein_patch_ndim_generalbox(coeffs, exps, domain_shifted);
 
             flat = flatten(bern_patch); // flatten the nested vector
+        } else if (ndim == 0) {
+            return int_d(tpol.constant_cf(), tpol.constant_cf());
         } else {
             throw std::runtime_error("The dimension cannot be negative.");
         }
@@ -335,7 +339,6 @@ public:
     /// Static member functions for arithmetic
     //////////////////////////////////////////
 
-private:
     /// Merge two maps with consistency checking
     /**
      * Combines two unordered maps into one by taking the union of their key–value pairs.
@@ -383,6 +386,44 @@ private:
         return result;
     }
 
+    /// Filter a map by a given set of keys with subset checking
+    /**
+     * Constructs a new unordered map containing only the entries from the input
+     * map `a` whose keys are listed in `symbol_set`.
+     *
+     * Each key in `symbol_set` must be present in `a`. If any key is missing,
+     * the function throws a logic error, since the symbol set is expected to be
+     * a strict subset of the map's keys.
+     *
+     * @tparam K the key type of the map
+     * @tparam V the value type of the map
+     * @param symbol_set the set of keys to extract (must all exist in `a`)
+     * @param a the input unordered map
+     *
+     * @throws std::logic_error if a key in `symbol_set` does not exist in `a`
+     *
+     * @return a new unordered_map containing only the key–value pairs from `a`
+     *         whose keys are listed in `symbol_set`
+     */
+    template <typename K, typename V>
+    static std::unordered_map<K, V> trim_map(const std::vector<K> &symbol_set, const std::unordered_map<K, V> &a)
+    {
+        std::unordered_map<K, V> result;
+        result.reserve(symbol_set.size()); // optimization
+
+        for (const K &symb : symbol_set) {
+            auto it = a.find(symb);
+            if (it != a.end()) {
+                result.emplace(symb, it->second);
+            } else {
+                throw std::logic_error("The symbol set is supposed to be a subset of the map provided, "
+                                       "but it is not because a symbol was found in the symbol set "
+                                       "that doesn't exist in the map.");
+            }
+        }
+        return result;
+    }
+
     /// Add two objects, producing a new taylor_model
     /**
      * Adds a taylor_model to another object and returns the result as a new taylor_model.
@@ -403,13 +444,17 @@ private:
      */
 
     // Add two Taylor models
+private:
     static taylor_model add(const taylor_model &d1, const taylor_model &d2)
     {
 
         // Get union of domains
-        var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
-        var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
-        return taylor_model(d1.m_tpol + d2.m_tpol, d1.m_rem + d2.m_rem, new_exp, new_domain);
+        var_map_d common_exp = get_common_map(d1.m_exp, d2.m_exp);
+        var_map_i common_domain = get_common_map(d1.m_domain, d2.m_domain);
+        audi::gdual<double> new_tpol = d1.m_tpol + d2.m_tpol;
+        var_map_d new_exp = trim_map(new_tpol.get_symbol_set(), common_exp);
+        var_map_i new_domain = trim_map(new_tpol.get_symbol_set(), common_domain);
+        return taylor_model(new_tpol, d1.m_rem + d2.m_rem, new_exp, new_domain);
     }
 
     // Add value (double, int, etc.) to Taylor model
@@ -430,14 +475,14 @@ private:
     template <typename T>
     static taylor_model add(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
-        return taylor_model(d2.m_tpol, d1 + d2.m_rem, d2.m_exp, d2.m_domain);
+        return taylor_model(d2.m_tpol, int_d(d1) + d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
     // Add Taylor model to interval
     template <typename T>
     static taylor_model add(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
-        return taylor_model(d1.m_tpol, d1.m_rem + d2, d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol, d1.m_rem + int_d(d2), d1.m_exp, d1.m_domain);
     }
 
     /// Subtract two objects, producing a new taylor_model
@@ -464,9 +509,12 @@ private:
     {
 
         // Get union of domains
-        var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
-        var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
-        return taylor_model(d1.m_tpol - d2.m_tpol, d1.m_rem - d2.m_rem, new_exp, new_domain);
+        var_map_d common_exp = get_common_map(d1.m_exp, d2.m_exp);
+        var_map_i common_domain = get_common_map(d1.m_domain, d2.m_domain);
+        audi::gdual<double> new_tpol = d1.m_tpol - d2.m_tpol;
+        var_map_d new_exp = trim_map(new_tpol.get_symbol_set(), common_exp);
+        var_map_i new_domain = trim_map(new_tpol.get_symbol_set(), common_domain);
+        return taylor_model(new_tpol, d1.m_rem - d2.m_rem, new_exp, new_domain);
     }
 
     // Subtract Taylor model from value (double, int, etc.)
@@ -487,14 +535,14 @@ private:
     template <typename T>
     static taylor_model sub(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
-        return taylor_model(d2.m_tpol, d1 - d2.m_rem, d2.m_exp, d2.m_domain);
+        return taylor_model(d2.m_tpol, int_d(d1) - d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
     // Subtract interval from Taylor model
     template <typename T>
     static taylor_model sub(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
-        return taylor_model(d1.m_tpol, d1.m_rem - d2, d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol, d1.m_rem - int_d(d2), d1.m_exp, d1.m_domain);
     }
 
     /// Multiply two objects, producing a new taylor_model
@@ -527,9 +575,14 @@ private:
     static taylor_model multiply(const taylor_model &d1, const taylor_model &d2)
     {
 
+        if (d1.get_tpol() == audi::gdual<double>(0.0, "irrelevant", 0)
+            || d2.get_tpol() == audi::gdual<double>(0.0, "irrelevant", 0)) {
+            return taylor_model(0.0);
+        }
+
         // Get union of domains
-        var_map_d new_exp = get_common_map(d1.m_exp, d2.m_exp);
-        var_map_i new_domain = get_common_map(d1.m_domain, d2.m_domain);
+        var_map_d common_exp = get_common_map(d1.m_exp, d2.m_exp);
+        var_map_i common_domain = get_common_map(d1.m_domain, d2.m_domain);
 
         // Get untruncated polynomial product
         uint new_order = d1.m_tpol.get_order() + d2.m_tpol.get_order();
@@ -546,6 +599,8 @@ private:
         for (uint i = 0; i <= agreeable_degree; ++i) {
             agreeable_pol += polynomial_product.extract_terms(i);
         }
+        var_map_d new_exp = trim_map(agreeable_pol.get_symbol_set(), common_exp);
+        var_map_i new_domain = trim_map(agreeable_pol.get_symbol_set(), common_domain);
 
         audi::gdual<double> pol_e = polynomial_product - agreeable_pol;
 
@@ -560,8 +615,8 @@ private:
             var_map_i domain_e;
             var_map_d exp_point_e;
             for (const auto &sym : symbs_e) {
-                domain_e[sym] = new_domain[sym];
-                exp_point_e[sym] = new_exp[sym];
+                domain_e[sym] = common_domain[sym];
+                exp_point_e[sym] = common_exp[sym];
             }
 
             pol_e_bounds = get_bounds(pol_e, exp_point_e, domain_e);
@@ -592,7 +647,7 @@ private:
     static taylor_model multiply(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
         audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
+        const taylor_model tm_one(gd_one, int_d(d1), d2.m_exp, d2.m_domain);
         return tm_one * d2;
     }
 
@@ -601,7 +656,7 @@ private:
     static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
         audi::gdual<T> gd_one(1.0, "x", 0);
-        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
+        const taylor_model tm_one(gd_one, int_d(d2), d1.m_exp, d1.m_domain);
         return d1 * tm_one;
     }
 
@@ -672,7 +727,7 @@ private:
     static taylor_model div(const boost::numeric::interval<T> &d1, const taylor_model &d2)
     {
         audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
+        const taylor_model tm_one(gd_one, int_d(d1), d2.m_exp, d2.m_domain);
         return tm_one * d2;
     }
 
@@ -681,7 +736,7 @@ private:
     static taylor_model div(const taylor_model &d1, const boost::numeric::interval<T> &d2)
     {
         audi::gdual<T> gd_one(1.0, "x", 0);
-        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
+        const taylor_model tm_one(gd_one, int_d(d2), d1.m_exp, d1.m_domain);
         return d1 * tm_one;
     }
 

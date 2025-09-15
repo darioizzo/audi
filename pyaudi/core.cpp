@@ -12,6 +12,7 @@
 
 #include "common_utils.hpp"
 #include "expose_gdual.hpp"
+#include "expose_taylor_model.hpp"
 
 using namespace audi;
 namespace py = pybind11;
@@ -179,6 +180,49 @@ PYBIND11_MODULE(core, m)
         "expm1", [](const gdual_v &d) { return exp(d) - 1.0; }, "exp(x) - 1, inverse of log1p (gdual_v).");
     m.def(
         "erfc", [](const gdual_v &d) { return 1.0 - erf(d); }, "Error Function Complement (gdual_v).");
+
+    // We expose the taylor_model<double> basic arithmetic
+    pyaudi::expose_int_d(m);
+    pyaudi::expose_taylor_model(m);
+    // ... and functions
+    m.def(
+        "exp", [](const taylor_model &d) { return exp(d); }, "Exponential (taylor_model).");
+    m.def(
+        "log", [](const taylor_model &d) { return log(d); }, "Natural logarithm (taylor_model).");
+    m.def(
+        "sqrt", [](const taylor_model &d) { return sqrt(d); }, "Square root (taylor_model).");
+    m.def(
+        "sin", [](const taylor_model &d) { return sin(d); }, "Sine (taylor_model).");
+    m.def(
+        "asin", [](const taylor_model &d) { return asin(d); }, "Arc sine (taylor_model).");
+    m.def(
+        "cos", [](const taylor_model &d) { return cos(d); }, "Cosine (taylor_model).");
+    m.def(
+        "acos", [](const taylor_model &d) { return acos(d); }, "Arc cosine (taylor_model).");
+    m.def(
+        "sin_and_cos", [](const taylor_model &d) { return sin_and_cos(d); }, "Sine and Cosine at once (taylor_model).");
+    m.def(
+        "tan", [](const taylor_model &d) { return tan(d); }, "Tangent (taylor_model).");
+    m.def(
+        "atan", [](const taylor_model &d) { return atan(d); }, "Arc tangent (taylor_model).");
+    m.def(
+        "sinh", [](const taylor_model &d) { return sinh(d); }, "Hyperbolic sine (taylor_model).");
+    m.def(
+        "asinh", [](const taylor_model &d) { return asinh(d); }, "Inverse hyperbolic sine (taylor_model).");
+    m.def(
+        "cosh", [](const taylor_model &d) { return cosh(d); }, "Hyperbolic cosine (taylor_model).");
+    m.def(
+        "acosh", [](const taylor_model &d) { return acosh(d); }, "Inverse hyperbolic cosine (taylor_model).");
+    m.def(
+        "sinh_and_cosh", [](const taylor_model &d) { return sinh_and_cosh(d); },
+        "Hyperbolic sine and hyperbolic cosine at once (taylor_model).");
+    m.def(
+        "tanh", [](const taylor_model &d) { return tanh(d); }, "Hyperbolic tangent (taylor_model).");
+    m.def(
+        "atanh", [](const taylor_model &d) { return atanh(d); }, "Inverse hyperbolic arc tangent (taylor_model).");
+    m.def(
+        "abs", [](const taylor_model &d) { return abs(d); }, "Absolute value (taylor_model).");
+
 
 #if defined(AUDI_WITH_QUADMATH)
     // Init the interface between real128 ed mpmath

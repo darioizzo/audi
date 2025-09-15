@@ -170,7 +170,11 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
     } else {
         throw std::runtime_error("This exponent is not implemented for Taylor model arithmetic.");
     }
-    return audi::taylor_model(audi::pow(tm.get_tpol(), n), total_rem_bound, tm.get_exp(), tm.get_dom());
+
+    audi::gdual<double> new_tpol = audi::pow(tm.get_tpol(), n);
+    var_map_d new_exp = audi::taylor_model::trim_map(new_tpol.get_symbol_set(), tm.get_exp());
+    var_map_i new_dom = audi::taylor_model::trim_map(new_tpol.get_symbol_set(), tm.get_dom());
+    return audi::taylor_model(new_tpol, total_rem_bound, new_exp, new_dom);
 }
 
 /// Overload for the exponential of a taylor_model
@@ -694,8 +698,7 @@ inline audi::taylor_model asin(const audi::taylor_model &tm)
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1))
                             * boost::numeric::pow(tm_adapted_remainder_bounds, k + 1) * asin_deriv;
 
-    return audi::taylor_model(audi::asin(tm.get_tpol()), total_rem_bound, tm.get_exp(),
-                              tm.get_dom());
+    return audi::taylor_model(audi::asin(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
 
 /// Overload for the acos of a taylor_model.
@@ -756,8 +759,7 @@ inline audi::taylor_model atan(const audi::taylor_model &tm)
               int_d(k + 1)
               * (boost::numeric::atan(int_d(0, 1) * tm_adapted_remainder_bounds) + std::numbers::pi / 2.0));
 
-    return audi::taylor_model(audi::atan(tm.get_tpol()), total_rem_bound, tm.get_exp(),
-                              tm.get_dom());
+    return audi::taylor_model(audi::atan(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
 
 /// Overload for the asinh of a taylor_model.
