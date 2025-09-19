@@ -72,6 +72,16 @@ py::class_<taylor_model> expose_taylor_model(const py::module &m)
               .def_property_readonly("order", &taylor_model::get_order)
               .def_property_readonly("ndim", &taylor_model::get_ndim)
 
+              // Extend symbol set method
+              .def(
+                  "extend_symbol_set",
+                  [](taylor_model &self, const std::vector<std::string> &sym_vars, const var_map_d &exp_point, const var_map_i &domain) {
+                      return self.extend_symbol_set(sym_vars, exp_point, domain); // calls the instance method
+                  },
+                  py::arg("sym_vars"), py::arg("exp_point"), py::arg("domain"),
+                  "Extends the symbol set of the Taylor polynomial, also adding the corresponding expansion points and "
+                  "domain.")
+
               // bounds methods
               .def(
                   "get_bounds",

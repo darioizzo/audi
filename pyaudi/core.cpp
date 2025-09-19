@@ -340,4 +340,9 @@ PYBIND11_MODULE(core, m)
     m.def(
         "invert_map", [](const std::vector<gdual_d> &map_in, bool verbose) { return invert_map(map_in, verbose); },
         "Inverts a Taylor map (gdual_d)", py::arg("map"), py::arg("verbose") = false);
+
+    m.def(
+        "generate_combinations", [](const std::vector<int> &limits, bool cap_sum_indices = false) { return generate_combinations(limits, cap_sum_indices); },
+        "Generates combinations given some indices.", py::arg("limits"), py::arg("cap_sum_indices") = false);
+
 }

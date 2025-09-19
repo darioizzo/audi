@@ -8,6 +8,7 @@
 #include <boost/numeric/interval.hpp>
 #include <boost/numeric/interval/utility.hpp>
 #include <cmath>
+#include <numbers>
 #include <stdexcept>
 
 #include <audi/back_compatibility.hpp>
@@ -59,6 +60,19 @@ constexpr long long factorial2(int n)
     }
     long long result = 1;
     for (int k = n; k > 0; k -= 2) {
+        result *= k;
+    }
+    return result;
+}
+
+
+constexpr long long factorial2(uint n)
+{
+    if (n == 0) {
+        return 1;
+    }
+    long long result = 1;
+    for (int k = static_cast<int>(n); k > 0; k -= 2) {
         result *= k;
     }
     return result;
@@ -133,7 +147,7 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d total_rem_bound;
     if (n == 1.0 / 2.0) {
@@ -144,12 +158,13 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
         }
 
         int_d k_int_denominator
-            = boost::numeric::pow(int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1), 2 * k + 1);
+            = boost::numeric::pow(int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1), static_cast<int>(2 * k + 1));
         int_d k_half_denominator = boost::numeric::sqrt(k_int_denominator);
-        total_rem_bound = std::pow(-1, k) * audi::pow(const_term, 1.0 / 2.0)
+
+        total_rem_bound = std::pow(-1, k) * std::pow(const_term, 1.0 / 2.0)
                           * static_cast<double>(factorial2(2 * k - 1))
-                          / std::pow(boost::math::factorial<double>(k + 1) * 2, k + 1)
-                          * boost::numeric::pow(f_bar_remainder_bounds, k + 1) / std::pow(const_term, k + 1)
+                          / (boost::math::factorial<double>(k + 1) * std::pow(2, k + 1))
+                          * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1)) / std::pow(const_term, static_cast<int>(k + 1))
                           * int_d(1.0) / k_half_denominator;
     } else if (n == -1.0 / 2.0) {
         if (!boost::numeric::subset(tm.get_bounds() + tm.get_rem(),
@@ -158,12 +173,12 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
                                      "therefore is ill-defined when performing an inverse sqrt operation.");
         }
         int_d k_int_denominator
-            = boost::numeric::pow(int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1), 2 * k + 3);
+            = boost::numeric::pow(int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1), static_cast<int>(2 * k + 3));
         int_d k_half_denominator = boost::numeric::sqrt(k_int_denominator);
-        total_rem_bound = std::pow(-1, k + 1) * audi::pow(const_term, 1.0 / 2.0)
+        total_rem_bound = std::pow(-1, k + 1) * std::pow(const_term, -1.0 / 2.0)
                           * static_cast<double>(factorial2(2 * k + 1))
-                          / std::pow(boost::math::factorial<double>(k + 1) * 2, k + 1)
-                          * boost::numeric::pow(f_bar_remainder_bounds, k + 1) / std::pow(const_term, k + 1)
+                          / boost::math::factorial<double>(k + 1) * std::pow(2, k + 1)
+                          * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1)) / std::pow(const_term, static_cast<int>(k + 1))
                           * int_d(1.0) / k_half_denominator;
     } else if (n - std::round(n) < std::numeric_limits<T>::epsilon() * 10) {
         return audi::pow(tm, static_cast<int>(n));
@@ -199,10 +214,10 @@ inline audi::taylor_model exp(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
-    int_d total_rem_bound = std::pow(std::exp(1.0), const_term) * (1.0 / boost::math::factorial<double>(k + 1))
-                            * boost::numeric::pow(f_bar_remainder_bounds, k + 1)
+    int_d total_rem_bound = std::exp(const_term) * (1.0 / boost::math::factorial<double>(k + 1))
+                            * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
                             * boost::numeric::exp(f_bar_remainder_bounds * int_d(0, 1));
 
     return audi::taylor_model(audi::exp(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
@@ -236,12 +251,12 @@ inline audi::taylor_model log(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d total_rem_bound
-        = int_d(-1 * (k + 2) * (1.0 / (k + 1.0))) * boost::numeric::pow(f_bar_remainder_bounds, k + 1)
-          / std::pow(const_term, k + 1)
-          * boost::numeric::pow(int_d(1.0) / (int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1)), k + 1);
+    = int_d(std::pow(-1.0, k + 2.0) * (1.0 / (k + 1.0))) * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
+          / std::pow(const_term, static_cast<int>(k + 1))
+          * boost::numeric::pow(int_d(1.0) / (int_d(1.0) + (f_bar_remainder_bounds / const_term) * int_d(0, 1)), static_cast<int>(k + 1));
 
     return audi::taylor_model(audi::log(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -299,7 +314,7 @@ inline audi::taylor_model sin(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -316,7 +331,7 @@ inline audi::taylor_model sin(const audi::taylor_model &tm)
     }
 
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_2
-                            * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                            * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
 
     return audi::taylor_model(audi::sin(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -362,7 +377,7 @@ inline audi::taylor_model cos(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -379,7 +394,7 @@ inline audi::taylor_model cos(const audi::taylor_model &tm)
     }
 
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_2
-                            * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                            * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
 
     return audi::taylor_model(audi::cos(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -400,7 +415,7 @@ inline std::array<audi::taylor_model, 2> sin_and_cos(const audi::taylor_model &t
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func_sin;
     int_d conditional_func_cos;
@@ -427,9 +442,9 @@ inline std::array<audi::taylor_model, 2> sin_and_cos(const audi::taylor_model &t
     }
 
     int_d total_rem_bound_sin = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_2_sin
-                                * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                                * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
     int_d total_rem_bound_cos = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_2_cos
-                                * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                                * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
     audi::taylor_model tm_sin
         = audi::taylor_model(audi::sin(tm.get_tpol()), total_rem_bound_sin, tm.get_exp(), tm.get_dom());
     audi::taylor_model tm_cos
@@ -483,7 +498,7 @@ inline audi::taylor_model sinh(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -493,7 +508,7 @@ inline audi::taylor_model sinh(const audi::taylor_model &tm)
     }
 
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func
-                            * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                            * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
 
     return audi::taylor_model(audi::sinh(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -529,7 +544,7 @@ inline audi::taylor_model cosh(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -539,7 +554,7 @@ inline audi::taylor_model cosh(const audi::taylor_model &tm)
     }
 
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func
-                            * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                            * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
 
     return audi::taylor_model(audi::cosh(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -561,7 +576,7 @@ inline std::array<audi::taylor_model, 2> sinh_and_cosh(const audi::taylor_model 
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d conditional_func_sinh;
     int_d conditional_func_cosh;
@@ -574,9 +589,9 @@ inline std::array<audi::taylor_model, 2> sinh_and_cosh(const audi::taylor_model 
     }
 
     int_d total_rem_bound_sinh = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_sinh
-                                 * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                                 * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
     int_d total_rem_bound_cosh = int_d(1.0 / boost::math::factorial<double>(k + 1)) * conditional_func_cosh
-                                 * boost::numeric::pow(f_bar_remainder_bounds, k + 1);
+                                 * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1));
     audi::taylor_model tm_sinh
         = audi::taylor_model(audi::sinh(tm.get_tpol()), total_rem_bound_sinh, tm.get_exp(), tm.get_dom());
     audi::taylor_model tm_cosh
@@ -632,12 +647,12 @@ inline audi::taylor_model tanh(const audi::taylor_model &tm)
  *
  * @throws std::out_of_range if \p order < 1
  */
-int_d asin_derivative(int_d a, int order)
+int_d asin_derivative(int_d a, uint order)
 {
     if (order == 0) {
         return boost::numeric::asin(a);
     }
-    std::vector<int_d> derivs(order + 1);
+    std::vector<int_d> derivs(static_cast<size_t>(order) + 1);
 
     // Base cases
     derivs[1] = int_d(1.0) / boost::numeric::sqrt(int_d(1.0) - a * a); // arcsin'(a)
@@ -646,11 +661,11 @@ int_d asin_derivative(int_d a, int order)
                     / boost::numeric::pow(int_d(1.0) - a * a, 3); // arcsin''(a)
 
     // Recursive computation for higher orders
-    for (int k = 1; k <= order - 2; ++k) {
-        derivs[k + 2] = 1.0 / (int_d(1.0) - a * a) * (int_d(2 * k + 1) * a * derivs[k + 1] + int_d(k * k) * derivs[k]);
+    for (int k = 1; k <= static_cast<int>(order) - 2; ++k) {
+        derivs[static_cast<size_t>(k) + 2] = 1.0 / (int_d(1.0) - a * a) * (int_d(2 * k + 1) * a * derivs[static_cast<size_t>(k) + 1] + int_d(k * k) * derivs[static_cast<size_t>(k)]);
     }
 
-    return derivs[order];
+    return derivs[static_cast<size_t>(order)];
 }
 
 /// Overload for the asin of a taylor_model.
@@ -692,11 +707,11 @@ inline audi::taylor_model asin(const audi::taylor_model &tm)
         = audi::taylor_model::get_bounds(tm_adapted.get_tpol(), tm_adapted.get_exp(), tm_adapted.get_dom());
     int_d tm_adapted_remainder = tm_adapted.get_rem();
     int_d tm_adapted_remainder_bounds = tm_adapted_bounds + tm_adapted_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d asin_deriv = asin_derivative(int_d(0, 1) * tm_adapted_remainder_bounds, k + 1);
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1))
-                            * boost::numeric::pow(tm_adapted_remainder_bounds, k + 1) * asin_deriv;
+                            * boost::numeric::pow(tm_adapted_remainder_bounds, static_cast<int>(k + 1)) * asin_deriv;
 
     return audi::taylor_model(audi::asin(tm.get_tpol()), total_rem_bound, tm.get_exp(), tm.get_dom());
 }
@@ -749,12 +764,12 @@ inline audi::taylor_model atan(const audi::taylor_model &tm)
         = audi::taylor_model::get_bounds(tm_adapted.get_tpol(), tm_adapted.get_exp(), tm_adapted.get_dom());
     int_d tm_adapted_remainder = tm_adapted.get_rem();
     int_d tm_adapted_remainder_bounds = tm_adapted_bounds + tm_adapted_remainder;
-    int k = tm.get_tpol().get_order();
+    uint k = tm.get_tpol().get_order();
 
     int_d total_rem_bound
-        = int_d(1.0 / (k + 1.0)) * boost::numeric::pow(tm_adapted_remainder_bounds, k + 1)
+        = int_d(1.0 / (k + 1.0)) * boost::numeric::pow(tm_adapted_remainder_bounds, static_cast<int>(k + 1))
           * boost::numeric::pow(boost::numeric::cos(boost::numeric::atan(int_d(0, 1) * tm_adapted_remainder_bounds)),
-                                k + 1)
+                                static_cast<int>(k + 1))
           * boost::numeric::sin(
               int_d(k + 1)
               * (boost::numeric::atan(int_d(0, 1) * tm_adapted_remainder_bounds) + std::numbers::pi / 2.0));

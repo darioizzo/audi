@@ -727,6 +727,15 @@ class test_taylor_model(_ut.TestCase):
         self.assertTrue(taylor_model.map_equal(tm_xy.exp_point, exp))
         self.assertTrue(taylor_model.map_interval_equal(tm_xy.domain, dom))
 
+        tm_xy.extend_symbol_set(["z"], {"z": 1.0}, {"z": int_d(1.0, 2.0)})
+        self.assertEqual(tm_xy.tpol, f_xy)
+        self.assertEqual(tm_xy.ndim, 3)
+        exp["z"] = 1.0
+        dom["z"] = int_d(1.0, 2.0)
+        self.assertTrue(taylor_model.map_equal(tm_xy.exp_point, exp))
+        self.assertTrue(taylor_model.map_interval_equal(tm_xy.domain, dom))
+
+
     def test_construction_and_getters_identity(self):
         from pyaudi import taylor_model, int_d
         from pyaudi import gdual_double as gdual
@@ -1286,36 +1295,3 @@ def run_test_suite():
     if retval != 0:
         raise RuntimeError('One or more tests failed.')
 
-if __name__ == "__main__":
-    from pyaudi import (
-        taylor_model,
-        gdual_double as gdual,
-        int_d,
-        sinh, cosh, tanh,
-        asinh, acosh, atanh,
-        sin, cos, tan,
-        asin, acos, atan,
-    )
-
-
-    domain_size = 0.01
-    exp_points = {"x": 1.1, "y": 1.2}
-    dom = {"x": int_d(exp_points["x"] - domain_size, exp_points["x"] + domain_size), "y": int_d(exp_points["y"] - domain_size, exp_points["y"] + domain_size)}
-    rem = int_d(0.0, 0.0)
-
-    x = taylor_model(gdual(exp_points["x"], "x", 6), rem, {"x": exp_points["x"]}, {"x": dom["x"]})
-    y = taylor_model(gdual(exp_points["y"], "y", 6), rem, {"y": exp_points["y"]}, {"y": dom["y"]})
-
-    p1 = 1.0 / (x + y) + 10.0
-    test_pairs_2 = [
-        (cosh(acosh(p1)), p1),
-        (acosh(cosh(p1)), p1),
-        (sinh(asinh(p1)), p1),
-        (asinh(sinh(p1)), p1),
-    ]
-    for test1, test2 in test_pairs_2:
-        x = (
-            (test1.tpol - test2.tpol).trim(1e-14) == gdual(0.0, "irrelevant", 0)
-            and taylor_model.map_equal(test1.exp_point, test2.exp_point)
-            and taylor_model.map_interval_equal(test1.domain, test2.domain)
-        )

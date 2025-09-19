@@ -131,7 +131,7 @@ public:
         m_tpol = audi::gdual<double>(constant);
         m_order = 0;
         m_ndim = 0;
-        m_rem = int_d(0.0);
+        m_rem = int_d(0.0, 0.0);
         m_exp = {};
         m_domain = {};
     }
@@ -224,6 +224,35 @@ public:
     void set_dom(const var_map_i &domain)
     {
         m_domain = domain;
+        check_input_validity();
+    }
+
+    void extend_symbol_set(const std::vector<std::string> &sym_vars, const var_map_d &exp_point,
+                           const var_map_i &domain)
+    {
+        std::vector<std::string> d_sym_vars;
+        d_sym_vars.reserve(sym_vars.size());
+
+        for (const auto &var : sym_vars) {
+            d_sym_vars.push_back("d" + var);
+
+            auto it = exp_point.find(var);
+            if (it != exp_point.end()) {
+                m_exp.insert(*it);
+            } else {
+                throw std::logic_error("A symbol is passed that is not present in the exp_point argument.");
+            }
+
+            auto it2 = domain.find(var);
+            if (it2 != domain.end()) {
+                m_domain.insert(*it2);
+            } else {
+                throw std::logic_error("A symbol is passed that is not present in the domain argument.");
+            }
+        }
+
+        m_tpol.extend_symbol_set(d_sym_vars);
+        m_ndim = static_cast<uint>(m_tpol.get_symbol_set_size());
         check_input_validity();
     }
 
@@ -472,17 +501,17 @@ private:
     }
 
     // Add interval to Taylor model
-    template <typename T>
-    static taylor_model add(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model add(const boost::numeric::interval<T, Policies> &d1, const taylor_model &d2)
     {
-        return taylor_model(d2.m_tpol, int_d(d1) + d2.m_rem, d2.m_exp, d2.m_domain);
+        return taylor_model(d2.m_tpol, d1 + d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
     // Add Taylor model to interval
-    template <typename T>
-    static taylor_model add(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model add(const taylor_model &d1, const boost::numeric::interval<T, Policies> &d2)
     {
-        return taylor_model(d1.m_tpol, d1.m_rem + int_d(d2), d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol, d1.m_rem + d2, d1.m_exp, d1.m_domain);
     }
 
     /// Subtract two objects, producing a new taylor_model
@@ -532,17 +561,17 @@ private:
     }
 
     // Subtract Taylor model from interval
-    template <typename T>
-    static taylor_model sub(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model sub(const boost::numeric::interval<T, Policies> &d1, const taylor_model &d2)
     {
-        return taylor_model(d2.m_tpol, int_d(d1) - d2.m_rem, d2.m_exp, d2.m_domain);
+        return taylor_model(d2.m_tpol, d1 - d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
     // Subtract interval from Taylor model
-    template <typename T>
-    static taylor_model sub(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model sub(const taylor_model &d1, const boost::numeric::interval<T, Policies> &d2)
     {
-        return taylor_model(d1.m_tpol, d1.m_rem - int_d(d2), d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol, d1.m_rem - d2, d1.m_exp, d1.m_domain);
     }
 
     /// Multiply two objects, producing a new taylor_model
@@ -632,31 +661,31 @@ private:
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const T &d1, const taylor_model &d2)
     {
-        return taylor_model(d1 * d2.m_tpol, int_d(d1) * d2.m_rem, d2.m_exp, d2.m_domain);
+        return taylor_model(d1 * d2.m_tpol, int_d(d1, d1) * d2.m_rem, d2.m_exp, d2.m_domain);
     }
 
     // Multiply Taylor model with value (double, int, etc.)
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model multiply(const taylor_model &d1, const T &d2)
     {
-        return taylor_model(d1.m_tpol * d2, d1.m_rem * int_d(d2), d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol * d2, d1.m_rem * int_d(d2, d2), d1.m_exp, d1.m_domain);
     }
 
     // Multiply interval with Taylor model
-    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-    static taylor_model multiply(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const boost::numeric::interval<T, Policies> &d1, const taylor_model &d2)
     {
         audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, int_d(d1), d2.m_exp, d2.m_domain);
+        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
         return tm_one * d2;
     }
 
     // Multiply Taylor model with interval
-    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-    static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model multiply(const taylor_model &d1, const boost::numeric::interval<T, Policies> &d2)
     {
         audi::gdual<T> gd_one(1.0, "x", 0);
-        const taylor_model tm_one(gd_one, int_d(d2), d1.m_exp, d1.m_domain);
+        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
         return d1 * tm_one;
     }
 
@@ -707,11 +736,13 @@ private:
         int_d f_bar_bounds = d2.get_bounds(f_bar, d2.get_exp(), d2.get_dom());
         int_d f_bar_remainder = d2.get_rem();
         int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-        int k = d2.get_tpol().get_order();
+        uint k = d2.get_tpol().get_order();
         int_d total_rem_bound
-            = std::pow(-1, k + 1) * boost::numeric::pow(f_bar_remainder_bounds, k + 1) / std::pow(const_term, k + 2)
-              * (int_d(1)
-                 / boost::numeric::pow(int_d(1.0) + f_bar_remainder_bounds / const_term * int_d(0.0, 1.0), k + 2));
+            = std::pow(-1, k + 1) * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
+              / std::pow(const_term, static_cast<int>(k + 2))
+              * (int_d(1.0, 1.0)
+                 / boost::numeric::pow(int_d(1.0, 1.0) + f_bar_remainder_bounds / const_term * int_d(0.0, 1.0),
+                                       static_cast<int>(k + 2)));
         return taylor_model(d1 / d2.get_tpol(), total_rem_bound, d2.get_exp(), d2.get_dom());
     }
 
@@ -719,24 +750,24 @@ private:
     template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     static taylor_model div(const taylor_model &d1, const T &d2)
     {
-        return taylor_model(d1.m_tpol / d2, d1.m_rem / int_d(d2), d1.m_exp, d1.m_domain);
+        return taylor_model(d1.m_tpol / d2, d1.m_rem / int_d(d2, d2), d1.m_exp, d1.m_domain);
     }
 
     // Division of interval by Taylor model
-    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-    static taylor_model div(const boost::numeric::interval<T> &d1, const taylor_model &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const boost::numeric::interval<T, Policies> &d1, const taylor_model &d2)
     {
         audi::gdual<T> gd_one(1.0);
-        const taylor_model tm_one(gd_one, int_d(d1), d2.m_exp, d2.m_domain);
+        const taylor_model tm_one(gd_one, d1, d2.m_exp, d2.m_domain);
         return tm_one * d2;
     }
 
     // Division of Taylor model by interval
-    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-    static taylor_model div(const taylor_model &d1, const boost::numeric::interval<T> &d2)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static taylor_model div(const taylor_model &d1, const boost::numeric::interval<T, Policies> &d2)
     {
         audi::gdual<T> gd_one(1.0, "x", 0);
-        const taylor_model tm_one(gd_one, int_d(d2), d1.m_exp, d1.m_domain);
+        const taylor_model tm_one(gd_one, d2, d1.m_exp, d1.m_domain);
         return d1 * tm_one;
     }
 
@@ -939,9 +970,9 @@ public:
      *
      * @return true if both intervals are considered equal, false otherwise
      */
-    template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
-    static bool interval_equal(const boost::numeric::interval<T> &a, const boost::numeric::interval<T> &b,
-                               std::optional<double> tol = std::nullopt)
+    template <typename T, typename Policies, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    static bool interval_equal(const boost::numeric::interval<T, Policies> &a,
+                               const boost::numeric::interval<T, Policies> &b, std::optional<double> tol = std::nullopt)
     {
         if constexpr (std::is_floating_point_v<T>) {
             if (!tol.has_value()) {

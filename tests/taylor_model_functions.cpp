@@ -327,6 +327,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
         BOOST_CHECK(EPSILON_COMPARE(audi::tanh(tm_xy), audi::sinh(tm_xy) / audi::cosh(tm_xy), 1e-12));
     }
 }
+
 BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
 {
     // Checking that atanh is the inverse of tanh

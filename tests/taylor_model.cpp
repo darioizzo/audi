@@ -101,6 +101,15 @@ BOOST_AUTO_TEST_CASE(construction_and_getters_multivariate)
     BOOST_CHECK_EQUAL(tm_xy.get_exp().size(), exp.size());
     BOOST_CHECK(audi::taylor_model::map_equal(tm_xy.get_exp(), exp));
     BOOST_CHECK(audi::taylor_model::map_interval_equal(tm_xy.get_dom(), dom));
+
+    // Test extend_symbol_set function
+    tm_xy.extend_symbol_set(std::vector<std::string>{"z"}, {{"z", 1.0}}, {{"z", int_d(1.0, 2.0)}});
+    BOOST_CHECK_EQUAL(tm_xy.get_tpol(), f_xy);
+    BOOST_CHECK_EQUAL(tm_xy.get_ndim(), 3);
+    exp.insert({"z", 1.0});
+    dom.insert({"z", int_d(1.0, 2.0)});
+    BOOST_CHECK(audi::taylor_model::map_equal(tm_xy.get_exp(), exp));
+    BOOST_CHECK(audi::taylor_model::map_interval_equal(tm_xy.get_dom(), dom));
 }
 
 BOOST_AUTO_TEST_CASE(construction_and_getters_identity)
@@ -128,6 +137,23 @@ BOOST_AUTO_TEST_CASE(construction_and_getters_identity)
     BOOST_CHECK(audi::taylor_model::interval_equal(tm_id_2.get_rem(), rem));
     BOOST_CHECK(audi::taylor_model::map_interval_equal(tm_id_2.get_dom(), dom));
     BOOST_CHECK(audi::taylor_model::map_equal(tm_id_2.get_exp(), exp));
+}
+
+BOOST_AUTO_TEST_CASE(extend_symbol_set)
+{
+    // Constructing a multivariate Taylor model
+    uint order = 5;
+    int_d rem(0.0, 2.0);
+    var_map_d exp = {{"x", 0.0}, {"y", 1.0}};
+    var_map_i dom = {{"x", int_d(0.0, 1.0)}, {"y", int_d(1.0, 2.0)}};
+    audi::gdual_d x(exp.find("x")->second, "x", order);
+    audi::gdual_d y(exp.find("y")->second, "y", order);
+
+    audi::gdual_d f_xy = x * x + y + 20;
+    audi::taylor_model tm_xy(f_xy, rem, exp, dom);
+    audi::taylor_model tm_id_2 = audi::taylor_model::identity(rem, exp, dom);
+    BOOST_CHECK_EQUAL(tm_id_2.get_tpol(), audi::gdual<double>(1.0));
+
 }
 
 BOOST_AUTO_TEST_CASE(comparison_of_construction_order)
@@ -326,14 +352,14 @@ BOOST_AUTO_TEST_CASE(test_makino1998_simpleexample)
            {0.0, 6.5871262e-19}, {-3.4669086e-20, 3.4669085e-20}, {0.0, 1.8246887e-21}};
 
     // Loop over orders
-    for (int order = 1; order <= 15; ++order) {
+    for (uint order = 1; order <= 15; ++order) {
         audi::gdual<double> x(exp_points.find("x")->second, "x", order);
         audi::taylor_model const_fx(x, rem_bound, exp_points, domain);
         audi::taylor_model const_fx_2 = 1 / const_fx;
         audi::taylor_model const_fx_3 = const_fx_2 + const_fx;
 
-        BOOST_CHECK_CLOSE_FRACTION(const_fx_3.get_rem().lower(), exp_ans[order - 1].first, 1e-7);
-        BOOST_CHECK_CLOSE_FRACTION(const_fx_3.get_rem().upper(), exp_ans[order - 1].second, 1e-7);
+        BOOST_CHECK_CLOSE_FRACTION(const_fx_3.get_rem().lower(), exp_ans[static_cast<size_t>(order - 1)].first, 1e-7);
+        BOOST_CHECK_CLOSE_FRACTION(const_fx_3.get_rem().upper(), exp_ans[static_cast<size_t>(order - 1)].second, 1e-7);
     }
 
     // Construction test without build-up
@@ -360,15 +386,15 @@ BOOST_AUTO_TEST_CASE(test_makino1998_simpleexample)
     // Verify bound interval (Taylor model order)
     std::vector<double> exp_taymodorder_ans = {0.15145793, 0.15015346, 0.14987903, 0.14987542, 0.14987469, 0.14987468};
 
-    for (int order = 5; order <= 6; ++order) {
-        int it = order - 1;
-        audi::gdual<double> x(exp_points.find("x")->second, "x", order);
-        audi::taylor_model T_x(x, rem_bound, exp_points, domain);
-        audi::taylor_model T_fx = 1 / T_x + T_x;
+    for (uint order = 5; order <= 6; ++order) {
+        uint it = order - 1;
+        audi::gdual<double> x2(exp_points.find("x")->second, "x", order);
+        audi::taylor_model tm_x2(x2, rem_bound, exp_points, domain);
+        audi::taylor_model tm_fx2 = 1 / tm_x2 + tm_x2;
 
         double interval_size
-            = static_cast<double>(T_fx.get_bounds().upper()) - static_cast<double>(T_fx.get_bounds().lower());
+            = static_cast<double>(tm_fx2.get_bounds().upper()) - static_cast<double>(tm_fx2.get_bounds().lower());
 
-        BOOST_CHECK_CLOSE_FRACTION(interval_size, exp_taymodorder_ans[it], 1e-7);
+        BOOST_CHECK_CLOSE_FRACTION(interval_size, exp_taymodorder_ans[static_cast<size_t>(it)], 1e-7);
     }
 }
