@@ -66,7 +66,7 @@ constexpr long long factorial2(int n)
 }
 
 
-constexpr long long factorial2(uint n)
+constexpr long long factorial2(unsigned int n)
 {
     if (n == 0) {
         return 1;
@@ -147,7 +147,7 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d total_rem_bound;
     if (n == 1.0 / 2.0) {
@@ -214,7 +214,7 @@ inline audi::taylor_model exp(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d total_rem_bound = std::exp(const_term) * (1.0 / boost::math::factorial<double>(k + 1))
                             * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
@@ -251,7 +251,7 @@ inline audi::taylor_model log(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d total_rem_bound
     = int_d(std::pow(-1.0, k + 2.0) * (1.0 / (k + 1.0))) * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
@@ -314,7 +314,7 @@ inline audi::taylor_model sin(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -377,7 +377,7 @@ inline audi::taylor_model cos(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -415,7 +415,7 @@ inline std::array<audi::taylor_model, 2> sin_and_cos(const audi::taylor_model &t
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func_sin;
     int_d conditional_func_cos;
@@ -498,7 +498,7 @@ inline audi::taylor_model sinh(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -544,7 +544,7 @@ inline audi::taylor_model cosh(const audi::taylor_model &tm)
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func;
     if (k % 2 == 0) {
@@ -576,7 +576,7 @@ inline std::array<audi::taylor_model, 2> sinh_and_cosh(const audi::taylor_model 
     int_d f_bar_bounds = audi::taylor_model::get_bounds(f_bar, tm.get_exp(), tm.get_dom());
     int_d f_bar_remainder = tm.get_rem();
     int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d conditional_func_sinh;
     int_d conditional_func_cosh;
@@ -647,7 +647,7 @@ inline audi::taylor_model tanh(const audi::taylor_model &tm)
  *
  * @throws std::out_of_range if \p order < 1
  */
-int_d asin_derivative(int_d a, uint order)
+int_d asin_derivative(int_d a, unsigned int order)
 {
     if (order == 0) {
         return boost::numeric::asin(a);
@@ -707,7 +707,7 @@ inline audi::taylor_model asin(const audi::taylor_model &tm)
         = audi::taylor_model::get_bounds(tm_adapted.get_tpol(), tm_adapted.get_exp(), tm_adapted.get_dom());
     int_d tm_adapted_remainder = tm_adapted.get_rem();
     int_d tm_adapted_remainder_bounds = tm_adapted_bounds + tm_adapted_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d asin_deriv = asin_derivative(int_d(0, 1) * tm_adapted_remainder_bounds, k + 1);
     int_d total_rem_bound = int_d(1.0 / boost::math::factorial<double>(k + 1))
@@ -764,7 +764,7 @@ inline audi::taylor_model atan(const audi::taylor_model &tm)
         = audi::taylor_model::get_bounds(tm_adapted.get_tpol(), tm_adapted.get_exp(), tm_adapted.get_dom());
     int_d tm_adapted_remainder = tm_adapted.get_rem();
     int_d tm_adapted_remainder_bounds = tm_adapted_bounds + tm_adapted_remainder;
-    uint k = tm.get_tpol().get_order();
+    unsigned int k = tm.get_tpol().get_order();
 
     int_d total_rem_bound
         = int_d(1.0 / (k + 1.0)) * boost::numeric::pow(tm_adapted_remainder_bounds, static_cast<int>(k + 1))

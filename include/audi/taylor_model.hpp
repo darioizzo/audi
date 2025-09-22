@@ -51,9 +51,9 @@ private:
     // The Taylor polynomial
     audi::gdual<double> m_tpol;
     // The order of the Taylor polynomial
-    uint m_order;
+    unsigned int m_order;
     // The dimension
-    uint m_ndim;
+    unsigned int m_ndim;
     // The remainder bound
     int_d m_rem;
     // The expansion point(s)
@@ -117,7 +117,7 @@ public:
 
         m_tpol = tpol;
         m_order = tpol.get_order();
-        m_ndim = static_cast<uint>(tpol.get_symbol_set_size());
+        m_ndim = static_cast<unsigned int>(tpol.get_symbol_set_size());
         m_rem = rem_bound;
         m_exp = exp_point;
         m_domain = domain;
@@ -188,12 +188,12 @@ public:
         return m_domain;
     }
 
-    const uint &get_order() const
+    const unsigned int &get_order() const
     {
         return m_order;
     }
 
-    const uint &get_ndim() const
+    const unsigned int &get_ndim() const
     {
         return m_ndim;
     }
@@ -206,7 +206,7 @@ public:
     {
         m_tpol = tpol;
         m_order = tpol.get_order();
-        m_ndim = static_cast<uint>(tpol.get_symbol_set_size());
+        m_ndim = static_cast<unsigned int>(tpol.get_symbol_set_size());
         check_input_validity();
     }
 
@@ -252,7 +252,7 @@ public:
         }
 
         m_tpol.extend_symbol_set(d_sym_vars);
-        m_ndim = static_cast<uint>(m_tpol.get_symbol_set_size());
+        m_ndim = static_cast<unsigned int>(m_tpol.get_symbol_set_size());
         check_input_validity();
     }
 
@@ -274,7 +274,7 @@ private:
      * @return a gdual polynomial with the specified higher order
      */
     template <typename T>
-    static audi::gdual<T> get_increased_order(const audi::gdual<T> &poly, uint new_order)
+    static audi::gdual<T> get_increased_order(const audi::gdual<T> &poly, unsigned int new_order)
     {
         // Create a dummy polynomial with a higher order
         audi::gdual<T> temp(0.0, "temp", new_order);
@@ -614,7 +614,7 @@ private:
         var_map_i common_domain = get_common_map(d1.m_domain, d2.m_domain);
 
         // Get untruncated polynomial product
-        uint new_order = d1.m_tpol.get_order() + d2.m_tpol.get_order();
+        unsigned int new_order = d1.m_tpol.get_order() + d2.m_tpol.get_order();
 
         audi::gdual<double> d1_ho = get_increased_order(d1.m_tpol, new_order);
         audi::gdual<double> d2_ho = get_increased_order(d2.m_tpol, new_order);
@@ -622,10 +622,10 @@ private:
         audi::gdual<double> polynomial_product = d1_ho * d2_ho;
 
         // Get agreeable polynomial
-        const uint agreeable_degree = std::max(d1.m_tpol.get_order(), d2.m_tpol.get_order());
+        const unsigned int agreeable_degree = std::max(d1.m_tpol.get_order(), d2.m_tpol.get_order());
 
         audi::gdual<double> agreeable_pol(0.0);
-        for (uint i = 0; i <= agreeable_degree; ++i) {
+        for (unsigned int i = 0; i <= agreeable_degree; ++i) {
             agreeable_pol += polynomial_product.extract_terms(i);
         }
         var_map_d new_exp = trim_map(agreeable_pol.get_symbol_set(), common_exp);
@@ -736,7 +736,7 @@ private:
         int_d f_bar_bounds = d2.get_bounds(f_bar, d2.get_exp(), d2.get_dom());
         int_d f_bar_remainder = d2.get_rem();
         int_d f_bar_remainder_bounds = f_bar_bounds + f_bar_remainder;
-        uint k = d2.get_tpol().get_order();
+        unsigned int k = d2.get_tpol().get_order();
         int_d total_rem_bound
             = std::pow(-1, k + 1) * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1))
               / std::pow(const_term, static_cast<int>(k + 2))

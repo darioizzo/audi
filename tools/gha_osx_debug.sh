@@ -6,17 +6,12 @@ set -x
 # Exit on error.
 set -e
 
-# Core deps.
-sudo apt-get install wget
-
 # Install conda+deps.
-wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -O miniforge.sh
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-x86_64.sh -O miniforge3.sh
 export deps_dir=$HOME/local
-export PATH="$HOME/miniforge/bin:$PATH"
-bash miniforge.sh -b -p $HOME/miniforge
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda create -y -q -p $deps_dir c-compiler cxx-compiler cmake eigen obake-devel mppp libboost-devel pybind11 python ninja numpy
+export PATH="$HOME/miniforge3/bin:$PATH"
+bash miniforge3.sh -b -p $HOME/miniforge3
+conda env create --file=audi_devel.yml -q -p $deps_dir
 source activate $deps_dir
 
 # Create the build dir and cd into it.
@@ -25,7 +20,6 @@ mkdir build
 # Install audi
 cd build
 cmake \
-    -DBoost_NO_BOOST_CMAKE=ON \
     -DCMAKE_INSTALL_PREFIX=$deps_dir \
     -DCMAKE_PREFIX_PATH=$deps_dir \
     -DCMAKE_BUILD_TYPE=Debug \
@@ -40,7 +34,6 @@ cd ..
 mkdir build_pyaudi
 cd build_pyaudi
 cmake \
-    -DBoost_NO_BOOST_CMAKE=ON \
     -DCMAKE_INSTALL_PREFIX=$deps_dir \
     -DCMAKE_PREFIX_PATH=$deps_dir \
     -DCMAKE_BUILD_TYPE=Debug \

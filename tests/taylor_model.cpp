@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(comparison_methods)
 BOOST_AUTO_TEST_CASE(validity_check)
 {
     // Constructing a Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     audi::gdual_d x(0.0, "x", order);
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}};
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(validity_check)
 BOOST_AUTO_TEST_CASE(construction_and_getters_univariate)
 {
     // Constructing a univariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}};
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(construction_and_getters_univariate)
 BOOST_AUTO_TEST_CASE(construction_and_getters_multivariate)
 {
     // Constructing a multivariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}, {"y", 1.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}, {"y", int_d(1.0, 2.0)}};
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(construction_and_getters_identity)
     BOOST_CHECK(audi::taylor_model::interval_equal(tm_id.get_rem(), int_d(0.0)));
 
     // Constructing a multivariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}, {"y", 1.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}, {"y", int_d(1.0, 2.0)}};
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(construction_and_getters_identity)
 BOOST_AUTO_TEST_CASE(extend_symbol_set)
 {
     // Constructing a multivariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}, {"y", 1.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}, {"y", int_d(1.0, 2.0)}};
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(extend_symbol_set)
 BOOST_AUTO_TEST_CASE(comparison_of_construction_order)
 {
     // Constructing a univariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}};
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(comparison_of_construction_order)
 
 BOOST_AUTO_TEST_CASE(get_bounds)
 {
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}, {"y", 1.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}, {"y", int_d(1.0, 2.0)}};
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(get_bounds)
 
 BOOST_AUTO_TEST_CASE(addition)
 {
-    uint order = 5;
+    unsigned int order = 5;
     audi::gdual_d x(0.0, "x", order);
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}};
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(addition)
 
 BOOST_AUTO_TEST_CASE(subtraction)
 {
-    uint order = 5;
+    unsigned int order = 5;
     audi::gdual_d x(0.0, "x", order);
     int_d rem(0.0, 2.0);
     var_map_d exp = {{"x", 0.0}};
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(test_power)
 {
 
     // Constructing a univariate Taylor model
-    uint order = 5;
+    unsigned int order = 5;
     int_d rem(0.0, 0.0);
     var_map_d exp = {{"x", 0.0}};
     var_map_i dom = {{"x", int_d(0.0, 1.0)}};
@@ -352,7 +352,7 @@ BOOST_AUTO_TEST_CASE(test_makino1998_simpleexample)
            {0.0, 6.5871262e-19}, {-3.4669086e-20, 3.4669085e-20}, {0.0, 1.8246887e-21}};
 
     // Loop over orders
-    for (uint order = 1; order <= 15; ++order) {
+    for (unsigned int order = 1; order <= 15; ++order) {
         audi::gdual<double> x(exp_points.find("x")->second, "x", order);
         audi::taylor_model const_fx(x, rem_bound, exp_points, domain);
         audi::taylor_model const_fx_2 = 1 / const_fx;
@@ -386,8 +386,8 @@ BOOST_AUTO_TEST_CASE(test_makino1998_simpleexample)
     // Verify bound interval (Taylor model order)
     std::vector<double> exp_taymodorder_ans = {0.15145793, 0.15015346, 0.14987903, 0.14987542, 0.14987469, 0.14987468};
 
-    for (uint order = 5; order <= 6; ++order) {
-        uint it = order - 1;
+    for (unsigned int order = 5; order <= 6; ++order) {
+        unsigned int it = order - 1;
         audi::gdual<double> x2(exp_points.find("x")->second, "x", order);
         audi::taylor_model tm_x2(x2, rem_bound, exp_points, domain);
         audi::taylor_model tm_fx2 = 1 / tm_x2 + tm_x2;

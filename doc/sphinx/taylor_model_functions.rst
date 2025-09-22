@@ -17,7 +17,7 @@ Taylor models functions
 .. doxygenfunction:: audi::cosh(const audi::taylor_model &tm)
 .. doxygenfunction:: audi::sinh_and_cosh(const audi::taylor_model &tm)
 .. doxygenfunction:: audi::tanh(const audi::taylor_model &tm)
-.. doxygenfunction:: audi::asin_derivative(int_d a, uint order)
+.. doxygenfunction:: audi::asin_derivative(int_d a, unsigned int order)
 .. doxygenfunction:: audi::asin(const audi::taylor_model &tm)
 .. doxygenfunction:: audi::acos(const audi::taylor_model &tm)
 .. doxygenfunction:: audi::atan(const audi::taylor_model &tm)

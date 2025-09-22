@@ -43,3 +43,7 @@ include/audi/config.hpp
 pyaudi/_version.py
 doc/doxygen/Doxyfile
 doc/sphinx/conf.py
+
+__pycache__/
+*.log
+.cache/

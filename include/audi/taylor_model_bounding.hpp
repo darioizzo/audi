@@ -131,7 +131,7 @@ std::pair<std::vector<T>, std::vector<std::vector<int>>> get_poly(const audi::gd
  *         the number of exponent rows, or if exponent rows are inconsistent
  *         in length
  */
-uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<int>> &exps)
+unsigned int get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<int>> &exps)
 {
     if (coeffs.empty() || exps.empty()) {
         return 0;
@@ -149,7 +149,7 @@ uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<i
         }
     }
 
-    return static_cast<uint>(ndim);
+    return static_cast<unsigned int>(ndim);
 }
 
 /// Get the maximum degree in each dimension
@@ -172,7 +172,7 @@ uint get_ndim(const std::vector<double> &coeffs, const std::vector<std::vector<i
  * @throws std::invalid_argument if exponent rows are inconsistent in length
  *         or if `ndim < 0`
  */
-std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents, uint ndim)
+std::vector<int> get_max_degrees(const std::vector<std::vector<int>> &exponents, unsigned int ndim)
 {
     if (ndim > 1) {
         size_t cols = exponents[0].size();
@@ -253,7 +253,7 @@ template <typename T>
 std::vector<std::vector<T>> get_a_matrix_vec(const std::vector<T> &coeffs, const std::vector<std::vector<int>> &exps)
 {
     // number of dimensions
-    uint ndim = get_ndim(coeffs, exps);
+    unsigned int ndim = get_ndim(coeffs, exps);
 
     // max degrees for each dimension
     std::vector<int> max_degrees = get_max_degrees(exps, ndim);
@@ -636,7 +636,7 @@ std::vector<std::vector<double>> get_titi_base_lambda_generalbox(const std::vect
                                                                  const std::vector<std::vector<int>> &exps,
                                                                  const var_map_i &domain)
 {
-    uint ndim = get_ndim(coeffs, exps);
+    unsigned int ndim = get_ndim(coeffs, exps);
 
     // L_dict[0] = A-matrix
     std::unordered_map<int, std::vector<std::vector<double>>> L_dict;
@@ -697,7 +697,7 @@ std::vector<std::vector<T>> get_titi_bernstein_patch_ndim_generalbox(const std::
                                                                      const var_map_i &domain)
 {
     // Determine number of dimensions
-    uint ndim = get_ndim(coeffs, exps);
+    unsigned int ndim = get_ndim(coeffs, exps);
 
     // Compute base Lambda using the generalbox function
     std::vector<std::vector<T>> L_base = get_titi_base_lambda_generalbox(coeffs, exps, domain);

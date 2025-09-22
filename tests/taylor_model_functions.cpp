@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     {
 
         // Constructing a multivariate Taylor model
-        uint order = 3;
+        unsigned int order = 3;
         int_d rem(0.0, 0.0);
         var_map_d exp = {{"x", 0.0}, {"y", 0.0}};
         double domain_size = 0.2;
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(exponentiation)
     }
 
     {
-        uint order = 3;
+        unsigned int order = 3;
         int_d rem(0.0, 0.0);
         var_map_d exp = {{"x", 0.0}, {"y", 0.0}};
         double domain_size = 0.2;
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(exponentiation)
 
 BOOST_AUTO_TEST_CASE(square_root)
 {
-    uint order = 3;
+    unsigned int order = 3;
     int_d rem(0.0, 0.0);
     var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
     double domain_size = 0.2;
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(square_root)
 BOOST_AUTO_TEST_CASE(exponential)
 {
     // we test the result of f = exp((1+dx)*dy)
-    uint order = 2;
+    unsigned int order = 2;
     int_d rem(0.0, 0.0);
     var_map_d exp = {{"x", 1}, {"y", 0}};
     double domain_size = 0.2;
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(exponential)
 
 BOOST_AUTO_TEST_CASE(logarithm)
 {
-    uint order = 4;
+    unsigned int order = 4;
     int_d rem(0.0, 0.0);
     var_map_d exp = {{"x", 0.1}, {"y", 0.13}};
     double domain_size = 0.2;
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(logarithm)
 
 BOOST_AUTO_TEST_CASE(sine_and_cosine)
 {
-    uint order = 8;
+    unsigned int order = 8;
     int_d rem(0.0, 0.0);
     var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
     double domain_size = 0.2;
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(sine_and_cosine)
 BOOST_AUTO_TEST_CASE(tangent)
 {
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
         double domain_size = 0.2;
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
 
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
 
     {
-        uint order = 10;
+        unsigned int order = 10;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(tangent)
     }
 
     {
-        uint order = 11;
+        unsigned int order = 11;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(tangent)
 
 BOOST_AUTO_TEST_CASE(hyperbolic_sine_and_cosine)
 {
-    uint order = 8;
+    unsigned int order = 8;
     int_d rem(0.0, 0.0);
     double domain_size = 0.2;
     var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
 {
     // Checking the validity of the definitions of hyperbolic finctions in terms of exponentials
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
 
     // Checking the validity and precision of the identity audi::tanh = audi::sinh/audi::cosh
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
 
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
 
     {
-        uint order = 8;
+        unsigned int order = 8;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(hyperbolic_tangent)
     }
 
     {
-        uint order = 9;
+        unsigned int order = 9;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 2.3}, {"y", 1.5}};
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
 {
     // Checking that atanh is the inverse of tanh
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.1;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_tangent)
         BOOST_CHECK(EPSILON_COMPARE(audi::tanh(audi::atanh(tm_xy)), tm_xy, 1e-10));
     }
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.1;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -367,7 +367,7 @@ BOOST_AUTO_TEST_CASE(inverse_tangent)
 {
     // Checking that atan is the inverse of tan
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE(inverse_tangent)
         BOOST_CHECK(EPSILON_COMPARE(audi::tan(audi::atan(tm_xy)), tm_xy, 1e-10));
     }
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -402,7 +402,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
 {
     // Checking that asinh is the inverse of sinh
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -417,7 +417,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_sine)
         BOOST_CHECK(EPSILON_COMPARE(audi::sinh(audi::asinh(tm_xy)), tm_xy, 1e-10));
     }
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_CASE(inverse_sine)
 {
     // Checking that asin is the inverse of sin
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -462,7 +462,7 @@ BOOST_AUTO_TEST_CASE(inverse_sine)
         BOOST_CHECK(EPSILON_COMPARE(audi::sin(audi::asin(tm_xy)), tm_xy, 1e-10));
     }
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -484,7 +484,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_cosine)
     // Checking that acosh is the inverse of acos (PRECISION IS A PROBLEM HERE ALREADY AT LOW ORDERS!! RELATED TO LOG?
     // OR TO SQRT? OR DIV?)
     {
-        uint order = 4;
+        unsigned int order = 4;
         int_d rem(0.0, 0.0);
         double domain_size = 0.01;
         var_map_d exp = {{"x", 0.1}, {"y", 0.2}};
@@ -499,7 +499,7 @@ BOOST_AUTO_TEST_CASE(inverse_hyperbolic_cosine)
         BOOST_CHECK(EPSILON_COMPARE(audi::cosh(audi::acosh(tm_xy)), tm_xy, 1e-8));
     }
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.01;
         var_map_d exp = {{"x", 0.1}, {"y", 0.2}};
@@ -519,7 +519,7 @@ BOOST_AUTO_TEST_CASE(inverse_cosine)
 {
     // Checking that acos is the inverse of cos
     {
-        uint order = 5;
+        unsigned int order = 5;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE(inverse_cosine)
         BOOST_CHECK(EPSILON_COMPARE(audi::cos(audi::acos(tm_xy)), tm_xy, 1e-10));
     }
     {
-        uint order = 6;
+        unsigned int order = 6;
         int_d rem(0.0, 0.0);
         double domain_size = 0.2;
         var_map_d exp = {{"x", 1.1}, {"y", 1.2}};
@@ -552,7 +552,7 @@ BOOST_AUTO_TEST_CASE(inverse_cosine)
 
 BOOST_AUTO_TEST_CASE(absolute_value)
 {
-    uint order = 5;
+    unsigned int order = 5;
     // Case f_0 > 0
     {
         int_d rem(0.0, 0.0);

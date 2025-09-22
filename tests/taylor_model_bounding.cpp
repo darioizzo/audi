@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_get_ndim_valid)
     std::vector<double> coeffs = {1.0, 2.0, 3.0};
     std::vector<std::vector<int>> exps = {{2, 3, 1}, {4, 1, 5}, {3, 2, 2}};
 
-    uint ndim = audi::get_ndim(coeffs, exps);
+    unsigned int ndim = audi::get_ndim(coeffs, exps);
     BOOST_CHECK_EQUAL(ndim, 3);
 }
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(test_get_ndim_inconsistent_coeffs_exps)
 BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_greater_than_1)
 {
     std::vector<std::vector<int>> exps = {{2, 3, 1}, {4, 1, 5}, {3, 2, 2}};
-    uint ndim = 3;
+    unsigned int ndim = 3;
     std::vector<int> max_degrees = audi::get_max_degrees(exps, ndim);
 
     std::vector<int> expected = {4, 3, 5};
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_greater_than_1)
 BOOST_AUTO_TEST_CASE(test_get_max_degrees_ndim_1)
 {
     std::vector<std::vector<int>> exps = {{2, 3, 1, 4}};
-    uint ndim = 1;
+    unsigned int ndim = 1;
     std::vector<int> max_degrees = audi::get_max_degrees(exps, ndim);
 
     BOOST_CHECK_EQUAL(max_degrees.size(), 1);
