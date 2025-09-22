@@ -45,7 +45,7 @@ py::class_<taylor_model> expose_taylor_model(const py::module &m)
 {
 
     auto th
-        = py::class_<taylor_model>(m, "taylor_model")
+        = py::class_<taylor_model>(m, "taylor_model", taylor_model_docstring().c_str())
               // default constructor
               .def(py::init<>())
 

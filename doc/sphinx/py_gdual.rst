@@ -20,3 +20,4 @@ gdual_vdouble
 
 .. autoclass:: gdual_vdouble
    :members:
+

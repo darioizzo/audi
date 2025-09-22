@@ -73,5 +73,39 @@ See also the docs of the C++ method of the gdual :cpp:func:`degree`.
 )";
 }
 
+std::string taylor_model_docstring()
+{
+    return R"(
+This class represents a Taylor model, containing a generalized dual number in combination with an
+interval. This implementation is derived from Makino (1998) and is built on top of a gdual object
+representing the Taylor polynomial (generalized dual number) part of the Taylor model.                             
+                                                                                                                   }
+A key concept here is Taylor's theorem (formulation used from Makino (1998) p.80) which allows for a
+quantitative estimate of the error that is to be expected when approximating a function by its Taylor polynomial.
+Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the :math:`(n+1)` th 
+derivative a method that has sometimes been employed in interval calculations.
+                                                                                                                   
+As a result, you get :math:`\forall \vec{x} \in [\vec{a}, \vec{b}]` , a given order  :math:`n` , and an expansion
+point :math:`\vec{x_o}`:
+                                                                                                                 
+:math:`f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f}`
+                                                                                                                   
+where f is the function you're creating a Taylor model for, P is the Taylor polynomial, and I is
+the interval remainder.
 
-} // namespace
+A basic example would be:
+
+>>> from pyaudi import gdual_double as gdual, taylor_model, int_d
+>>> domain_size = 0.01
+>>> exp_points = {"x": 1.1, "y": 1.2}
+>>> dom = {"x": int_d(exp_points["x"] - domain_size, exp_points["x"] + domain_size), "y": int_d(exp_points["y"] - domain_size, exp_points["y"] + domain_size)}
+>>> rem = int_d(0.0, 0.0)
+>>> tpol = gdual(exp_points["x"], "x", 6)
+>>> x = taylor_model(tpol, rem, {"x": exp_points["x"]}, {"x": dom["x"]})
+>>> y = taylor_model(tpol, rem, {"y": exp_points["y"]}, {"y": dom["y"]})
+>>> test = 2 * x + 3 * y
+>>> print(test)
+  )";
+}
+
+} // namespace pyaudi
