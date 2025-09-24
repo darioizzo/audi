@@ -27,31 +27,40 @@ bibliography: paper.bib
 
 <!-- A summary describing the high-level functionality and purpose of the software for a diverse, non-specialist audience. -->
 
-`pyaudi` is a Python toolbox developed at the [European Space Agency](https://www.esa.int) that implements the algebra of Taylor
-truncated polynomials to achieve high-order order, forward mode, automatic differentiation in a multivarate setting. The forward mode automatic
+`pyaudi` is a Python toolbox developed at the [European Space Agency](https://www.esa.int) that implements the algebra of truncated Taylor
+polynomials to achieve high-order order, forward mode, automatic differentiation in a multivarate setting. This form of forward mode automatic
 differentiation is implemented via C++ class templates exposed to python using pybind11. This allows the generalized dual number type to
 behave like a drop-in replacement for floats (or other scalar types), while operator overloading propagates derivatives automatically.
 
-All standard mathematical functions are all implemented exploiting the nihilpotency property of truncated polynomials lacking the constant term.
+All standard mathematical functions are implemented exploiting the nil-potency property of exponentiation in the algebra of truncated Taylor polynomials.
 
-On top of the algebra of Taylor truncated polynomials, `pyaudi` also offers an implementation of Taylor models [@makino1998rigorous], which combine truncated Taylor
-polynomials with an interval bounding its truncation error as well as a number of miscellaneous algorithms useful for applications in differential intelligence,
-automatic differentiation, verified integration and more.
-
-
+On top of the algebra of truncated Taylor polynomials, `pyaudi` also offers an implementation of Taylor models [@makino1998rigorous], which combines truncated Taylor
+polynomials with an interval bounding their truncation error as well as a number of miscellaneous algorithms useful for applications in differential intelligence,
+high-order automatic differentiation, verified integration and more.
 
 # Statement of need
 
 <!-- A Statement of need section that clearly illustrates the research purpose of the software and places it in the context of related work. -->
 
-`pyaudi` enables researchers to compute and manipulate order $n$ Taylor expansions of generic computational
-trees as well as bound precisely the truncation error introduced using
-its corresponding Taylor model. The resulting polynomial representations
-of the program outputs can be used to perform fast Monte Carlo simulations, rigorous uncertainty analyses
+`pyaudi` enables users to compute and manipulate order $n$ Taylor expansions of generic computational
+graphs as well as bound precisely the truncation error introduced using
+its corresponding Taylor model. The resulting representations
+of program outputs can be used to perform fast Monte Carlo simulations, rigorous uncertainty analyses,
 local inversions of output-input relations as well as high-order sensitivity
-analysis. The package implements the approach to high-order automated differentiation by [@berz2014introduction] and [@makino1998rigorous]
-introducing original implementation details aimed at increased efficiency in the
+analysis. The package implements the approach to high-order automated differentiation perfectioned by Berz and Makino ([@berz2014introduction],  [@makino1998rigorous])
+while introducing original implementation details aimed at increased efficiency in the
 polynomial multiplication routines and bounding of Taylor models.
+
+The C++/C library DACE [@massari2018differential] also offers an implementation of the differential algebra of truncated Taylor
+polynomials, (same as `pyaudi` but with the addition of extra operators completing the algebra into a differential algebra). As opposed to `pyaudi`, DACE
+makes use of a polynomial multiplication routine relying on static memory allocations for the storage of monomial coefficients. As outlined 
+in the comparison reported , the difference makes DACE more efficient for single evaluations, an advantage that is lost when evaluating in batches.
+
+The Julia library TaylorSeries.jl/TaylorModels.jl [@benet2019taylormodels] implements Taylor models to compute guaranteed bounds on
+generic Taylor series, the approach used is very different from what implemented in `pyaudi` and a preliminary comparison, reported below, shows
+how it can be greatly outpermed by `pyaudi`.
+
+
 
 ## Key aspects  
 
@@ -60,18 +69,20 @@ The main features of `pyaudi` are:
 - Efficient truncated polynomial arithmetic in arbitrary dimensions, built on top of [Obake](https://github.com/bluescarni/obake),
   a C++ library for symbolic manipulation of sparse multivariate polynomials, truncated power series, and Poisson series. 
   Unlike other packages, which often face severe memory bottlenecks as the polynomial order or number of variables grows,
-  `pyaudi` avoids large static memory allocations and keeps computations memory-efficient.  
+  `pyaudi` avoids large static memory allocations and keeps computations memory-efficient, at the cost of some extra bookeeping.
 
 - Vectorized generalized dual numbers, enabling simultaneous evaluation of identical computational graphs at
   multiple expansion points. This makes it possible to compute high-order tensors efficiently while amortizing
-  the overhead of graph bookkeeping.  
+  the overhead of the extra bookeeping introduced by the use of [Obake](https://github.com/bluescarni/obake).
 
-- Taylor models implemented using Bernstein polynomials for bounding the range of multivariate polynomials. The only other comparable open-source package, 
+- Taylor models implemented using Bernstein polynomials for bounding the range of multivariate polynomials. A comparable open-source package, 
   called TaylorModels.jl, calculates bounds using Horner's scheme combined with interval arithmetic. A
-  quick test in the next section shows significant speedup for even a relatively simple trivariate polynomial.
+  quick test in the next section shows the significant speedup introduced using `pyaudi` for even a relatively simple trivariate polynomial.
 
 - Map inversion algorithm, implementing the algorithm described in [@berz2014introduction], thus allowing
-  local inversion of the input–output relation of generic computational graphs.
+  local inversion of input–output relations of generic computational graphs.
+
+## Comparison with DACE
 
 ## Comparison with TaylorModels.jl
 
@@ -109,8 +120,8 @@ $$
 |           | pyaudi          | 1e-1                      | 1e-17                      | Faster (see above) |
 
 In the table above, a clear trend can be seen both in terms of speed and accuracy. For univariate
-Taylor models, TaylorModels.jl is both faster and produces tighter bounds. At two dimensions, the
-remainder bounds are already of equal size, but `pyaudi` is significantly faster, with the speedup
+Taylor models, TaylorModels.jl and `pyaudi` have similar performances. At two dimensions, while the
+remainder bounds are comparable in size, `pyaudi` is significantly faster, with the speedup
 increasing with the order of the polynomial. At three dimensions, `pyaudi` produces significantly
 tighter bounds and is again significantly faster, with the speedup increasing with the order of
 the polynomial.
