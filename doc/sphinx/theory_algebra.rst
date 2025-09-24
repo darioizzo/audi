@@ -8,7 +8,7 @@ Here we introduce, formally, a basic algebraic structure over the set of truncat
 Formal definition 
 -----------------
 
-Consider the set :math:`\mathcal P_{n,m}` of all polynomials of order :math:`\le m` in :math:`n` variables and having
+Consider the set :math:`\mathcal{P}_{n,m}` of all polynomials of order :math:`\le m` in :math:`n` variables and having
 coefficients in :math:`\mathbf K`. We indicate with the symbols :math:`T_f, T_g, T_h`, etc. the generic members of such a set. Such a set is an algebra over the field :math:`\mathbf K` if we introduce
 the truncated multiplication as the standard polynomial multiplication truncated at order :math:`m`.
 When needed, we will indicate such a multiplication with the symbol :math:`T_f \cdot T_g`.
@@ -16,12 +16,12 @@ When needed, we will indicate such a multiplication with the symbol :math:`T_f \
 This algebra is commonly referred to as the algebra of truncated polynomials. A first important
 property of this algebra is that, under the multiplication, all polynomials having a zero constant
 coefficient are nil-potent of order :math:`m+1`, as easily verified. We will indicate the generic
-truncated polynomial :math:`\in \mathcal P_{n,m}` as :math:`T_f` and often we will consider its constant part
+truncated polynomial :math:`\in \mathcal{P}_{n,m}` as :math:`T_f` and often we will consider its constant part
 separated from the rest, writing :math:`T_f = f_0 + \hat f`.
 It is worth noting at this point how such an algebra is unitary and associative.
 The first property, in particular, deserves a few more words as it is a property that the
 algebra of (non-truncated) polynomials does not possess. Formally
-:math:`\forall T_f \in \mathcal P_{n,m}, \: \exists !\: T_g\in \mathcal P_{n,m}  \Rightarrow T_g\cdot T_f = 1`.
+:math:`\forall T_f \in \mathcal{P}_{n,m}, \: \exists !\: T_g\in \mathcal{P}_{n,m}  \Rightarrow T_g\cdot T_f = 1`.
 In practice:
 
 .. math::
@@ -56,10 +56,10 @@ The summation :math:`\sum_{|\alpha| = 0}^n` must then be taken over all possible
 combinations of :math:`\alpha_j \in N` such that :math:`\sum_{j=1}^n \alpha_j = |\alpha|`. 
 The expression above, i.e. the Taylor expansion truncated
 at order :math:`m` of a generic function :math:`f`, is a polynomial 
-:math:`\in \mathcal P_{n,m}` in the variables :math:`\mathbf{dx} = \mathbf x-\mathbf a`.
-We now show that if :math:`T_f, T_g \in \mathcal P_{n,m}` are Taylor expansions
+:math:`\in \mathcal{P}_{n,m}` in the variables :math:`\mathbf{dx} = \mathbf x-\mathbf a`.
+We now show that if :math:`T_f, T_g \in \mathcal{P}_{n,m}` are Taylor expansions
 of two functions :math:`f, g` then the Taylor expansion of :math:`f\pm g, fg, f/g`
-can be found operating on the algebra :math:`\mathcal P`, thus computing 
+can be found operating on the algebra :math:`\mathcal{P}`, thus computing 
 :math:`T_f\pm T_g, T_f\cdot T_g, T_f/T_g`. We may thus compute high order
 derivatives of multivariate functions computing their Taylor expansions
 and then extracting the desired coefficient.
@@ -104,7 +104,7 @@ Reciprocal
 ^^^^^^^^^^
 
 We here prove that the reciprocal of a truncated Taylor expansion,
-as defined in the algebra :math:`\mathcal P_{n,m}` is the Taylor expansion of
+as defined in the algebra :math:`\mathcal{P}_{n,m}` is the Taylor expansion of
 the reciprocal. Consider the generic
 function :math:`f` and its truncated Taylor expansion :math:`T_f`.
 We denote with :math:`T_{(1/f)}` the truncated Taylor expansion of the
@@ -138,7 +138,7 @@ which can be written as:
 
 The above equation is called the **composition rule** and is only valid for functions whose Taylor expansion 
 does not have a constant term and, is thus nil-potent of order 
-:math:`m+1` in :math:`\mathcal P_{n,m}`. In  general, we cannot compute the truncated 
+:math:`m+1` in :math:`\mathcal{P}_{n,m}`. In  general, we cannot compute the truncated 
 Taylor expansion of a composition function directly composing the truncated 
 Taylor expansions. For most elementary functions, though, we can consider 
 :math:`T_f = f_0 + \hat f` and use some addition formula to be able to 
@@ -394,7 +394,7 @@ complex expressions. We summarize here those results (keep in mind that
 It is worth mentioning here that other functions such as the inverse functions, 
 the hyperbolic functions etc. can also be treated in this way. 
 The above equations can be used to find Taylor expansions of increasingly 
-complex functions by simply operating on the algebra :math:`\mathcal P_{n,m}`. 
+complex functions by simply operating on the algebra :math:`\mathcal{P}_{n,m}`. 
 Once a Taylor expansion is computed, its coefficients can be extracted to 
 obtain the value of any desired derivative. We have thus built an automated 
 differentiation system. While the formalism presented can, at first, appear 
@@ -409,7 +409,7 @@ Consider the simple function of two variables:
 .. math::
    f(x,y) = x + 3xy + y^2
  
-Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` can be computed as:
+Its Taylor expansion :math:`T_f \in \mathcal{P}_{2,2}` can be computed as:
 
 .. math::
    T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y
@@ -454,7 +454,7 @@ Consider the simple function of two variables:
 .. math::
    f = 1 / (x + 2xy + y^2) = 1 / p
  
-Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` in (say) :math:`x=0`, :math:`y=1` 
+Its Taylor expansion :math:`T_f \in \mathcal{P}_{2,2}` in (say) :math:`x=0`, :math:`y=1` 
 can be computed as follows:
 
 .. math::
@@ -494,7 +494,7 @@ Consider the elementary function of two variables:
 .. math::
    f = \exp(xy)
  
-Its Taylor expansion :math:`T_f \in \mathcal P_{2,2}` in (say) :math:`x=1`, :math:`y=0` 
+Its Taylor expansion :math:`T_f \in \mathcal{P}_{2,2}` in (say) :math:`x=1`, :math:`y=0` 
 can be computed as follows:
 
 .. math::
@@ -521,4 +521,125 @@ and,
    \partial_{xx} f = 0,
    \partial_{yy} f = 1,
  
+Taylor models
+=============
 
+Taylor series can be arbitrarily good approximations of functions and as such, can provide
+derivatives and solutions to ODEs to high orders. However, by definition a Taylor series does not
+consider its truncated part. While this part is very often small, it doesn't allow
+for a rigorous assessment of the set of reachable states of a system/function. This knowledge would be
+useful for anybody that wants to have a mathematical guarantee of the range of the function. A
+simple example is of course the initial uncertainty of a satellite state propagated through space.
+With a mathematical description of the remainder, one can guarantee that two objects will not
+collide (assuming the dynamics of the propagation perfectly resembles reality).
+
+To describe this remainder term, which represents the magnitude of all the terms that were truncated by
+the Taylor series, interval arithmetic is used and added to a new object called a Taylor model.
+
+
+Taylor's theorem
+----------------
+
+A core part of the Taylor model arithmetic is Taylor's theorem (here for one variable only for
+simplicity):
+
+Let :math:`k \geq 1` be an integer and let the function :math:`f: R \rightarrow R` be :math:`k` times differentiable at
+the point :math:`a \in R`. Then there exists a real number :math:`\xi \in [a, x]` such that:
+
+.. math::
+   f(x) = \sum^k_{i=0} \frac{f^{(i)}(a)}{i!}(x - a)^i + \frac{f^{(k+1)}(\xi)}{(k+1)!}(x - a)^{k + 1}
+
+This tells us that you can approximate the range of a function within a given domain by taking the
+:math:`k+1` th derivative of :math:`f` at a given point within that domain. A simple intuition would
+be: if you wanted to approximate a 0th order function, you could take the first order derivative and
+state that :math:`f(x) = f(0) + f'(\xi) \cdot x` if the domain is :math:`[0, x]`. This first order
+derivative would then indicate the maximum deviation. In reality more steps are required for a
+mathematically sound reasoning, and details can be found `here2
+<https://gowers.wordpress.com/2014/02/11/taylors-theorem-with-the-lagrange-form-of-the-remainder/>`_
+and `here3 <https://davidlowryduda.com/p/1520/>`_.
+
+.. _formal_definition_tm:
+
+Formal definition
+-----------------
+
+Now, we define a Taylor model as a tuple of a (now multi-dimensional) Taylor polynomial :math:`P_f`
+of order :math:`k` expanded around :math:`\vec{x_0}` and valid over a domain :math:`[\vec{a},
+\vec{b}]` and an interval :math:`I_f`. In other words:
+
+.. math::
+   \forall \vec{x} \in [\vec{a}, \vec{b}] \quad f(\vec{x}) \in P_f(\vec{x} - \vec{x_0}) + I_f
+
+
+Arithmetic
+----------
+
+While all arithmetic operations can be found in [1], I will show a few example. For addition, you
+would have:
+
+
+.. math::
+   f(\vec{x})+g(\vec{x}) & \in(P_{f}(\vec{x}-\vec{x}_0)+I_{f})+(P_{g}(\vec{x}-\vec{x}_0)+I_{g})\\ &= (P_{f}(\vec{x}-\vec{x}_0)+P_{g}(\vec{x}-\vec{x}_0))+(I_{f}+I_{g})
+
+so that a Taylor model :math:`T_{f+g}` for :math:`f+g` can be obtained via
+
+.. math::
+   P_{f+g}=P_{f}+P_{g} \quad \text { and } \quad I_{f+g}=I_{f}+I_{g}
+
+It should be noted that gduals are used for all operations involving Taylor polynomials. Thus we define
+
+.. math::
+   T_{f}+T_{g}=(P_{f}+P_{g}, I_{f}+I_{g})
+
+And for multiplication
+
+.. math::
+   f(\vec{x}) \cdot g(\vec{x}) & \in (P_{f}(\vec{x}-\vec{x}_0)+I_{f}) \cdot(P_{g}(\vec{x}-\vec{x}_0)+I_{g}) \\ & \subseteq P_{f}(\vec{x}-\vec{x}_0) \cdot P_{g}(\vec{x}-\vec{x}_0) +P_{f}(\vec{x}-\vec{x}_0) \cdot I_{g}+P_{g}(\vec{x}-\vec{x}_0) \cdot I_{f}+I_{f} \cdot I_{g} .
+
+Note that :math:`P_{f} \cdot P_{g}` is a polynomial of :math:`(2 k)` th order. We split it into the
+part of up to :math:`k` th order, which agrees with the Taylor polynomial :math:`P_{f \cdot g}` of
+order :math:`k` of :math:`f \cdot g`, and the excess polynomial :math:`P_e`, so that we have
+
+.. math::
+   P_{f}(\vec{x}-\vec{x}_0) \cdot P_{g}(\vec{x}-\vec{x}_0)=P_{f \cdot g}(\vec{x}-\vec{x}_0)+P_e(\vec{x}-\vec{x}_0) .
+
+A Taylor model for :math:`f \cdot g` can now be obtained by finding a bound interval for all the
+terms except :math:`P_{f \cdot g}`. For this purpose, let :math:`B(P)` be bounds of the polynomial
+:math:`P:[\vec{a}, \vec{b}] \subset R^v \rightarrow R`, namely,
+
+.. math::
+   \forall \vec{x} \in[\vec{a}, \vec{b}], \quad P(\vec{x}) \in B(P)
+
+
+Altogether, interval remainder bounds for :math:`f \cdot g` can be found via
+
+.. math::
+   I_{f \cdot g}=B(P_e)+B(P_{f}) \cdot I_{g}+B(P_{g}) \cdot I_{f}+I_{f} \cdot I_{g}
+
+Definitions are also given of all intrinsic functions such as exponential, logarithm, sine etc. (again, see [1]).
+
+It was just shown that polynomials of the excess polynomial :math:`P_e` need to be calculated. For
+this, we use bernstein polynomials. Bernstein polynomials are a reformulation of any particular
+polynomial in a certain form. It turns out that the coefficients of these Bernstein polynomial terms
+indicate something about the range. In particular the Bernstein form theorem (for univariate polynomials) is:
+
+.. math::
+   \min \{b_k : k = 0, 1, ..., n\} \leq P(c) \leq \max \{b_k: k = 0, 1, ..., n\} \quad (0 \leq x \leq 1) \\ \text{where, } \quad
+   b_k = \sum^k_{r=0} a_r \frac{\left(\begin{smallmatrix} k \\ r \end{smallmatrix}\right)}{\left(\begin{smallmatrix} n \\ r \end{smallmatrix}\right)} (k = 0, 1, ..., n)
+
+In particular, the maximum and minimum coefficient give a tight bound on the range of the
+polynomial over a given domain if the minimum and maximum actually correspond to the first and last
+bernstein coefficient. More can be read in [2] about its basic form. 
+
+Exhaustively evaluating these Bernstein coefficients is a computationally intensive task, especially
+with growing dimension and monomial count. To remedy this, a recently developed matrix method was
+implemented from [3].
+
+
+
+References
+----------
+
+| [1] Makino, Kyoko. Rigorous analysis of nonlinear motion in particle accelerators. Michigan State University, 1998.
+| [2] Cargo, G. T., and Oved Shisha. "The Bernstein form of a polynomial." J. Res. Nat. Bur. Standards B 70 (1966): 79-81.
+| [3] Titi, Jihad, and Jürgen Garloff. "Matrix methods for the tensorial Bernstein form." Applied Mathematics and Computation 346 (2019): 254-271.

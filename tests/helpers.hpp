@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <audi/gdual.hpp>
+#include <audi/taylor_model.hpp>
 
 /*
 // Boost 1.59 introduces a new floating point comparison method. In which case the below macro can substitute
@@ -28,11 +29,31 @@ BOOST_TEST(std::abs(it->m_cf) / max_cf == 0, boost::test_tools::tolerance(10 * s
 namespace audi
 {
 
+// Compares two taylor_models allowing for a small epsilon tolerance of 10 * std::numeric_limits<double>::epsilon()
+inline bool EPSILON_COMPARE(const audi::taylor_model &d1, const audi::taylor_model &d2, const double epsilon)
+{
+    audi::taylor_model zero = d2 - d1;
+
+    // checks that the coefficients of d2 - d1 are all within a reltol <= eps
+    for (const auto &t : zero.get_tpol()._poly()) {
+        if (std::abs(t.second) > epsilon) {
+            std::cout << "Failing to be within epsilon from zero: " << zero << std::endl;
+            std::cout << "Coefficient: " << std::abs(t.second) << std::endl;
+            std::cout << "Allowed epsilon: " << epsilon << std::endl;
+            return false;
+        }
+    }
+    audi::taylor_model::map_interval_equal(d1.get_dom(), d2.get_dom(), epsilon);
+    audi::taylor_model::map_equal(d1.get_exp(), d2.get_exp(), epsilon);
+    
+    return true;
+}
+
 // Compares two gduals allowing for a small epsilon tolerance of 10 * std::numeric_limits<double>::epsilon()
 template <typename T, typename M>
-inline bool EPSILON_COMPARE(const gdual<T, M> &d1, const gdual<T, M> &d2, const double epsilon)
+inline bool EPSILON_COMPARE(const audi::gdual<T, M> &d1, const audi::gdual<T, M> &d2, const double epsilon)
 {
-    gdual<T, M> zero = d2 - d1;
+    audi::gdual<T, M> zero = d2 - d1;
 
     // checks that the coefficients of d2 - d1 are all within a reltol <= eps
     for (const auto &t : zero._poly()) {
@@ -59,3 +80,4 @@ inline bool EPSILON_COMPARE(double d1, double d2, const double epsilon)
 } // end of namespace audi
 
 #endif
+

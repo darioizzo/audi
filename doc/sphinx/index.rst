@@ -56,6 +56,14 @@ Audi is open source (GPL3) and its code available in `github <https://github.com
    notebooks/example13.ipynb
    notebooks/map_inversion.ipynb
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Taylor Model Tutorials:
+
+   notebooks/univariate_functions.ipynb
+   notebooks/multivariate_functions.ipynb
+   notebooks/volterra_ode.ipynb
+   notebooks/kepler_ode.ipynb
 
 
 Indices and tables

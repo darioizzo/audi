@@ -14,6 +14,10 @@
 #include <audi/gdual.hpp>
 #include <audi/invert_map.hpp>
 #include <audi/vectorized.hpp>
+#include <audi/taylor_model_bounding.hpp>
+#include <audi/taylor_model_utilities.hpp>
+#include <audi/taylor_model.hpp>
+#include <audi/taylor_model_functions.hpp>
 
 namespace audi
 {

@@ -1,0 +1,27 @@
+name: audi
+channels:
+  - conda-forge
+dependencies:
+  - c-compiler
+  - cxx-compiler
+  - cmake
+  - eigen
+  - obake-devel
+  - mppp
+  - libboost-devel
+  - pybind11
+  - python
+  - ninja
+  - numpy
+  - matplotlib
+  - ca-certificates
+  - openssl
+  - seaborn
+  - jupyter
+  - ipympl
+  - certifi
+  - doxygen
+  - sphinx
+  - breathe
+  - nbsphinx
+  - sphinx_rtd_theme
