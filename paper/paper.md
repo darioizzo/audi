@@ -96,6 +96,7 @@ f(x, y, z) = {} &
 g(x, y) = \sin(1.7x+0.5)(y+2)\sin(1.5y)
 \\
 h(x) = x(x-1.1)(x+2)(x+2.2)(x+2.5)(x+3)\sin(1.7x+0.5)
+\end{array}
 $$
 
 | Dimension | Package         | Remainder Bound (Order 1) | Remainder Bound (Order 15) | Speed Comparison                  |
