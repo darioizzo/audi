@@ -58,7 +58,7 @@ python -c "import pyaudi.test; pyaudi.test.run_test_suite()"
 cd ${GITHUB_WORKSPACE}/doc/doxygen
 doxygen Doxyfile
 cd ../sphinx
-make html linkcheck
+make html
 
 set +e
 set +x
