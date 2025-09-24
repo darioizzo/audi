@@ -28,11 +28,11 @@ bibliography: paper.bib
 <!-- A summary describing the high-level functionality and purpose of the software for a diverse, non-specialist audience. -->
 
 `pyaudi` is a Python toolbox developed at the [European Space Agency](https://www.esa.int) that implements the algebra of Taylor
-truncated polynomials to achieve any order, forward mode, automatic differentiation in a multivarate setting. The forward mode automatic
+truncated polynomials to achieve high-order order, forward mode, automatic differentiation in a multivarate setting. The forward mode automatic
 differentiation is implemented via C++ class templates exposed to python using pybind11. This allows the generalized dual number type to
 behave like a drop-in replacement for floats (or other scalar types), while operator overloading propagates derivatives automatically. 
 
-On top of the algebra of Taylor truncated polynomials, `pyaudi` offers an implementation of Taylor models, which combine truncated Taylor
+On top of the algebra of Taylor truncated polynomials, `pyaudi` offers an implementation of Taylor models [@makino1998rigorous], which combine truncated Taylor
 polynomials with an interval bounding its truncation error as well as a number of miscellaneous algorithms useful for applications in differential intelligence,
 automatic differentiation, verified integration and more.
 
@@ -66,12 +66,13 @@ The key novel aspects of the `pyaudi` package are:
 
 ## Comparison with TaylorModels.jl
 
-To quickly test the performance of the Taylor model implementation in `pyaudi` against
-TaylorModels.jl, we take three functions; one univariate, one bivariate and one trivariate shown
+We test the performance of the Taylor model implementation in `pyaudi` against the Julia package
+TaylorModels.jl, that also implements Taylor models. To perform the comparison we use three functions $f,g,h$: one univariate, one bivariate and one trivariate defined
 below. We then construct Taylor models of all the variables separately and time the evaluation of
-the function value as a Taylor model.
+the corresponding Taylor model. The comparison is made on a single CPU machine.
 
 $$
+\begin{array}{l}
 \begin{aligned}
 f(x, y, z) = {} & 
 \frac{4 \tan(3y)}{3x + x \sqrt{\tfrac{6x}{-7(x-8)}}}
@@ -82,13 +83,9 @@ f(x, y, z) = {} &
 & + \frac{5x \tanh(0.9z)}{\sqrt{5y}}
 - 20y \sin(3z)
 \end{aligned}
-$$
-
-$$
+\\
 g(x, y) = \sin(1.7x+0.5)(y+2)\sin(1.5y)
-$$
-
-$$
+\\
 h(x) = x(x-1.1)(x+2)(x+2.2)(x+2.5)(x+3)\sin(1.7x+0.5)
 $$
 
@@ -102,8 +99,8 @@ $$
 |           | pyaudi          | 1e-1                      | 1e-17                      | Faster (see above) |
 
 In the table above, a clear trend can be seen both in terms of speed and accuracy. For univariate
-Taylor models, TaylorModels.jl is marginally faster and numerically precise. At two dimensions, the
-remainder bounds are of equal size, but `pyaudi` is significantly faster, with the speedup
+Taylor models, TaylorModels.jl is both faster and produces tighter bounds. At two dimensions, the
+remainder bounds are already of equal size, but `pyaudi` is significantly faster, with the speedup
 increasing with the order of the polynomial. At three dimensions, `pyaudi` produces significantly
 tighter bounds and is again significantly faster, with the speedup increasing with the order of
 the polynomial.
