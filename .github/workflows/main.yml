@@ -45,7 +45,7 @@ jobs:
       - name: Build
         run: .\tools\gha_windows_release.ps1
         shell: pwsh
-  ubuntu_coverage:
+  ubuntu-coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -57,3 +57,9 @@ jobs:
           files: coverage.info
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      # Create the docs
+      - name: Upload to github pages 🚀
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@v4.6.4 #workaround to be fixed upstream
+        with:
+          folder: doc/sphinx/_build/html # The folder the action should deploy.

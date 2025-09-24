@@ -54,5 +54,11 @@ cmake \
 make VERBOSE=1 install
 python -c "import pyaudi.test; pyaudi.test.run_test_suite()"
 
+# Build the documentation
+cd ${GITHUB_WORKSPACE}/doc/doxygen
+doxygen Doxyfile
+cd ../sphinx
+make html linkcheck
+
 set +e
 set +x
