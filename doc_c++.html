@@ -1,92 +1,50 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Documentation (C++ header only library) &mdash; audi 1.7 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation (C++ header only library) &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
 
   
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
-        <link rel="up" title="Documentation" href="documentation.html"/>
-        <link rel="next" title="Generalized Dual numbers" href="gdual.html"/>
-        <link rel="prev" title="Documentation" href="documentation.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generalized Dual numbers" href="gdual.html" />
+    <link rel="prev" title="Documentation" href="documentation.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> audi
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            audi
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.7
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
@@ -95,6 +53,10 @@
 <li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html">Taylor models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
@@ -102,13 +64,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
@@ -116,162 +78,265 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">audi</a>
-        
       </nav>
 
-
-      
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="documentation.html">Documentation</a> &raquo;</li>
-        
-      <li>Documentation (C++ header only library)</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+      <li class="breadcrumb-item active">Documentation (C++ header only library)</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/doc_c++.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="documentation-c-header-only-library">
-<h1>Documentation (C++ header only library)<a class="headerlink" href="#documentation-c-header-only-library" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="documentation-c-header-only-library">
+<h1>Documentation (C++ header only library)<a class="headerlink" href="#documentation-c-header-only-library" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gdual.html#constructors-and-destructors">Constructors and destructors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gdual.html#methods">Methods</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gdual.html#differential-algebra-operations">Differential algebra operations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gdual.html#gdual-manipulation">gdual manipulation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gdual.html#gdual-inspection">gdual inspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE"><code class="docutils literal notranslate"><span class="pre">audi::gdual</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual10_containerEv"><code class="docutils literal notranslate"><span class="pre">_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual10_containerEv"><code class="docutils literal notranslate"><span class="pre">_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual5_polyEv"><code class="docutils literal notranslate"><span class="pre">_poly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual5_polyEv"><code class="docutils literal notranslate"><span class="pre">_poly()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualeqERK5gdualRK5gdual"><code class="docutils literal notranslate"><span class="pre">operator==</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualneERK5gdualRK5gdual"><code class="docutils literal notranslate"><span class="pre">operator!=</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualltERK5gdualRK5gdual"><code class="docutils literal notranslate"><span class="pre">operator&lt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualgtERK5gdualRK5gdual"><code class="docutils literal notranslate"><span class="pre">operator&gt;</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualplE16gdual_if_enabledI1T1UERK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator+</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualmiE16gdual_if_enabledI1T1UERK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator-</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualmlE16gdual_if_enabledI1T1UERK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator*</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualdvE16gdual_if_enabledI1T1UERK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdualpLEDTaSdefpTpldefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator+=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdualmIEDTaSdefpTmidefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator-=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdualmLEDTaSdefpTmldefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator*=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdualdVEDTaSdefpTdvdefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator/=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdualmiEv"><code class="docutils literal notranslate"><span class="pre">operator-()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdualplEv"><code class="docutils literal notranslate"><span class="pre">operator+()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual7cf_typeE"><code class="docutils literal notranslate"><span class="pre">cf_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual8key_typeE"><code class="docutils literal notranslate"><span class="pre">key_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual6p_typeE"><code class="docutils literal notranslate"><span class="pre">p_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual5gdualERK5gdual"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual5gdualERR5gdual"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual5gdualEv"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualD0Ev"><code class="docutils literal notranslate"><span class="pre">~gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0_20generic_ctor_enablerI1TEEN4audi5gdual5gdualERK1T"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdual5gdualERKNSt16initializer_listI1TEE"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0_20generic_ctor_enablerI1TEEN4audi5gdual5gdualERK1TRKNSt6stringEj"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0EN4audi5gdual5gdualERKNSt16initializer_listI1TEERKNSt6stringEj"><code class="docutils literal notranslate"><span class="pre">gdual()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualaSERK5gdual"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdualaSERR5gdual"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual19get_symbol_set_sizeEv"><code class="docutils literal notranslate"><span class="pre">get_symbol_set_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual14get_symbol_setEv"><code class="docutils literal notranslate"><span class="pre">get_symbol_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gdual17extend_symbol_setERKNSt6vectorINSt6stringEEE"><code class="docutils literal notranslate"><span class="pre">extend_symbol_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I_11enable_if_tIN5obake17is_differentiableI2CfE5valueEiEEN4audi5gdual9integrateE5gdualRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">integrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I_11enable_if_tIN5obake17is_differentiableI2CfE5valueEiEEN4audi5gdual7partialE5gdualRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">partial()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0ENK4audi5gdual4subsE5gdualRKNSt6stringERK1T"><code class="docutils literal notranslate"><span class="pre">subs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual4subsERKNSt6stringERK5gdual"><code class="docutils literal notranslate"><span class="pre">subs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual4trimEd"><code class="docutils literal notranslate"><span class="pre">trim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual13extract_termsEj"><code class="docutils literal notranslate"><span class="pre">extract_terms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual8evaluateERKN5obake10symbol_mapIdEE"><code class="docutils literal notranslate"><span class="pre">evaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual6degreeEv"><code class="docutils literal notranslate"><span class="pre">degree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual9get_orderEv"><code class="docutils literal notranslate"><span class="pre">get_order()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0ENK4audi5gdual7find_cfE2CfRK1T"><code class="docutils literal notranslate"><span class="pre">find_cf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0ENK4audi5gdual7find_cfE2CfNSt16initializer_listI1TEE"><code class="docutils literal notranslate"><span class="pre">find_cf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0ENK4audi5gdual14get_derivativeE2CfRK1T"><code class="docutils literal notranslate"><span class="pre">get_derivative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4I0ENK4audi5gdual14get_derivativeE2CfNSt16initializer_listI1TEE"><code class="docutils literal notranslate"><span class="pre">get_derivative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual14get_derivativeERKNSt13unordered_mapINSt6stringEjEE"><code class="docutils literal notranslate"><span class="pre">get_derivative()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual11constant_cfEv"><code class="docutils literal notranslate"><span class="pre">constant_cf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual7is_zeroEd"><code class="docutils literal notranslate"><span class="pre">is_zero()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4NK4audi5gdual4infoEv"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="gdual.html#_CPPv4N4audi5gduallsERNSt7ostreamERK5gdual"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gdual.html#operators">Operators</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Mathematical functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">exp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I0EN4audi8binomialE1T1Tj"><code class="docutils literal notranslate"><span class="pre">binomial()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sqrt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cbrt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sin_and_cos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">tan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sinh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">tanh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">atanh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">atan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">asinh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">acosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">asin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">acos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb"><code class="docutils literal notranslate"><span class="pre">invert_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taylor_model.html">Taylor models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">audi::taylor_model</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model12taylor_modelERK12taylor_model"><code class="docutils literal notranslate"><span class="pre">taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_modelaSERK12taylor_model"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model12taylor_modelERR12taylor_model"><code class="docutils literal notranslate"><span class="pre">taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_modelaSERR12taylor_model"><code class="docutils literal notranslate"><span class="pre">operator=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model12taylor_modelEv"><code class="docutils literal notranslate"><span class="pre">taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_modelD0Ev"><code class="docutils literal notranslate"><span class="pre">~taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model12taylor_modelERKN4audi5gdualIdEERK5int_dRK9var_map_dRK9var_map_i"><code class="docutils literal notranslate"><span class="pre">taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model12taylor_modelEd"><code class="docutils literal notranslate"><span class="pre">taylor_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model8get_tpolEv"><code class="docutils literal notranslate"><span class="pre">get_tpol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model7get_remEv"><code class="docutils literal notranslate"><span class="pre">get_rem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model7get_expEv"><code class="docutils literal notranslate"><span class="pre">get_exp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model7get_domEv"><code class="docutils literal notranslate"><span class="pre">get_dom()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model9get_orderEv"><code class="docutils literal notranslate"><span class="pre">get_order()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model8get_ndimEv"><code class="docutils literal notranslate"><span class="pre">get_ndim()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model8set_tpolERKN4audi5gdualIdEE"><code class="docutils literal notranslate"><span class="pre">set_tpol()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model7set_remERK5int_d"><code class="docutils literal notranslate"><span class="pre">set_rem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model7set_expERK9var_map_d"><code class="docutils literal notranslate"><span class="pre">set_exp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model7set_domERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">set_dom()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model17extend_symbol_setERKNSt6vectorINSt6stringEEERK9var_map_dRK9var_map_i"><code class="docutils literal notranslate"><span class="pre">extend_symbol_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_model10get_boundsEv"><code class="docutils literal notranslate"><span class="pre">get_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I0EN4audi12taylor_modelpLEDTaSdefpTpldefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator+=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I0EN4audi12taylor_modelmIEDTaSdefpTmidefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator-=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_modelmiEv"><code class="docutils literal notranslate"><span class="pre">operator-()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I0EN4audi12taylor_modelmLEDTaSdefpTmldefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator*=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I0EN4audi12taylor_modeldVEDTaSdefpTdvdefpT2d1ERK1T"><code class="docutils literal notranslate"><span class="pre">operator/=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_modeleqERK12taylor_model"><code class="docutils literal notranslate"><span class="pre">operator==()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4NK4audi12taylor_modelneERK12taylor_model"><code class="docutils literal notranslate"><span class="pre">operator!=()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model8identityEv"><code class="docutils literal notranslate"><span class="pre">identity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model8identityE5int_d9var_map_d9var_map_i"><code class="docutils literal notranslate"><span class="pre">identity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I0EN4audi12taylor_model10get_boundsE5int_dRKN4audi5gdualI1TEERK9var_map_dRK9var_map_i"><code class="docutils literal notranslate"><span class="pre">get_bounds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE"><code class="docutils literal notranslate"><span class="pre">get_common_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE"><code class="docutils literal notranslate"><span class="pre">trim_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE"><code class="docutils literal notranslate"><span class="pre">interval_equal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE"><code class="docutils literal notranslate"><span class="pre">interval_equal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_model18map_interval_equalERKNSt13unordered_mapINSt6stringE5int_dEERKNSt13unordered_mapINSt6stringE5int_dEENSt8optionalIdEE"><code class="docutils literal notranslate"><span class="pre">map_interval_equal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE"><code class="docutils literal notranslate"><span class="pre">map_equal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_modelplE12taylor_modelRK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator+</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_modelmiE12taylor_modelRK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator-</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_modelmlE12taylor_modelRK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator*</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4I00EN4audi12taylor_modeldvE12taylor_modelRK1TRK1U"><code class="docutils literal notranslate"><span class="pre">operator/</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html#_CPPv4N4audi12taylor_modellsERNSt7ostreamERK12taylor_model"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi10factorial2Ei"><code class="docutils literal notranslate"><span class="pre">factorial2()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3powERKN4audi12taylor_modelEi"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4I00EN4audi3powEN4audi12taylor_modelERKN4audi12taylor_modelE1T"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3expERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">exp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3logERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4sqrtERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">sqrt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3sinERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">sin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3cosERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">cos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi11sin_and_cosERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">sin_and_cos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3tanERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">tan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4sinhERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">sinh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4coshERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">cosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi13sinh_and_coshERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4tanhERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">tanh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi15asin_derivativeE5int_dj"><code class="docutils literal notranslate"><span class="pre">asin_derivative()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4asinERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">asin()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4acosERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">acos()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi4atanERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">atan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi5asinhERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">asinh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi5acoshERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">acosh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi5atanhERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">atanh()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_functions.html#_CPPv4N4audi3absERKN4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi21generate_combinationsERKNSt6vectorIiEEb"><code class="docutils literal notranslate"><span class="pre">generate_combinations()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE"><code class="docutils literal notranslate"><span class="pre">get_poly()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi8get_ndimERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_ndim()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi15get_max_degreesERKNSt6vectorINSt6vectorIiEEEEj"><code class="docutils literal notranslate"><span class="pre">get_max_degrees()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_coefficient()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_a_matrix_vec()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi8binomialEii"><code class="docutils literal notranslate"><span class="pre">binomial()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi13binom_productERKNSt6vectorIiEERKNSt6vectorIiEE"><code class="docutils literal notranslate"><span class="pre">binom_product()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi16get_d_acc_matrixERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_d_acc_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi12get_d_matrixERKNSt6vectorIiEEid"><code class="docutils literal notranslate"><span class="pre">get_d_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi23get_lower_pascal_matrixERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_lower_pascal_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi20build_dim_to_var_mapERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">build_dim_to_var_map()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi12get_q_matrixERKNSt6vectorIiEERK9var_map_ii"><code class="docutils literal notranslate"><span class="pre">get_q_matrix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi13shift_indicesERKNSt6vectorIiEE"><code class="docutils literal notranslate"><span class="pre">shift_indices()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi23get_cycled_2d_array_vecERKNSt6vectorINSt6vectorIdEEEERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_cycled_2d_array_vec()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4N4audi31get_titi_base_lambda_generalboxERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">get_titi_base_lambda_generalbox()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_bounding.html#_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">get_titi_bernstein_patch_ndim_generalbox()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_utilities.html#_CPPv46matmulRKNSt6vectorINSt6vectorIdEEEERKNSt6vectorINSt6vectorIdEEEE"><code class="docutils literal notranslate"><span class="pre">matmul()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_utilities.html#_CPPv49transposeRKNSt6vectorINSt6vectorIdEEEE"><code class="docutils literal notranslate"><span class="pre">transpose()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_utilities.html#_CPPv4lsRNSt7ostreamERK9var_map_d"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="taylor_model_utilities.html#_CPPv4lsRNSt7ostreamERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </div>
-</div>
+</section>
 
 
            </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="gdual.html" class="btn btn-neutral float-right" title="Generalized Dual numbers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="documentation.html" class="btn btn-neutral" title="Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="documentation.html" class="btn btn-neutral float-left" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gdual.html" class="btn btn-neutral float-right" title="Generalized Dual numbers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
-
-    </p>
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.7',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="None"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

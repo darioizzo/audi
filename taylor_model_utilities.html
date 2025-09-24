@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taylor models utilities &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Documentation (Python package)" href="doc_python.html" />
+    <link rel="prev" title="Taylor models bounding" href="taylor_model_bounding.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html">Taylor models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Taylor models utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv46matmulRKNSt6vectorINSt6vectorIdEEEERKNSt6vectorINSt6vectorIdEEEE"><code class="docutils literal notranslate"><span class="pre">matmul()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv49transposeRKNSt6vectorINSt6vectorIdEEEE"><code class="docutils literal notranslate"><span class="pre">transpose()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4lsRNSt7ostreamERK9var_map_d"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4lsRNSt7ostreamERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+      <li class="breadcrumb-item active">Taylor models utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/taylor_model_utilities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="taylor-models-utilities">
+<h1>Taylor models utilities<a class="headerlink" href="#taylor-models-utilities" title="Link to this heading"></a></h1>
+<p><em>#include &lt;audi/taylor_model_utilities.hpp&gt;</em></p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv46matmulRKNSt6vectorINSt6vectorIdEEEERKNSt6vectorINSt6vectorIdEEEE">
+<span class="target" id="taylor__model__utilities_8hpp_1aa33c42eb185452b5125e2152f12f6666"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">matmul</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">B</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv46matmulRKNSt6vectorINSt6vectorIdEEEERKNSt6vectorINSt6vectorIdEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Matrix multiplication. </p>
+<p>Computes the matrix product <span class="math notranslate nohighlight">\( C = A \cdot B \)</span> where<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(m</span> <span class="pre">x</span> <span class="pre">p)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> is of shape <code class="docutils literal notranslate"><span class="pre">(p</span> <span class="pre">x</span> <span class="pre">n)</span></code></p></li>
+</ul>
+</p>
+<p>The result <code class="docutils literal notranslate"><span class="pre">C</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(m</span> <span class="pre">x</span> <span class="pre">n)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – left-hand matrix of shape <code class="docutils literal notranslate"><span class="pre">(m</span> <span class="pre">x</span> <span class="pre">p)</span></code></p></li>
+<li><p><strong>B</strong> – right-hand matrix of shape <code class="docutils literal notranslate"><span class="pre">(p</span> <span class="pre">x</span> <span class="pre">n)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">out_of_range</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> have incompatible dimensions </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matrix product <code class="docutils literal notranslate"><span class="pre">C</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(m</span> <span class="pre">x</span> <span class="pre">n)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49transposeRKNSt6vectorINSt6vectorIdEEEE">
+<span class="target" id="taylor__model__utilities_8hpp_1a4a82d4ba7f14a6d48114492c7a7fe726"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transpose</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49transposeRKNSt6vectorINSt6vectorIdEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Matrix transpose. </p>
+<p>Computes the transpose of a given matrix <span class="math notranslate nohighlight">\(M\)</span>.</p>
+<p><ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">M</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(rows</span> <span class="pre">x</span> <span class="pre">cols)</span></code>, the result has shape <code class="docutils literal notranslate"><span class="pre">(cols</span> <span class="pre">x</span> <span class="pre">rows)</span></code>.</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>M</strong> – input matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>transpose of <code class="docutils literal notranslate"><span class="pre">M</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4lsRNSt7ostreamERK9var_map_d">
+<span class="target" id="taylor__model__utilities_8hpp_1af1eab08a1dfdce2fae4567d800bc4b97"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4lsRNSt7ostreamERK9var_map_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded stream insertion operator for var_map_d. </p>
+<p>Outputs the contents of a var_map_d (mapping variable names to doubles) to the given output stream in a human-readable format.</p>
+<p>Example output: {“x”: 1.23, “y”: 4.56} </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os</strong> – the output stream </p></li>
+<li><p><strong>m</strong> – the var_map_d mapping variable names to double values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a reference to the output stream with the formatted contents inserted </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4lsRNSt7ostreamERK9var_map_i">
+<span class="target" id="taylor__model__utilities_8hpp_1a6080c156597eb9e3f469ceb005b9e47c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4lsRNSt7ostreamERK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded stream insertion operator for var_map_i. </p>
+<p>Outputs the contents of a var_map_i (mapping variable names to intervals) to the given output stream in a human-readable format.</p>
+<p>Each interval is displayed as [lower, upper]. Example output: {“x”:[0, 1], “y”:[2, 5]}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os</strong> – the output stream </p></li>
+<li><p><strong>m</strong> – the var_map_i mapping variable names to int_d intervals</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a reference to the output stream with the formatted contents inserted </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="taylor_model_bounding.html" class="btn btn-neutral float-left" title="Taylor models bounding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="doc_python.html" class="btn btn-neutral float-right" title="Documentation (Python package)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

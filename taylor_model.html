@@ -1,0 +1,698 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taylor models &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Taylor models functions" href="taylor_model_functions.html" />
+    <link rel="prev" title="Utilities" href="utilities.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Taylor models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE"><code class="docutils literal notranslate"><span class="pre">audi::taylor_model</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+      <li class="breadcrumb-item active">Taylor models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/taylor_model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="taylor-models">
+<h1>Taylor models<a class="headerlink" href="#taylor-models" title="Link to this heading"></a></h1>
+<p><em>#include &lt;audi/taylor_model.hpp&gt;</em></p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_modelE">
+<span class="target" id="classaudi_1_1taylor__model"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><a class="headerlink" href="#_CPPv4N4audi12taylor_modelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Taylor model class. </p>
+<p>This class represents a Taylor model, containing a generalized dual number in combination with an interval. This implementation is derived from Makino (1998) and is built on top of a gdual object representing the Taylor polynomial (generalized dual number) part of the Taylor model.</p>
+<p>A key concept here is Taylor’s theorem (formulation used from Makino (1998) p.80. Taylors theorem allows a quantitative estimate of the error that is to be expected when approximating a function by its Taylor polynomial Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the <span class="math notranslate nohighlight">\((n+1)\)</span>st derivative a method that has sometimes been employed in interval calculations.</p>
+<p>As a result, you get  <span class="math notranslate nohighlight">\( \forall \vec{x} \in [\vec{a}, \vec{b}] \text{, a given order } n \text{, and an expansion
+point} \vec{x_o} \)</span>:</p>
+<p><span class="math notranslate nohighlight">\( f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f} \)</span></p>
+<p>where f is the function you’re creating a Taylor model for, P is the Taylor polynomial, and I is the interval remainder.</p>
+<p>TODO: multiply() needs to be templated as well, but raises error with ambiguity. TODO: operator+ etc. need to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what types the operators can accept </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model12taylor_modelERK12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1a7140cbfde5edc607a02a6ea2a6e7fc24"></span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_model12taylor_modelERK12taylor_model" title="audi::taylor_model::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4audi12taylor_model12taylor_modelERK12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructors. </p>
+<p>Defaulted copy constructor &amp; assignment </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_modelaSERK12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1a2989046a459fb4ebfa4302844e4ac8f3"></span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4audi12taylor_modelaSERK12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model12taylor_modelERR12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1a556a3951c6ec31d8b05e3ce1ab4bfbf2"></span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4audi12taylor_model12taylor_modelERR12taylor_model" title="audi::taylor_model::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4audi12taylor_model12taylor_modelERR12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd><p>Defaulted move constructor &amp; assignment. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_modelaSERR12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1ad0791dc8e82d15f522a68713f0a452ca"></span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N4audi12taylor_modelaSERR12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model12taylor_modelEv">
+<span class="target" id="classaudi_1_1taylor__model_1a12f49e8f5baf8d52f5856e46ab3738e9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model12taylor_modelEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_modelD0Ev">
+<span class="target" id="classaudi_1_1taylor__model_1a38ad18b3a61ccfb325ecfc7fb03b7dda"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~taylor_model</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_modelD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model12taylor_modelERKN4audi5gdualIdEERK5int_dRK9var_map_dRK9var_map_i">
+<span class="target" id="classaudi_1_1taylor__model_1a1c47b0f99d10f07f06a7cbd29f0c33bf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tpol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rem_bound</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp_point</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model12taylor_modelERKN4audi5gdualIdEERK5int_dRK9var_map_dRK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model12taylor_modelEd">
+<span class="target" id="classaudi_1_1taylor__model_1a837edda280c690d485f1501640009004"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">taylor_model</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">constant</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model12taylor_modelEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model8get_tpolEv">
+<span class="target" id="classaudi_1_1taylor__model_1ab60fddfc2a89f7f743aa26d79562bc2d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_tpol</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model8get_tpolEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Getters. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model7get_remEv">
+<span class="target" id="classaudi_1_1taylor__model_1a1fb30db3c4f7f797a19b13d7a221fb36"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_rem</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model7get_remEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model7get_expEv">
+<span class="target" id="classaudi_1_1taylor__model_1a2ef1d10142beb3c67fa3120910911bf9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_exp</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model7get_expEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model7get_domEv">
+<span class="target" id="classaudi_1_1taylor__model_1a6225bce06b92c827d9d5393bf3ab059a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_dom</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model7get_domEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model9get_orderEv">
+<span class="target" id="classaudi_1_1taylor__model_1a531dd4da0ff51065a882ccf0a8758335"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_order</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model9get_orderEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model8get_ndimEv">
+<span class="target" id="classaudi_1_1taylor__model_1a8290ee58446c94b2c943ded86d7e2874"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get_ndim</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model8get_ndimEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model8set_tpolERKN4audi5gdualIdEE">
+<span class="target" id="classaudi_1_1taylor__model_1ae038c90261e5fdc67c44300da70aa62f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_tpol</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tpol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model8set_tpolERKN4audi5gdualIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Setters. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model7set_remERK5int_d">
+<span class="target" id="classaudi_1_1taylor__model_1a91b87c6e2ef8879ec19da75662c2e958"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_rem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rem_bound</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model7set_remERK5int_d" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model7set_expERK9var_map_d">
+<span class="target" id="classaudi_1_1taylor__model_1a996c42aaec4a2ad3da374e69520b194c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_exp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp_point</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model7set_expERK9var_map_d" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model7set_domERK9var_map_i">
+<span class="target" id="classaudi_1_1taylor__model_1a42cbe2ceb1a6e235a4e97de1373918ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_dom</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model7set_domERK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model17extend_symbol_setERKNSt6vectorINSt6stringEEERK9var_map_dRK9var_map_i">
+<span class="target" id="classaudi_1_1taylor__model_1aba35c9fcb6487e90137353a9e4c9f0b8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extend_symbol_set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sym_vars</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp_point</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model17extend_symbol_setERKNSt6vectorINSt6stringEEERK9var_map_dRK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_model10get_boundsEv">
+<span class="target" id="classaudi_1_1taylor__model_1a5a97826ca5790fb52c9921341e4b02f9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_bounds</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_model10get_boundsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the bounds of the polynomial over the stored domain. </p>
+<p>Evaluates the current gdual polynomial over its associated domain and returns the interval containing its minimum and maximum values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an int_d interval representing the lower and upper bounds </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi12taylor_modelpLEDTaSdefpTpldefpT2d1ERK1T">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a7907725d884d7f00aa876edec1f9f884"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelpLEDTaSdefpTpldefpT2d1ERK1T" title="audi::taylor_model::operator+=::d1"><span class="n"><span class="pre">d1</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelpLEDTaSdefpTpldefpT2d1ERK1T" title="audi::taylor_model::operator+=::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi12taylor_modelpLEDTaSdefpTpldefpT2d1ERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Add and assign operator. </p>
+<p>Adds an object to this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> in place. This is equivalent to <code class="docutils literal notranslate"><span class="pre">*this</span> <span class="pre">=</span> <span class="pre">*this</span> <span class="pre">+</span> <span class="pre">d1</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the type of the right operand </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>d1</strong> – the right operand</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> after modification Add and assignment operator </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi12taylor_modelmIEDTaSdefpTmidefpT2d1ERK1T">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a98cf7e0d07b2fff219c8e97c8d20e3db"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelmIEDTaSdefpTmidefpT2d1ERK1T" title="audi::taylor_model::operator-=::d1"><span class="n"><span class="pre">d1</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelmIEDTaSdefpTmidefpT2d1ERK1T" title="audi::taylor_model::operator-=::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi12taylor_modelmIEDTaSdefpTmidefpT2d1ERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtract and assign operator. </p>
+<p>Subtracts an object from this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> in place. This is equivalent to <code class="docutils literal notranslate"><span class="pre">*this</span> <span class="pre">=</span> <span class="pre">*this</span> <span class="pre">-</span> <span class="pre">d1</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the type of the right operand </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>d1</strong> – the right operand</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> after modification </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_modelmiEv">
+<span class="target" id="classaudi_1_1taylor__model_1a0b84e1fca773987beeed8c742493a2b1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_modelmiEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Unary negation operator. </p>
+<p>Returns the negation of this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. This is equivalent to <code class="docutils literal notranslate"><span class="pre">sub(0.0,</span> <span class="pre">*this)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a new <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing the negated value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi12taylor_modelmLEDTaSdefpTmldefpT2d1ERK1T">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ad908f66f9c8fd75341e85f90255af254"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelmLEDTaSdefpTmldefpT2d1ERK1T" title="audi::taylor_model::operator*=::d1"><span class="n"><span class="pre">d1</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modelmLEDTaSdefpTmldefpT2d1ERK1T" title="audi::taylor_model::operator*=::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi12taylor_modelmLEDTaSdefpTmldefpT2d1ERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Multiply and assign operator. </p>
+<p>Multiplies this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> by an object in place. This is equivalent to <code class="docutils literal notranslate"><span class="pre">*this</span> <span class="pre">=</span> <span class="pre">*this</span> <span class="pre">*</span> <span class="pre">d1</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the type of the right operand </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>d1</strong> – the right operand</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> after modification </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi12taylor_modeldVEDTaSdefpTdvdefpT2d1ERK1T">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a50488bcf05b0cc04143fad17914d25a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="k"><span class="pre">this</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modeldVEDTaSdefpTdvdefpT2d1ERK1T" title="audi::taylor_model::operator/=::d1"><span class="n"><span class="pre">d1</span></span></a><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">/=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_modeldVEDTaSdefpTdvdefpT2d1ERK1T" title="audi::taylor_model::operator/=::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi12taylor_modeldVEDTaSdefpTdvdefpT2d1ERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Divide and assign operator. </p>
+<p>Divides this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> by an object in place. This is equivalent to <code class="docutils literal notranslate"><span class="pre">*this</span> <span class="pre">=</span> <span class="pre">*this</span> <span class="pre">/</span> <span class="pre">d1</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the type of the right operand </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>d1</strong> – the right operand (denominator)</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> after modification </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_modeleqERK12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1a8695d36ae6dbff562bdad7266c2e2c61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_modeleqERK12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd><p>Equality operator for <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
+<p>Compares two <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> instances for equality. Two taylor_models are considered equal if:<ul class="simple">
+<li><p>Their polynomials are equal (<code class="docutils literal notranslate"><span class="pre">m_tpol</span></code>)</p></li>
+<li><p>Their remainder intervals are equal (<code class="docutils literal notranslate"><span class="pre">interval_equal</span></code>)</p></li>
+<li><p>Their expansion points are equal (<code class="docutils literal notranslate"><span class="pre">map_equal</span></code>)</p></li>
+<li><p>Their domains are equal (<code class="docutils literal notranslate"><span class="pre">map_interval_equal</span></code>)</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> to compare with</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if all components are equal, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK4audi12taylor_modelneERK12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1aab8255dae612b39594b3a57221037a72"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK4audi12taylor_modelneERK12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd><p>Inequality operator for <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
+<p>Compares two <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> instances for inequality. Returns the negation of the equality operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> to compare with</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if any component differs, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model8identityEv">
+<span class="target" id="classaudi_1_1taylor__model_1a361afdf60cb9d463a271112ab028029b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">identity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model8identityEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model8identityE5int_d9var_map_d9var_map_i">
+<span class="target" id="classaudi_1_1taylor__model_1a3945b3e33e95d593a599e5c7f3a81676"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">identity</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rem</span></span>, <span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">exp</span></span>, <span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model8identityE5int_d9var_map_d9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi12taylor_model10get_boundsE5int_dRKN4audi5gdualI1TEERK9var_map_dRK9var_map_i">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a2c0be63981bb1d77af7e23c1fc9f2016"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_bounds</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi12taylor_model10get_boundsE5int_dRKN4audi5gdualI1TEERK9var_map_dRK9var_map_i" title="audi::taylor_model::get_bounds::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tpol</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exp_points</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi12taylor_model10get_boundsE5int_dRKN4audi5gdualI1TEERK9var_map_dRK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the bounds of a gdual polynomial over a given domain. </p>
+<p>Computes the Bernstein enclosure of a gdual polynomial on a specified domain. The domain is shifted relative to the expansion points before evaluation. The result is the interval containing its minimum and maximum values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the coefficient type of the gdual </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>tpol</strong> – the input gdual polynomial </p></li>
+<li><p><strong>exp_points</strong> – the expansion points (variable → double) </p></li>
+<li><p><strong>domain</strong> – the domain of variables as intervals (variable → int_d)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an int_d interval representing the minimum and maximum polynomial values </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">V</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a5d7651d878875b33749dcd75ce7af4c8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::V"><span class="n"><span class="pre">V</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_common_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::V"><span class="n"><span class="pre">V</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::get_common_map::V"><span class="n"><span class="pre">V</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_model14get_common_mapENSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEERKNSt13unordered_mapI1K1VEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Static member functions for arithmetic. </p>
+<p>Merge two maps with consistency checking Combines two unordered maps into one by taking the union of their key–value pairs. If a key is present in both maps, the values must be equal (checked using <code class="docutils literal notranslate"><span class="pre">interval_equal</span></code>), otherwise a runtime error is thrown.</p>
+<p>If the key exists in only one map, that key–value pair is added directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>K</strong> – the key type of the maps </p></li>
+<li><p><strong>V</strong> – the value type of the maps </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – the first unordered map </p></li>
+<li><p><strong>b</strong> – the second unordered map</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – if a key is present in both maps with conflicting values</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new unordered_map containing the merged key–value pairs </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">V</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ac931b46d21b5b248c2742b09e88969aa"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::trim_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::trim_map::V"><span class="n"><span class="pre">V</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trim_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::trim_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">symbol_set</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::trim_map::K"><span class="n"><span class="pre">K</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="audi::taylor_model::trim_map::V"><span class="n"><span class="pre">V</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_model8trim_mapENSt13unordered_mapI1K1VEERKNSt6vectorI1KEERKNSt13unordered_mapI1K1VEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Filter a map by a given set of keys with subset checking. </p>
+<p>Constructs a new unordered map containing only the entries from the input map <code class="docutils literal notranslate"><span class="pre">a</span></code> whose keys are listed in <code class="docutils literal notranslate"><span class="pre">symbol_set</span></code>.</p>
+<p>Each key in <code class="docutils literal notranslate"><span class="pre">symbol_set</span></code> must be present in <code class="docutils literal notranslate"><span class="pre">a</span></code>. If any key is missing, the function throws a logic error, since the symbol set is expected to be a strict subset of the map’s keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>K</strong> – the key type of the map </p></li>
+<li><p><strong>V</strong> – the value type of the map </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>symbol_set</strong> – the set of keys to extract (must all exist in <code class="docutils literal notranslate"><span class="pre">a</span></code>) </p></li>
+<li><p><strong>a</strong> – the input unordered map</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">logic_error</span></span></span> – if a key in <code class="docutils literal notranslate"><span class="pre">symbol_set</span></code> does not exist in <code class="docutils literal notranslate"><span class="pre">a</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new unordered_map containing only the key–value pairs from <code class="docutils literal notranslate"><span class="pre">a</span></code> whose keys are listed in <code class="docutils literal notranslate"><span class="pre">symbol_set</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ae0dbe8f667ff3db787027c24bfa51838"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">interval_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullopt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_model14interval_equalEbRK1TRK1TNSt8optionalIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Quantity comparison utilities. </p>
+<p>Compare two scalar values for equality Checks whether two arithmetic values are equal within a specified tolerance. For floating-point types, if no tolerance is provided, a default of 10 × machine epsilon is used. For integral types, strict equality is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the scalar type (must be arithmetic) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – the first value </p></li>
+<li><p><strong>b</strong> – the second value </p></li>
+<li><p><strong>tol</strong> – optional tolerance for floating-point comparison</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the values are considered equal, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Policies</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ad0c57911c1053c0474aa00cf44d05e70"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">interval_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="audi::taylor_model::interval_equal::Policies"><span class="n"><span class="pre">Policies</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">interval</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="audi::taylor_model::interval_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="audi::taylor_model::interval_equal::Policies"><span class="n"><span class="pre">Policies</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullopt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000EN4audi12taylor_model14interval_equalEbRKN5boost7numeric8intervalI1T8PoliciesEERKN5boost7numeric8intervalI1T8PoliciesEENSt8optionalIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compare two intervals for equality. </p>
+<p>Checks whether two boost::numeric::interval values are equal within a specified tolerance. For floating-point types, lower and upper bounds are compared with tolerance. For integral types, strict equality of bounds is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the interval bound type (must be arithmetic) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – the first interval </p></li>
+<li><p><strong>b</strong> – the second interval </p></li>
+<li><p><strong>tol</strong> – optional tolerance for floating-point comparison</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if both intervals are considered equal, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_model18map_interval_equalERKNSt13unordered_mapINSt6stringE5int_dEERKNSt13unordered_mapINSt6stringE5int_dEENSt8optionalIdEE">
+<span class="target" id="classaudi_1_1taylor__model_1ace5674746e44a18cb744fabfb766452f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">map_interval_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullopt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_model18map_interval_equalERKNSt13unordered_mapINSt6stringE5int_dEERKNSt13unordered_mapINSt6stringE5int_dEENSt8optionalIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compare two maps of intervals for equality. </p>
+<p>Checks whether two unordered_maps mapping variable names to int_d intervals are equal within a specified tolerance. Both maps must have the same size and the same keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> – the first map </p></li>
+<li><p><strong>b</strong> – the second map </p></li>
+<li><p><strong>tol</strong> – optional tolerance for floating-point comparison of interval bounds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if the maps are considered equal, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic_v</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE" title="audi::taylor_model::map_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ace97704230243d2ef5078de2c92e56b3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">map_equal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE" title="audi::taylor_model::map_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE" title="audi::taylor_model::map_equal::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">b</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tol</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullopt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_model9map_equalEbRKNSt13unordered_mapINSt6stringE1TEERKNSt13unordered_mapINSt6stringE1TEENSt8optionalIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compare two maps of scalar values for equality. </p>
+<p>Checks whether two unordered_maps mapping variable names to arithmetic values are equal within a specified tolerance. Both maps must have the same size and the same keys. If no tolerance is provided, strict equality is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – the value type (must be arithmetic) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>a</strong> – the first map </p></li>
+<li><p><strong>b</strong> – the second map </p></li>
+<li><p><strong>tol</strong> – optional tolerance for floating-point comparison</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the maps are considered equal, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_modelplE12taylor_modelRK1TRK1U">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a4a805835563a9a1861ac5645ca85e26b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelplE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator+::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelplE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator+::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_modelplE12taylor_modelRK1TRK1U" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded arithmetic operator. </p>
+<p>Overloaded addition operator Adds two objects and returns the result as a <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. This is equivalent to calling <code class="docutils literal notranslate"><span class="pre">add(d1,</span> <span class="pre">d2)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – the type of the left operand </p></li>
+<li><p><strong>U</strong> – the type of the right operand </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d1</strong> – the left operand </p></li>
+<li><p><strong>d2</strong> – the right operand</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a new <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing the sum </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_modelmiE12taylor_modelRK1TRK1U">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1afef649f564e16ff34c4fd46808a9d4d3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelmiE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator-::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelmiE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator-::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_modelmiE12taylor_modelRK1TRK1U" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded subtraction operator. </p>
+<p>Subtracts one object from another and returns the result as a <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. This is equivalent to calling <code class="docutils literal notranslate"><span class="pre">sub(d1,</span> <span class="pre">d2)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – the type of the left operand </p></li>
+<li><p><strong>U</strong> – the type of the right operand </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d1</strong> – the left operand </p></li>
+<li><p><strong>d2</strong> – the right operand</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a new <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing the difference </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_modelmlE12taylor_modelRK1TRK1U">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1a52d6fcddb43dad4c9c0c457ca6c5c338"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelmlE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator*::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modelmlE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator*::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_modelmlE12taylor_modelRK1TRK1U" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded multiplication operator. </p>
+<p>Multiplies two objects and returns the result as a <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. This is equivalent to calling <code class="docutils literal notranslate"><span class="pre">multiply(d1,</span> <span class="pre">d2)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – the type of the left operand </p></li>
+<li><p><strong>U</strong> – the type of the right operand </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d1</strong> – the left operand </p></li>
+<li><p><strong>d2</strong> – the right operand</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a new <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing the product </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi12taylor_modeldvE12taylor_modelRK1TRK1U">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classaudi_1_1taylor__model_1ae84a5a77c2c7cc8e03a28fa22ba7bfcd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">/</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modeldvE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator/::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi12taylor_modeldvE12taylor_modelRK1TRK1U" title="audi::taylor_model::operator/::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi12taylor_modeldvE12taylor_modelRK1TRK1U" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded division operator. </p>
+<p>Divides one object by another and returns the result as a <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. This is equivalent to calling <code class="docutils literal notranslate"><span class="pre">div(d1,</span> <span class="pre">d2)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – the type of the numerator </p></li>
+<li><p><strong>U</strong> – the type of the denominator </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d1</strong> – the numerator </p></li>
+<li><p><strong>d2</strong> – the denominator</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a new <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing the quotient </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12taylor_modellsERNSt7ostreamERK12taylor_model">
+<span class="target" id="classaudi_1_1taylor__model_1acce9346259f3e4939d233f04a61ff1cd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N4audi12taylor_modelE" title="audi::taylor_model"><span class="n"><span class="pre">taylor_model</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tm</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12taylor_modellsERNSt7ostreamERK12taylor_model" title="Link to this definition"></a><br /></dt>
+<dd><p>Overloaded other operator. </p>
+<p>Stream insertion operator for <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> Outputs the contents of a <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> to the given output stream in a human-readable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>os</strong> – the output stream </p></li>
+<li><p><strong>tm</strong> – the <a class="reference internal" href="#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> to output</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a reference to the output stream with the formatted contents inserted </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utilities.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="taylor_model_functions.html" class="btn btn-neutral float-right" title="Taylor models functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

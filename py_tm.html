@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taylor models &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="Generalized Dual numbers" href="py_gdual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="py_gdual.html">Generalized Dual numbers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Taylor models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#taylor-model">taylor_model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_python.html">Documentation (Python package)</a></li>
+      <li class="breadcrumb-item active">Taylor models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/py_tm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="taylor-models">
+<h1>Taylor models<a class="headerlink" href="#taylor-models" title="Link to this heading"></a></h1>
+<p>The Taylor model class is made available in the python module pyaudi:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.taylor_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">taylor_model</span></code></a>: basic type for taylor_model computations</p></li>
+</ul>
+</div></blockquote>
+<section id="taylor-model">
+<h2>taylor_model<a class="headerlink" href="#taylor-model" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaudi.taylor_model">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyaudi.</span></span><span class="sig-name descname"><span class="pre">taylor_model</span></span><a class="headerlink" href="#pyaudi.taylor_model" title="Link to this definition"></a></dt>
+<dd><p>This class represents a Taylor model, containing a generalized dual number in combination with an
+interval. This implementation is derived from Makino (1998) and is built on top of a gdual object
+representing the Taylor polynomial (generalized dual number) part of the Taylor model.</p>
+<blockquote>
+<div><p>}</p>
+</div></blockquote>
+<p>A key concept here is Taylor’s theorem (formulation used from Makino (1998) p.80) which allows for a
+quantitative estimate of the error that is to be expected when approximating a function by its Taylor polynomial.
+Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the <span class="math notranslate nohighlight">\((n+1)\)</span> th
+derivative a method that has sometimes been employed in interval calculations.</p>
+<p>As a result, you get <span class="math notranslate nohighlight">\(\forall \vec{x} \in [\vec{a}, \vec{b}]\)</span> , a given order  <span class="math notranslate nohighlight">\(n\)</span> , and an expansion
+point <span class="math notranslate nohighlight">\(\vec{x_o}\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f}\)</span></p>
+<p>where f is the function you’re creating a Taylor model for, P is the Taylor polynomial, and I is
+the interval remainder.</p>
+<p>A basic example would be:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaudi</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span><span class="p">,</span> <span class="n">taylor_model</span><span class="p">,</span> <span class="n">int_d</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain_size</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp_points</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dom</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">domain_size</span><span class="p">,</span> <span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">domain_size</span><span class="p">),</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">domain_size</span><span class="p">,</span> <span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">domain_size</span><span class="p">)}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rem</span> <span class="o">=</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tpol</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">tpol</span><span class="p">,</span> <span class="n">rem</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">tpol</span><span class="p">,</span> <span class="n">rem</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">exp_points</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]},</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">dom</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">y</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.abs" title="Link to this definition"></a></dt>
+<dd><p>Absolute value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.acos">
+<span class="sig-name descname"><span class="pre">acos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.acos" title="Link to this definition"></a></dt>
+<dd><p>Arc cosine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.acosh">
+<span class="sig-name descname"><span class="pre">acosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.acosh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic cosine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arccos">
+<span class="sig-name descname"><span class="pre">arccos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arccos" title="Link to this definition"></a></dt>
+<dd><p>Arc cosine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arccosh">
+<span class="sig-name descname"><span class="pre">arccosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arccosh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic cosine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arcsin">
+<span class="sig-name descname"><span class="pre">arcsin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arcsin" title="Link to this definition"></a></dt>
+<dd><p>Arc sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arcsinh">
+<span class="sig-name descname"><span class="pre">arcsinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arcsinh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arctan">
+<span class="sig-name descname"><span class="pre">arctan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arctan" title="Link to this definition"></a></dt>
+<dd><p>Arc tangent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.arctanh">
+<span class="sig-name descname"><span class="pre">arctanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.arctanh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic arc tangent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.asin">
+<span class="sig-name descname"><span class="pre">asin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.asin" title="Link to this definition"></a></dt>
+<dd><p>Arc sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.asinh">
+<span class="sig-name descname"><span class="pre">asinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.asinh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.atan">
+<span class="sig-name descname"><span class="pre">atan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.atan" title="Link to this definition"></a></dt>
+<dd><p>Arc tangent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.atanh">
+<span class="sig-name descname"><span class="pre">atanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.atanh" title="Link to this definition"></a></dt>
+<dd><p>Inverse hyperbolic arc tangent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.cos">
+<span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.cos" title="Link to this definition"></a></dt>
+<dd><p>Cosine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.cosh">
+<span class="sig-name descname"><span class="pre">cosh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.cosh" title="Link to this definition"></a></dt>
+<dd><p>Hyperbolic cosine.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.domain">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#pyaudi.taylor_model.domain" title="Link to this definition"></a></dt>
+<dd><p>Domain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.exp">
+<span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.exp" title="Link to this definition"></a></dt>
+<dd><p>Exponential.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.exp_point">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">exp_point</span></span><a class="headerlink" href="#pyaudi.taylor_model.exp_point" title="Link to this definition"></a></dt>
+<dd><p>Expansion point(s)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.extend_symbol_set">
+<span class="sig-name descname"><span class="pre">extend_symbol_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.13)"><span class="pre">collections.abc.Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pyaudi.core.int_d</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.extend_symbol_set" title="Link to this definition"></a></dt>
+<dd><p>Extends the symbol set of the Taylor polynomial, also adding the corresponding expansion points and domain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.get_bounds">
+<span class="sig-name descname"><span class="pre">get_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyaudi.core.int_d</span></span></span><a class="headerlink" href="#pyaudi.taylor_model.get_bounds" title="Link to this definition"></a></dt>
+<dd><p>Compute the bounds of this Taylor model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.get_custom_bounds">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_custom_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tpol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="py_gdual.html#pyaudi.gdual_double" title="pyaudi.core.gdual_double"><span class="pre">pyaudi.core.gdual_double</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pyaudi.core.int_d</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyaudi.core.int_d</span></span></span><a class="headerlink" href="#pyaudi.taylor_model.get_custom_bounds" title="Link to this definition"></a></dt>
+<dd><p>Compute the bounds of a gdual polynomial over a given domain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.identity">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyaudi.taylor_model.identity" title="Link to this definition"></a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>identity() -&gt; pyaudi.core.taylor_model</p></li>
+<li><p>identity(rem: pyaudi.core.int_d, exp: collections.abc.Mapping[str, typing.SupportsFloat], domain: collections.abc.Mapping[str, pyaudi.core.int_d]) -&gt; pyaudi.core.taylor_model</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.interval_equal">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyaudi.core.int_d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyaudi.core.int_d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.interval_equal" title="Link to this definition"></a></dt>
+<dd><p>Compare two intervals for equality with optional tolerance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.log">
+<span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.log" title="Link to this definition"></a></dt>
+<dd><p>Natural logarithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.map_equal">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.map_equal" title="Link to this definition"></a></dt>
+<dd><p>Compare two maps of scalar values for equality with optional tolerance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.map_interval_equal">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">map_interval_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pyaudi.core.int_d</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.13)"><span class="pre">collections.abc.Mapping</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pyaudi.core.int_d</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.SupportsFloat" title="(in Python v3.13)"><span class="pre">SupportsFloat</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.map_interval_equal" title="Link to this definition"></a></dt>
+<dd><p>Compare two maps of intervals for equality with optional tolerance</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.rem_bound">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rem_bound</span></span><a class="headerlink" href="#pyaudi.taylor_model.rem_bound" title="Link to this definition"></a></dt>
+<dd><p>Remainder bound</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.sin">
+<span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.sin" title="Link to this definition"></a></dt>
+<dd><p>Sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.sinh">
+<span class="sig-name descname"><span class="pre">sinh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.sinh" title="Link to this definition"></a></dt>
+<dd><p>Hyperbolic sine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.sqrt">
+<span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.sqrt" title="Link to this definition"></a></dt>
+<dd><p>Square root.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.tan">
+<span class="sig-name descname"><span class="pre">tan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.tan" title="Link to this definition"></a></dt>
+<dd><p>Tangent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.tanh">
+<span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyaudi.taylor_model" title="pyaudi.core.taylor_model"><span class="pre">pyaudi.core.taylor_model</span></a></span></span><a class="headerlink" href="#pyaudi.taylor_model.tanh" title="Link to this definition"></a></dt>
+<dd><p>Hyperbolic tangent.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaudi.taylor_model.tpol">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tpol</span></span><a class="headerlink" href="#pyaudi.taylor_model.tpol" title="Link to this definition"></a></dt>
+<dd><p>Taylor polynomial</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="py_gdual.html" class="btn btn-neutral float-left" title="Generalized Dual numbers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

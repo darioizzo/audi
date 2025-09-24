@@ -1,92 +1,52 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>The algebra of truncated polynomials &mdash; audi 1.7 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The algebra of truncated polynomials &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
 
   
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
-        <link rel="up" title="Theory" href="theory.html"/>
-        <link rel="next" title="The very basics" href="notebooks/example00.html"/>
-        <link rel="prev" title="Theory" href="theory.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The very basics" href="notebooks/example00.html" />
+    <link rel="prev" title="Theory" href="theory.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> audi
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            audi
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.7
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
@@ -120,16 +80,23 @@
 <li class="toctree-l3"><a class="reference internal" href="#example-3-an-exponential">Example 3 - An exponential</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#taylor-models">Taylor models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#taylor-s-theorem">Taylor’s theorem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#formal-definition-tm">Formal definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
@@ -137,94 +104,63 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">audi</a>
-        
       </nav>
 
-
-      
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="theory.html">Theory</a> &raquo;</li>
-        
-      <li>The algebra of truncated polynomials</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="theory.html">Theory</a></li>
+      <li class="breadcrumb-item active">The algebra of truncated polynomials</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/theory_algebra.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="the-algebra-of-truncated-polynomials">
-<h1>The algebra of truncated polynomials<a class="headerlink" href="#the-algebra-of-truncated-polynomials" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="the-algebra-of-truncated-polynomials">
+<h1>The algebra of truncated polynomials<a class="headerlink" href="#the-algebra-of-truncated-polynomials" title="Link to this heading"></a></h1>
 <p>Here we introduce, formally, a basic algebraic structure over the set of truncated polynomials and we show how such a structure allows to compute the partial derivatives of multivariate functions up to arbitrary order.</p>
-<div class="section" id="formal-definition">
-<span id="id1"></span><h2>Formal definition<a class="headerlink" href="#formal-definition" title="Permalink to this headline">¶</a></h2>
-<p>Consider the set <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> of all polynomials of order <span class="math notranslate nohighlight">\(\le m\)</span> in <span class="math notranslate nohighlight">\(n\)</span> variables and having
+<section id="formal-definition">
+<span id="id1"></span><h2>Formal definition<a class="headerlink" href="#formal-definition" title="Link to this heading"></a></h2>
+<p>Consider the set <span class="math notranslate nohighlight">\(\mathcal{P}_{n,m}\)</span> of all polynomials of order <span class="math notranslate nohighlight">\(\le m\)</span> in <span class="math notranslate nohighlight">\(n\)</span> variables and having
 coefficients in <span class="math notranslate nohighlight">\(\mathbf K\)</span>. We indicate with the symbols <span class="math notranslate nohighlight">\(T_f, T_g, T_h\)</span>, etc. the generic members of such a set. Such a set is an algebra over the field <span class="math notranslate nohighlight">\(\mathbf K\)</span> if we introduce
 the truncated multiplication as the standard polynomial multiplication truncated at order <span class="math notranslate nohighlight">\(m\)</span>.
 When needed, we will indicate such a multiplication with the symbol <span class="math notranslate nohighlight">\(T_f \cdot T_g\)</span>.</p>
 <p>This algebra is commonly referred to as the algebra of truncated polynomials. A first important
 property of this algebra is that, under the multiplication, all polynomials having a zero constant
 coefficient are nil-potent of order <span class="math notranslate nohighlight">\(m+1\)</span>, as easily verified. We will indicate the generic
-truncated polynomial <span class="math notranslate nohighlight">\(\in \mathcal P_{n,m}\)</span> as <span class="math notranslate nohighlight">\(T_f\)</span> and often we will consider its constant part
+truncated polynomial <span class="math notranslate nohighlight">\(\in \mathcal{P}_{n,m}\)</span> as <span class="math notranslate nohighlight">\(T_f\)</span> and often we will consider its constant part
 separated from the rest, writing <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.
 It is worth noting at this point how such an algebra is unitary and associative.
 The first property, in particular, deserves a few more words as it is a property that the
 algebra of (non-truncated) polynomials does not possess. Formally
-<span class="math notranslate nohighlight">\(\forall T_f \in \mathcal P_{n,m}, \: \exists !\: T_g\in \mathcal P_{n,m}  \Rightarrow T_g\cdot T_f = 1\)</span>.
+<span class="math notranslate nohighlight">\(\forall T_f \in \mathcal{P}_{n,m}, \: \exists !\: T_g\in \mathcal{P}_{n,m}  \Rightarrow T_g\cdot T_f = 1\)</span>.
 In practice:</p>
 <div class="math notranslate nohighlight" id="equation-reciprocal">
-<span class="eqno">(1)<a class="headerlink" href="#equation-reciprocal" title="Permalink to this equation">¶</a></span>\[T_g = \frac 1{T_f} =  \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)\]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-reciprocal" title="Link to this equation"></a></span>\[T_g = \frac 1{T_f} =  \frac 1{f_0} \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)\]</div>
 <p>as its easily verified by performing the truncated multiplication <span class="math notranslate nohighlight">\(T_g \cdot T_f\)</span> and accounting for the nilpotency of <span class="math notranslate nohighlight">\(\hat f\)</span>.</p>
-<div class="section" id="the-link-to-taylor-expansions">
-<h3>The link to Taylor expansions<a class="headerlink" href="#the-link-to-taylor-expansions" title="Permalink to this headline">¶</a></h3>
+<section id="the-link-to-taylor-expansions">
+<h3>The link to Taylor expansions<a class="headerlink" href="#the-link-to-taylor-expansions" title="Link to this heading"></a></h3>
 <p>We make use of the multi-index notation according to which</p>
 <p><span class="math notranslate nohighlight">\(\alpha = (\alpha_1, ..,\alpha_n)\)</span> and <span class="math notranslate nohighlight">\(\mathbf x = (x_1, .., x_n)\)</span>
 are n-tuples and the Taylor expansion around the point <span class="math notranslate nohighlight">\(\mathbf a\)</span> to order
@@ -242,16 +178,16 @@ are n-tuples and the Taylor expansion around the point <span class="math notrans
 combinations of <span class="math notranslate nohighlight">\(\alpha_j \in N\)</span> such that <span class="math notranslate nohighlight">\(\sum_{j=1}^n \alpha_j = |\alpha|\)</span>.
 The expression above, i.e. the Taylor expansion truncated
 at order <span class="math notranslate nohighlight">\(m\)</span> of a generic function <span class="math notranslate nohighlight">\(f\)</span>, is a polynomial
-<span class="math notranslate nohighlight">\(\in \mathcal P_{n,m}\)</span> in the variables <span class="math notranslate nohighlight">\(\mathbf{dx} = \mathbf x-\mathbf a\)</span>.
-We now show that if <span class="math notranslate nohighlight">\(T_f, T_g \in \mathcal P_{n,m}\)</span> are Taylor expansions
+<span class="math notranslate nohighlight">\(\in \mathcal{P}_{n,m}\)</span> in the variables <span class="math notranslate nohighlight">\(\mathbf{dx} = \mathbf x-\mathbf a\)</span>.
+We now show that if <span class="math notranslate nohighlight">\(T_f, T_g \in \mathcal{P}_{n,m}\)</span> are Taylor expansions
 of two functions <span class="math notranslate nohighlight">\(f, g\)</span> then the Taylor expansion of <span class="math notranslate nohighlight">\(f\pm g, fg, f/g\)</span>
-can be found operating on the algebra <span class="math notranslate nohighlight">\(\mathcal P\)</span>, thus computing
+can be found operating on the algebra <span class="math notranslate nohighlight">\(\mathcal{P}\)</span>, thus computing
 <span class="math notranslate nohighlight">\(T_f\pm T_g, T_f\cdot T_g, T_f/T_g\)</span>. We may thus compute high order
 derivatives of multivariate functions computing their Taylor expansions
 and then extracting the desired coefficient.</p>
-</div>
-<div class="section" id="multiplication">
-<h3>Multiplication<a class="headerlink" href="#multiplication" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="multiplication">
+<h3>Multiplication<a class="headerlink" href="#multiplication" title="Link to this heading"></a></h3>
 <p>We here prove that the product of two truncated Taylor expansions is the
 truncated Taylor expansion of the product. We perform the proof for
 <span class="math notranslate nohighlight">\(n=1\)</span> as the notation is there clearer. The multivariate case is
@@ -275,11 +211,11 @@ Cauchy product of the two Taylor series (or discrete convolution) and are:</p>
 <p>which allows us to conclude:</p>
 <div class="math notranslate nohighlight">
 \[T_{(fg)} = T_f \cdot T_g.\]</div>
-</div>
-<div class="section" id="reciprocal">
-<h3>Reciprocal<a class="headerlink" href="#reciprocal" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="reciprocal">
+<h3>Reciprocal<a class="headerlink" href="#reciprocal" title="Link to this heading"></a></h3>
 <p>We here prove that the reciprocal of a truncated Taylor expansion,
-as defined in the algebra <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> is the Taylor expansion of
+as defined in the algebra <span class="math notranslate nohighlight">\(\mathcal{P}_{n,m}\)</span> is the Taylor expansion of
 the reciprocal. Consider the generic
 function <span class="math notranslate nohighlight">\(f\)</span> and its truncated Taylor expansion <span class="math notranslate nohighlight">\(T_f\)</span>.
 We denote with <span class="math notranslate nohighlight">\(T_{(1/f)}\)</span> the truncated Taylor expansion of the
@@ -292,12 +228,12 @@ and the definition of reciprocal:</p>
 <p>which allows us to conclude:</p>
 <div class="math notranslate nohighlight">
 \[T_{(1/f)} = \frac 1f_0 \left(1 +\sum_{j=1}^m (-1)^j (\hat f / f_0)^j\right)\]</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 <hr class="docutils" />
-<div class="section" id="elementary-functions">
-<h1>Elementary functions<a class="headerlink" href="#elementary-functions" title="Permalink to this headline">¶</a></h1>
+<section id="elementary-functions">
+<h1>Elementary functions<a class="headerlink" href="#elementary-functions" title="Link to this heading"></a></h1>
 <p>Consider the MacLaurin expansion of a generic function <span class="math notranslate nohighlight">\(g(x) = \sum g_n x^n\)</span>.
 Consider now a multivariate function <span class="math notranslate nohighlight">\(\hat f(\mathbf x) = \sum_{|\alpha|=1} f_\alpha \mathbf x^\alpha\)</span> whose MacLaurin Taylor expansion does not have a constant term. The composition between these two functions will then be, trivially,
 <span class="math notranslate nohighlight">\((g \circ \hat f) (x) = \sum g_n (\sum_{|\alpha|=1} f_\alpha \mathbf x^\alpha)^n\)</span>.
@@ -308,7 +244,7 @@ which can be written as:</p>
 \[T_{g\circ \hat f} = T_g\circ T_{\hat f}\]</div>
 <p>The above equation is called the <strong>composition rule</strong> and is only valid for functions whose Taylor expansion
 does not have a constant term and, is thus nil-potent of order
-<span class="math notranslate nohighlight">\(m+1\)</span> in <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span>. In  general, we cannot compute the truncated
+<span class="math notranslate nohighlight">\(m+1\)</span> in <span class="math notranslate nohighlight">\(\mathcal{P}_{n,m}\)</span>. In  general, we cannot compute the truncated
 Taylor expansion of a composition function directly composing the truncated
 Taylor expansions. For most elementary functions, though, we can consider
 <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span> and use some addition formula to be able to
@@ -318,8 +254,8 @@ reported in the following subsections for some commonly used functions.</p>
 <blockquote>
 <div><p>Other functions suc as tan, cosh etc. can also be treated similarly and are not reported for convenience.</p>
 </div></blockquote>
-<div class="section" id="exponential">
-<h2>Exponential<a class="headerlink" href="#exponential" title="Permalink to this headline">¶</a></h2>
+<section id="exponential">
+<h2>Exponential<a class="headerlink" href="#exponential" title="Link to this heading"></a></h2>
 <p>Let us consider the case of the exponential:</p>
 <div class="math notranslate nohighlight">
 \[g(x) = \exp(x) = \sum_{i=0} \frac{x^i}{i!} = 1 + x + \frac {x^2}{2} + ...\]</div>
@@ -335,10 +271,10 @@ a constant term. Hence:</p>
 \[T_{g \circ f} = \exp f_0 T_g \circ T_{\hat f}\]</div>
 <p>and, finally:</p>
 <div class="math notranslate nohighlight" id="equation-exp">
-<span class="eqno">(2)<a class="headerlink" href="#equation-exp" title="Permalink to this equation">¶</a></span>\[T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)\]</div>
-</div>
-<div class="section" id="logarithm">
-<h2>Logarithm<a class="headerlink" href="#logarithm" title="Permalink to this headline">¶</a></h2>
+<span class="eqno">(2)<a class="headerlink" href="#equation-exp" title="Link to this equation"></a></span>\[T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)\]</div>
+</section>
+<section id="logarithm">
+<h2>Logarithm<a class="headerlink" href="#logarithm" title="Link to this heading"></a></h2>
 <p>Let us consider the case of the natural logarithm:</p>
 <div class="math notranslate nohighlight">
 \[g(x) = \log(x)\]</div>
@@ -352,11 +288,11 @@ a constant term. Hence:</p>
 \[T_{g \circ f} = \log f_0 + T_{\log(1+x)} \circ \frac{\hat f}{f_0}\]</div>
 <p>and, using the known expression for MacLaurin expansion of <span class="math notranslate nohighlight">\(\log(1+x)\)</span>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-log">
-<span class="eqno">(3)<a class="headerlink" href="#equation-log" title="Permalink to this equation">¶</a></span>\[T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-log" title="Link to this equation"></a></span>\[T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...\]</div>
 <p>Note that the above expression is only defined if <span class="math notranslate nohighlight">\(f_0 \ge 0\)</span>.</p>
-</div>
-<div class="section" id="sine-and-cosine">
-<h2>Sine and cosine<a class="headerlink" href="#sine-and-cosine" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sine-and-cosine">
+<h2>Sine and cosine<a class="headerlink" href="#sine-and-cosine" title="Link to this heading"></a></h2>
 <p>Let us consider the case of the sine and cosine functions:</p>
 <div class="math notranslate nohighlight">
 \[g_1(x) = \sin(x) = \sum_{i=0} (-1)^{i} \frac{x^{2i+1}}{(2i+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - ...\]</div>
@@ -372,11 +308,11 @@ a constant term. Hence:</p>
 <p>and, applying the <strong>composition rule</strong> to <span class="math notranslate nohighlight">\(\cos(f(\mathbf x) - f_0)\)</span> and
 <span class="math notranslate nohighlight">\(\sin(f(\mathbf x) - f_0)\)</span>, we get:</p>
 <div class="math notranslate nohighlight" id="equation-sinandcos">
-<span class="eqno">(4)<a class="headerlink" href="#equation-sinandcos" title="Permalink to this equation">¶</a></span>\[\begin{split}T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
+<span class="eqno">(4)<a class="headerlink" href="#equation-sinandcos" title="Link to this equation"></a></span>\[\begin{split}T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\
 T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0 \left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)\end{split}\]</div>
-</div>
-<div class="section" id="exponentiation">
-<h2>Exponentiation<a class="headerlink" href="#exponentiation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exponentiation">
+<h2>Exponentiation<a class="headerlink" href="#exponentiation" title="Link to this heading"></a></h2>
 <p>Let us consider the case of the power function.</p>
 <div class="math notranslate nohighlight">
 \[g(x) = x^\alpha\]</div>
@@ -389,15 +325,15 @@ assuming to have access to the truncated Taylor expansion of <span class="math n
 <div class="math notranslate nohighlight">
 \[T_{f(\mathbf x)^\alpha} = f_0^\alpha \left(T_{(1+x)^\alpha}\circ \frac{\hat f}{f_0}\right) =\]</div>
 <div class="math notranslate nohighlight" id="equation-pow">
-<span class="eqno">(5)<a class="headerlink" href="#equation-pow" title="Permalink to this equation">¶</a></span>\[= f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha - 1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right)\]</div>
-</div>
-</div>
+<span class="eqno">(5)<a class="headerlink" href="#equation-pow" title="Link to this equation"></a></span>\[= f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\frac{\hat f}{f_0}\right)^k = f_0^\alpha\left(1 + \alpha \frac{\hat f}{f_0} + \frac{\alpha (\alpha - 1)}{2}\left(\frac{\hat f}{f_0}\right)^2 + ... \right)\]</div>
+</section>
+</section>
 <hr class="docutils" />
-<div class="section" id="inverse-functions">
-<h1>Inverse functions<a class="headerlink" href="#inverse-functions" title="Permalink to this headline">¶</a></h1>
+<section id="inverse-functions">
+<h1>Inverse functions<a class="headerlink" href="#inverse-functions" title="Link to this heading"></a></h1>
 <p>The case for the inverse trigonometric functions and hyperbolic functions is more complex and deserves some extended discussion.</p>
-<div class="section" id="inverse-hyperbolic-tangent">
-<h2>Inverse hyperbolic tangent<a class="headerlink" href="#inverse-hyperbolic-tangent" title="Permalink to this headline">¶</a></h2>
+<section id="inverse-hyperbolic-tangent">
+<h2>Inverse hyperbolic tangent<a class="headerlink" href="#inverse-hyperbolic-tangent" title="Link to this heading"></a></h2>
 <p>We consider the inverse hyperbolic tangent function:</p>
 <div class="math notranslate nohighlight">
 \[g(x) = \mbox{atanh} (x)\]</div>
@@ -416,9 +352,9 @@ assuming to have access to the truncated Taylor expansion of <span class="math n
 <p>Using the Taylor expansions for the logaritmic functions we get the final expression used in AuDi:</p>
 <div class="math notranslate nohighlight">
 \[T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{n=1}^m \left(\frac{1}{(1-f_0)^n} + \frac{(-1)^{n+1}}{(1+f_0)^n}\right) \frac {\hat f^n}{n}\]</div>
-</div>
-<div class="section" id="inverse-tangent">
-<h2>Inverse tangent<a class="headerlink" href="#inverse-tangent" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="inverse-tangent">
+<h2>Inverse tangent<a class="headerlink" href="#inverse-tangent" title="Link to this heading"></a></h2>
 <p>We consider the inverse tangent function:</p>
 <div class="math notranslate nohighlight">
 \[g(x) = \mbox{atan} (x)\]</div>
@@ -450,9 +386,9 @@ T_{(\mbox{atan} f)} =  \mbox{atan} f_0 +\frac 12 \sum_{k=1}^{2k-1\le m} \left(\f
 T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose 2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \sum_{k=1}^{2k\le m} \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat f^{2k}}{2k}(-1)^k
 \end{multline*}\end{split}\]</div>
 <p>This formula is rather friendly to a computer implementation and is used in AuDi.</p>
-</div>
-<div class="section" id="the-other-inverse-functions">
-<h2>The other inverse functions<a class="headerlink" href="#the-other-inverse-functions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="the-other-inverse-functions">
+<h2>The other inverse functions<a class="headerlink" href="#the-other-inverse-functions" title="Link to this heading"></a></h2>
 <p>To compute the other inverse functions we may now use the identities:</p>
 <div class="math notranslate nohighlight">
 \[\mbox{arccosh} x = \log(d + \sqrt{d^2 - 1})\]</div>
@@ -463,17 +399,17 @@ T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + 
 <div class="math notranslate nohighlight">
 \[\arccos x = \arctan(d / \sqrt{1 - d^2})\]</div>
 <p>which apply also for the Taylor expansions.</p>
-</div>
-</div>
+</section>
+</section>
 <hr class="docutils" />
-<div class="section" id="practical-examples-to-be-done-by-hand">
-<h1>Practical Examples (to be done by hand)<a class="headerlink" href="#practical-examples-to-be-done-by-hand" title="Permalink to this headline">¶</a></h1>
+<section id="practical-examples-to-be-done-by-hand">
+<h1>Practical Examples (to be done by hand)<a class="headerlink" href="#practical-examples-to-be-done-by-hand" title="Link to this heading"></a></h1>
 <p>In the above sections we derived a number of results that allow operating
 on simple Taylor expansions to compute Taylor expansions of increasingly
 complex expressions. We summarize here those results (keep in mind that
 <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>) :</p>
 <div class="math notranslate nohighlight" id="equation-all">
-<span class="eqno">(6)<a class="headerlink" href="#equation-all" title="Permalink to this equation">¶</a></span>\[\begin{split}T_{f\pm g} = T_f \pm T_g\\
+<span class="eqno">(6)<a class="headerlink" href="#equation-all" title="Link to this equation"></a></span>\[\begin{split}T_{f\pm g} = T_f \pm T_g\\
 T_{fg} = T_f \cdot T_g\\
 T_{(1/f)} = \frac 1f_0 \left(1 +\sum_{k=1}^m (-1)^k (\hat f / f_0)^k\right)\\
 T_{(\exp f)} = \exp f_0 \sum_{k=0}^m \frac{\hat f^k}{k!} \\
@@ -487,18 +423,18 @@ T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + 
 <p>It is worth mentioning here that other functions such as the inverse functions,
 the hyperbolic functions etc. can also be treated in this way.
 The above equations can be used to find Taylor expansions of increasingly
-complex functions by simply operating on the algebra <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span>.
+complex functions by simply operating on the algebra <span class="math notranslate nohighlight">\(\mathcal{P}_{n,m}\)</span>.
 Once a Taylor expansion is computed, its coefficients can be extracted to
 obtain the value of any desired derivative. We have thus built an automated
 differentiation system. While the formalism presented can, at first, appear
 complex, the system is rather simple as we hope will appear from the following
 examples.</p>
-<div class="section" id="example-1-a-multiplication">
-<h2>Example 1 - A multiplication<a class="headerlink" href="#example-1-a-multiplication" title="Permalink to this headline">¶</a></h2>
+<section id="example-1-a-multiplication">
+<h2>Example 1 - A multiplication<a class="headerlink" href="#example-1-a-multiplication" title="Link to this heading"></a></h2>
 <p>Consider the simple function of two variables:</p>
 <div class="math notranslate nohighlight">
 \[f(x,y) = x + 3xy + y^2\]</div>
-<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal P_{2,2}\)</span> can be computed as:</p>
+<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal{P}_{2,2}\)</span> can be computed as:</p>
 <div class="math notranslate nohighlight">
 \[T_f = T_x + 3T_x \cdot T_y + T_y\cdot T_y\]</div>
 <p>Let us explicitly compute such an expression at the point <span class="math notranslate nohighlight">\(x=3\)</span>, <span class="math notranslate nohighlight">\(y=7\)</span>. The exact sequence of computations to be performed is:</p>
@@ -522,13 +458,13 @@ examples.</p>
 \partial_{xy} f = 3,
 \partial_{xx} f = 0,
 \partial_{yy} f = 2,\]</div>
-</div>
-<div class="section" id="example-2-a-division">
-<h2>Example 2 - A division<a class="headerlink" href="#example-2-a-division" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-2-a-division">
+<h2>Example 2 - A division<a class="headerlink" href="#example-2-a-division" title="Link to this heading"></a></h2>
 <p>Consider the simple function of two variables:</p>
 <div class="math notranslate nohighlight">
 \[f = 1 / (x + 2xy + y^2) = 1 / p\]</div>
-<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal P_{2,2}\)</span> in (say) <span class="math notranslate nohighlight">\(x=0\)</span>, <span class="math notranslate nohighlight">\(y=1\)</span>
+<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal{P}_{2,2}\)</span> in (say) <span class="math notranslate nohighlight">\(x=0\)</span>, <span class="math notranslate nohighlight">\(y=1\)</span>
 can be computed as follows:</p>
 <div class="math notranslate nohighlight">
 \[T_x = 0 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2\]</div>
@@ -550,13 +486,13 @@ can be computed as follows:</p>
 \partial_{xy} f = 10,
 \partial_{xx} f = 18,
 \partial_{yy} f = 6,\]</div>
-</div>
-<div class="section" id="example-3-an-exponential">
-<h2>Example 3 - An exponential<a class="headerlink" href="#example-3-an-exponential" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-3-an-exponential">
+<h2>Example 3 - An exponential<a class="headerlink" href="#example-3-an-exponential" title="Link to this heading"></a></h2>
 <p>Consider the elementary function of two variables:</p>
 <div class="math notranslate nohighlight">
 \[f = \exp(xy)\]</div>
-<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal P_{2,2}\)</span> in (say) <span class="math notranslate nohighlight">\(x=1\)</span>, <span class="math notranslate nohighlight">\(y=0\)</span>
+<p>Its Taylor expansion <span class="math notranslate nohighlight">\(T_f \in \mathcal{P}_{2,2}\)</span> in (say) <span class="math notranslate nohighlight">\(x=1\)</span>, <span class="math notranslate nohighlight">\(y=0\)</span>
 can be computed as follows:</p>
 <div class="math notranslate nohighlight">
 \[T_x = 1 + 1 dx + 0 dy  + 0 dxdy + 0 dx^2 + 0 dy^2\]</div>
@@ -575,80 +511,126 @@ can be computed as follows:</p>
 \partial_{xy} f = 1,
 \partial_{xx} f = 0,
 \partial_{yy} f = 1,\]</div>
+</section>
+</section>
+<section id="taylor-models">
+<h1>Taylor models<a class="headerlink" href="#taylor-models" title="Link to this heading"></a></h1>
+<p>Taylor series can be arbitrarily good approximations of functions and as such, can provide
+derivatives and solutions to ODEs to high orders. However, by definition a Taylor series does not
+consider its truncated part. While this part is very often small, it doesn’t allow
+for a rigorous assessment of the set of reachable states of a system/function. This knowledge would be
+useful for anybody that wants to have a mathematical guarantee of the range of the function. A
+simple example is of course the initial uncertainty of a satellite state propagated through space.
+With a mathematical description of the remainder, one can guarantee that two objects will not
+collide (assuming the dynamics of the propagation perfectly resembles reality).</p>
+<p>To describe this remainder term, which represents the magnitude of all the terms that were truncated by
+the Taylor series, interval arithmetic is used and added to a new object called a Taylor model.</p>
+<section id="taylor-s-theorem">
+<h2>Taylor’s theorem<a class="headerlink" href="#taylor-s-theorem" title="Link to this heading"></a></h2>
+<p>A core part of the Taylor model arithmetic is Taylor’s theorem (here for one variable only for
+simplicity):</p>
+<p>Let <span class="math notranslate nohighlight">\(k \geq 1\)</span> be an integer and let the function <span class="math notranslate nohighlight">\(f: R \rightarrow R\)</span> be <span class="math notranslate nohighlight">\(k\)</span> times differentiable at
+the point <span class="math notranslate nohighlight">\(a \in R\)</span>. Then there exists a real number <span class="math notranslate nohighlight">\(\xi \in [a, x]\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \sum^k_{i=0} \frac{f^{(i)}(a)}{i!}(x - a)^i + \frac{f^{(k+1)}(\xi)}{(k+1)!}(x - a)^{k + 1}\]</div>
+<p>This tells us that you can approximate the range of a function within a given domain by taking the
+<span class="math notranslate nohighlight">\(k+1\)</span> th derivative of <span class="math notranslate nohighlight">\(f\)</span> at a given point within that domain. A simple intuition would
+be: if you wanted to approximate a 0th order function, you could take the first order derivative and
+state that <span class="math notranslate nohighlight">\(f(x) = f(0) + f'(\xi) \cdot x\)</span> if the domain is <span class="math notranslate nohighlight">\([0, x]\)</span>. This first order
+derivative would then indicate the maximum deviation. In reality more steps are required for a
+mathematically sound reasoning, and details can be found <a class="reference external" href="https://gowers.wordpress.com/2014/02/11/taylors-theorem-with-the-lagrange-form-of-the-remainder/">here2</a>
+and <a class="reference external" href="https://davidlowryduda.com/p/1520/">here3</a>.</p>
+</section>
+<section id="formal-definition-tm">
+<span id="id2"></span><h2>Formal definition<a class="headerlink" href="#formal-definition-tm" title="Link to this heading"></a></h2>
+<p>Now, we define a Taylor model as a tuple of a (now multi-dimensional) Taylor polynomial <span class="math notranslate nohighlight">\(P_f\)</span>
+of order <span class="math notranslate nohighlight">\(k\)</span> expanded around <span class="math notranslate nohighlight">\(\vec{x_0}\)</span> and valid over a domain <span class="math notranslate nohighlight">\([\vec{a},
+\vec{b}]\)</span> and an interval <span class="math notranslate nohighlight">\(I_f\)</span>. In other words:</p>
+<div class="math notranslate nohighlight">
+\[\forall \vec{x} \in [\vec{a}, \vec{b}] \quad f(\vec{x}) \in P_f(\vec{x} - \vec{x_0}) + I_f\]</div>
+</section>
+<section id="arithmetic">
+<h2>Arithmetic<a class="headerlink" href="#arithmetic" title="Link to this heading"></a></h2>
+<p>While all arithmetic operations can be found in [1], I will show a few example. For addition, you
+would have:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(\vec{x})+g(\vec{x}) &amp; \in(P_{f}(\vec{x}-\vec{x}_0)+I_{f})+(P_{g}(\vec{x}-\vec{x}_0)+I_{g})\\ &amp;= (P_{f}(\vec{x}-\vec{x}_0)+P_{g}(\vec{x}-\vec{x}_0))+(I_{f}+I_{g})\end{split}\]</div>
+<p>so that a Taylor model <span class="math notranslate nohighlight">\(T_{f+g}\)</span> for <span class="math notranslate nohighlight">\(f+g\)</span> can be obtained via</p>
+<div class="math notranslate nohighlight">
+\[P_{f+g}=P_{f}+P_{g} \quad \text { and } \quad I_{f+g}=I_{f}+I_{g}\]</div>
+<p>It should be noted that gduals are used for all operations involving Taylor polynomials. Thus we define</p>
+<div class="math notranslate nohighlight">
+\[T_{f}+T_{g}=(P_{f}+P_{g}, I_{f}+I_{g})\]</div>
+<p>And for multiplication</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(\vec{x}) \cdot g(\vec{x}) &amp; \in (P_{f}(\vec{x}-\vec{x}_0)+I_{f}) \cdot(P_{g}(\vec{x}-\vec{x}_0)+I_{g}) \\ &amp; \subseteq P_{f}(\vec{x}-\vec{x}_0) \cdot P_{g}(\vec{x}-\vec{x}_0) +P_{f}(\vec{x}-\vec{x}_0) \cdot I_{g}+P_{g}(\vec{x}-\vec{x}_0) \cdot I_{f}+I_{f} \cdot I_{g} .\end{split}\]</div>
+<p>Note that <span class="math notranslate nohighlight">\(P_{f} \cdot P_{g}\)</span> is a polynomial of <span class="math notranslate nohighlight">\((2 k)\)</span> th order. We split it into the
+part of up to <span class="math notranslate nohighlight">\(k\)</span> th order, which agrees with the Taylor polynomial <span class="math notranslate nohighlight">\(P_{f \cdot g}\)</span> of
+order <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(f \cdot g\)</span>, and the excess polynomial <span class="math notranslate nohighlight">\(P_e\)</span>, so that we have</p>
+<div class="math notranslate nohighlight">
+\[P_{f}(\vec{x}-\vec{x}_0) \cdot P_{g}(\vec{x}-\vec{x}_0)=P_{f \cdot g}(\vec{x}-\vec{x}_0)+P_e(\vec{x}-\vec{x}_0) .\]</div>
+<p>A Taylor model for <span class="math notranslate nohighlight">\(f \cdot g\)</span> can now be obtained by finding a bound interval for all the
+terms except <span class="math notranslate nohighlight">\(P_{f \cdot g}\)</span>. For this purpose, let <span class="math notranslate nohighlight">\(B(P)\)</span> be bounds of the polynomial
+<span class="math notranslate nohighlight">\(P:[\vec{a}, \vec{b}] \subset R^v \rightarrow R\)</span>, namely,</p>
+<div class="math notranslate nohighlight">
+\[\forall \vec{x} \in[\vec{a}, \vec{b}], \quad P(\vec{x}) \in B(P)\]</div>
+<p>Altogether, interval remainder bounds for <span class="math notranslate nohighlight">\(f \cdot g\)</span> can be found via</p>
+<div class="math notranslate nohighlight">
+\[I_{f \cdot g}=B(P_e)+B(P_{f}) \cdot I_{g}+B(P_{g}) \cdot I_{f}+I_{f} \cdot I_{g}\]</div>
+<p>Definitions are also given of all intrinsic functions such as exponential, logarithm, sine etc. (again, see [1]).</p>
+<p>It was just shown that polynomials of the excess polynomial <span class="math notranslate nohighlight">\(P_e\)</span> need to be calculated. For
+this, we use bernstein polynomials. Bernstein polynomials are a reformulation of any particular
+polynomial in a certain form. It turns out that the coefficients of these Bernstein polynomial terms
+indicate something about the range. In particular the Bernstein form theorem (for univariate polynomials) is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\min \{b_k : k = 0, 1, ..., n\} \leq P(c) \leq \max \{b_k: k = 0, 1, ..., n\} \quad (0 \leq x \leq 1) \\ \text{where, } \quad
+b_k = \sum^k_{r=0} a_r \frac{\left(\begin{smallmatrix} k \\ r \end{smallmatrix}\right)}{\left(\begin{smallmatrix} n \\ r \end{smallmatrix}\right)} (k = 0, 1, ..., n)\end{split}\]</div>
+<p>In particular, the maximum and minimum coefficient give a tight bound on the range of the
+polynomial over a given domain if the minimum and maximum actually correspond to the first and last
+bernstein coefficient. More can be read in [2] about its basic form.</p>
+<p>Exhaustively evaluating these Bernstein coefficients is a computationally intensive task, especially
+with growing dimension and monomial count. To remedy this, a recently developed matrix method was
+implemented from [3].</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">[1] Makino, Kyoko. Rigorous analysis of nonlinear motion in particle accelerators. Michigan State University, 1998.</div>
+<div class="line">[2] Cargo, G. T., and Oved Shisha. “The Bernstein form of a polynomial.” J. Res. Nat. Bur. Standards B 70 (1966): 79-81.</div>
+<div class="line">[3] Titi, Jihad, and Jürgen Garloff. “Matrix methods for the tensorial Bernstein form.” Applied Mathematics and Computation 346 (2019): 254-271.</div>
 </div>
-</div>
+</section>
+</section>
 
 
            </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="notebooks/example00.html" class="btn btn-neutral float-right" title="The very basics" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="theory.html" class="btn btn-neutral" title="Theory" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="theory.html" class="btn btn-neutral float-left" title="Theory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/example00.html" class="btn btn-neutral float-right" title="The very basics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
-
-    </p>
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.7',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="None"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

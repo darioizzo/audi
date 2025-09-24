@@ -1,100 +1,67 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Utilities &mdash; audi 1.7 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utilities &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
 
   
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
-        <link rel="up" title="Documentation (C++ header only library)" href="doc_c++.html"/>
-        <link rel="next" title="Documentation (Python package)" href="doc_python.html"/>
-        <link rel="prev" title="Mathematical functions" href="functions.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Taylor models" href="taylor_model.html" />
+    <link rel="prev" title="Mathematical functions" href="functions.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> audi
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            audi
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.7
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Utilities</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb"><code class="docutils literal notranslate"><span class="pre">invert_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html">Taylor models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
@@ -102,13 +69,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
@@ -116,217 +83,139 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">audi</a>
-        
       </nav>
 
-
-      
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="documentation.html">Documentation</a> &raquo;</li>
-        
-          <li><a href="doc_c++.html">Documentation (C++ header only library)</a> &raquo;</li>
-        
-      <li>Utilities</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+      <li class="breadcrumb-item active">Utilities</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/utilities.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h1>
 <p><em>#include &lt;audi/invert_map.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv410invert_mapRKNSt6vectorI7gdual_dEEb">
-std::vector&lt;gdual_d&gt; <code class="sig-name descname">invert_map</code><span class="sig-paren">(</span><em class="property">const</em> std::vector&lt;gdual_d&gt; &amp;<em>map_in</em>, bool <em>verbose</em> = false<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv410invert_mapRKNSt6vectorI7gdual_dEEb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Inversion of Taylor series.</p>
-<p>Consider a system of non linear equations in <span class="math notranslate nohighlight">\(n\)</span> variables:</p>
-<div class="math notranslate nohighlight">
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cf</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Monomial</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a9b1799d954f55f67fdd7a7ed697b3b83"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">taylor_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb" title="audi::invert_map::Cf"><span class="n"><span class="pre">Cf</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb" title="audi::invert_map::Monomial"><span class="n"><span class="pre">Monomial</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">invert_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">taylor_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb" title="audi::invert_map::Cf"><span class="n"><span class="pre">Cf</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb" title="audi::invert_map::Monomial"><span class="n"><span class="pre">Monomial</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">map_in</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">verbose</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi10invert_mapE10taylor_mapI2Cf8MonomialERK10taylor_mapI2Cf8MonomialEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Inversion of Taylor maps. </p>
+<p>Consider a system of non linear equations in <span class="math notranslate nohighlight">\(n\)</span> variables:         <div class="math notranslate nohighlight">
 \[\begin{split}\left\{
 \begin{array}{l}
 f_1(x_1, x_2, .., x_n) = 0 \\
 ...                        \\
 f_n(x_1, x_2, .., x_n) = 0 \\
 \end{array}
-\right.\end{split}\]</div>
-<p>and represent each equation via a Taylor polynomial truncated at order <span class="math notranslate nohighlight">\(m\)</span> (i.e. <span class="math notranslate nohighlight">\(\in \mathcal P_{n,m}\)</span>) around
-some point <span class="math notranslate nohighlight">\(\overline {\mathbf x}\)</span>:</p>
-<div class="math notranslate nohighlight">
+\right.
+\end{split}\]</div>
+ and represent each of it via a Taylor polynomial truncated at order <span class="math notranslate nohighlight">\(m\)</span> (i.e. <span class="math notranslate nohighlight">\(\in \mathcal P_m\)</span>) around some point <span class="math notranslate nohighlight">\(\overline {\mathbf x}\)</span>:         <div class="math notranslate nohighlight">
 \[\begin{split}\left\{
 \begin{array}{l}
 T_{f_1}(dx_1, dx_2, .., dx_n) = 0 \\
 ...                        \\
 T_{f_n}(dx_1, dx_2, .., dx_n) = 0 \\
 \end{array}
-\right.\end{split}\]</div>
-<p>The above system of, now, polynomial equations can be written as <span class="math notranslate nohighlight">\(C + M + N = C + \mathcal M = 0\)</span>, where we have
-explicitly indicated the constant term <span class="math notranslate nohighlight">\(C\)</span>, the linear term <span class="math notranslate nohighlight">\(M\)</span> and the rest <span class="math notranslate nohighlight">\(N\)</span>. The symbol
-<span class="math notranslate nohighlight">\(\mathcal M\)</span> indicates what is called Taylor map and its inverse is found by this function by performing
-some Picard iterations (fixed point) over the following simple formal equalities:</p>
-<div class="math notranslate nohighlight">
+\right.
+\end{split}\]</div>
+ The above system of, now, polynomial equations can be written as <span class="math notranslate nohighlight">\(C + M + N = C + \mathcal M = 0\)</span>, where we have explicitly indicated the constant term <span class="math notranslate nohighlight">\(C\)</span>, the linear term <span class="math notranslate nohighlight">\(M\)</span> and the rest <span class="math notranslate nohighlight">\(N\)</span>. The symbol <span class="math notranslate nohighlight">\(\mathcal M\)</span> indicates what we call a Taylor map and its inverse is found by this function by performing some Picard iterations (fixed point) over the following simple formal equalities:</p>
+<p><div class="math notranslate nohighlight">
 \[\mathcal M \circ \mathcal M^{-1} = \mathcal I \rightarrow  (M + N) \circ \mathcal M^{-1}  = \mathcal I \rightarrow M
-\circ \mathcal M^{-1} + N \circ \mathcal M^{-1} = \mathcal I\]</div>
-<p>and hence:</p>
-<div class="math notranslate nohighlight">
-\[\mathcal M^{-1} = M^{-1} \circ \left(\mathcal I - N \circ \mathcal M^{-1}\right)\]</div>
-<p>which can be used to make a fixed point iterative scheme once
-the inverse of the linear part <span class="math notranslate nohighlight">\(M^{-1}\)</span> is found. Note that the inverse is guaranteed to exist if the linear part is invertible.</p>
+\circ \mathcal M^{-1} + N \circ \mathcal M^{-1} = \mathcal I \]</div>
+ and hence:  <div class="math notranslate nohighlight">
+\[ \mathcal M^{-1} = M^{-1} \circ
+\left(\mathcal I - N \circ \mathcal M^{-1}\right) \]</div>
+ which can be used to make a fixed point iterative scheme once the inverse of the linear part <span class="math notranslate nohighlight">\(M^{-1}\)</span> is found using any linear algebraic tool. Note that the inverse is guaranteed to exist if the linear part is invertible.</p>
+<p><ul class="simple">
+<li><p>Example usage:</p></li>
+</ul>
+</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">sinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">asinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">asin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">inv_sinx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">invert_map</span><span class="p">({</span><span class="n">sinx</span><span class="p">});</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;sin x:</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sinx</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;asin x:</span><span class="se">\t\t</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">asinx</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;inv sinx:</span><span class="se">\t</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">inv_sinx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The code above will produce the output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sin x:        dx1+2.75573e-06*dx1**9-0.166667*dx1**3+0.00833333*dx1**5-0.000198413*dx1**7
+asin x:       dx1+0.0303819*dx1**9+0.166667*dx1**3+0.075*dx1**5+0.0446429*dx1**7
+inv sinx:     dp0+0.0303819*dp0**9+0.166667*dp0**3+0.075*dp0**5+0.0446429*dp0**7
+</pre></div>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>map_in</strong> – The input map represented as an <em>std::vector</em> of <em>gdual&lt;double&gt;</em>. They can have a constant coefficient which will be neglected</p></li>
-<li><p><strong>verbose</strong> – when true some output is shown during the iterations</p></li>
+<li><p><strong>map_in</strong> – The input map represented as an <code class="docutils literal notranslate"> <span class="pre">std::vector</span> </code> of <code class="docutils literal notranslate"> <span class="pre">gduals</span> </code>. They can have a constant coefficient which will be neglected </p></li>
+<li><p><strong>verbose</strong> – when true some output is shown during the Picard iterations</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The inverse map <span class="math notranslate nohighlight">\(\mathcal M^{-1}\)</span> represented as an <em>std::vector</em> of <em>gduals</em> with symbol set
-[p0, p1, .. pn]</p>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">map_in</span></code> is empty, if its linear part is not invertable, if the symbol set of the map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of the gduals are not all the same.</p>
 </dd>
-<dt class="field-odd">Exception</dt>
-<dd class="field-odd"><p>std::invalid_argument if <em>map_in</em> is empty, if its linear part is not invertable, if the symbol set of the
-map components are not all equal, if the map is not square (i.e. it is of size n with n symbols) or if the order of
-the gduals are not all the same.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The inverse map <span class="math notranslate nohighlight">\(\mathcal M^{-1}\)</span> represented as an <code class="docutils literal notranslate"> <span class="pre">std::vector</span> </code> of <code class="docutils literal notranslate"> <span class="pre">gduals</span> </code> with symbol set [p0, p1, .. pn]</p>
 </dd>
 </dl>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">x</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="s">&quot;x1&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
-<span class="k">auto</span> <span class="n">sinx</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
-<span class="k">auto</span> <span class="n">asinx</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
-<span class="k">auto</span> <span class="n">inv_sinx</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">({</span><span class="n">sinx</span><span class="p">});</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;sin x:</span><span class="se">\t\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;asin x:</span><span class="se">\t\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">asinx</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;inv sinx:</span><span class="se">\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inv_sinx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>The code above will produce the output</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">sin</span> <span class="nl">x</span><span class="p">:</span>        <span class="n">dx1</span><span class="o">+</span><span class="mf">2.75573e-06</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">-</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.00833333</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">-</span><span class="mf">0.000198413</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
-<span class="n">asin</span> <span class="nl">x</span><span class="p">:</span>       <span class="n">dx1</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dx1</span><span class="o">**</span><span class="mi">7</span>
-<span class="n">inv</span> <span class="nl">sinx</span><span class="p">:</span>     <span class="n">dp0</span><span class="o">+</span><span class="mf">0.0303819</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">9</span><span class="o">+</span><span class="mf">0.166667</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">3</span><span class="o">+</span><span class="mf">0.075</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">5</span><span class="o">+</span><span class="mf">0.0446429</span><span class="o">*</span><span class="n">dp0</span><span class="o">**</span><span class="mi">7</span>
-</pre></div>
-</div>
 </dd></dl>
 
-</div>
+</section>
 
 
            </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="doc_python.html" class="btn btn-neutral float-right" title="Documentation (Python package)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="functions.html" class="btn btn-neutral" title="Mathematical functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="functions.html" class="btn btn-neutral float-left" title="Mathematical functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="taylor_model.html" class="btn btn-neutral float-right" title="Taylor models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
-
-    </p>
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.7',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="None"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

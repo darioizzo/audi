@@ -1,100 +1,91 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Mathematical functions &mdash; audi 1.7 documentation</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathematical functions &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
 
   
-  
-
-  
-
-  
-  
-    
-
-  
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="audi 1.7 documentation" href="index.html"/>
-        <link rel="up" title="Documentation (C++ header only library)" href="doc_c++.html"/>
-        <link rel="next" title="Utilities" href="utilities.html"/>
-        <link rel="prev" title="Generalized Dual numbers" href="gdual.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Generalized Dual numbers" href="gdual.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+        <div class="wy-side-nav-search" >
 
           
-            <a href="index.html" class="icon icon-home"> audi
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            audi
           </a>
-
-          
-            
-            
-              <div class="version">
-                1.7
-              </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-                <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="doc_c++.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Mathematical functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Mathematical functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">exp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">log()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN4audi8binomialE1T1Tj"><code class="docutils literal notranslate"><span class="pre">binomial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">pow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sqrt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cbrt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sin_and_cos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">tan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sinh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">cosh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">tanh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">atanh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">atan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">asinh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">acosh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">asin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">acos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME"><code class="docutils literal notranslate"><span class="pre">abs()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html">Taylor models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_bounding.html">Taylor models bounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
@@ -102,13 +93,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Basic Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
@@ -116,563 +107,494 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">audi</a>
-        
       </nav>
 
-
-      
       <div class="wy-nav-content">
         <div class="rst-content">
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="documentation.html">Documentation</a> &raquo;</li>
-        
-          <li><a href="doc_c++.html">Documentation (C++ header only library)</a> &raquo;</li>
-        
-      <li>Mathematical functions</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+      <li class="breadcrumb-item active">Mathematical functions</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="_sources/functions.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="mathematical-functions">
-<h1>Mathematical functions<a class="headerlink" href="#mathematical-functions" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="mathematical-functions">
+<h1>Mathematical functions<a class="headerlink" href="#mathematical-functions" title="Link to this heading"></a></h1>
 <p>The following functions are implemented computing the truncated Taylor series of the argument:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference internal" href="#_CPPv4I0E3exp1TRK1T" title="exp"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">exp()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E3log1TRK1T" title="log"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">log()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">pow()</span></code></a> (4 overloads), <a class="reference internal" href="#_CPPv4I0E4sqrt1TRK1T" title="sqrt"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sqrt()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E4cbrt1TRK1T" title="cbrt"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cbrt()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#_CPPv4I0E3sin1TRK1T" title="sin"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sin()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E3cos1TRK1T" title="cos"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cos()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E11sin_and_cosNSt5arrayI1TXL2EEEERK1T" title="sin_and_cos"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sin_and_cos()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E3tan1TRK1T" title="tan"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">tan()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#_CPPv4I0E4atan1TRK1T" title="atan"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atan()</span></code></a>,  <a class="reference internal" href="#_CPPv4I0E4asin1TRK1T" title="asin"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">asin()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E4acos1TRK1T" title="acos"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">acos()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#_CPPv4I0E4sinh1TRK1T" title="sinh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E4cosh1TRK1T" title="cosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cosh()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E13sinh_and_coshNSt5arrayI1TXL2EEEERK1T" title="sinh_and_cosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E4tanh1TRK1T" title="tanh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">tanh()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#_CPPv4I0E5atanh1TRK1T" title="atanh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atanh()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E5asinh1TRK1T" title="asinh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">asinh()</span></code></a>, <a class="reference internal" href="#_CPPv4I0E5acosh1TRK1T" title="acosh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">acosh()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#_CPPv4I0E3abs1TRK1T" title="abs"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">abs()</span></code></a></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">exp()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">log()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">pow()</span></code> (4 overloads), <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sqrt()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cbrt()</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sin()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cos()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sin_and_cos()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">tan()</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atan()</span></code>,  <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">asin()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">acos()</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">cosh()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">sinh_and_cosh()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">tanh()</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atanh()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">asinh()</span></code>, <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">acosh()</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">abs()</span></code></p></li>
 </ul>
 </div></blockquote>
 <p>The following functions are implemented using the definition of their derivative:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><a class="reference internal" href="#_CPPv4I0E3erf1TRK1T" title="erf"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">erf()</span></code></a>: error function</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">erf()</span></code>: error function</p></li>
 </ul>
 </div></blockquote>
 <hr class="docutils" />
 <p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3exp1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3exp1TRK1T" title="exp::T">T</a> <code class="sig-name descname">exp</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3exp1TRK1T" title="exp::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3exp1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It implements the exponential performing the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
-<div class="math notranslate nohighlight">
-\[T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ... \right)\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ad4638c1ab11ad2e94493f6e52ce218da"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME" title="audi::exp::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME" title="audi::exp::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">exp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME" title="audi::exp::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME" title="audi::exp::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3expE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the exponential. </p>
+<p>Implements the exponential of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\exp f)} = \exp f_0 \sum_{i=0}^m \frac{\hat f^i}{i!} = \exp f_0 \left( 1 + \hat f + \frac {\hat f^2}{2!} + ...
+\right) \]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the exponential <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the exponential of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3log1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3log1TRK1T" title="log::T">T</a> <code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3log1TRK1T" title="log::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3log1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It implements the logarithm performing the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
-<div class="math notranslate nohighlight">
-\[T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ...\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ae69c31163ada34f37e48a0015525afee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME" title="audi::log::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME" title="audi::log::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">log</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME" title="audi::log::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME" title="audi::log::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3logE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the logarithm. </p>
+<p>Implements the logarithm of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\log f)} = \log f_0 + \sum_{i=1}^m (-1)^{i+1} \frac 1i \left(\frac{\hat f}{f_0}\right)^i = \log f_0 + \frac{\hat
+f}{f_0} - \frac 12 \left(\frac{\hat f}{f_0}\right)^2 + ... \]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the logarithm <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the logarithm of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3pow1TdRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> <code class="sig-name descname">pow</code><span class="sig-paren">(</span>double <em>base</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3pow1TdRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It computes the exponentiation of a double to the power of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-If the exponent is a constant gdual, it calls the std::pow overload. Otherwise
-it converts <span class="math notranslate nohighlight">\(a^{T_f}\)</span> to <span class="math notranslate nohighlight">\(\exp(T_f \log(a))\)</span> and computes this
-last expression instead.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::U"><span class="n"><span class="pre">U</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1adb1f697ef43a4d44c603124154fe78cd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">pow</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">base</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1ME1URK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the exponentiation to a gdual power. </p>
+<p>Computes the exponentiation to the power of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. If the exponent is an integer constant, it calls the std::pow overload. Otherwise it converts <span class="math notranslate nohighlight">\(a^{T_f}\)</span> to <span class="math notranslate nohighlight">\(\exp(T_g*\log(a))\)</span> and computes this last expression instead.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>base</strong> – base for the exponentiation</p></li>
-<li><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> exponent</p></li>
+<li><p><strong>base</strong> – the base for the exponent </p></li>
+<li><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion <em>base</em> to the power of <strong>d</strong></p>
-</dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3pow1TRK1Td">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> <code class="sig-name descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> &amp;<em>d</em>, double <em>alpha</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3pow1TRK1Td" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It computes the exponentiation of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> when the exponent is not an integer.</p>
-<div class="math notranslate nohighlight">
-\[T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k\]</div>
-<p>where,</p>
-<div class="math notranslate nohighlight">
-\[T_f = f_0 + \hat f\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi8binomialE1T1Tj">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a965a38c7eea6e10bb0495d3c4d4428c8"></span><a class="reference internal" href="#_CPPv4I0EN4audi8binomialE1T1Tj" title="audi::binomial::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">binomial</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN4audi8binomialE1T1Tj" title="audi::binomial::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi8binomialE1T1Tj" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">U</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">enable_if_t</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_arithmetic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::U"><span class="n"><span class="pre">U</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ac67a6f4f101900e426c3425217ddf29c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">pow</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span>, <a class="reference internal" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="audi::pow::U"><span class="n"><span class="pre">U</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000_11enable_if_tIN4audi13is_arithmeticI1UE5valueEiEEN4audi3powE5gdualI1T1MERK5gdualI1T1ME1U" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the exponentiation. </p>
+<p>Implements the exponentiation of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(f^\alpha)} = f_0^\alpha \sum_{k=0}^m {\alpha \choose k} \left(\hat f / f_0\right)^k
+\]</div>
+</p>
+<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>d</strong> – a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> base for the exponentiation</p></li>
+<li><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p></li>
 <li><p><strong>alpha</strong> – exponent</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion <strong>d</strong> to the power of <strong>alpha</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of <code class="docutils literal notranslate"><span class="pre">d</span></code> elevated to the power <code class="docutils literal notranslate"><span class="pre">alpha</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3pow1TRK1Ti">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> <code class="sig-name descname">pow</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3pow1TdRK1T" title="pow::T">T</a> &amp;<em>d</em>, int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3pow1TRK1Ti" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It implements the integer exponentiation of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>. Essentially,
-it uses the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> multiplication on <strong>d</strong> <strong>n</strong> times</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a9e5fdf93dffd39508fcd285169f0106a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">pow</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the integer exponentiation. </p>
+<p>Implements the integer exponentiation of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it uses the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> multiplication on <code class="docutils literal notranslate"><span class="pre">d</span></code> <code class="docutils literal notranslate"><span class="pre">n</span></code> times</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>d</strong> – a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> base for the exponentiation</p></li>
-<li><p><strong>n</strong> – integer exponent</p></li>
+<li><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p></li>
+<li><p><strong>n</strong> – integer exponent </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of <strong>d</strong> to the power of <strong>n</strong></p>
-</dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E1TRK1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <code class="sig-name descname">T</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E1TRK1TRK1T" title="T">T</a> &amp;<em>d1</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E1TRK1TRK1T" title="T">T</a> &amp;<em>d2</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E1TRK1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-It implements the exponentiation of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> when the exponent is also
-a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>. It computes the result as <span class="math notranslate nohighlight">\(\exp(d2\log d1)\)</span></p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a4caa083b57f087b56079ff8bf0815cbb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">pow</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d1</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="audi::pow::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3powE5gdualI1T1MERK5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the exponentiation of a gdual to a gdual power. </p>
+<p>Computes the exponentiation of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> to the power of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. If the exponent is an integer constant, it calls a different overload. Otherwise it converts <span class="math notranslate nohighlight">\(T_f^{T_g}\)</span> to <span class="math notranslate nohighlight">\(\exp(T_g*\log(T_f))\)</span> and computes this last expression instead.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>d1</strong> – a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> base for the exponentiation</p></li>
-<li><p><strong>d2</strong> – a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> exponent</p></li>
+<li><p><strong>d1</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument </p></li>
+<li><p><strong>d2</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of <strong>d1</strong> to the power of <strong>d2</strong></p>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">domain_error</span></span></span> – if std::log( <span class="math notranslate nohighlight">\(f_0\)</span>) is not finite (uses std::isfinite) </p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E4sqrt1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4sqrt1TRK1T" title="sqrt::T">T</a> <code class="sig-name descname">sqrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4sqrt1TRK1T" title="sqrt::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4sqrt1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the square root of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ab0fd5f1b76f730ab80be529482b7f413"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::sqrt::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::sqrt::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">sqrt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::sqrt::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::sqrt::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4sqrtE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the square root. </p>
+<p>Implements the square root of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{\sqrt{f}} = \sqrt{f_0} \sum_{k=0}^m {\frac 12 \choose k} \left(\hat f / f_0\right)^k
+\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the square root of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the square root of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E4cbrt1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4cbrt1TRK1T" title="cbrt::T">T</a> <code class="sig-name descname">cbrt</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4cbrt1TRK1T" title="cbrt::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4cbrt1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the cubic root of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{\sqrt[3]{f}} = \sqrt[3]{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1aeb7f606a587df5b215b70de4a1543498"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::cbrt::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::cbrt::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">cbrt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::cbrt::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME" title="audi::cbrt::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4cbrtE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the cubic root. </p>
+<p>Implements the cubic root of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{\sqrt[3]{f}} = \sqrt[3]{f_0} \sum_{k=0}^m {\frac 13 \choose k} \left(\hat f / f_0\right)^k
+\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the cubic root of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the square root of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3sin1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3sin1TRK1T" title="sin::T">T</a> <code class="sig-name descname">sin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3sin1TRK1T" title="sin::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3sin1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the sine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0
-\left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1abbc7da3f7b4ae2b0f8b92bbf31165ca8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME" title="audi::sin::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME" title="audi::sin::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">sin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME" title="audi::sin::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME" title="audi::sin::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3sinE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the sine. </p>
+<p>Implements the sine of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}T_{(\sin f)} = \sin f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) + \cos f_0
+\left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the sine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the sine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E3cos1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3cos1TRK1T" title="cos::T">T</a> <code class="sig-name descname">cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3cos1TRK1T" title="cos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3cos1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ab33f50f0799018444126e8b1bb455b1f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME" title="audi::cos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME" title="audi::cos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">cos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME" title="audi::cos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME" title="audi::cos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3cosE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the cosine. </p>
+<p>Implements the cosine of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
 \[T_{(\cos f)} = \cos f_0 \left(\sum_{i=0}^{2i\le m} (-1)^{i} \frac{\hat f^{2i}}{(2i)!}\right) - \sin f_0
-\left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right)\]</div>
+\left(\sum_{i=0}^{(2i+1)\le m} (-1)^{i} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the cosine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the cosine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E11sin_and_cosNSt5arrayI1TXL2EEEERK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;<a class="reference internal" href="#_CPPv4I0E11sin_and_cosNSt5arrayI1TXL2EEEERK1T" title="sin_and_cos::T">T</a>, 2&gt; <code class="sig-name descname">sin_and_cos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E11sin_and_cosNSt5arrayI1TXL2EEEERK1T" title="sin_and_cos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E11sin_and_cosNSt5arrayI1TXL2EEEERK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the sine and cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-As most of the computations for the sine and cosine is the same, it is twice as fast
-to get both sine and cosine at once rather than computing them in sequence.
-Use this function when both sine and cosine are needed.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1aaf8157d195142c6564c2227319873fb0"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sin_and_cos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sin_and_cos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">sin_and_cos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sin_and_cos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sin_and_cos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi11sin_and_cosENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes both sine and cosine. </p>
+<p>As most of the computations for the sine and cosine is the same, it is twice as fast to get both sine and cosine at once rather than computing them in sequence. Use this function when both sine and cosine are needed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansions of sine and the cosine of <strong>d</strong> (first element, second element)</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an std::array containing the Taylor expansions of sine and the cosine (first element, second element) </p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E3tan1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3tan1TRK1T" title="tan::T">T</a> <code class="sig-name descname">tan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3tan1TRK1T" title="tan::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3tan1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the tangent of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a872473b4cd08d64f6603f43fbd8afa28"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME" title="audi::tan::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME" title="audi::tan::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">tan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME" title="audi::tan::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME" title="audi::tan::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3tanE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the tangent. </p>
+<p>Implements the tangent of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
 \[T_{(\tan f)} = \frac{\tan f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{(-4)^k(1-4^k)}{2k!}x^{2k - 1}}{1 - \tan f_0
-\sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} }\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span> and <span class="math notranslate nohighlight">\(B_{2k}\f\)</span> are the Bernoulli numbers.</p>
+\sum_{k=1}^{k \le 2k+1} \frac{B_{2k}(-4)^k(1-4^k)}{2k!}x^{2k - 1} } \]</div>
+</p>
+<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span> and <span class="math notranslate nohighlight">\( B_{2k}\)</span> are the Bernoulli numbers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the tangent of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the tangent of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E4sinh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4sinh1TRK1T" title="sinh::T">T</a> <code class="sig-name descname">sinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4sinh1TRK1T" title="sinh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4sinh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the hyperbolic sine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0
-\left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right)\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1af8ee4d75558607ba19e33104da2ce386"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::sinh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::sinh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">sinh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::sinh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::sinh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4sinhE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the hyperbolic sine. </p>
+<p>Implements the hyperbolic sine of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}T_{(\sin f)} = \sinh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \cosh f_0
+\left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the hyperbolic sine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the hyperbolic sine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E4cosh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4cosh1TRK1T" title="cosh::T">T</a> <code class="sig-name descname">cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4cosh1TRK1T" title="cosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4cosh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the hyperbolic cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0
-\left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right)\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a013e9cf8edee8949827c2dc60ac5e9a8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME" title="audi::cosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME" title="audi::cosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">cosh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME" title="audi::cosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME" title="audi::cosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4coshE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the hyperbolic cosine. </p>
+<p>Implements the hyperbolic cosine of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}T_{(\sin f)} = \cosh f_0 \left(\sum_{i=0}^{2i\le m} \frac{\hat f^{2i}}{(2i)!}\right) + \sinh f_0
+\left(\sum_{i=0}^{(2i+1)\le m} \frac{\hat f^{2i+1}}{(2i+1)!}\right) \\ \end{split}\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the hyperbolic cosine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the hyperbolic cosine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E13sinh_and_coshNSt5arrayI1TXL2EEEERK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> std::array&lt;<a class="reference internal" href="#_CPPv4I0E13sinh_and_coshNSt5arrayI1TXL2EEEERK1T" title="sinh_and_cosh::T">T</a>, 2&gt; <code class="sig-name descname">sinh_and_cosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E13sinh_and_coshNSt5arrayI1TXL2EEEERK1T" title="sinh_and_cosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13sinh_and_coshNSt5arrayI1TXL2EEEERK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the hyperbolic sine and cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-As most of the computations for the hyperbolic sine and cosine are the same, it is twice as fast
-to get both the hyperbolic sine and cosine at once rather than computing them in sequence.
-Use this function when both hyperbolic sine and cosine are needed.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a70fe0cea159bd89993e55b5b92526469"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sinh_and_cosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sinh_and_cosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">sinh_and_cosh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sinh_and_cosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="audi::sinh_and_cosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi13sinh_and_coshENSt5arrayI5gdualI1T1MEXL2EEEERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes both the hyperbolic sine and the hyperbolic cosine. </p>
+<p>As most of the computations for the hyperbolic sine and hyperbolic cosine is the same, it is twice as fast to get them both at once rather than computing them in sequence. Use this function when both the hyperbolic sine and the hyperbolic cosine are needed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansions of hyperbolic sine and the cosine of <strong>d</strong> (first element, second element)</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an std::array containing the Taylor expansions of hyperbolic sine and cosine (first element, second element) </p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E4tanh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4tanh1TRK1T" title="tanh::T">T</a> <code class="sig-name descname">tanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4tanh1TRK1T" title="tanh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4tanh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the hyperbolic tangent of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a7569f97cd5deea03c7d02d9651447139"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::tanh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::tanh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">tanh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::tanh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::tanh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4tanhE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the hyperbolic tangent. </p>
+<p>Implements the hyperbolic tangent of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
 \[T_{(\tan f)} = \frac{\tanh f_0 + \sum_{k=1}^{k \le 2k+1} B_{2k} \frac{4^k(4^k-1)}{2k!}x^{2k - 1}}{1 + \tanh f_0
-\sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} }\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span> and <span class="math notranslate nohighlight">\(B_{2k}\f\)</span> are the Bernoulli numbers.</p>
+\sum_{k=1}^{k \le 2k+1} \frac{B_{2k}4^k(4^k-1)}{2k!}x^{2k - 1} } \]</div>
+</p>
+<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span> and <span class="math notranslate nohighlight">\( B_{2k}\)</span> are the Bernoulli numbers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the hyperebolic tangent of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the hyperbolic tangent of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E5atanh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E5atanh1TRK1T" title="atanh::T">T</a> <code class="sig-name descname">atanh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E5atanh1TRK1T" title="atanh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E5atanh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse hyperbolic tangent of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1af14200b407cfaa8d24e26d089a0862e6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::atanh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::atanh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">atanh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::atanh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME" title="audi::atanh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi5atanhE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse hyperbolic tangent. </p>
+<p>Implements the inverse hyperbolic tangent of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
 \[T_{(\mbox{atanh} f)} =  \mbox{atanh} f_0 +\frac 12 \sum_{k=1}^m \left(\frac{1}{(1-f_0)^k} +
-\frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
+\frac{(-1)^{k+1}}{(1+f_0)^k}\right) \frac {\hat f^k}{k} \]</div>
+</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse hyperebolic tangent of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic tangent of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E4atan1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4atan1TRK1T" title="atan::T">T</a> <code class="sig-name descname">atan</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4atan1TRK1T" title="atan::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4atan1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse tangent of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose
-2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \\ + \sum_{k=1}^{2k\le m}
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a04d57273047352c3069f909fbdac7efe"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME" title="audi::atan::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME" title="audi::atan::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">atan</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME" title="audi::atan::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME" title="audi::atan::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4atanE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse tangent. </p>
+<p>Implements the inverse tangent of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\mbox{atan} f)} =  \mbox{atan} f_0 + \sum_{k=1}^{2k-1\le m} \left(\frac{1 + \sum_{j=1}^{2j\le 2k-1} {2k-1 \choose
+2j} f_0^{2j}(-1)^j}{(1+f_0^2)^{2k-1}}\right) \frac {\hat f^{2k-1}}{2k-1}(-1)^{k+1} + \sum_{k=1}^{2k\le m}
 \left(\frac{\sum_{j=1}^{2j-1\le 2k} {2k \choose 2j-1} f_0^{2j-1}(-1)^{j+1}}{(1+f_0^2)^{2k}}\right) \frac {\hat
-f^{2k}}{2k}(-1)^k\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
-<p>This formula derives directly from the formula for <a class="reference internal" href="#_CPPv4I0E5atanh1TRK1T" title="atanh"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">atanh()</span></code></a> noting that: <span class="math notranslate nohighlight">\(\mbox{atan}(z) = i \mbox{atanh}(-iz)\)</span></p>
+f^{2k}}{2k}(-1)^k \]</div>
+</p>
+<p>This formula derives directly from the formula for <a class="reference internal" href="#namespaceaudi_1af14200b407cfaa8d24e26d089a0862e6"><span class="std std-ref">audi::atanh</span></a> noting that:  <span class="math notranslate nohighlight">\( \mbox{atan}(z) = i
+\mbox{atanh}(-iz)\)</span></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse tangent of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse tangent of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E5asinh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E5asinh1TRK1T" title="asinh::T">T</a> <code class="sig-name descname">asinh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E5asinh1TRK1T" title="asinh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E5asinh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse hyperbolic sine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\mbox{asinh} f)} = T_{\left(\log\left(f + \sqrt{1 + f^2}\right)\right)}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a0fdfcaecf0b3fa1632950029a468b693"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::asinh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::asinh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">asinh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::asinh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME" title="audi::asinh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi5asinhE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse hyperbolic sine. </p>
+<p>Implements the inverse inverse hyperbolic sine of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\mbox{asinh} f)} = T_{\left(\log\left(f + \sqrt{1 + f^2}\right)\right)}
+\]</div>
+</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse hyperebolic sine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic sine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E5acosh1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E5acosh1TRK1T" title="acosh::T">T</a> <code class="sig-name descname">acosh</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E5acosh1TRK1T" title="acosh::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E5acosh1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse hyperbolic cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\mbox{acosh} f)} = T_{\left(\log\left(f + \sqrt{f^2 - 1}\right)\right)}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ac14f29000d88d74be885c1edbc542667"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME" title="audi::acosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME" title="audi::acosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">acosh</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME" title="audi::acosh::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME" title="audi::acosh::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi5acoshE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse hyperbolic cosine. </p>
+<p>Implements the inverse inverse hyperbolic cosine of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\mbox{acosh} f)} = T_{\left(\log\left(f + \sqrt{f^2 - 1}\right)\right)}
+\]</div>
+</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse hyperebolic cosine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse hyperbolic cosine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E4asin1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4asin1TRK1T" title="asin::T">T</a> <code class="sig-name descname">asin</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4asin1TRK1T" title="asin::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4asin1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse sine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\mbox{asin} f)} = T_{\left(\mbox{atan} \left(f / \sqrt{1 - f^2}\right)\right)}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a9c4861636f523efd9daaeff4e58b73ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME" title="audi::asin::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME" title="audi::asin::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">asin</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME" title="audi::asin::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME" title="audi::asin::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4asinE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse sine. </p>
+<p>Implements the inverse inverse sine of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\mbox{asin} f)} = T_{\left(\mbox{atan} \left(f / \sqrt{1 - f^2}\right)\right)}
+\]</div>
+</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse sine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse sine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E4acos1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E4acos1TRK1T" title="acos::T">T</a> <code class="sig-name descname">acos</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E4acos1TRK1T" title="acos::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E4acos1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the inverse cosine of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[T_{(\mbox{acos} f)} = T_{\left(\mbox{atan} \left(\sqrt{1 - f^2} / f\right)\right)}\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1af7d7815b78200844eb41c1724d7c3dfe"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME" title="audi::acos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME" title="audi::acos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">acos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME" title="audi::acos::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME" title="audi::acos::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi4acosE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the inverse cosine. </p>
+<p>Implements the inverse inverse cosine of an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span> algebra:</p>
+<p><div class="math notranslate nohighlight">
+\[T_{(\mbox{acos} f)} = T_{\left(\mbox{atan} \left(\sqrt{1 - f^2} / f\right)\right)}
+\]</div>
+</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the inverse sine of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> containing the Taylor expansion of the inverse cosine of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<dl class="function">
-<dt id="_CPPv4I0E3abs1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3abs1TRK1T" title="abs::T">T</a> <code class="sig-name descname">abs</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3abs1TRK1T" title="abs::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3abs1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Implements the absolute value of a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>.
-Essentially it performs the following computations in the <span class="math notranslate nohighlight">\(\mathcal P_{n,m}\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 \ge 0 \\ -T_f &amp; f_0 &lt; 0 \end{array} \right.\end{split}\]</div>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ae0a32679e4667509872e61e319ee0704"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME" title="audi::abs::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME" title="audi::abs::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">abs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME" title="audi::abs::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME" title="audi::abs::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3absE5gdualI1T1MERK5gdualI1T1ME" title="Link to this definition"></a><br /></dt>
+<dd><p>Overload for the absolute value. </p>
+<p>Implements the absolute value of a <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a>. Essentially, it inverts the sign of <span class="math notranslate nohighlight">\(T_f\)</span> as follows:</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}T_{(\mbox{abs} f)} = \left\{ \begin{array}{ll} T_f &amp; f_0 \ge 0 \\ -T_f &amp; f_0 &lt; 0 \end{array} \right.
+\end{split}\]</div>
+</p>
 <p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -680,111 +602,54 @@ Essentially it performs the following computations in the <span class="math notr
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This operation is not availiable whtn <strong>T</strong> is std::complex.</p>
+<p>This operation is not availiable for std::complex types.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref">audi::gdual</span></a> argument</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the absolute value of <strong>d</strong></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an audi:gdual containing the Taylor expansion of the absoute value of <code class="docutils literal notranslate"><span class="pre">d</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
-<hr class="docutils" />
-<p><em>#include &lt;audi/functions_from_d.hpp&gt;</em></p>
-<dl class="function">
-<dt id="_CPPv4I0E3erf1TRK1T">
-template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">inline</em> <a class="reference internal" href="#_CPPv4I0E3erf1TRK1T" title="erf::T">T</a> <code class="sig-name descname">erf</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I0E3erf1TRK1T" title="erf::T">T</a> &amp;<em>d</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E3erf1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>This templated function is enabled only if <strong>T</strong> is a <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a>
-Essentially, it makes use of the definition:</p>
-<div class="math notranslate nohighlight">
-\[\frac{d erf(x)}{dx} = \frac{2}{\sqrt{\pi}}\exp(-x^2)\]</div>
-<p>where <span class="math notranslate nohighlight">\(T_f = f_0 + \hat f\)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>d</strong> – <a class="reference internal" href="gdual.html#_CPPv4I0E5gdual" title="gdual"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">gdual</span></code></a> argument</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the Taylor expansion of the error function of <strong>d</strong></p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ada4c2f317cd83862bbc84683f3a0f2a7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">vectorized</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME" title="audi::abs::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME" title="audi::abs::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">abs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">vectorized</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME" title="audi::abs::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME" title="audi::abs::M"><span class="n"><span class="pre">M</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">d</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN4audi3absE5gdualI10vectorizedI1TE1MERK5gdualI10vectorizedI1TE1ME" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
 
-</div>
+</section>
 
 
            </div>
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="gdual.html" class="btn btn-neutral" title="Generalized Dual numbers" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gdual.html" class="btn btn-neutral float-left" title="Generalized Dual numbers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, Dario Izzo and Francesco Biscani.
-
-    </p>
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> and ❤️  using a custom <a href="https://github.com/LinxiFan/Stanford-theme">theme</a> based on <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.7',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="None"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

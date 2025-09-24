@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taylor models of multivariate functions &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=037816dd" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=60b3a732"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exploration of Volterra ODE system" href="volterra_ode.html" />
+    <link rel="prev" title="Taylor models of univariate functions" href="univariate_functions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            audi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectorized_double.html">Using vectorized doubles</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example11.html">Training Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="map_inversion.html">Map (series) inversion</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Taylor models of multivariate functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Importing-stuff">Importing stuff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#3-dimensional-complex-(real-valued)-function">3-dimensional complex (real-valued) function</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Makino-(1998)-results">Makino (1998) results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">audi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Taylor models of multivariate functions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/multivariate_functions.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Taylor-models-of-multivariate-functions">
+<h1>Taylor models of multivariate functions<a class="headerlink" href="#Taylor-models-of-multivariate-functions" title="Link to this heading"></a></h1>
+<p>(by Sean Cowan)</p>
+<p>This notebook introduces the application of Taylor models to multivariate functions.</p>
+<section id="Importing-stuff">
+<h2>Importing stuff<a class="headerlink" href="#Importing-stuff" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyaudi</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdual_double</span> <span class="k">as</span> <span class="n">gdual</span><span class="p">,</span> <span class="n">taylor_model</span><span class="p">,</span> <span class="n">int_d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyaudi</span><span class="w"> </span><span class="kn">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">sinh</span><span class="p">,</span> <span class="n">tanh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sci</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">col</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotting_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_orders</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">taylor_model</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">taylor_model</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sin</span><span class="p">(</span><span class="mf">1.7</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">1.7</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">exp_point</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span> <span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+<span class="n">rem_bound</span> <span class="o">=</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span> <span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)}</span>
+
+<span class="n">orders</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">it</span><span class="p">,</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">orders</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_orders</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">rem_bound</span><span class="p">,</span> <span class="n">exp_point</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">buffer</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span>
+        <span class="n">n_of_points</span><span class="o">=</span><span class="mi">20</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;f(x, y)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_multivariate_functions_3_0.png" src="../_images/notebooks_multivariate_functions_3_0.png" />
+</div>
+</div>
+</section>
+<section id="3-dimensional-complex-(real-valued)-function">
+<h2>3-dimensional complex (real-valued) function<a class="headerlink" href="#3-dimensional-complex-(real-valued)-function" title="Link to this heading"></a></h2>
+<p>Next, a 3-dimensional complex (real-valued) function is used to verify the size of the remainder bounds as compared to Makino (1998). The function is defined over the domain <span class="math notranslate nohighlight">\(x \in [1.95, 2.05]\)</span>, <span class="math notranslate nohighlight">\(y \in [0.95, 1.05]\)</span>, and <span class="math notranslate nohighlight">\(z \in [0.95, 1.05]\)</span> like so:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+f\left(x, y, z\right)= &amp; \frac{4 \tan \left(3 y\right)}{3 x+x \sqrt{\frac{6 x}{-7\left(x-8\right)}}}-120-2 x-7 z\left(1+2 y\right) \\
+&amp; -\sinh \left(0.5+\frac{6 y}{8 y+7}\right)+\frac{\left(3 y+13\right)^2}{3 z} \\
+&amp; -20 z\left(2 z-5\right)+\frac{5 x \tanh \left(0.9 z\right)}{\sqrt{5 y}}-20 y \sin \left(3 z\right)
+\end{aligned}\end{split}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_point_x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">exp_point_y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">exp_point_z</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">rem_bound_2</span> <span class="o">=</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">domain_x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">1.95</span><span class="p">,</span> <span class="mf">2.05</span><span class="p">)}</span>
+<span class="n">domain_y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)}</span>
+<span class="n">domain_z</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)}</span>
+<span class="k">for</span> <span class="n">order_2</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">):</span>
+    <span class="n">x_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_x</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">order_2</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+    <span class="n">y_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_y</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">order_2</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+    <span class="n">z_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_z</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">order_2</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+    <span class="n">T_x_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_x</span><span class="p">,</span> <span class="n">domain_x</span><span class="p">)</span>
+    <span class="n">T_y_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">y_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_y</span><span class="p">,</span> <span class="n">domain_y</span><span class="p">)</span>
+    <span class="n">T_z_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">z_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_z</span><span class="p">,</span> <span class="n">domain_z</span><span class="p">)</span>
+
+    <span class="n">f_Txyz</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">4</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">+</span> <span class="n">T_x_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span> <span class="o">*</span> <span class="p">(</span><span class="n">T_x_2</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="o">-</span> <span class="mi">120</span>
+        <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T_x_2</span>
+        <span class="o">-</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">sinh</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">+</span> <span class="mi">7</span><span class="p">))</span>
+        <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">+</span> <span class="mi">13</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">*</span> <span class="n">tanh</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">-</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; order: </span><span class="si">{</span><span class="n">order_2</span><span class="si">}</span><span class="s2"> &lt;&gt; rem_bound: [</span><span class="si">{</span><span class="n">f_Txyz</span><span class="o">.</span><span class="n">rem_bound</span><span class="o">.</span><span class="n">lower</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f_Txyz</span><span class="o">.</span><span class="n">rem_bound</span><span class="o">.</span><span class="n">upper</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ order: 1 &lt;&gt; rem_bound: [-0.3918672470678396, 0.723254643986191]
+ order: 2 &lt;&gt; rem_bound: [-0.03320747373590342, 0.03323533528271228]
+ order: 3 &lt;&gt; rem_bound: [-0.0009505735681300395, 0.0015290480994582828]
+ order: 4 &lt;&gt; rem_bound: [-7.238410809822388e-05, 7.27816266545895e-05]
+ order: 5 &lt;&gt; rem_bound: [-1.732691008669774e-06, 3.520475828557056e-06]
+ order: 6 &lt;&gt; rem_bound: [-2.1813866628322254e-07, 2.2283025700535187e-07]
+ order: 7 &lt;&gt; rem_bound: [-8.287965135965055e-09, 9.970496987119283e-09]
+ order: 8 &lt;&gt; rem_bound: [-1.1709787248672719e-09, 1.2253344730779916e-09]
+ order: 9 &lt;&gt; rem_bound: [-7.890677594441478e-11, 4.802354684637308e-11]
+ order: 10 &lt;&gt; rem_bound: [-9.606923894401326e-12, 1.0231037018103419e-11]
+ order: 11 &lt;&gt; rem_bound: [-8.642772872594831e-13, 3.6084259033301003e-13]
+ order: 12 &lt;&gt; rem_bound: [-9.536903171620239e-14, 1.0245762758287539e-13]
+ order: 13 &lt;&gt; rem_bound: [-9.642226379517254e-15, 3.4455590488839457e-15]
+ order: 14 &lt;&gt; rem_bound: [-1.0097872640153169e-15, 1.089811820190056e-15]
+ order: 15 &lt;&gt; rem_bound: [-1.0752817740696894e-16, 3.5881543479649876e-17]
+</pre></div></div>
+</div>
+<section id="Makino-(1998)-results">
+<h3>Makino (1998) results<a class="headerlink" href="#Makino-(1998)-results" title="Link to this heading"></a></h3>
+<p>First, the remainder bounds are given below for various orders:</p>
+Order Terms Remainder bound interval
+1 4 [-.3914054034075695, 0.7252479186770013
+2 10 [-.3395018823172723E-01,0.3394051630619647E-01]
+3 20 [-.1020280049382976E-02,0.1609662094279157E-021
+4 35 [-.8413202994873543E-04,0.8402878906072845E-04]
+5 56 [-. 2410738165297321E-05,0.4383393685666119E-05]
+6 84 [-.3355536894608123E-06,0.3343170624752108E-06]
+7 120 [-.1631941909229007E-07,0.2051811636562382E-07]
+8 165 I-. 2424624748948692E-08,0.2410781342028141E-08]
+9 220 [-. 1721943529722954E-09,0.1736796027250248E-09]
+10 286 [-. 2313819358227192E-10,0.2298654603065415E-10]
+11 364 [-.1928098381883883Е-11,0.1821047609084028E-11]
+12 455 [-. 2424312972351917E-12,0.2407755156049230E-12]
+13 560 [-.2163485755166328E-13,0.2012630346355465E-13]
+14 680 [-.2614793046930413E-14,0.2596691498167008E-14]
+15 816 [-. 2417223411345871E-15,0.2242821131576220E-15]<p>As for the actual bounds of the function a stark difference is also observed:</p>
+<div class="line-block">
+<div class="line">Bounds of f(x, y, z) with numerical grid search: [-2.31165715, 1.78168226]</div>
+<div class="line">Bounds of f(x, y, z) with Makino interval arithmetic: [-16.36393303, 16.09747985]</div>
+</div>
+<p>We find</p>
+<ul class="simple">
+<li><p>at order 3: [-2.3128829308660057, 1.7804001180039262]</p></li>
+<li><p>at order 9: [-2.3116573204977717, 1.7816821327941998]</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exp_point_x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="n">exp_point_y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">exp_point_z</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">rem_bound_2</span> <span class="o">=</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">domain_x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">1.95</span><span class="p">,</span> <span class="mf">2.05</span><span class="p">)}</span>
+<span class="n">domain_y</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)}</span>
+<span class="n">domain_z</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">int_d</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)}</span>
+<span class="n">order</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">x_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_x</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+<span class="n">y_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_y</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+<span class="n">z_2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">exp_point_z</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>  <span class="c1"># Centered at 0.0, called &quot;x1&quot;, to order 5</span>
+<span class="n">T_x_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_x</span><span class="p">,</span> <span class="n">domain_x</span><span class="p">)</span>
+<span class="n">T_y_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">y_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_y</span><span class="p">,</span> <span class="n">domain_y</span><span class="p">)</span>
+<span class="n">T_z_2</span> <span class="o">=</span> <span class="n">taylor_model</span><span class="p">(</span><span class="n">z_2</span><span class="p">,</span> <span class="n">rem_bound_2</span><span class="p">,</span> <span class="n">exp_point_z</span><span class="p">,</span> <span class="n">domain_z</span><span class="p">)</span>
+
+<span class="n">f_Txyz</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">4</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">+</span> <span class="n">T_x_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span> <span class="o">*</span> <span class="p">(</span><span class="n">T_x_2</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="o">-</span> <span class="mi">120</span>
+    <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T_x_2</span>
+    <span class="o">-</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="n">sinh</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">+</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">+</span> <span class="mi">13</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">T_z_2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">T_x_2</span> <span class="o">*</span> <span class="n">tanh</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">T_y_2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="o">-</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">T_y_2</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">T_z_2</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">f_Txyz</span><span class="o">.</span><span class="n">get_bounds</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">bounds</span><span class="o">.</span><span class="n">lower</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">bounds</span><span class="o">.</span><span class="n">upper</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[-2.3116582766956646, 1.7816808458323379]
+</pre></div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="univariate_functions.html" class="btn btn-neutral float-left" title="Taylor models of univariate functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="volterra_ode.html" class="btn btn-neutral float-right" title="Exploration of Volterra ODE system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

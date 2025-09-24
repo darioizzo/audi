@@ -1,0 +1,589 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taylor models bounding &mdash; audi 1.9.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=60b3a732"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Taylor models utilities" href="taylor_model_utilities.html" />
+    <link rel="prev" title="Taylor models functions" href="taylor_model_functions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            audi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="documentation.html">Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="doc_c%2B%2B.html">Documentation (C++ header only library)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gdual.html">Generalized Dual numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions.html">Mathematical functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model.html">Taylor models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_functions.html">Taylor models functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Taylor models bounding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi21generate_combinationsERKNSt6vectorIiEEb"><code class="docutils literal notranslate"><span class="pre">generate_combinations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE"><code class="docutils literal notranslate"><span class="pre">get_poly()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi8get_ndimERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_ndim()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi15get_max_degreesERKNSt6vectorINSt6vectorIiEEEEj"><code class="docutils literal notranslate"><span class="pre">get_max_degrees()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_coefficient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE"><code class="docutils literal notranslate"><span class="pre">get_a_matrix_vec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi8binomialEii"><code class="docutils literal notranslate"><span class="pre">binomial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi13binom_productERKNSt6vectorIiEERKNSt6vectorIiEE"><code class="docutils literal notranslate"><span class="pre">binom_product()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi16get_d_acc_matrixERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_d_acc_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi12get_d_matrixERKNSt6vectorIiEEid"><code class="docutils literal notranslate"><span class="pre">get_d_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi23get_lower_pascal_matrixERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_lower_pascal_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi20build_dim_to_var_mapERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">build_dim_to_var_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi12get_q_matrixERKNSt6vectorIiEERK9var_map_ii"><code class="docutils literal notranslate"><span class="pre">get_q_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi13shift_indicesERKNSt6vectorIiEE"><code class="docutils literal notranslate"><span class="pre">shift_indices()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi23get_cycled_2d_array_vecERKNSt6vectorINSt6vectorIdEEEERKNSt6vectorIiEEi"><code class="docutils literal notranslate"><span class="pre">get_cycled_2d_array_vec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N4audi31get_titi_base_lambda_generalboxERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">get_titi_base_lambda_generalbox()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i"><code class="docutils literal notranslate"><span class="pre">get_titi_bernstein_patch_ndim_generalbox()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="taylor_model_utilities.html">Taylor models utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="doc_python.html">Documentation (Python package)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example10.html">Differential Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example11.html">Training Artificial Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example12.html">High Order Taylor Maps I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/example13.html">High Order Taylor Maps II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/map_inversion.html">Map (series) inversion</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Taylor Model Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/univariate_functions.html">Taylor models of univariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/multivariate_functions.html">Taylor models of multivariate functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/volterra_ode.html">Exploration of Volterra ODE system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/kepler_ode.html">Exploration of Kepler dynamics with a Neural network</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">audi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="documentation.html">Documentation</a></li>
+          <li class="breadcrumb-item"><a href="doc_c%2B%2B.html">Documentation (C++ header only library)</a></li>
+      <li class="breadcrumb-item active">Taylor models bounding</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/taylor_model_bounding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="taylor-models-bounding">
+<h1>Taylor models bounding<a class="headerlink" href="#taylor-models-bounding" title="Link to this heading"></a></h1>
+<p><em>#include &lt;audi/taylor_model_bounding.hpp&gt;</em></p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi21generate_combinationsERKNSt6vectorIiEEb">
+<span class="target" id="namespaceaudi_1aeda0b4e81e6dc179a890c48c33587a67"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">generate_combinations</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">limits</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cap_sum_indices</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi21generate_combinationsERKNSt6vectorIiEEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Function for the combinations of given maximum indices. </p>
+<p>Function gives either all possible combinations given a list of maximum limits, or (if cap_sum_indices = true), the total sum of the indices of a given combination are limited by the maximum index given by the input maximum indices.</p>
+<p>The cap_sum_indices defaults to off, and is generally only set to true when retrieving the polynomial from a gdual (to prevent a monomial from exceeding the degree of the gdual).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>limits</strong> – std::vector&lt;int&gt; the maximum degree limits per dimension </p></li>
+<li><p><strong>cap_sum_indices</strong> – bool whether or not to limit the combinations by the maximum of the maximum degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a nested vector of combinations MxN where M is the number of combinations, and N is the number of dimensions that then have a given degree. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1adca174a9d2213143f44bb0530c86890e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE" title="audi::get_poly::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_poly</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gdual.html#_CPPv4I00EN4audi5gdualE" title="audi::gdual"><span class="n"><span class="pre">gdual</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE" title="audi::get_poly::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tpol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi8get_polyENSt4pairINSt6vectorI1TEENSt6vectorINSt6vectorIiEEEEEERKN4audi5gdualI1TEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Extract the polynomial representation of a gdual. </p>
+<p>Retrieves the coefficients and corresponding exponents of the nonzero monomials contained in a gdual.</p>
+<p>For univariate polynomials, the exponents are generated from 0 up to the degree of the gdual. For multivariate polynomials, all valid exponent combinations are generated such that the sum of indices does not exceed the degree of the <code class="docutils literal notranslate"><span class="pre">gdual</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – numeric type of the coefficients (e.g., <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tpol</strong> – the input truncated polynomial (<code class="docutils literal notranslate"><a class="reference internal" href="gdual.html#classaudi_1_1gdual"><span class="std std-ref"><span class="pre">audi::gdual</span></span></a><span class="pre">&lt;T&gt;</span></code>) from which the polynomial representation is extracted</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a pair <code class="docutils literal notranslate"><span class="pre">(coeffs,</span> <span class="pre">exponents)</span></code> where:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">coeffs</span></code> is a vector of coefficients of type <code class="docutils literal notranslate"><span class="pre">T</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exponents</span></code> is a vector of integer vectors, each containing the exponents of a corresponding monomial term in <code class="docutils literal notranslate"><span class="pre">coeffs</span></code></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi8get_ndimERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEE">
+<span class="target" id="namespaceaudi_1a7c74cd788ea82755dfd8329685f1d9a8"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_ndim</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exps</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi8get_ndimERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the number of dimensions in a polynomial representation. </p>
+<p>Determines the dimensionality of a polynomial given its coefficients and exponent matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs</strong> – vector of coefficients </p></li>
+<li><p><strong>exps</strong> – vector of exponent rows, each row representing the exponents of a monomial term</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the number of coefficients does not match the number of exponent rows, or if exponent rows are inconsistent in length </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the number of dimensions (variables) of the polynomial</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi15get_max_degreesERKNSt6vectorINSt6vectorIiEEEEj">
+<span class="target" id="namespaceaudi_1aab95d545e4eac05a76a02f08b609313e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_max_degrees</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exponents</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ndim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi15get_max_degreesERKNSt6vectorINSt6vectorIiEEEEj" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the maximum degree in each dimension. </p>
+<p>Computes the maximum degree reached in each variable of a polynomial, given its exponent representation. The result is a vector of per-dimension maximum exponents.</p>
+<p><ul class="simple">
+<li><p>For multivariate polynomials (<code class="docutils literal notranslate"><span class="pre">ndim</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>), returns one maximum per variable.</p></li>
+<li><p>For univariate polynomials (<code class="docutils literal notranslate"><span class="pre">ndim</span> <span class="pre">==</span> <span class="pre">1</span></code>), returns a single-element vector containing the maximum degree.</p></li>
+<li><p>For zero-dimensional input (<code class="docutils literal notranslate"><span class="pre">ndim</span> <span class="pre">==</span> <span class="pre">0</span></code>), returns <code class="docutils literal notranslate"><span class="pre">{0}</span></code>.</p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exponents</strong> – vector of exponent rows, each row representing the exponents of a monomial term </p></li>
+<li><p><strong>ndim</strong> – number of dimensions (variables) of the polynomial</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if exponent rows are inconsistent in length or if <code class="docutils literal notranslate"><span class="pre">ndim</span> <span class="pre">&lt;</span> <span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vector of maximum degrees, one per dimension</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a3a3229c02ebcdeaddaa03a554a402d2d"></span><a class="reference internal" href="#_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="audi::get_coefficient::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_coefficient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">comb</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="audi::get_coefficient::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exps</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi15get_coefficientE1TRKNSt6vectorIiEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieve a coefficient by exponent combination. </p>
+<p>Finds the coefficient of a monomial term in a polynomial representation given its exponent combination. If the exponent vector is not found in the exponent list, the coefficient is assumed to be zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – numeric type of the coefficients (e.g., <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>comb</strong> – exponent combination to look up (multi-index) </p></li>
+<li><p><strong>coeffs</strong> – vector of coefficients </p></li>
+<li><p><strong>exps</strong> – vector of exponent rows corresponding to the coefficients</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the coefficient corresponding to the given exponent combination, or <code class="docutils literal notranslate"><span class="pre">0</span></code> if not found </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1ae439436994fcc252e50dc450ed5187f6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="audi::get_a_matrix_vec::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_a_matrix_vec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="audi::get_a_matrix_vec::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exps</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi16get_a_matrix_vecENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the coefficient matrix representation of a polynomial. </p>
+<p>Builds a 2D matrix <code class="docutils literal notranslate"><span class="pre">A</span></code> from a polynomial given in coefficient–exponent form.</p>
+<p><ul class="simple">
+<li><p>The <strong>rows</strong> of <code class="docutils literal notranslate"><span class="pre">A</span></code> correspond to the degree of the first variable.</p></li>
+<li><p>The <strong>columns</strong> of <code class="docutils literal notranslate"><span class="pre">A</span></code> represent the flattened index of all remaining variables.</p></li>
+</ul>
+</p>
+<p>More precisely, the matrix has size:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(max_degrees[0]</span> <span class="pre">+</span> <span class="pre">1)</span></code> rows</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">∏_{i=1..ndim-1}</span> <span class="pre">(max_degrees[i]</span> <span class="pre">+</span> <span class="pre">1)</span></code> columns</p></li>
+</ul>
+</p>
+<p>Each entry <code class="docutils literal notranslate"><span class="pre">A[i][j]</span></code> contains the coefficient of the monomial with multi-index <code class="docutils literal notranslate"><span class="pre">(i,</span> <span class="pre">*rest)</span></code> mapped into column index <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – numeric type of the coefficients (e.g., <code class="docutils literal notranslate"><span class="pre">double</span></code>, <code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code>)</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>coeffs</strong> – vector of coefficients </p></li>
+<li><p><strong>exps</strong> – vector of exponent rows corresponding to the coefficients</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a 2D vector <code class="docutils literal notranslate"><span class="pre">A</span></code> holding the coefficients arranged as a matrix </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi8binomialEii">
+<span class="target" id="namespaceaudi_1aa78abc78d266867cbb0ff0813ded0314"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">binomial</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi8binomialEii" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute a binomial coefficient. </p>
+<p>Computes the number of ways to choose <code class="docutils literal notranslate"><span class="pre">k</span></code> elements from <code class="docutils literal notranslate"><span class="pre">n</span></code> without repetition:</p>
+<p><div class="math notranslate nohighlight">
+\[  \binom{n}{k} = \frac{n!}{k!(n-k)!}
+\]</div>
+</p>
+<p>Uses an iterative approach that avoids intermediate factorial computation and exploits the symmetry relation <span class="math notranslate nohighlight">\(\binom{n}{k} = \binom{n}{n-k}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – nonnegative integer </p></li>
+<li><p><strong>k</strong> – integer satisfying <span class="math notranslate nohighlight">\(0 \leq k \leq n\)</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the binomial coefficient as an unsigned long long </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi13binom_productERKNSt6vectorIiEERKNSt6vectorIiEE">
+<span class="target" id="namespaceaudi_1a14212262f08732abd79fb6b478640fed"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">binom_product</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">n</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi13binom_productERKNSt6vectorIiEERKNSt6vectorIiEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the product of binomial coefficients. </p>
+<p>Given two vectors <code class="docutils literal notranslate"><span class="pre">n</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span></code> of the same length, computes the product</p>
+<p><div class="math notranslate nohighlight">
+\[  \prod_{i=1}^m \binom{n_i}{k_i}
+\]</div>
+</p>
+<p>where <span class="math notranslate nohighlight">\(m = n.size() = k.size()\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – vector of nonnegative integers </p></li>
+<li><p><strong>k</strong> – vector of nonnegative integers of the same size as <code class="docutils literal notranslate"><span class="pre">n</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">n</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span></code> do not have the same size </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the product of binomial coefficients as an unsigned long long</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi16get_d_acc_matrixERKNSt6vectorIiEEi">
+<span class="target" id="namespaceaudi_1a7818ffc45c025d2c185a7ce09f3cacc7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_d_acc_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max_degrees</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi16get_d_acc_matrixERKNSt6vectorIiEEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the diagonal accumulation matrix for a given dimension. </p>
+<p>Builds a diagonal matrix of size <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the maximum degree in the specified dimension. The diagonal entries are given by</p>
+<p><div class="math notranslate nohighlight">
+\[  (D_{\text{acc}})_{kk} = \frac{1}{\binom{n}{k}}, \quad k = 0, \dots, n.
+\]</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_degrees</strong> – vector of maximum degrees per dimension </p></li>
+<li><p><strong>dim</strong> – the dimension index to construct the matrix for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">out_of_range</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">dim</span></code> is negative or not less than <code class="docutils literal notranslate"><span class="pre">max_degrees.size()</span></code></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> diagonal matrix of scaling factors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12get_d_matrixERKNSt6vectorIiEEid">
+<span class="target" id="namespaceaudi_1a7df90261650aec55bfb0377b73222e7f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_d_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max_degrees</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12get_d_matrixERKNSt6vectorIiEEid" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the diagonal evaluation matrix for a given dimension. </p>
+<p>Builds a diagonal matrix of size <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the maximum degree in the specified dimension. The diagonal entries are</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}  (D)_{kk} =
+    \begin{cases}
+      1 &amp; \text{if } k = 0, \\
+      t^k &amp; \text{if } k \geq 1.
+    \end{cases}
+\end{split}\]</div>
+</p>
+<p>This corresponds to evaluating powers of <code class="docutils literal notranslate"><span class="pre">t</span></code> up to the maximum degree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_degrees</strong> – vector of maximum degrees per dimension </p></li>
+<li><p><strong>dim</strong> – the dimension index to construct the matrix for </p></li>
+<li><p><strong>t</strong> – the evaluation point</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> diagonal matrix of powers of <code class="docutils literal notranslate"><span class="pre">t</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi23get_lower_pascal_matrixERKNSt6vectorIiEEi">
+<span class="target" id="namespaceaudi_1a2c8b8c524b3b571d7277c56ae4bf663d"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_lower_pascal_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max_degrees</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi23get_lower_pascal_matrixERKNSt6vectorIiEEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the lower Pascal matrix for a given dimension. </p>
+<p>Builds a lower-triangular Pascal matrix of size <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the maximum degree in the specified dimension. The entries are defined by</p>
+<p><div class="math notranslate nohighlight">
+\[\begin{split}  P_{ij} =
+    \begin{cases}
+      \binom{i}{j} &amp; \text{if } j \leq i, \\
+      0            &amp; \text{if } j &gt; i.
+    \end{cases}
+\end{split}\]</div>
+</p>
+<p>This matrix encodes binomial coefficients in triangular form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_degrees</strong> – vector of maximum degrees per dimension </p></li>
+<li><p><strong>dim</strong> – the dimension index to construct the matrix for</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> lower-triangular Pascal matrix </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi20build_dim_to_var_mapERK9var_map_i">
+<span class="target" id="namespaceaudi_1ac20dd8a1f940c5af36723c02e4c1e24c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int_d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">build_dim_to_var_map</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi20build_dim_to_var_mapERK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd><p>Build a dimension-to-variable mapping. </p>
+<p>Constructs a mapping from dimension index to <code class="docutils literal notranslate"><span class="pre">(variable</span> <span class="pre">name,</span> <span class="pre">interval)</span></code> pairs based on the given domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>domain</strong> – a mapping from variable name to its interval</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>unordered map from dimension index (0-based) to <code class="docutils literal notranslate"><span class="pre">(var_name,</span> <span class="pre">interval)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi12get_q_matrixERKNSt6vectorIiEERK9var_map_ii">
+<span class="target" id="namespaceaudi_1a301625a45c506c6a241df22d51835b04"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_q_matrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max_degrees</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi12get_q_matrixERKNSt6vectorIiEERK9var_map_ii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the Q-matrix for a given dimension. </p>
+<p>Builds the Q-matrix (from Titi (2018)) associated with a given variable domain and maximum degree. This function basically maps the domain to [0, 1] for the subsequent matrix compuations.</p>
+<p><ul>
+<li><p>If the lower bound <code class="docutils literal notranslate"><span class="pre">a</span></code> of the variable interval is zero, the matrix reduces to a diagonal matrix <span class="math notranslate nohighlight">\(D(b)\)</span> where diagonal entries are <span class="math notranslate nohighlight">\(b^k\)</span>.</p></li>
+<li><p>Otherwise, the matrix is constructed as</p>
+<p><div class="math notranslate nohighlight">
+\[  Q = D\!\left(\frac{b-a}{a}\right) \cdot P^T \cdot D(a),
+\]</div>
+</p>
+</li>
+</ul>
+</p>
+<p>where:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">P</span></code> is the lower Pascal matrix of size <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D(x)</span></code> is the diagonal evaluation matrix with entries <span class="math notranslate nohighlight">\(x^k\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">max_degrees[dim]</span></code></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_degrees</strong> – vector of maximum degrees per dimension </p></li>
+<li><p><strong>domain</strong> – variable domain mapping (variable name → interval) </p></li>
+<li><p><strong>dim</strong> – the dimension index</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">out_of_range</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">dim</span></code> is invalid </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">std</span><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">dim</span></code> is not found in the domain map </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a <code class="docutils literal notranslate"><span class="pre">(n+1)</span> <span class="pre">x</span> <span class="pre">(n+1)</span></code> Q-matrix for the specified dimension</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi13shift_indicesERKNSt6vectorIiEE">
+<span class="target" id="namespaceaudi_1ab0aee3edadb48a2d4a1aaa011be685bb"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">shift_indices</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">indices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi13shift_indicesERKNSt6vectorIiEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Shift indices cyclically to the left. </p>
+<p>Rotates a vector of indices one position to the left.</p>
+<p>Example:<ul class="simple">
+<li><p>Input: <code class="docutils literal notranslate"><span class="pre">{2,</span> <span class="pre">3,</span> <span class="pre">4}</span></code></p></li>
+<li><p>Output: <code class="docutils literal notranslate"><span class="pre">{3,</span> <span class="pre">4,</span> <span class="pre">2}</span></code></p></li>
+</ul>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>indices</strong> – vector of indices</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>shifted vector with elements rotated left by one </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi23get_cycled_2d_array_vecERKNSt6vectorINSt6vectorIdEEEERKNSt6vectorIiEEi">
+<span class="target" id="namespaceaudi_1a68a6957af86135d82d37c4d7db89fc62"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_cycled_2d_array_vec</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">arr</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">max_degrees</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi23get_cycled_2d_array_vecERKNSt6vectorINSt6vectorIdEEEERKNSt6vectorIiEEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Cycle a 2D array representation along dimensions. </p>
+<p>Rearranges a 2D array representation of polynomial coefficients by cycling the role of dimensions. This operation effectively rotates the “leading” dimension used in the row index.</p>
+<p>If the number of dimensions is one, the input array is returned unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> – 2D array of shape <code class="docutils literal notranslate"><span class="pre">(rows</span> <span class="pre">x</span> <span class="pre">cols)</span></code> representing coefficients </p></li>
+<li><p><strong>max_degrees</strong> – vector of maximum degrees per dimension </p></li>
+<li><p><strong>dim</strong> – the current dimension index to cycle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a 2D array with cycled dimension ordering; new shape is <code class="docutils literal notranslate"><span class="pre">(max_degrees[next_dim]+1,</span> <span class="pre">∏_{m≠next_dim}</span> <span class="pre">(max_degrees[m]+1))</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N4audi31get_titi_base_lambda_generalboxERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i">
+<span class="target" id="namespaceaudi_1a45cd9376ae09b290b2eb10e4884f7eab"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_titi_base_lambda_generalbox</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exps</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4audi31get_titi_base_lambda_generalboxERKNSt6vectorIdEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the base Lambda matrix for the general box domain. </p>
+<p>Computes the base <span class="math notranslate nohighlight">\(\Lambda\)</span> matrix representation for a polynomial expressed in the Bernstein basis over a general (non-unit) domain.</p>
+<p>Iteratively constructs <span class="math notranslate nohighlight">\(\Lambda\)</span> by applying, for each dimension:<ul class="simple">
+<li><p>diagonal accumulation matrix <span class="math notranslate nohighlight">\(D_{\text{acc}}\)</span></p></li>
+<li><p>Q-matrix (interval scaling/translation)</p></li>
+<li><p>cycling of dimensions</p></li>
+</ul>
+</p>
+<p>Intermediate Lambda matrices are stored in a dictionary by dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coeffs</strong> – vector of polynomial coefficients </p></li>
+<li><p><strong>exps</strong> – exponent matrix (each row a monomial’s exponents) </p></li>
+<li><p><strong>domain</strong> – variable domain mapping (variable name → interval)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the final <span class="math notranslate nohighlight">\(\Lambda\)</span> matrix of shape <code class="docutils literal notranslate"><span class="pre">∏</span> <span class="pre">(deg_i+1)</span> <span class="pre">x</span> <span class="pre">∏</span> <span class="pre">(deg_i+1)</span></code> for all dimensions </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i">
+<span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceaudi_1a93bc5ad0578ba18618a2a26c258bbe8f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i" title="audi::get_titi_bernstein_patch_ndim_generalbox::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">audi</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">get_titi_bernstein_patch_ndim_generalbox</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i" title="audi::get_titi_bernstein_patch_ndim_generalbox::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coeffs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exps</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">var_map_i</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">domain</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN4audi40get_titi_bernstein_patch_ndim_generalboxENSt6vectorINSt6vectorI1TEEEERKNSt6vectorI1TEERKNSt6vectorINSt6vectorIiEEEERK9var_map_i" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the Bernstein patch for an n-dimensional polynomial (with a general box domain) </p>
+<p>Computes the Bernstein patch (control points) of a multivariate polynomial defined on a general hyper-rectangular domain. Uses <a class="reference internal" href="#namespaceaudi_1a45cd9376ae09b290b2eb10e4884f7eab"><span class="std std-ref">audi::get_titi_base_lambda_generalbox(const std::vector&lt;double&gt;&amp;coeffs, const std::vector&lt;std::vector&lt;int&gt;&gt; &amp;exps, const var_map_i &amp;domain)</span></a> followed by repeated multiplication with lower Pascal matrices and cycling of dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – numeric type of coefficients</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>coeffs</strong> – vector of polynomial coefficients </p></li>
+<li><p><strong>exps</strong> – exponent matrix (each row a monomial’s exponents) </p></li>
+<li><p><strong>domain</strong> – variable domain mapping (variable name → interval)</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a 2D array of control points in the Bernstein basis, reshaped according to <code class="docutils literal notranslate"><span class="pre">(deg_1+1,</span> <span class="pre">deg_2+1,</span> <span class="pre">...,</span> <span class="pre">deg_n+1)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="taylor_model_functions.html" class="btn btn-neutral float-left" title="Taylor models functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="taylor_model_utilities.html" class="btn btn-neutral float-right" title="Taylor models utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -6,4 +6,5 @@ Documentation (Python package)
    :maxdepth: 3
 
    py_gdual.rst
+   py_tm.rst
 

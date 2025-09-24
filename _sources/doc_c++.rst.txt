@@ -8,3 +8,7 @@ Documentation (C++ header only library)
    gdual.rst
    functions.rst
    utilities.rst
+   taylor_model.rst
+   taylor_model_functions.rst
+   taylor_model_bounding.rst
+   taylor_model_utilities.rst
