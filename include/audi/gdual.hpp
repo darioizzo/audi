@@ -566,7 +566,7 @@ public:
      * - if the requested coefficient is beyond the truncation order
      */
     template <typename T>
-    Cf find_cf(std::initializer_list<T> l)
+    Cf find_cf(std::initializer_list<T> l) const
     {
         if (std::accumulate(l.begin(), l.end(), 0u) > m_order) {
             throw std::invalid_argument("requested coefficient is beyond the truncation order.");
