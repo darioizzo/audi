@@ -135,7 +135,8 @@ Other software packages that do similar things are:
 - EclipseNET [@acciarini2024eclipsenets] [@acciarini2025eclipsenets]
 - CR3BP stochastic continuation [@acciarini2024stochastic]
 - Long-term propagation [@caleb2020can]
-- dSGP4 [@acciarini2025closing]
+- Rapid nonlinear convex guidance [@burnett2025rapid]
+- Differentiable genetic programming [@izzo2017differentiable]
 
 # Acknowledgement of financial support
 
