@@ -20,7 +20,7 @@ affiliations:
   - index: 2
     name: Max Planck Institute for Astronomy (Heidelberg, DE)
 date: 22 September 2025
-bibliography: joss_audi_2025.bib
+bibliography: paper.bib
 ---
 
 # Summary
