@@ -60,6 +60,6 @@ jobs:
       # Create the docs
       - name: Upload to github pages 🚀
         if: ${{ github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@v4.6.4 #workaround to be fixed upstream
+        uses: JamesIves/github-pages-deploy-action@v4.7.3 #workaround to be fixed upstream
         with:
           folder: doc/sphinx/_build/html # The folder the action should deploy.
