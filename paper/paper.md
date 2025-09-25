@@ -19,7 +19,7 @@ affiliations:
     name: Advanced Concepts Team, European Space Research and Technology Center (Noordwijk, NL)
   - index: 2
     name: Max Planck Institute for Astronomy (Heidelberg, DE)
-date: 22 September 2025
+date: 25 September 2025
 bibliography: paper.bib
 ---
 
@@ -72,6 +72,85 @@ The main features of `pyaudi` are:
 
 - Map inversion algorithm, implementing the algorithm described in [@berz2014introduction], thus allowing
   local inversion of the input–output relation of generic computational graphs.
+
+## Comparison with DACE
+
+For the comparison with DACE, we take two cases: One with simple multiplication between Taylor polynomials. One with vectorization enabled (in audi since it does not exist in DACE). 
+
+### Multiplication
+
+We use two tenth-order polynomials of the form:
+
+$$
+\begin{array}{l}
+\begin{aligned}
+     p1 &= (1 + x1 + x2 + ... + xn)^{10} \\
+     p2 &= (1 - x1 - x2 - ... - xn)^{10} \\
+\end{aligned}
+\\
+\end{array}
+$$
+
+where $x1$ etc. are variables. These polynomials are then multiplied and timed. The speed up of pyaudi w.r.t. DACE is given below in seconds. It can be
+seen that pyaudi is faster from nvars >= 10 and order >= 11. 
+
+| nvars↓       Order→  |   6    |   7    |   8    |   9    |  10   |  11   |  12   |  13   |  14   |  15   |
+|----------------------|--------|--------|--------|--------|-------|-------|-------|-------|-------|-------|
+| 6                    | 0.0901 | 0.115  | 0.0978 | 0.125  | 0.166 | 0.264 | 0.369 | 0.426 | 0.966 | 1.04  |
+| 8                    | 0.0791 | 0.226  | 0.166  | 0.475  | 0.635 | 0.977 | 1.42  | 1.72  | 1.98  | 2.14  |
+| 10                   | 0.114  | 0.177  | 0.631  | 0.692  | 0.866 | 1.36  | 1.43  | 1.12  | 1.70  | 3.08  |
+| 12                   | 0.138  | 0.422  | 0.544  | 0.723  | 0.914 | 1.32  | 1.73  | 2.18  | 2.84  | 4.08  |
+                       
+                       
+### Vectorization-enabled multiplication
+
+To showcase the vectorization, we multiply the following polynomial (where each variable has a
+variable number of coefficients) five times with itself and time the operation:
+
+$$
+\begin{array}{l}
+    p1 = \frac{c_v + x1 + x2 + ... + xn}{c_v - x1 - x2 - ... - xn}^5 \\
+\end{array}
+$$
+
+where $c_v$ are coefficients. The results are displayed in three tables
+per number of variables below. It can be seen that, from
+64/256 points onwards, pyaudi is significantly faster than DACE. It should be noted that this test
+is only indicative due to the limited study using an arbitrary choice of a polynomial both for the
+single-thread multiplication as well as the vectorized version.
+
+#### 2 variables
+| points↓       Order →  |   1    |   2    |   3    |   4    |   5    |   6    |   7    |   8    |   9    |
+|------------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 16                     | 0.122  | 0.349  | 0.387  | 0.395  | 0.553  | 0.607  | 0.535  | 0.494  | 0.527  |
+| 64                     | 1.54   | 1.42   | 1.17   | 1.10   | 1.52   | 1.80   | 1.50   | 1.42   | 0.637  |
+| 256                    | 5.64   | 4.50   | 3.77   | 1.25   | 1.61   | 2.14   | 1.81   | 1.73   | 1.66   |
+| 1024                   | 12.7   | 3.30   | 2.68   | 2.04   | 2.41   | 3.11   | 2.77   | 2.70   | 2.73   |
+| 4096                   | 3.62   | 3.58   | 3.28   | 3.43   | 3.80   | 5.30   | 4.73   | 4.76   | 4.35   |
+| 16384                  | 5.62   | 4.44   | 3.48   | 2.98   | 3.68   | 3.91   | 3.74   | 3.61   | 3.33   |
+
+
+#### 5 variables
+| points↓       Order →  |   1    |   2    |   3    |   4    |   5    |   6    |   7    |   8    |   9    |
+|------------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 16                     | 0.339  | 0.579  | 0.437  | 0.478  | 0.219  | 0.365  | 0.323  | 0.374  | 0.443  |
+| 64                     | 1.42   | 1.87   | 0.591  | 0.470  | 0.507  | 0.799  | 0.703  | 0.921  | 1.11   |
+| 256                    | 5.27   | 2.24   | 1.31   | 1.19   | 1.26   | 2.24   | 2.27   | 2.07   | 2.60   |
+| 1024                   | 5.23   | 4.54   | 2.79   | 2.31   | 2.44   | 3.28   | 3.19   | 2.85   | 3.14   |
+| 4096                   | 8.10   | 7.26   | 4.73   | 2.61   | 2.50   | 3.69   | 3.38   | 3.53   | 3.50   |
+| 16384                  | 7.20   | 4.65   | 3.01   | 2.32   | 2.06   | 3.34   | 3.33   | 3.46   | 3.54   |
+
+
+#### 10 variables
+| points↓       Order →  |   1    |   2    |   3    |   4    |   5    |   6    |   7    |   8    |   9    |
+|------------------------|--------|--------|--------|--------|--------|--------|--------|--------|--------|
+| 16                     | 0.287  | 0.356  | 0.158  | 0.144  | 0.241  | 0.539  | 0.827  | 1.04   | 1.50   |
+| 64                     | 1.19   | 0.461  | 0.394  | 0.387  | 0.594  | 1.20   | 1.55   | 1.97   | 2.89   |
+| 256                    | 4.26   | 1.50   | 1.14   | 1.14   | 1.45   | 2.73   | 3.46   | 4.44   | 5.95   |
+| 1024                   | 4.04   | 3.41   | 2.24   | 1.80   | 2.10   | 3.92   | 4.96   | 6.45   | 9.90   |
+| 4096                   | 8.83   | 5.38   | 2.52   | 2.14   | 2.53   | 5.05   | 5.77   | 7.41   | 12.7   |
+| 16384                  | 3.81   | 2.33   | 2.04   | 2.06   | 2.61   | 4.57   | 5.13   | 6.78   | 10.1   |
+
 
 ## Comparison with TaylorModels.jl
 
