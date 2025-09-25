@@ -34,6 +34,12 @@ From source
 
 C++ header only library
 ^^^^^^^^^^^^^^^^^^^^^^^
+First, you may download the latest Audi version via git:
+
+.. code-block:: bash
+
+   git clone https://github.com/darioizzo/audi.git
+
 
 Audi is a header only library which has the following third party dependencies
 
@@ -41,18 +47,12 @@ Audi is a header only library which has the following third party dependencies
 * `obake <https://github.com/bluescarni/obake>`_
 * `Eigen linear algebra library <https://eigen.tuxfamily.org/>`_: The Eigen headers must be found in the system
 
-After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest Audi version via git:
-
-.. code-block:: bash
-
-   git clone https://github.com/darioizzo/audi.git
-
-and configure your build using CMake.
+If you want to ensure that all dependencies are installed correctly, we recommend using conda to create an environment using `audi_devel.yml`. After making sure the dependencies above are installed in your system (most linux / osx package managers include them) you can configure your build using CMake.
 
 .. note::
 
    The option AUDI_BUILD_AUDI should be selected, while the option AUDI_BUILD_PYAUDI should be deactivated. 
-   You may also build the test by activating the option AUTI_BUILD_TESTS.
+   You may also build the test by activating the option AUDI_BUILD_TESTS.
    
 When done, type (in your build directory):
 

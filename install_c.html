@@ -140,21 +140,21 @@ You can check the <a class="reference external" href="https://pypi.org/project/p
 <h1>From source<a class="headerlink" href="#from-source" title="Link to this heading"></a></h1>
 <section id="c-header-only-library">
 <h2>C++ header only library<a class="headerlink" href="#c-header-only-library" title="Link to this heading"></a></h2>
+<p>First, you may download the latest Audi version via git:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/darioizzo/audi.git
+</pre></div>
+</div>
 <p>Audi is a header only library which has the following third party dependencies</p>
 <ul class="simple">
 <li><p>The <a class="reference external" href="http://www.boost.org/">boost</a> C++ libraries: the following boost libraries are necessary: boost_system, boost_unit_test_framework, boost_timer, boost_chrono. boost headers must be found in the system</p></li>
 <li><p><a class="reference external" href="https://github.com/bluescarni/obake">obake</a></p></li>
 <li><p><a class="reference external" href="https://eigen.tuxfamily.org/">Eigen linear algebra library</a>: The Eigen headers must be found in the system</p></li>
 </ul>
-<p>After making sure the dependencies above are installed in your system (most linux / osx package managers include them), you may download the latest Audi version via git:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/darioizzo/audi.git
-</pre></div>
-</div>
-<p>and configure your build using CMake.</p>
+<p>If you want to ensure that all dependencies are installed correctly, we recommend using conda to create an environment using <cite>audi_devel.yml</cite>. After making sure the dependencies above are installed in your system (most linux / osx package managers include them) you can configure your build using CMake.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The option AUDI_BUILD_AUDI should be selected, while the option AUDI_BUILD_PYAUDI should be deactivated.
-You may also build the test by activating the option AUTI_BUILD_TESTS.</p>
+You may also build the test by activating the option AUDI_BUILD_TESTS.</p>
 </div>
 <p>When done, type (in your build directory):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>install
