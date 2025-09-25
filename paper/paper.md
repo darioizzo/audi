@@ -101,8 +101,8 @@ $$
 
 | Dimension | Package         | Remainder Bound (Order 1) | Remainder Bound (Order 15) | Speed Comparison                  |
 |-------------|-----------------|--------------------|--------------------|---------------------------------------|
-| h(x)      | TaylorModels.jl | 1e-15                     | 1e-15                      | ~1.5–2× faster than pyaudi |
-|           | pyaudi          | 1e+2                      | 1e-5                       | ~1.5–2× slower than TaylorModels.jl |
+| h(x)      | TaylorModels.jl | 1e+2                      | 1e-5                       | ~1–1.5× faster than pyaudi |
+|           | pyaudi          | 1e+2                      | 1e-5                       | ~1–1.5× slower than TaylorModels.jl |
 | g(x, y)   | TaylorModels.jl | 1e+1                      | 1e-6                       | Slower: pyaudi is 5× faster (order 3), 15× faster (order 15), 7800× faster (order 1, edge case) |
 |           | pyaudi          | 1e+1                      | 1e-6                       | Faster (see above) |
 | f(x, y, z)| TaylorModels.jl | 1e+0                      | 1e-11                      | Slower: pyaudi is 8× faster (order 3), 155× faster (order 15), 13000× faster (order 1, edge case) |
