@@ -82,8 +82,6 @@ The main features of `pyaudi` are:
 
 ## Comparison with DACE
 
-## Comparison with DACE
-
 For the comparison with DACE, we take two cases: One with simple multiplication between Taylor polynomials. One with vectorization enabled (in audi since it does not exist in DACE).
 
 ### Multiplication
@@ -93,14 +91,14 @@ We use two tenth-order polynomials of the form:
 $$
 \begin{array}{l}
 \begin{aligned}
-     p1 &= (1 + x1 + x2 + ... + xn)^{10} \\
-     p2 &= (1 - x1 - x2 - ... - xn)^{10} \\
+     p_1 &= (1 + x_1 + x_2 + ... + x_n)^{10} \\
+     p_2 &= (1 - x_1 - x_2 - ... - x_n)^{10} \\
 \end{aligned}
 \\
 \end{array}
 $$
 
-where $x1$ etc. are variables. These polynomials are then multiplied and timed. The speed up of pyaudi w.r.t. DACE is given below in seconds. It can be
+where $x_1$ etc. are variables. These polynomials are then multiplied and timed. The speed up of pyaudi w.r.t. DACE is given below in seconds. It can be
 seen that pyaudi is faster from nvars + order $>\approx$ 19.
 
 | nvars↓ Order→     | 6     | 7     | 8      | 9     | 10    | 11    | 12    | 13    | 14    | 15   |
@@ -117,7 +115,7 @@ variable number of coefficients) five times with itself and time the operation:
 
 $$
 \begin{array}{l}
-    p1 = \frac{c_v + x1 + x2 + ... + xn}{c_v - x1 - x2 - ... - xn}^5 \\
+    p_3 = \frac{c_v + x_1 + x_2 + ... + x_n}{c_v - x_1 - x_2 - ... - x_n}^5 \\
 \end{array}
 $$
 
@@ -169,7 +167,9 @@ the corresponding Taylor model. The comparison is made on a single CPU machine.
 $$
 \begin{array}{l}
 \begin{aligned}
-f(x, y, z) = {} &
+f(x) = & x(x-1.1)(x+2)(x+2.2)(x+2.5)(x+3)\sin(1.7x+0.5) \\[2 ex]
+g(x, y) = & \sin(1.7x+0.5)(y+2)\sin(1.5y) \\[2 ex]
+h(x, y, z) = {} &
 \frac{4 \tan(3y)}{3x + x \sqrt{\tfrac{6x}{-7(x-8)}}}
 - 120 - 2x - 7z(1+2y) \\
 & - \sinh\!\left(0.5 + \frac{6y}{8y+7}\right)
@@ -177,20 +177,17 @@ f(x, y, z) = {} &
 - 20z(2z-5) \\
 & + \frac{5x \tanh(0.9z)}{\sqrt{5y}}
 - 20y \sin(3z)
-\\[2 ex]
-g(x, y) = & \sin(1.7x+0.5)(y+2)\sin(1.5y) \\[2 ex]
-h(x) = & x(x-1.1)(x+2)(x+2.2)(x+2.5)(x+3)\sin(1.7x+0.5)
 \end{aligned} 
 \end{array}
 $$
 
 | Dimension             | Package                 | Remainder Bound (Order 1) | Remainder Bound (Order 15) | Speed Comparison                                                                                  |
 | --------------------- | ----------------------- | ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------- |
-| h(x)                  | TaylorModels.jl         | 1e+2                      | 1e-5                       | ~1–1.5× faster than pyaudi                                                                        |
+| f(x)                  | TaylorModels.jl         | 1e+2                      | 1e-5                       | ~1–1.5× faster than pyaudi                                                                        |
 |                       | pyaudi                  | 1e+2                      | 1e-5                       | ~1–1.5× slower than TaylorModels.jl                                                               |
 | g(x, y)               | TaylorModels.jl         | 1e+1                      | 1e-6                       | Slower: pyaudi is 5× faster (order 3), 15× faster (order 15), 7800× faster (order 1, edge case)   |
 |                       | pyaudi                  | 1e+1                      | 1e-6                       | Faster (see above)                                                                                |
-| f(x, y, z)            | TaylorModels.jl         | 1e+0                      | 1e-11                      | Slower: pyaudi is 8× faster (order 3), 155× faster (order 15), 13000× faster (order 1, edge case) |
+| h(x, y, z)            | TaylorModels.jl         | 1e+0                      | 1e-11                      | Slower: pyaudi is 8× faster (order 3), 155× faster (order 15), 13000× faster (order 1, edge case) |
 |                       | pyaudi                  | 1e-1                      | 1e-17                      | Faster (see above)                                                                                |
 
 In the table above, a clear trend can be seen both in terms of speed and accuracy. For univariate
