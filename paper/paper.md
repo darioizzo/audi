@@ -215,11 +215,15 @@ the polynomial.
 
 <!-- Mention (if applicable) a representative set of past or ongoing research projects using the software and recent scholarly publications enabled by it. -->
 
-- EclipseNET [@acciarini2024eclipsenets] [@acciarini2025eclipsenets]
-- CR3BP stochastic continuation [@acciarini2024stochastic]
-- Long-term propagation [@caleb2020can]
-- Rapid nonlinear convex guidance [@burnett2025rapid]
-- Differentiable genetic programming [@izzo2017differentiable]
+[@acciarini2024stochastic] extended the principle of numerical continuation to find solutions in non-linear
+dynamical systems in the space domain to the moments of a probability density function, using `pyaudi`
+to calculate the high-order derivatives in the CR3BP. Similarly, `pyaudi` was used in [@acciarini2025nonlinear]
+for various test cases involving non-Gaussian uncertainty distributions to calculate the high-order derivatives.
+[@caleb2020uncertainty] did work on exploring Differential Algebra (DA) for accelerating Monte Carlo simulations,
+which is enabled by libraries such as `pyaudi`. For on-board applications, `pyaudi` was used in [@burnett2025rapid]
+to implement convex guidance algorithms by describing the solutions using DA. [@izzo2017differentiable]
+explored Cartesian Genetic Programming and made it differentiable with high-order automatic differentiation,
+enabled by `pyaudi`.
 
 # Acknowledgement of financial support
 
