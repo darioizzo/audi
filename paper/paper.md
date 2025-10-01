@@ -41,7 +41,7 @@ high-order automatic differentiation, verified integration and more.
 <!-- A Statement of need section that clearly illustrates the research purpose of the software and places it in the context of related work. -->
 `pyaudi` enables users to compute and manipulate order-$n$ Taylor expansions of generic computational
 graphs, while also providing rigorous bounds on the truncation error through their associated Taylor models. 
-These representations of program outputs can be exploited in a variety of ways, including fast Monte Carlo 
+These Taylor representations of program outputs can be exploited in a variety of ways, including fast Monte Carlo 
 simulations, rigorous uncertainty analysis, local inversion of output–input relations, and high-order 
 sensitivity studies. The package implements the high-order automatic differentiation methodology originally 
 developed by Berz and Makino ([@berz2014introduction], [@makino1998rigorous]), while introducing 
@@ -61,6 +61,13 @@ A second relevant project are the Julia libraries TaylorSeries.jl and TaylorMode
 of Taylor models to compute rigorous bounds on generic Taylor series. However, their underlying approach differs 
 substantially from that of `pyaudi`, and preliminary comparisons presented here indicate that `pyaudi` can 
 significantly outperform these libraries in the practical cases tested.
+
+In the field of machine learning, in recent years a plethora of automatic differentiation toolboxes have risen tailored
+at the efficient execution of machine learning tasks and optimization in general. JAX [@jax2018github], TensorFlow [@tensorflow2015-whitepaper], PyTorch [@paszke2019pytorch] (autograd)
+are perhaps the most widely adopted. For low order derivatives (first and second order only) these are very efficient and should be used
+as they implement efficiently reverse mode automatic differentiation which for these tasks is often superior. For higher order derivatives, 
+instead, most implementation suffer greatly and, although some experimental features start to be available (see JAX's jet feature [@bettencourt2019taylor]),
+they are still not mature enough.
 
 ## Key aspects
 
@@ -127,7 +134,7 @@ It is worth noting here that this operation is not representative of actual appl
 computing higher order derivatives of computer programs. Rather it is selected to isolate the feature we are proposing to benchmark which is
 batching coefficients. In case of DACE we perform the same computation over the entire batch in a loop.
 
-The results are displayed in three tables per number of variables below.
+The results are displayed in the three following tables differning per number of variables.
 
 #### 6 variables
 
@@ -159,9 +166,9 @@ The results are displayed in three tables per number of variables below.
 | 1024                 | 1.07  | 0.816 | 0.624  | 1.03   | 1.35   | 2.82  | 4.54  | 6.7   | 10    |
 | 4096                 | 2.36  | 0.983 | 1.2    | 1.35   | 2.04   | 3.94  | 6.36  | 9.72  | 15.2  |
 
-It can be seen that, from ~64 points onwards, pyaudi becomes faster than DACE. Clearly these results are
-only indicative as a specific computation is selected and different sparsities and computations will result in different 
-speedups. It is nonetheless useful to establish a trend which remains true in general: applications where very high derivation orders
+It can be seen that, from batches of size 64 onwards, pyaudi becomes competitive with respect to DACE and significanlty faster at higher orders. 
+Clearly these results are only indicative of the specific computation selected and different sparsities and computations will result in rather different 
+speedups. The tables above are nonetheless useful to establish a trend which remains true in general: applications where very high derivation orders
 or multiple expansion points need to be computed, will benefit from `pyaudi` algorithmic implementations.
 
 ## Comparison with TaylorModels.jl
@@ -203,26 +210,6 @@ remainder bounds are comparable in size, `pyaudi` is significantly faster, with 
 increasing with the order of the polynomial. At three dimensions, `pyaudi` produces significantly
 tighter bounds and is again significantly faster, with the speedup increasing with the order of
 the polynomial.
-
-# References
-
-<!-- A list of key references, including to other software addressing related needs. Note that the references should include full names of venues, e.g., journals and conferences, not abbreviations only understood in the context of a specific discipline. -->
-
-A number of references to relevant work and algorithms implemented in `pyaudi` are:
-
-- [@obake2020biscani]
-- [@makino1998rigorous]
-- [@titi2019matrix]
-
-Other software packages that do similar things are:
-
-- JAX [@jax2018github]
-- TensorFlow [@tensorflow2015-whitepaper]
-- PyTorch [@paszke2019pytorch]
-- COSY INFINITY [@makino2006cosy]
-- DACE [@massari2018differential]
-- TaylorSeries.jl/TaylorModels.jl [@benet2019taylormodels]
-- CORA [@Althoff2015ARCH]
 
 # Ongoing research
 
