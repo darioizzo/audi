@@ -3,6 +3,7 @@ cd build
 cmake `
     -G "Visual Studio 17 2022" `
     -A x64 `
+    -DCMAKE_CXX_FLAGS="/EHsc /wd4244 /wd4018 /wd4456 /wd4530" ` # suppress warnings that complained with conda feedstock compilation
     -DCMAKE_INSTALL_PREFIX=C:\Miniconda\envs\audi_devel\Library `
     -DAUDI_BUILD_AUDI=yes `
     -DAUDI_BUILD_TESTS=yes `
