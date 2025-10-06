@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.10.0)
+set(AUDI_PROJECT_VERSION 1.11.0)
 
 # Module path setup.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules" "${CMAKE_SOURCE_DIR}/cmake_modules/yacma")

@@ -5,9 +5,12 @@ import matplotlib.colors as col
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch, Rectangle
 from matplotlib.lines import Line2D
+from mpl_toolkits.mplot3d.art3d import Line3DCollection, Poly3DCollection
 from scipy.integrate import solve_ivp
 import copy
 import matplotlib
+from collections import Counter
+import trimesh
 
 
 def plot_taylor_model_1d(
@@ -563,8 +566,8 @@ def plot_n_to_2_solution_enclosure(
                     ax.add_patch(rect)
 
                 # Corners of the rectangle
-                x1 = x1 - dx1/2
-                x2 = x2 - dx2/2
+                x1 = x1 - dx1 / 2
+                x2 = x2 - dx2 / 2
                 corners = [
                     (x1, x2),
                     (x1 + dx1, x2),
@@ -589,6 +592,145 @@ def plot_n_to_2_solution_enclosure(
 
     if show_center_point:
         ax.scatter(cp1, cp2, color=color)
+
+    return ax
+
+
+def plot_n_to_3_solution_enclosure(
+    tm1,
+    tm2,
+    tm3,
+    ax=None,
+    resolution=100,
+    color="k",
+    show_center_point=False,
+    plot_remainder_bound=True,
+    verbose=False,
+):
+    """
+    Plot the solution enclosure between two Taylor models in 3D.
+
+    Args:
+        tm1 (taylor_model): The first Taylor model.
+        tm2 (taylor_model): The second Taylor model.
+        ax: The axes to plot on.
+        resolution (int): The number of points to use for plotting.
+        color (str): The color of the plot.
+        show_center_point (bool): Whether to show the center point.
+        plot_remainder_bound (bool): Whether to plot the remainder bound.
+        verbose (bool): Whether to print verbose output.
+
+    Returns:
+        ax: The updated axes with the plotted solution enclosure.
+    """
+
+    # Expand symbol set so taylor models include same set
+    symbs1 = set(tm1.tpol.symbol_set)
+    symbs2 = set(tm2.tpol.symbol_set)
+    symbs3 = set(tm3.tpol.symbol_set)
+    not_in_1 = (symbs2 | symbs3) - symbs1
+    not_in_2 = (symbs1 | symbs3) - symbs2
+    not_in_3 = (symbs1 | symbs2) - symbs3
+
+    tm_23_domain = tm2.domain | tm3.domain
+    new_domains = {var: tm_23_domain[var] for var in not_in_1}
+    tm_23_exp_point = tm2.exp_point | tm3.exp_point
+    new_exp_points = {var: tm_23_exp_point[var] for var in not_in_1}
+    tm1.extend_symbol_set([var for var in not_in_1], new_exp_points, new_domains)
+
+    tm_13_domain = tm1.domain | tm3.domain
+    new_domains = {var: tm_13_domain[var] for var in not_in_2}
+    tm_13_exp_point = tm1.exp_point | tm3.exp_point
+    new_exp_points = {var: tm_13_exp_point[var] for var in not_in_2}
+    tm2.extend_symbol_set([var for var in not_in_2], new_exp_points, new_domains)
+
+    tm_21_domain = tm2.domain | tm1.domain
+    new_domains = {var: tm_21_domain[var] for var in not_in_3}
+    tm_21_exp_point = tm2.exp_point | tm1.exp_point
+    new_exp_points = {var: tm_21_exp_point[var] for var in not_in_3}
+    tm3.extend_symbol_set([var for var in not_in_3], new_exp_points, new_domains)
+
+    # Get coordinate lists for all combinations of hypercubes
+    cp1, coords_list1 = get_solution_enclosure_ndim(tm1, resolution=resolution)
+    cp2, coords_list2 = get_solution_enclosure_ndim(tm2, resolution=resolution)
+    cp3, coords_list3 = get_solution_enclosure_ndim(tm3, resolution=resolution)
+
+    assert len(coords_list2) == len(coords_list1)
+    assert len(coords_list3) == len(coords_list1)
+
+    # Loop through all the points
+    for ls1, ls2, ls3 in zip(coords_list1, coords_list2, coords_list3):
+
+        # Plot solution enclosure
+        ax.plot(ls1, ls2, ls3, color=color, linewidth=0.5)
+
+        if plot_remainder_bound:
+            dx1 = tm1.rem_bound.upper - tm1.rem_bound.lower
+            dx2 = tm2.rem_bound.upper - tm2.rem_bound.lower
+            dx3 = tm3.rem_bound.upper - tm3.rem_bound.lower
+
+            # Return if rem bound is 0 or infty
+            if dx1 == 0 and dx2 == 0 and dx3 == 0:
+                if verbose:
+                    print("Remainder bound is 0")
+                continue
+            if np.isinf(dx1) or np.isinf(dx2) or np.isinf(dx3):
+                if verbose:
+                    print("Remainder bound is infinity.")
+                continue
+
+            # Get points from all the corners of the squares
+            points = []
+            for it2, (x1, x2, x3) in enumerate(zip(ls1, ls2, ls3)):
+                # Corners of the rectangle
+                lower_x1 = x1 + tm1.rem_bound.lower
+                lower_x2 = x2 + tm2.rem_bound.lower
+                lower_x3 = x3 + tm3.rem_bound.lower
+                vertices = [
+                    (lower_x1, lower_x2, lower_x3),
+                    (lower_x1 + dx1, lower_x2, lower_x3),
+                    (lower_x1 + dx1, lower_x2 + dx2, lower_x3),
+                    (lower_x1, lower_x2 + dx2, lower_x3),
+                    (lower_x1, lower_x2, lower_x3 + dx3),
+                    (lower_x1 + dx1, lower_x2, lower_x3 + dx3),
+                    (lower_x1 + dx1, lower_x2 + dx2, lower_x3 + dx3),
+                    (lower_x1, lower_x2 + dx2, lower_x3 + dx3),
+                ]
+
+                # Add the corners to the list of points
+                points.append(vertices)
+
+            ### Face collection ###
+            faces = [
+                (0,1,2,3),  # bottom
+                (4,5,6,7),  # top
+                (0,1,5,4),  # side
+                (1,2,6,5),
+                (2,3,7,6),
+                (3,0,4,7)
+            ]
+            faces_list = []
+            for it, cube in enumerate(points):
+                #plot the cubes
+                for face in faces:
+                    faces_list.append([cube[face[0]], cube[face[1]], cube[face[2]], cube[face[3]]])
+            
+            # Optional: connect corresponding vertices as thin faces (quads) between cubes
+                if it < len(points) - 1:
+                    cube_a = points[it]
+                    cube_b = points[it+1]
+                    for v0, v1 in [(0,1),(1,2),(2,3),(3,0), (4,5),(5,6),(6,7),(7,4), (0,4),(1,5),(2,6),(3,7)]:
+                        # create a quad connecting the edge from cube_a to cube_b
+                        faces_list.append([cube_a[v0], cube_a[v1], cube_b[v1], cube_b[v0]])
+
+            
+            # Create Poly3DCollection
+            pc = Poly3DCollection(faces_list, facecolors='cyan', edgecolors='k', linewidths=0.0005,
+                                  alpha=0.005)
+            ax.add_collection3d(pc)
+
+    if show_center_point:
+        ax.scatter(cp1, cp2, cp3, color=color)
 
     return ax
 
