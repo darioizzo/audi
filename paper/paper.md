@@ -16,10 +16,10 @@ authors:
     orcid: 0009-0000-9912-9354
 affiliations:
   - index: 1
-    name: Advanced Concepts Team, European Space Research and Technology Center (Noordwijk, NL)
+    name: Advanced Concepts Team, European Space Research and Technology Center
   - index: 2
-    name: Max Planck Institute for Astronomy (Heidelberg, DE)
-date: 25 September 2025
+    name: Skylon Dynamics
+date: 9 October 2025
 bibliography: paper.bib
 ---
 
@@ -55,7 +55,7 @@ to those allowed by `pyaudi`. The first one is the C/C++ library DACE [@massari2
 full differential algebra of truncated Taylor polynomials with float coefficients. Unlike `pyaudi`, DACE relies on
 a polynomial multiplication routine that makes extensive use of memory for the storage 
 of monomial coefficients. As discussed in the comparison reported below, this approach gives DACE an advantage 
-for single evaluations at lower orders, with the benefit diminishing as computations are performed in batches and at high orderders.
+for single evaluations at lower orders, with the benefit diminishing as computations are performed in batches and at high orders.
 
 A second relevant project are the Julia libraries TaylorSeries.jl and TaylorModels.jl [@benet2019taylormodels] providing implementations 
 of Taylor models to compute rigorous bounds on generic Taylor series. However, their underlying approach differs 
@@ -105,7 +105,7 @@ $$
 \end{aligned}
 \end{array}
 $$
-where $x_i, i=1..n$ etc. are the variables and $m$ the order. The polynomials are then multiplied and the result of $p_1 p_2$ is timed. For this simple and basic operation, the speed up of pyaudi w.r.t. DACE is reported in the table below in seconds. 
+where $x_i, i=1..n$ etc. are the variables and $m$ the order. The polynomials are then multiplied and the result of $p_1 p_2$ is timed. For this simple and basic operation, the speed up of pyaudi w.r.t. DACE is reported in the table below (2.0 would mean pyaudi is twice as fast as DACE). 
 
 | nvars↓ Order→     | 6     | 7     | 8      | 9     | 10    | 11    | 12    | 13    | 14    | 15   |
 | ----------------- | ----- | ----- | ------ | ----- | ----- | ----- | ----- | ----- | ----- | ---- |
@@ -134,7 +134,7 @@ It is worth noting here that this operation is not representative of actual appl
 computing higher order derivatives of computer programs. Rather it is selected to isolate the feature we are proposing to benchmark which is
 batching coefficients. In case of DACE we perform the same computation over the entire batch in a loop.
 
-The results are displayed in the three following tables differning per number of variables.
+The results are displayed in the three following tables with differing number of variables.
 
 #### 6 variables
 
@@ -199,8 +199,10 @@ $$
 | --------------------- | ----------------------- | ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------- |
 | f(x)                  | TaylorModels.jl         | 1e+2                      | 1e-5                       | ~1–1.5× faster than pyaudi                                                                        |
 |                       | pyaudi                  | 1e+2                      | 1e-5                       | ~1–1.5× slower than TaylorModels.jl                                                               |
+|                       |                         |                           |                            |                                                                                                   |
 | g(x, y)               | TaylorModels.jl         | 1e+1                      | 1e-6                       | Slower: pyaudi is 5× faster (order 3), 15× faster (order 15), 7800× faster (order 1, edge case)   |
 |                       | pyaudi                  | 1e+1                      | 1e-6                       | Faster (see above)                                                                                |
+|                       |                         |                           |                            |                                                                                                   |
 | h(x, y, z)            | TaylorModels.jl         | 1e+0                      | 1e-11                      | Slower: pyaudi is 8× faster (order 3), 155× faster (order 15), 13000× faster (order 1, edge case) |
 |                       | pyaudi                  | 1e-1                      | 1e-17                      | Faster (see above)                                                                                |
 
@@ -217,7 +219,7 @@ the polynomial.
 
 [@acciarini2024stochastic] extended the principle of numerical continuation to find solutions in non-linear
 dynamical systems in the space domain to the moments of a probability density function, using `pyaudi`
-to calculate the high-order derivatives in the CR3BP. Similarly, `pyaudi` was used in [@acciarini2025nonlinear]
+to calculate the high-order derivatives in the Circular Restricted Three-Body Problem (CR3BP). Similarly, `pyaudi` was used in [@acciarini2025nonlinear]
 for various test cases involving non-Gaussian uncertainty distributions to calculate the high-order derivatives.
 [@caleb2020uncertainty] did work on exploring Differential Algebra (DA) for accelerating Monte Carlo simulations,
 which is enabled by libraries such as `pyaudi`. For on-board applications, `pyaudi` was used in [@burnett2025rapid]
