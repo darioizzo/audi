@@ -92,8 +92,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/very_basics.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/understanding_gduals.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/understanding_tms.html">Understanding Taylor models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
@@ -193,13 +194,13 @@
 <p>Overload for the sqrt and inverse sqrt of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> with a real-valued arithmetic exponent. A different, generic real-valued exponent is not implemented.</p>
 <p>The remainder for the square root is:</p>
 <p><div class="math notranslate nohighlight">
-\[R = (-1)^k \sqrt(f_0) \cdot \frac{(2k - 1)!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
+\[R = (-1)^k \sqrt{f_0} \cdot \frac{(2k - 1)!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
 \frac{1}{(1 + \theta \cdot \frac{\hat{f}}{f_0})^{k + \frac{1}{2}}}
 \]</div>
 </p>
 <p>And for the inverse square root:</p>
 <p><div class="math notranslate nohighlight">
-\[R = (-1)^{k+1} \frac{1}{\sqrt(f_0)} \cdot \frac{(2k + 1)!!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
+\[R = (-1)^{k+1} \frac{1}{\sqrt{f_0}} \cdot \frac{(2k + 1)!!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
 \frac{1}{(1 + \theta \cdot \frac{\hat{f}}{f_0})^{k + \frac{3}{2}}}
 \]</div>
 </p>
@@ -226,7 +227,7 @@
 <dd><p>Overload for the exponential of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
 <p>Computes the exponential of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. For this, the Taylor polynomial is calculated using <a class="reference internal" href="functions.html#namespaceaudi_1ad4638c1ab11ad2e94493f6e52ce218da"><span class="std std-ref">audi::exp(const gdual&lt;T, M&gt; &amp;d)</span></a>. The remainder term is represented as follows:</p>
 <p><div class="math notranslate nohighlight">
-\[R = \exp(f_0) \frac{\hat{f}^{k+1}}{(k+1)!} \exp(\theta \cdot \hat{f})
+\[R = \text{exp}(f_0) \frac{\hat{f}^{k+1}}{(k+1)!} \text{exp}(\theta \cdot \hat{f})
 \]</div>
  for any  <span class="math notranslate nohighlight">\( x \in [\vec{a}, \vec{b}] \text{, } \hat{f} \in B(\hat{f}) \text{, and } 0 &lt; \theta &lt;
 1 \)</span>.</p>
@@ -235,7 +236,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> whose exponential is to be computed</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\( exp(tm) \)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\( \text{exp}(tm) \)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -257,7 +258,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(log(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\text{log}(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -271,7 +272,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(sqrt(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\sqrt{tm}\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -309,7 +310,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(sin(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\sin(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,7 +348,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(cos(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\cos(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -362,7 +363,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\({sin(tm), cos(tm)}\)</span></p>
+<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\({\sin(tm), \cos(tm)}\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -377,7 +378,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\(tan(tm)\)</span></p>
+<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\(\tan(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -406,7 +407,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(sinh(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\sinh(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -435,7 +436,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(cosh(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\cosh(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -450,7 +451,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\({sinh(tm), cosh(tm)}\)</span></p>
+<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\({\sinh(tm), \cosh(tm)}\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -465,7 +466,7 @@
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\(tanh(tm)\)</span></p>
+<dd class="field-even"><p>an array of two new taylor_models representing <span class="math notranslate nohighlight">\(\tanh(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -528,7 +529,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(asin(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\arcsin(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -545,7 +546,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(acos(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\arccos(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -569,7 +570,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(atan(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\arctan(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -580,7 +581,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd><p>Overload for the asinh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
 <p>Function that calculates the asinh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>.</p>
 <p>Here, the following identity is used:</p>
-<p><span class="math notranslate nohighlight">\( arcsinh(f) = \log(f + \sqrt(f^2 + 1)) \)</span></p>
+<p><span class="math notranslate nohighlight">\( \text{arcsinh}(f) = \text{log}(f + \sqrt{f^2 + 1}) \)</span></p>
 <p>For the remainder, see <a class="reference internal" href="#namespaceaudi_1a7acc459ba13d164c8cd3564ff8e77454"><span class="std std-ref">log(const audi::taylor_model &amp;tm)</span></a>, <a class="reference internal" href="#namespaceaudi_1a4e201f4e0c140f19504bc55c259c7672"><span class="std std-ref">sqrt(const audi::taylor_model &amp;tm)</span></a><p>, and pow(const</p>
 <p>audi::taylor_model &amp;tm).</p>
 </p>
@@ -589,7 +590,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(arcsinh(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\text{arcsinh}(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -600,7 +601,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd><p>Overload for the acosh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
 <p>Function that calculates the acosh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>.</p>
 <p>Here, the following identity is used:</p>
-<p><span class="math notranslate nohighlight">\( arccosh(f) = \log(f + \sqrt(f^2 - 1)) \)</span></p>
+<p><span class="math notranslate nohighlight">\( \text{arccosh}(f) = \text{log}(f + \sqrt{f^2 - 1}) \)</span></p>
 <p>where <span class="math notranslate nohighlight">\( B(f) + I_f \subset (1, \infty) \)</span> to prevent complex values from the sqrt.</p>
 <p>For the remainder, see <a class="reference internal" href="#namespaceaudi_1a7acc459ba13d164c8cd3564ff8e77454"><span class="std std-ref">log(const audi::taylor_model &amp;tm)</span></a>, <a class="reference internal" href="#namespaceaudi_1a4e201f4e0c140f19504bc55c259c7672"><span class="std std-ref">sqrt(const audi::taylor_model &amp;tm)</span></a><p>, and pow(const</p>
 <p>audi::taylor_model &amp;tm).</p>
@@ -610,7 +611,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(arccosh(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\text{arccosh}(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -621,14 +622,14 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd><p>Overload for the atanh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>. </p>
 <p>Function that calculates the atanh of a <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a>.</p>
 <p>Here, the following identity is used:</p>
-<p><span class="math notranslate nohighlight">\( arctanh(f) = \frac{1}{2} \cdot \log(\frac{1 + f}{1 - f}) \)</span></p>
+<p><span class="math notranslate nohighlight">\( \text{arctanh}(f) = \frac{1}{2} \cdot \text{log}(\frac{1 + f}{1 - f}) \)</span></p>
 <p>For the remainder, see <a class="reference internal" href="#namespaceaudi_1a7acc459ba13d164c8cd3564ff8e77454"><span class="std std-ref">log(const audi::taylor_model &amp;tm)</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(arctanh(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\text{arctanh}(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -644,7 +645,7 @@ f^{(2)}(x) = \frac{x}{(1-x^2)^{3/2}}.
 <dd class="field-odd"><p><strong>tm</strong> – the <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> base</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(abs(tm)\)</span></p>
+<dd class="field-even"><p>a new <a class="reference internal" href="taylor_model.html#classaudi_1_1taylor__model"><span class="std std-ref">taylor_model</span></a> representing <span class="math notranslate nohighlight">\(\text{abs}(tm)\)</span></p>
 </dd>
 </dl>
 </dd></dl>
