@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quick start &mdash; audi 1.9.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=037816dd" />
 
   
@@ -191,8 +191,25 @@
 <span class="linenos">32</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>Place it into a getting_started.cpp text file and compile it with:</p>
+<p>Place it into a getting_started.cpp text file. Compiling such an example file with C++ manually
+means making sure that all dependencies (i.e. headers and libraries) are on the search path of the
+compiler you are using (e.g. g++). On possible example of compiling the program could be:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-std<span class="o">=</span>c++11<span class="w"> </span>getting_started.cpp<span class="w"> </span>-lmpfr<span class="w"> </span>-lgmp<span class="w"> </span>-pthread
+</pre></div>
+</div>
+<p>another example with manual specification (and clang++) could be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>clang++<span class="w"> </span>audi_test.cpp<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-std<span class="o">=</span>c++20<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-I<span class="nv">$CONDA_PREFIX</span>/include<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-L<span class="nv">$CONDA_PREFIX</span>/lib<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-lmpfr<span class="w"> </span>-lgmp<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-lboost_system<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-lobake<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-ltbb<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-lmp++<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-lfmt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-pthread<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>audi_test
 </pre></div>
 </div>
 </section>
