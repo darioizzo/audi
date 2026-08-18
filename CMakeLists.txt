@@ -12,7 +12,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Main audi/pyaudi project version.
-set(AUDI_PROJECT_VERSION 1.9.2)
+set(AUDI_PROJECT_VERSION 1.9.1)
 
 # Module path setup.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules" "${CMAKE_SOURCE_DIR}/cmake_modules/yacma")
@@ -169,49 +169,20 @@ if(AUDI_BUILD_PYAUDI)
 endif()
 
 # Boost setup (common to audi/pyaudi).
-# NOTE: we rely on the modern BoostConfig.cmake package shipped with recent
-# Boost releases (i.e. find_package in CONFIG mode with imported targets).
-set(_AUDI_BOOST_MINIMUM_VERSION 1.73.0)
-# First find only the Boost headers, so that we can inspect the detected
-# version before deciding which compiled components to request. Newer Boost
-# releases (>= 1.90) no longer ship the separately-compiled Boost.System
-# library (it is header-only and provided by Boost::headers), so the exact
-# set of components we ask for depends on the Boost version.
-find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} REQUIRED CONFIG)
-# The serialization library is needed by the header-only audi library.
-set(_AUDI_REQUIRED_BOOST_LIBS serialization)
 if(AUDI_BUILD_TESTS)
-    # The unit test framework and the timer library are needed to build the
-    # (performance) test suite.
-    list(APPEND _AUDI_REQUIRED_BOOST_LIBS unit_test_framework timer)
-    if(Boost_VERSION VERSION_LESS 1.90.0)
-        # Older Boost releases still ship the compiled chrono/system libraries
-        # that Boost.Timer depends on; on newer Boost these are pulled in
-        # transitively (or header-only) by the Boost::timer target.
-        list(APPEND _AUDI_REQUIRED_BOOST_LIBS chrono system)
-    endif()
+    # Internal variable that will be used to tell PagmoFindBoost to locate the
+    # Boost unit test framework, if tests are required.
+    set(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK TRUE)
 endif()
-message(STATUS "Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
-find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} REQUIRED CONFIG COMPONENTS ${_AUDI_REQUIRED_BOOST_LIBS})
-message(STATUS "Detected Boost version: ${Boost_VERSION}")
-message(STATUS "Boost include dirs: ${Boost_INCLUDE_DIRS}")
-# Assemble the list of Boost targets the performance tests link against. On
-# older Boost we link chrono/system explicitly, on newer Boost the Boost::timer
-# target already carries these dependencies.
-if(Boost_VERSION VERSION_LESS 1.90.0)
-    set(AUDI_BOOST_TIMER_TARGETS Boost::timer Boost::chrono Boost::system)
-else()
-    set(AUDI_BOOST_TIMER_TARGETS Boost::timer)
-endif()
-unset(_AUDI_BOOST_MINIMUM_VERSION)
-unset(_AUDI_REQUIRED_BOOST_LIBS)
+include(AudiFindBoost)
 
 if(AUDI_BUILD_AUDI)
     # audi dependencies.
 
-    # Eigen setup (modern CONFIG mode, providing the Eigen3::Eigen imported target).
-    find_package(Eigen3 REQUIRED CONFIG)
-    message(STATUS "Eigen version detected: ${Eigen3_VERSION}")
+    # Eigen setup
+    find_package(Eigen3 REQUIRED)
+    message(STATUS "Eigen include directory: ${EIGEN3_INCLUDE_DIR}")
+    message(STATUS "Eigen version detected: ${EIGEN3_VERSION}")
     
     # obake setup.
     find_package(obake REQUIRED CONFIG)
@@ -223,7 +194,7 @@ if(AUDI_BUILD_AUDI)
 
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
-    target_link_libraries(audi INTERFACE Threads::Threads Boost::headers Boost::serialization obake::obake Eigen3::Eigen mp++::mp++)
+    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization obake::obake Eigen3::eigen3 mp++::mp++)
     
     # This sets up the include directory to be different if we build
     target_include_directories(audi INTERFACE
@@ -243,6 +214,9 @@ if(AUDI_BUILD_AUDI)
 
     # Builds the tests (performance in Release, the others in Debug)
     if(AUDI_BUILD_TESTS)
+        # Internal variable that will be used to tell PagmoFindBoost to locate the
+        # Boost unit test framework, if tests are required.
+        set(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK TRUE)
         add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
     endif()
 
@@ -256,6 +230,8 @@ if(AUDI_BUILD_AUDI)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/audi-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" @ONLY)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/AudiFindBoost.cmake"
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindEigen3.cmake" DESTINATION "lib/cmake/audi")
     install(EXPORT audi_export NAMESPACE Audi:: DESTINATION lib/cmake/audi)
     # Take care of versioning.
     include(CMakePackageConfigHelpers)

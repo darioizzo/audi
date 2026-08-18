@@ -1,17 +1,18 @@
 #Get current dir.
 get_filename_component(_AUDI_CONFIG_SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
-# Find the dependencies. All of them are looked up in CONFIG mode using the
-# package configuration files shipped by the respective projects.
-include(CMakeFindDependencyMacro)
-find_dependency(Threads REQUIRED)
-# Modern Boost lookup (CONFIG mode + imported targets). The serialization
-# component is the only compiled Boost library required by the audi target.
-find_dependency(Boost 1.73.0 REQUIRED CONFIG COMPONENTS serialization)
-find_dependency(obake REQUIRED CONFIG)
-find_dependency(Eigen3 REQUIRED CONFIG)
-find_dependency(mp++ REQUIRED CONFIG)
+#Find the deps.Alter the cmake module path.
+set(_AUDI_CONFIG_OLD_MODULE_PATH "${CMAKE_MODULE_PATH}")
+list(APPEND CMAKE_MODULE_PATH "${_AUDI_CONFIG_SELF_DIR}")
+find_package(Threads REQUIRED) 
+include(AudiFindBoost) 
+find_package(obake REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(mp++ REQUIRED)
 
+#Restore original module path.
+set(CMAKE_MODULE_PATH "${_AUDI_CONFIG_OLD_MODULE_PATH}") 
+unset(_AUDI_CONFIG_OLD_MODULE_PATH)
 include(${_AUDI_CONFIG_SELF_DIR}/audi_export.cmake)
 
 #Clean up.
