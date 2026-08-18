@@ -25,7 +25,6 @@ mkdir build
 # Install audi
 cd build
 cmake \
-    -DBoost_NO_BOOST_CMAKE=ON \
     -DCMAKE_INSTALL_PREFIX=$deps_dir \
     -DCMAKE_PREFIX_PATH=$deps_dir \
     -DCMAKE_BUILD_TYPE=Debug \
@@ -42,7 +41,6 @@ cd ..
 mkdir build_pyaudi
 cd build_pyaudi
 cmake \
-    -DBoost_NO_BOOST_CMAKE=ON \
     -DCMAKE_INSTALL_PREFIX=$deps_dir \
     -DCMAKE_PREFIX_PATH=$deps_dir \
     -DCMAKE_BUILD_TYPE=Debug \
