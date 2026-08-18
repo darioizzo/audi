@@ -171,10 +171,9 @@ endif()
 if(AUDI_BUILD_AUDI)
     # audi dependencies.
 
-    # Eigen setup
-    find_package(Eigen3 REQUIRED)
-    message(STATUS "Eigen include directory: ${EIGEN3_INCLUDE_DIR}")
-    message(STATUS "Eigen version detected: ${EIGEN3_VERSION}")
+    # Eigen setup (modern CONFIG mode, providing the Eigen3::Eigen imported target).
+    find_package(Eigen3 REQUIRED CONFIG)
+    message(STATUS "Eigen version detected: ${Eigen3_VERSION}")
     
     # obake setup.
     find_package(obake REQUIRED CONFIG)
@@ -185,14 +184,43 @@ if(AUDI_BUILD_AUDI)
     message(STATUS "mp++ library found.")
 
     # Boost setup.
-    set(_audi_MIN_BOOST_VERSION "1.90")
-    find_package(Boost ${_audi_MIN_BOOST_VERSION} CONFIG REQUIRED COMPONENTS serialization timer chrono unit_test_framework)
-    message(STATUS "Boost library found.")
+    # We rely on the modern BoostConfig.cmake package (CONFIG mode + imported
+    # targets). First find only the Boost headers so we can inspect the detected
+    # version before deciding which compiled components to request: newer Boost
+    # releases (>= 1.90) no longer ship the separately-compiled Boost.System
+    # library (it is header-only and provided by Boost::headers).
+    set(_audi_MIN_BOOST_VERSION "1.73.0")
+    find_package(Boost ${_audi_MIN_BOOST_VERSION} REQUIRED CONFIG)
+    # The serialization library is the only compiled Boost library needed by the
+    # header-only audi library.
+    set(_AUDI_REQUIRED_BOOST_LIBS serialization)
+    if(AUDI_BUILD_TESTS)
+        # The unit test framework and the timer library are needed to build the
+        # (performance) test suite.
+        list(APPEND _AUDI_REQUIRED_BOOST_LIBS unit_test_framework timer)
+        if(Boost_VERSION VERSION_LESS 1.90.0)
+            # Older Boost releases still ship the compiled chrono/system libraries
+            # that Boost.Timer depends on; on newer Boost these are header-only or
+            # pulled in transitively by the Boost::timer target.
+            list(APPEND _AUDI_REQUIRED_BOOST_LIBS chrono system)
+        endif()
+    endif()
+    message(STATUS "Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
+    find_package(Boost ${_audi_MIN_BOOST_VERSION} REQUIRED CONFIG COMPONENTS ${_AUDI_REQUIRED_BOOST_LIBS})
+    message(STATUS "Detected Boost version: ${Boost_VERSION}")
+    # Assemble the list of Boost targets the performance tests link against. On
+    # older Boost we link chrono/system explicitly, on newer Boost the
+    # Boost::timer target already carries these dependencies.
+    if(Boost_VERSION VERSION_LESS 1.90.0)
+        set(AUDI_BOOST_TIMER_TARGETS Boost::timer Boost::chrono Boost::system)
+    else()
+        set(AUDI_BOOST_TIMER_TARGETS Boost::timer)
+    endif()
+    unset(_AUDI_REQUIRED_BOOST_LIBS)
 
     # Setup of the header-only audi library.
     add_library(audi INTERFACE)
-    target_link_libraries(audi INTERFACE Threads::Threads Boost::boost Boost::serialization
-    Boost::timer Boost::chrono Boost::unit_test_framework obake::obake Eigen3::eigen3 mp++::mp++)
+    target_link_libraries(audi INTERFACE Threads::Threads Boost::headers Boost::serialization obake::obake Eigen3::Eigen mp++::mp++)
 
     # NOTE: quench warnings from Boost when building the library.
     target_compile_definitions(audi INTERFACE BOOST_ALLOW_DEPRECATED_HEADERS)
@@ -231,7 +259,6 @@ if(AUDI_BUILD_AUDI)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/audi-config.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" @ONLY)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/audi-config.cmake" DESTINATION "lib/cmake/audi")
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/FindEigen3.cmake" DESTINATION "lib/cmake/audi")
     install(EXPORT audi_export NAMESPACE Audi:: DESTINATION lib/cmake/audi)
     # Take care of versioning.
     include(CMakePackageConfigHelpers)

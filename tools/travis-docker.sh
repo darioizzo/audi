@@ -24,8 +24,7 @@ fi
 cd /audi
 mkdir build_audi
 cd build_audi
-cmake -DBoost_NO_BOOST_CMAKE=ON \
-      -DAUDI_BUILD_AUDI=yes \
+cmake -DAUDI_BUILD_AUDI=yes \
       -DAUDI_BUILD_TESTS=no \
 	  -DCMAKE_BUILD_TYPE=Release ../
 make install
@@ -34,8 +33,7 @@ cd ..
 # Compile and install pyaudi 
 mkdir build_pyaudi
 cd build_pyaudi
-cmake -DBoost_NO_BOOST_CMAKE=ON \
-      -DCMAKE_BUILD_TYPE=Release \
+cmake -DCMAKE_BUILD_TYPE=Release \
 	  -DAUDI_BUILD_AUDI=no \
 	  -DAUDI_BUILD_PYAUDI=yes \
 	  -DPYTHON_EXECUTABLE=/opt/python/${PYTHON_DIR}/bin/python ../;
