@@ -153,7 +153,7 @@ Outputs: 1
         <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_units</span><span class="p">[</span><span class="n">layer</span><span class="p">]):</span>
             <span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
             <span class="k">for</span> <span class="n">prev_unit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_units</span><span class="p">[</span><span class="n">layer</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-                <span class="n">symname</span> <span class="o">=</span> <span class="s1">&#39;w_{{(</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">,</span><span class="si">{2}</span><span class="s1">)}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">prev_unit</span><span class="p">)</span>
+                <span class="n">symname</span> <span class="o">=</span> <span class="s1">'w_{{(</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">,</span><span class="si">{2}</span><span class="s1">)}}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">prev_unit</span><span class="p">)</span>
                 <span class="n">w</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(),</span> <span class="n">symname</span> <span class="p">,</span> <span class="n">order</span><span class="p">)</span>
                 <span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 
@@ -175,7 +175,7 @@ Outputs: 1
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_units</span><span class="p">)):</span>
         <span class="n">biases</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
         <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_units</span><span class="p">[</span><span class="n">layer</span><span class="p">]):</span>
-            <span class="n">symname</span> <span class="o">=</span> <span class="s1">&#39;b_{{(</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">)}}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+            <span class="n">symname</span> <span class="o">=</span> <span class="s1">'b_{{(</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">)}}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">symname</span> <span class="p">,</span> <span class="n">order</span><span class="p">)</span>
             <span class="n">biases</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 
@@ -231,7 +231,7 @@ Outputs: 1
 <span class="n">x3</span> <span class="o">=</span> <span class="mi">4</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="n">N_f</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;N(x) = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'N(x) = </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
 <span class="c1">#N</span>
 </pre></div>
 </div>
@@ -256,7 +256,7 @@ N(x) = 2.565934265083211
     <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">y_f</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;y = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'y = </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -277,7 +277,7 @@ y = 6.0
     <span class="k">return</span> <span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
 <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_f</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loss = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'loss = </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
 <span class="c1">#loss</span>
 </pre></div>
 </div>
@@ -366,7 +366,7 @@ w_{(3,0,4)}
 
 <span class="n">N</span> <span class="o">=</span> <span class="n">N_f</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">],</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_f</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loss = </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'loss = </span><span class="si">{0}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">constant_cf</span><span class="p">))</span>
 <br/></pre></div>
 </div>
 </div>
@@ -416,10 +416,10 @@ loss = 5.648639112617553
         <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_f</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">y_f</span><span class="p">(</span><span class="n">xi</span><span class="p">))</span>
         <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span> <span class="o">=</span> <span class="n">GD_update</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;epoch </span><span class="si">{0}</span><span class="s1">, training loss: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'epoch </span><span class="si">{0}</span><span class="s1">, training loss: </span><span class="si">{1}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">loss_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss_history</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;epochs&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'epochs'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'loss'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

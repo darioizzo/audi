@@ -196,7 +196,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_num_viz</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span>
-    <span class="n">eom_volterra</span><span class="p">,</span> <span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">final_time</span><span class="p">),</span> <span class="n">ic</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;RK45&quot;</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-13</span>
+    <span class="n">eom_volterra</span><span class="p">,</span> <span class="p">(</span><span class="n">initial_time</span><span class="p">,</span> <span class="n">final_time</span><span class="p">),</span> <span class="n">ic</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"RK45"</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-13</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -213,9 +213,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">18</span>
 <span class="n">time_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.45</span><span class="p">,</span> <span class="mi">546</span><span class="p">)</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">"Blues"</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">]</span>
+<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">]</span>
 <span class="n">ic_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">gdual</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">order</span><span class="p">),</span> <span class="n">gdual</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="p">)]</span>
 <span class="n">ic_tm</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">taylor_model</span><span class="p">(</span>
@@ -250,7 +250,7 @@
 
 <span class="k">for</span> <span class="n">it</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices_to_evaluate</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">it</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">it2</span><span class="p">,</span> <span class="n">y_step</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_tm</span><span class="p">):</span>
 
@@ -261,7 +261,7 @@
 
             <span class="n">ax</span> <span class="o">=</span> <span class="n">plot_n_to_2_solution_enclosure</span><span class="p">(</span><span class="n">x1_tm</span><span class="p">,</span> <span class="n">x2_tm</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">rgb_color</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_num_viz</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_num_viz</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y_num_viz</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_num_viz</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s2">"k"</span><span class="p">)</span>
 
     <span class="n">xlim</span> <span class="o">=</span> <span class="n">domain_per_index</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">ylim</span> <span class="o">=</span> <span class="n">domain_per_index</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
@@ -291,7 +291,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1"># This order is chosen to visualize the verification better</span>
 
-<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2&quot;</span><span class="p">]</span>
+<span class="n">symbols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"x1"</span><span class="p">,</span> <span class="s2">"x2"</span><span class="p">]</span>
 <span class="n">ic_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">gdual</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">order</span><span class="p">),</span> <span class="n">gdual</span><span class="p">(</span><span class="n">ic</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">symbols</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">order</span><span class="p">)]</span>
 <span class="n">ic_tm</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">taylor_model</span><span class="p">(</span>
@@ -324,7 +324,7 @@
 <span class="n">y_num</span> <span class="o">=</span> <span class="n">rk4_t</span><span class="p">(</span><span class="n">eom_volterra</span><span class="p">,</span> <span class="n">initial_time</span><span class="p">,</span> <span class="n">ic</span><span class="p">,</span> <span class="n">time_history</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig2</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">it2</span><span class="p">,</span> <span class="n">y_step</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y_tm</span><span class="p">):</span>
 
@@ -355,13 +355,13 @@
 <span class="n">ic_mc</span> <span class="o">=</span> <span class="n">sample_on_square_boundary</span><span class="p">(</span><span class="n">ic_mc</span><span class="p">,</span> <span class="n">domain_size</span><span class="p">,</span> <span class="n">n_samples_mc</span><span class="o">=</span><span class="n">n_samples_mc</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="n">rng2</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples_mc</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;It </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_samples_mc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"It </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">n_samples_mc</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">"</span><span class="se">\r</span><span class="s2">"</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">current_ic</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ic_mc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
     <span class="n">y_num</span> <span class="o">=</span> <span class="n">rk4_t</span><span class="p">(</span><span class="n">eom_volterra</span><span class="p">,</span> <span class="n">initial_time</span><span class="p">,</span> <span class="n">current_ic</span><span class="p">,</span> <span class="n">time_history</span><span class="p">)</span>
 
     <span class="n">x1</span> <span class="o">=</span> <span class="n">y_num</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="n">y_num</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">"r"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

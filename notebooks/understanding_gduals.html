@@ -128,7 +128,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># a gdual</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">1.2</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># a gdual</span>
 <span class="n">y</span> <span class="o">=</span> <span class="mf">2.1</span>                <span class="c1"># a float</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>              <span class="c1"># this will be a gdual</span>
 <span class="n">f</span>
@@ -153,11 +153,11 @@
 
 <span class="n">xf</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">yf</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">2.</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">3.</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The result is a float: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The result is a gdual (contains only derivatives w.r.t. x): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The result is a gdual (contains derivatives w.r.t. x and y): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">2.</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">3.</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The result is a float: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The result is a gdual (contains only derivatives w.r.t. x): </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">yf</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The result is a gdual (contains derivatives w.r.t. x and y): </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)))</span>
 <br/></pre></div>
 </div>
 </div>
@@ -179,13 +179,13 @@ The result is a gdual (contains derivatives w.r.t. x and y): -0.324612*dy+0.1041
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Order: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">))</span> <span class="c1"># The order is the maximum order terms will be retained during the</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Order: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">order</span><span class="p">))</span> <span class="c1"># The order is the maximum order terms will be retained during the</span>
 <span class="c1"># computations using the truncated Taylor Polynomial algebra computations</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Degree: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span> <span class="c1"># The degree is the actual degree of the polynomial</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Degree: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">degree</span><span class="p">))</span> <span class="c1"># The degree is the actual degree of the polynomial</span>
 <span class="c1">#which will be less or equal than the order</span>
 </pre></div>
 </div>

@@ -147,7 +147,7 @@ y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We show an image for clarity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.core.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
-<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span> <span class="s2">&quot;http://www.physicsandbox.com/assets/images/pendulum.jpg&quot;</span><span class="p">)</span>
+<span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span> <span class="s2">"http://www.physicsandbox.com/assets/images/pendulum.jpg"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -171,8 +171,8 @@ y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
 <span class="n">th1n</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">th2n</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
 <span class="c1"># Gduals (high order)</span>
-<span class="n">th1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th1n</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">theta_1&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">th2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th2n</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">theta_2&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">th1</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th1n</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">theta_1"</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">th2</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">th2n</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">theta_2"</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
 <span class="c1"># Equations</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">L1</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th1</span><span class="p">)</span><span class="o">+</span><span class="n">L2</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th2</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">L1</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th1</span><span class="p">)</span><span class="o">-</span><span class="n">L2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th2</span><span class="p">)</span>
@@ -278,8 +278,8 @@ y = -l_1 cos(\theta_1) - l_2 cos(\theta_2)\end{split}\]</div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x nominal is: &quot;</span><span class="p">,</span> <span class="n">xn</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y nominal is: &quot;</span><span class="p">,</span> <span class="n">yn</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"x nominal is: "</span><span class="p">,</span> <span class="n">xn</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"y nominal is: "</span><span class="p">,</span> <span class="n">yn</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -303,8 +303,8 @@ y nominal is:  -2.22942304031922
 <span class="n">dx</span> <span class="o">=</span> <span class="n">xd</span> <span class="o">-</span> <span class="n">xn</span>
 <span class="n">dy</span> <span class="o">=</span> <span class="n">yd</span> <span class="o">-</span> <span class="n">yn</span>
 <span class="c1"># We now compute the thetas</span>
-<span class="n">th1d</span> <span class="o">=</span> <span class="n">th1n</span> <span class="o">+</span> <span class="n">th1_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
-<span class="n">th2d</span> <span class="o">=</span> <span class="n">th2n</span> <span class="o">+</span> <span class="n">th2_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
+<span class="n">th1d</span> <span class="o">=</span> <span class="n">th1n</span> <span class="o">+</span> <span class="n">th1_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">"dp0"</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">"dp1"</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
+<span class="n">th2d</span> <span class="o">=</span> <span class="n">th2n</span> <span class="o">+</span> <span class="n">th2_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">"dp0"</span><span class="p">:</span> <span class="n">dx</span><span class="p">,</span> <span class="s2">"dp1"</span><span class="p">:</span> <span class="n">dy</span><span class="p">})</span>
 <span class="c1"># Let us check that indeed they are producing the desired end point position</span>
 <span class="n">xdi</span> <span class="o">=</span> <span class="n">L1</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th1d</span><span class="p">)</span><span class="o">+</span><span class="n">L2</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">th2d</span><span class="p">)</span>
 <span class="n">ydi</span> <span class="o">=</span> <span class="o">-</span><span class="n">L1</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th1d</span><span class="p">)</span><span class="o">-</span><span class="n">L2</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">th2d</span><span class="p">)</span>
@@ -315,8 +315,8 @@ y nominal is:  -2.22942304031922
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in x: &quot;</span><span class="p">,</span> <span class="n">xdi</span><span class="o">-</span><span class="n">xd</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in y: &quot;</span><span class="p">,</span> <span class="n">ydi</span><span class="o">-</span><span class="n">yd</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Error in x: "</span><span class="p">,</span> <span class="n">xdi</span><span class="o">-</span><span class="n">xd</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Error in y: "</span><span class="p">,</span> <span class="n">ydi</span><span class="o">-</span><span class="n">yd</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -364,8 +364,8 @@ Error in y:  1.7152856912616699e-10
 <span class="n">En</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">en</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="c1"># gduals</span>
-<span class="n">E</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">En</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">e</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">En</span><span class="p">,</span> <span class="s2">"E"</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">gdual</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="s2">"e"</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
 <span class="c1"># The equation</span>
 <span class="n">M</span> <span class="o">=</span> <span class="n">E</span> <span class="o">-</span> <span class="n">e</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
 </pre></div>
@@ -396,7 +396,7 @@ Error in y:  1.7152856912616699e-10
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need to have the same symbol set in the variables</span>
-<span class="n">e</span><span class="o">.</span><span class="n">extend_symbol_set</span><span class="p">([</span><span class="s2">&quot;de&quot;</span><span class="p">,</span> <span class="s2">&quot;dE&quot;</span><span class="p">])</span>
+<span class="n">e</span><span class="o">.</span><span class="n">extend_symbol_set</span><span class="p">([</span><span class="s2">"de"</span><span class="p">,</span> <span class="s2">"dE"</span><span class="p">])</span>
 <span class="c1"># We may now create the inverse map</span>
 <span class="n">res</span> <span class="o">=</span> <span class="n">invert_map</span><span class="p">([</span><span class="n">M</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
 <span class="n">E_map</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -443,19 +443,19 @@ Error in y:  1.7152856912616699e-10
 <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
-         <span class="n">res</span> <span class="o">=</span> <span class="n">E_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">&quot;dp0&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="s2">&quot;dp1&quot;</span><span class="p">:</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]})</span> <span class="o">+</span> <span class="n">En</span>
+         <span class="n">res</span> <span class="o">=</span> <span class="n">E_map</span><span class="o">.</span><span class="n">evaluate</span><span class="p">({</span><span class="s2">"dp0"</span><span class="p">:</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="s2">"dp1"</span><span class="p">:</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]})</span> <span class="o">+</span> <span class="n">En</span>
          <span class="n">Z</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">res</span> <span class="o">+</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">res</span><span class="p">))</span> <span class="o">+</span> <span class="mf">1e-14</span><span class="p">)</span>
 
 <span class="c1"># Prepare the plot</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
 
 <span class="c1"># Plot the surface.</span>
 <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span>
                        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;Error (log)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'E'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'e'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">'Error (log)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <br/></pre></div>
 </div>
