@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/41722955.svg)](https://zenodo.org/badge/latestdoi/41722955)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22009085.svg)](https://doi.org/10.5281/zenodo.22009085)
 [![Build Status](https://travis-ci.org/darioizzo/audi.svg?branch=master)](https://travis-ci.org/darioizzo/audi)
 [![PyPI](https://img.shields.io/pypi/v/pyaudi.svg)](https://pypi.python.org/pypi/pyaudi)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pyaudi/badges/version.svg)](https://anaconda.org/conda-forge/pyaudi)
