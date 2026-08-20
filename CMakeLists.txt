@@ -172,7 +172,9 @@ if(AUDI_BUILD_AUDI)
     # audi dependencies.
 
     # Eigen setup (modern CONFIG mode, providing the Eigen3::Eigen imported target).
-    find_package(Eigen3 3.4 REQUIRED CONFIG)
+    # Use a version range so that 3.4 is treated as the *minimum* required version
+    # (any 3.4 or newer release is accepted), rather than an exact match.
+    find_package(Eigen3 3.4...<100 REQUIRED CONFIG)
     message(STATUS "Eigen version detected: ${Eigen3_VERSION}")
     
     # obake setup.
