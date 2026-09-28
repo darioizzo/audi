@@ -1,6 +1,5 @@
 from setuptools import setup
 from setuptools.dist import Distribution
-from distutils import util
 import sys
 
 NAME = 'pyaudi'
