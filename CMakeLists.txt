@@ -171,11 +171,10 @@ endif()
 if(AUDI_BUILD_AUDI)
     # audi dependencies.
 
-    # Eigen setup (modern CONFIG mode, providing the Eigen3::Eigen imported target).
-    # No version in find_package: Eigen 3.4's version file rejects ranges and Eigen 5 rejects "3.4".
+    # Eigen 5 still provides the Eigen3 package and Eigen3::Eigen imported target.
     find_package(Eigen3 REQUIRED CONFIG)
-    if(Eigen3_VERSION VERSION_LESS 3.4)
-        message(FATAL_ERROR "Eigen >= 3.4 is required, but version ${Eigen3_VERSION} was found.")
+    if(Eigen3_VERSION VERSION_LESS 5.0.0)
+        message(FATAL_ERROR "Eigen >= 5.0.0 is required, but version ${Eigen3_VERSION} was found.")
     endif()
     message(STATUS "Eigen version detected: ${Eigen3_VERSION}")
     

@@ -5,7 +5,7 @@ dependencies:
   - c-compiler
   - cxx-compiler
   - cmake
-  - eigen<5.0.0,>=3.0
+  - eigen>=5.0.0
   - obake-devel
   - mppp
   - libboost-devel
