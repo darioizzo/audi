@@ -38,9 +38,7 @@ make VERBOSE=1 install
 ctest -j4 -V
 
 # Create lcov report
-# Boost.Test macro-generated functions share a source start line, which lcov cannot distinguish reliably.
-# Re-enable function coverage when https://github.com/linux-test-project/lcov/issues/468 is resolved.
-lcov --capture --directory . --output-file coverage.info --no-function-coverage
+lcov --capture --directory . --output-file coverage.info --ignore-errors inconsistent,inconsistent
 
 # Install pyaudi 
 cd ..
