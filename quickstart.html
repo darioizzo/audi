@@ -157,38 +157,63 @@
 <section id="id1">
 <h3>My first program<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p>After following the <a class="reference internal" href="install_c.html#installation-audi"><span class="std std-ref">Packages</span></a> you will be able to compile and run your first C++ AuDi program:</p>
-<div class="highlight-c++ notranslate" id="getting-started"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;audi/gdual.hpp&gt;</span>
-<span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;audi/functions.hpp&gt;</span>
-<span class="linenos"> 3</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">audi</span><span class="p">;</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
-<span class="linenos"> 8</span><span class="p">{</span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="c1">// We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3</span>
-<span class="linenos">10</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">gdual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="linenos">11</span><span class="w">    </span><span class="c1">// 1 - Define the generalized dual numbers (over doubles, 7 is the truncation order, i.e. the maximum</span>
-<span class="linenos">12</span><span class="w">    </span><span class="c1">// order of derivation we will need)</span>
-<span class="linenos">13</span><span class="w">    </span><span class="n">gdual</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"x"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
-<span class="linenos">14</span><span class="w">    </span><span class="n">gdual</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s">"y"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
-<span class="linenos">15</span>
-<span class="linenos">16</span><span class="w">    </span><span class="c1">// 2 - Compute your function as usual</span>
-<span class="linenos">17</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cbrt</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">));</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="w">    </span><span class="c1">// 3 - Inspect the results (this has a constant complexity now as all computations have been made already)</span>
-<span class="linenos">20</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Taylor polynomial: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span>
-<span class="linenos">21</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the Taylor expansion of f (truncated at the 7th order)</span>
-<span class="linenos">22</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span>
-<span class="linenos">23</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the derivative (d / dx)</span>
-<span class="linenos">24</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">})</span>
-<span class="linenos">25</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
-<span class="linenos">26</span>
-<span class="linenos">27</span><span class="w">    </span><span class="c1">// 4 - Using the dictionary interface (note the presence of the "d" before all variables)</span>
-<span class="linenos">28</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">"dx"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}})</span>
-<span class="linenos">29</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the derivative (d / dx)</span>
-<span class="linenos">30</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">"dx"</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"dy"</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}})</span>
-<span class="linenos">31</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
-<span class="linenos">32</span><span class="p">}</span>
+<div class="highlight-c++ notranslate" id="getting-started"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Copyright © 2018–2026 Dario Izzo (dario.izzo@gmail.com),</span>
+<span class="linenos"> 2</span><span class="c1">// Francesco Biscani (bluescarni@gmail.com),</span>
+<span class="linenos"> 3</span><span class="c1">// Sean Cowan (lambertarc@icloud.com)</span>
+<span class="linenos"> 4</span><span class="c1">//</span>
+<span class="linenos"> 5</span><span class="c1">// This file is part of the audi library.</span>
+<span class="linenos"> 6</span><span class="c1">//</span>
+<span class="linenos"> 7</span><span class="c1">// The audi library is free software: you can redistribute it and/or modify</span>
+<span class="linenos"> 8</span><span class="c1">// it under the terms of either:</span>
+<span class="linenos"> 9</span><span class="c1">//   - the GNU General Public License as published by the Free Software</span>
+<span class="linenos">10</span><span class="c1">//     Foundation, either version 3 of the License, or (at your option)</span>
+<span class="linenos">11</span><span class="c1">//     any later version, or</span>
+<span class="linenos">12</span><span class="c1">//   - the GNU Lesser General Public License as published by the Free</span>
+<span class="linenos">13</span><span class="c1">//     Software Foundation, either version 3 of the License, or (at your</span>
+<span class="linenos">14</span><span class="c1">//     option) any later version.</span>
+<span class="linenos">15</span><span class="c1">//</span>
+<span class="linenos">16</span><span class="c1">// The audi library is distributed in the hope that it will be useful,</span>
+<span class="linenos">17</span><span class="c1">// but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="linenos">18</span><span class="c1">// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="linenos">19</span><span class="c1">// GNU General Public License and the GNU Lesser General Public License</span>
+<span class="linenos">20</span><span class="c1">// for more details.</span>
+<span class="linenos">21</span><span class="c1">//</span>
+<span class="linenos">22</span><span class="c1">// You should have received a copy of the GNU General Public License</span>
+<span class="linenos">23</span><span class="c1">// and the GNU Lesser General Public License along with the audi library.</span>
+<span class="linenos">24</span><span class="c1">// If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;audi/gdual.hpp&gt;</span>
+<span class="linenos">27</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;audi/functions.hpp&gt;</span>
+<span class="linenos">28</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">audi</span><span class="p">;</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="linenos">33</span><span class="p">{</span>
+<span class="linenos">34</span><span class="w">    </span><span class="c1">// We want to compute the Taylor expansion of a function f (and thus all derivatives) at x=2, y=3</span>
+<span class="linenos">35</span><span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">gdual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdual</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="linenos">36</span><span class="w">    </span><span class="c1">// 1 - Define the generalized dual numbers (over doubles, 7 is the truncation order, i.e. the maximum</span>
+<span class="linenos">37</span><span class="w">    </span><span class="c1">// order of derivation we will need)</span>
+<span class="linenos">38</span><span class="w">    </span><span class="n">gdual</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"x"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
+<span class="linenos">39</span><span class="w">    </span><span class="n">gdual</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s">"y"</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="w">    </span><span class="c1">// 2 - Compute your function as usual</span>
+<span class="linenos">42</span><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cbrt</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="p">));</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="w">    </span><span class="c1">// 3 - Inspect the results (this has a constant complexity now as all computations have been made already)</span>
+<span class="linenos">45</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Taylor polynomial: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span>
+<span class="linenos">46</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the Taylor expansion of f (truncated at the 7th order)</span>
+<span class="linenos">47</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">})</span>
+<span class="linenos">48</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the derivative (d / dx)</span>
+<span class="linenos">49</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">})</span>
+<span class="linenos">50</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+<span class="linenos">51</span>
+<span class="linenos">52</span><span class="w">    </span><span class="c1">// 4 - Using the dictionary interface (note the presence of the "d" before all variables)</span>
+<span class="linenos">53</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">"dx"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">}})</span>
+<span class="linenos">54</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the derivative (d / dx)</span>
+<span class="linenos">55</span><span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Derivative value: "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="n">get_derivative</span><span class="p">({{</span><span class="s">"dx"</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s">"dy"</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">}})</span>
+<span class="linenos">56</span><span class="w">              </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// This is the value of the mixed derivative (d^7 / dx^4dy^3)</span>
+<span class="linenos">57</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Place it into a getting_started.cpp text file. Compiling such an example file with C++ manually
@@ -227,7 +252,7 @@ compiler you are using (e.g. g++). On possible example of compiling the program 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2018, Dario Izzo and Francesco Biscani.</p>
+    <p>&#169; Copyright 2018–2026, Dario Izzo, Francesco Biscani, and Sean Cowan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
