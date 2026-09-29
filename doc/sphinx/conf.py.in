@@ -65,8 +65,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'audi'
-copyright = '2018, Dario Izzo and Francesco Biscani'
-author = 'Dario Izzo and Francesco Biscani'
+copyright = '2018–2026, Dario Izzo, Francesco Biscani, and Sean Cowan'
+author = 'Dario Izzo, Francesco Biscani, and Sean Cowan'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

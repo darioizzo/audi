@@ -1,4 +1,4 @@
-// Copyright © 2018–2025 Dario Izzo (dario.izzo@gmail.com),
+// Copyright © 2018–2026 Dario Izzo (dario.izzo@gmail.com),
 // Francesco Biscani (bluescarni@gmail.com),
 // Sean Cowan (lambertarc@icloud.com)
 //
