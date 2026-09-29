@@ -1,6 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22009085.svg)](https://doi.org/10.5281/zenodo.22009085)
 [![CI](https://github.com/darioizzo/audi/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/darioizzo/audi/actions/workflows/main.yml)
-[![PyPI](https://img.shields.io/pypi/v/pyaudi.svg)](https://pypi.python.org/pypi/pyaudi)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pyaudi/badges/version.svg)](https://anaconda.org/conda-forge/pyaudi)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pyaudi/badges/license.svg)](https://anaconda.org/conda-forge/pyaudi)
 
@@ -14,7 +13,7 @@ The polynomial multiplication algorithm used in obake (original with the softwar
 
 AuDi computes with the full *truncated Taylor polynomial* (the jet) of a function around an expansion point, rather than propagating a single derivative or a directional derivative. All partial derivatives up to the truncation order and in an arbitrary number of variables are therefore available simultaneously as the coefficients of the polynomial. This makes AuDi a natural tool whenever the object of interest is not just a gradient but the local polynomial model of a function: high-order sensitivity analysis, Taylor-model based verified integration, perturbation theory, and differentiable genetic programming, among others.
 
-In addition to the algebra of Taylor truncated polynomials, a novel Taylor model implementation is provided that is built on top of the Taylor truncated polynomials. This implementation exploits Bernstein polynomials for rapid multivariate polynomial bounding, which is crucial to the performance of Taylor model arithmetic.
+In addition to the algebra of Taylor truncated polynomials, a Taylor model implementation original with pyaudi is provided that is built on top of the Taylor truncated polynomials. This implementation exploits Bernstein polynomials for rapid multivariate polynomial bounding, which is crucial to the performance of Taylor model arithmetic.
 
 AuDi also supports computations over complex numbers and a *vectorized* scalar type. The vectorized type evaluates the Taylor polynomial in many points at once (a form of SIMD/batched evaluation), which is useful in machine-learning style workloads where the same expansion has to be computed over a batch of inputs.
 
@@ -36,17 +35,13 @@ Izzo, Dario, Francesco Biscani, and Alessio Mereta. "Differentiable Genetic Prog
 
 # pyaudi
 
-Pre-compiled pyaudi binaries are available both from the Pyhton Package Index (PyPi) and from conda-forge. Not all architectures are supported, namely only win64 (PyPi), linux 64 (PyPi and conda) and osx (only conda). The best is to try the following:
+The currently maintained pyaudi package is available from conda-forge. Install it with:
+
+**Note:** Packages published on PyPI are currently not maintained and may be outdated. Please use the conda-forge package instead.
 
 ```
  conda config --add channels conda-forge
  conda install pyaudi
-```
-
-or
-
-```
- pip install pyaudi --user
 ```
 
 # Citing pyaudi

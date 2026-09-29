@@ -22,6 +22,26 @@ Biscani, Francesco. `Multiplication of sparse Laurent polynomials and Poisson se
    Audi is thread-safe and, when possible, makes use of obake fine-grained parallelization of the truncated polynomial multiplication.
    The benefits of this fine grained parallelization are well visible for many variables and high differentiation orders.
 
+.. important::
+
+   **Citing pyaudi**
+
+   If you use pyaudi in your research, please cite:
+
+   Izzo, Dario, Francesco Biscani, and Sean Cowan. "pyaudi: A truncated Taylor polynomial algebra toolbox for differentiable intelligence, automatic differentiation, and verified integration applications." *Journal of Open Source Software* 11.124 (2026): 9905.
+
+   .. code-block:: bibtex
+
+      @article{izzo2026pyaudi,
+        title={pyaudi: A truncated Taylor polynomial algebra toolbox for differentiable intelligence, automatic differentiation, and verified integration applications.},
+        author={Izzo, Dario and Biscani, Francesco and Cowan, Sean},
+        journal={Journal of Open Source Software},
+        volume={11},
+        number={124},
+        pages={9905},
+        year={2026}
+      }
+
 Audi is open source (GPL3) and its code available in `github <https://github.com/darioizzo/audi>`_
 
 -----------------------------------------------
