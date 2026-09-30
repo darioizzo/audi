@@ -1,5 +1,5 @@
 # Python version check.
-if(${PYTHON_VERSION_MAJOR} LESS 3)
+if(${Python_VERSION_MAJOR} LESS 3)
     message(FATAL_ERROR "Minimum supported Python version is 3.0")
 endif()
 

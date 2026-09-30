@@ -12,27 +12,12 @@ else()
   set(_YACMA_PYTHON_MODULE_NEED_LINK FALSE)
 endif()
 
-# Find Python interpreter.
-find_package(PythonInterp REQUIRED)
+# Find the Python interpreter and the development files required by extension
+# modules. Python::Module carries the platform-specific link requirements.
+find_package(Python 3 REQUIRED COMPONENTS Interpreter Development.Module)
 
-if(_YACMA_PYTHON_MODULE_NEED_LINK)
-  # NOTE: this will give us both the Python lib and the Python include dir.
-  find_package(PythonLibs REQUIRED)
-  if(NOT YACMA_PYTHON_INCLUDE_DIR)
-    set(YACMA_PYTHON_INCLUDE_DIR "${PYTHON_INCLUDE_DIRS}" CACHE PATH "Path to the Python include dir.")
-  endif()
-else()
-  # NOTE: we need to determine the include dir on our own.
-  if(NOT YACMA_PYTHON_INCLUDE_DIR)
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig\nprint(sysconfig.get_path('include'))"
-      OUTPUT_VARIABLE _YACMA_PYTHON_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
-    if(_YACMA_PYTHON_INCLUDE_DIR)
-      set(YACMA_PYTHON_INCLUDE_DIR "${_YACMA_PYTHON_INCLUDE_DIR}" CACHE PATH "Path to the Python include dir.")
-    endif()
-  endif()
-  if(NOT YACMA_PYTHON_INCLUDE_DIR)
-      message(FATAL_ERROR "Could not determine the Python include dir.")
-  endif()
+if(NOT YACMA_PYTHON_INCLUDE_DIR)
+  set(YACMA_PYTHON_INCLUDE_DIR "${Python_INCLUDE_DIRS}" CACHE PATH "Path to the Python include dir.")
 endif()
 mark_as_advanced(YACMA_PYTHON_INCLUDE_DIR)
 
@@ -41,11 +26,8 @@ mark_as_advanced(YACMA_PYTHON_INCLUDE_DIR)
 add_library(YACMA::PythonIncludeDir INTERFACE IMPORTED)
 set_target_properties(YACMA::PythonIncludeDir PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${YACMA_PYTHON_INCLUDE_DIR})
 
-message(STATUS "Python interpreter: ${PYTHON_EXECUTABLE}")
-message(STATUS "Python interpreter version: ${PYTHON_VERSION_STRING}")
-if(_YACMA_PYTHON_MODULE_NEED_LINK)
-  message(STATUS "Python libraries: ${PYTHON_LIBRARIES}")
-endif()
+message(STATUS "Python interpreter: ${Python_EXECUTABLE}")
+message(STATUS "Python interpreter version: ${Python_VERSION}")
 message(STATUS "Python include dir: ${YACMA_PYTHON_INCLUDE_DIR}")
 
 # This flag is used to signal the need to override the default extension of the Python modules
@@ -66,10 +48,10 @@ if(UNIX)
   if(NOT YACMA_PYTHON_MODULES_INSTALL_PATH)
     # NOTE: here we use this contraption (instead of the simple method below for Win32) because like this we can
     # support installation into the CMake prefix (e.g., in the user's home dir).
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig\nimport os\nprint(os.path.split(sysconfig.get_path('purelib'))[-1])"
+    execute_process(COMMAND ${Python_EXECUTABLE} -c "import sysconfig\nimport os\nprint(os.path.split(sysconfig.get_path('purelib'))[-1])"
       OUTPUT_VARIABLE _YACMA_PY_PACKAGES_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
     message(STATUS "Python packages dir is: ${_YACMA_PY_PACKAGES_DIR}")
-    set(YACMA_PYTHON_MODULES_INSTALL_PATH "lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/${_YACMA_PY_PACKAGES_DIR}" CACHE PATH "Install path for Python modules.")
+    set(YACMA_PYTHON_MODULES_INSTALL_PATH "lib/python${Python_VERSION_MAJOR}.${Python_VERSION_MINOR}/${_YACMA_PY_PACKAGES_DIR}" CACHE PATH "Install path for Python modules.")
     mark_as_advanced(YACMA_PYTHON_MODULES_INSTALL_PATH)
   endif()
 elseif(WIN32)
@@ -78,7 +60,7 @@ elseif(WIN32)
   set(_YACMA_PY_MODULE_EXTENSION "pyd")
   if(NOT YACMA_PYTHON_MODULES_INSTALL_PATH)
     # On Windows, we will install directly into the install path of the Python interpreter.
-    execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig; print(sysconfig.get_path('purelib'))"
+    execute_process(COMMAND ${Python_EXECUTABLE} -c "import sysconfig; print(sysconfig.get_path('purelib'))"
       OUTPUT_VARIABLE _YACMA_PYTHON_MODULES_INSTALL_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
     set(YACMA_PYTHON_MODULES_INSTALL_PATH "${_YACMA_PYTHON_MODULES_INSTALL_PATH}" CACHE PATH "Install path for Python modules.")
     mark_as_advanced(YACMA_PYTHON_MODULES_INSTALL_PATH)
@@ -119,7 +101,7 @@ function(YACMA_PYTHON_MODULE name)
     if(CMAKE_COMPILER_IS_GNUCXX OR (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" AND NOT MSVC))
         message(STATUS "Setting up extra compiler flag '-fwrapv' for the Python module '${name}'.")
         target_compile_options(${name} PRIVATE "-fwrapv")
-        if(${PYTHON_VERSION_MAJOR} LESS 3)
+        if(${Python_VERSION_MAJOR} LESS 3)
             message(STATUS "Python < 3 detected, setting up extra compiler flag '-fno-strict-aliasing' for the Python module '${name}'.")
             target_compile_options(${name} PRIVATE "-fno-strict-aliasing")
         endif()
@@ -136,10 +118,7 @@ function(YACMA_PYTHON_MODULE name)
     # Add the Python include dirs.
     target_include_directories("${name}" SYSTEM PRIVATE ${YACMA_PYTHON_INCLUDE_DIR})
 
-    # Link to the Python libs, if necessary.
-    if(_YACMA_PYTHON_MODULE_NEED_LINK)
-      target_link_libraries("${name}" PRIVATE ${PYTHON_LIBRARIES})
-    endif()
+    target_link_libraries("${name}" PRIVATE Python::Module)
 endfunction()
 
 # Mark as included.

@@ -23,6 +23,7 @@ message(STATUS "System name: ${CMAKE_SYSTEM_NAME}")
 # and only one must be chosen.
 option(AUDI_BUILD_AUDI "Build audi." ON)
 option(AUDI_BUILD_PYAUDI "Build pyaudi." OFF)
+option(AUDI_BUILD_TESTS "Build test set." ON)
 
 # Check consistency.
 if(AUDI_BUILD_AUDI AND AUDI_BUILD_PYAUDI)
@@ -37,9 +38,6 @@ if(AUDI_BUILD_AUDI)
     # Initial setup of a audi build.
     project(audi VERSION ${AUDI_PROJECT_VERSION} LANGUAGES CXX C)
     enable_testing()
-
-    # Build option: enable test set.
-    option(AUDI_BUILD_TESTS "Build test set." ON)
 
     # Build Option: when active the file main.cpp is built.
     option(AUDI_BUILD_MAIN "Build 'main.cpp'." OFF)
@@ -163,7 +161,7 @@ if(AUDI_BUILD_PYAUDI)
     # audi dependencies.
     include(YACMAPythonSetup)
     # Python version check.
-    if(${PYTHON_VERSION_MAJOR} LESS 3)
+    if(${Python_VERSION_MAJOR} LESS 3)
         message(FATAL_ERROR "Minimum supported Python version is 3.0")
     endif()
 endif()
